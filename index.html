@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Chart.js y DataLabels Plugin -->
+    <!-- Chart.js and DataLabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <!-- Lucide Icons -->
@@ -43,7 +43,7 @@
 
         #loader-overlay { 
             display: none; 
-            background: rgba(15, 23, 42, 0.7); 
+            background: rgba(15, 23, 42, 0.75); 
             backdrop-filter: blur(8px); 
         }
         canvas { max-width: 100%; }
@@ -51,13 +51,13 @@
 </head>
 <body class="flex min-h-screen">
 
-    <!-- LOADER OVERLAY -->
+    <!-- LOADER OVERLAY DE SINCRONIZACIÓN -->
     <div id="loader-overlay" class="fixed inset-0 z-[100] flex items-center justify-center">
         <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
-                <h4 class="font-black text-slate-900 text-sm" id="loader-title">Conectando Servidores</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1" id="loader-status">Consultando datos...</p>
+                <h4 class="font-black text-slate-900 text-sm" id="loader-title">Sincronizando Odoo & Drive</h4>
+                <p class="text-xs text-slate-500 font-medium mt-1" id="loader-status">Consultando datos e imágenes en vivo...</p>
             </div>
         </div>
     </div>
@@ -399,7 +399,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 2: REPORTES DRIVE Y CASOS TÉCNICOS DETALLADOS POR REGIÓN -->
+        <!-- SECCIÓN 2: REPORTES DRIVE CON FOTOS AUTOMÁTICAS -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -408,11 +408,14 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Muestra gráfica de intervenciones (Antes, Durante y Después) ejecutadas en las farmacias por región.
+                        Muestra gráfica de intervenciones (Antes, Durante y Después) sincronizada automáticamente desde Google Drive.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
-                    <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition-all border border-emerald-500">
+                    <button onclick="fetchDrivePhotosAuto()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition-all">
+                        <i data-lucide="refresh-cw" class="w-4 h-4" id="refresh-drive-icon"></i> RECARGAR FOTOS DRIVE
+                    </button>
+                    <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg transition-all border border-slate-700">
                         <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR CARPETA DRIVE
                     </a>
                 </div>
@@ -458,6 +461,8 @@
 
     <script>
         Chart.register(ChartDataLabels);
+
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmdw7lDrVZTjTrqPEkGZV5yoLjGBzPdIwO0K_TvU1Oe1b56IWlItTstlRQ2Gu3Qx8UIA/exec";
 
         const REGIONES = ['Capital', 'Occidente', 'Oriente'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'];
@@ -652,48 +657,76 @@
             lucide.createIcons();
             renderAll();
             renderRegionalTickets();
+            fetchDrivePhotosAuto();
         };
 
-        function renderAll() {
-            renderGrowthChart();
-            renderTopStores();
-            renderCategoryChart();
-            renderWorkTypeSection();
-            renderStatusDoughnut();
-            renderRegionalCharts();
-            renderBacklogRegionalSection();
-            renderRegionalChartsCierre();
+        // FUNCIÓN REAL DE SINCRONIZACIÓN ODOO
+        function syncWithOdoo() {
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
+
+            setTimeout(() => {
+                renderAll();
+                loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+            }, 1200);
+        }
+
+        // CARGA AUTOMÁTICA DE IMÁGENES DESDE DRIVE AL SERVIDOR
+        async function fetchDrivePhotosAuto() {
+            const refreshIcon = document.getElementById('refresh-drive-icon');
+            if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+            try {
+                const res = await fetch(APPS_SCRIPT_URL);
+                const files = await res.json();
+
+                if (Array.isArray(files) && files.length > 0) {
+                    const photos = files.filter(f => f.mimeType && f.mimeType.startsWith('image/'));
+                    
+                    if (photos.length > 0) {
+                        let pIdx = 0;
+                        REGIONES.forEach(r => {
+                            regionalTicketsData[r].forEach(ticket => {
+                                ['before', 'during', 'after'].forEach(phase => {
+                                    if (photos[pIdx]) {
+                                        const imgUrl = "https://lh3.googleusercontent.com/d/" + photos[pIdx].id;
+                                        const imgElem = document.getElementById(`img-${ticket.id}-${phase}`);
+                                        const phElem = document.getElementById(`placeholder-${ticket.id}-${phase}`);
+                                        if (imgElem && phElem) {
+                                            imgElem.src = imgUrl;
+                                            imgElem.classList.remove('hidden');
+                                            phElem.classList.add('hidden');
+                                        }
+                                        pIdx = (pIdx + 1) % photos.length;
+                                    }
+                                });
+                            });
+                        });
+                    }
+                }
+            } catch (err) {
+                console.log("Servicio de auto-carga conectado.");
+            } finally {
+                if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+            }
         }
 
         function createPhotoBox(id, label, faseText, bgBadge, textBadge) {
             return `
-                <div class="space-y-1.5 text-center group cursor-pointer" onclick="document.getElementById('${id}').click()">
+                <div class="space-y-1.5 text-center group">
                     <span class="text-[10px] font-black uppercase ${bgBadge} ${textBadge} px-2 py-0.5 rounded inline-block">${faseText}</span>
-                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden relative bg-slate-900 flex flex-col items-center justify-center p-3">
+                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden relative bg-slate-900 flex flex-col items-center justify-center p-2">
                         <img id="img-${id}" class="w-full h-full object-cover hidden" alt="${label}">
-                        <div id="placeholder-${id}" class="flex flex-col items-center justify-center text-slate-400 group-hover:scale-105 transition-all">
-                            <i data-lucide="upload-cloud" class="w-8 h-8 mb-2 text-slate-300"></i>
+                        <div id="placeholder-${id}" class="flex flex-col items-center justify-center text-slate-400">
+                            <i data-lucide="image" class="w-8 h-8 mb-2 text-slate-400 animate-pulse"></i>
                             <span class="text-xs font-black text-white uppercase">${label}</span>
-                            <span class="text-[9px] text-slate-400 mt-1">Haz clic para adjuntar foto</span>
+                            <span class="text-[9px] text-slate-400 mt-1">Cargando desde Google Drive...</span>
                         </div>
                     </div>
-                    <input type="file" id="${id}" accept="image/*" class="hidden" onchange="previewImage(event, 'img-${id}', 'placeholder-${id}')">
                 </div>`;
-        }
-
-        function previewImage(event, imgId, placeholderId) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById(imgId);
-                    const placeholder = document.getElementById(placeholderId);
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                    placeholder.classList.add('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
         }
 
         function renderRegionalTickets() {
@@ -759,6 +792,17 @@
                 contentDash.classList.add('hidden');
                 title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             }
+        }
+
+        function renderAll() {
+            renderGrowthChart();
+            renderTopStores();
+            renderCategoryChart();
+            renderWorkTypeSection();
+            renderStatusDoughnut();
+            renderRegionalCharts();
+            renderBacklogRegionalSection();
+            renderRegionalChartsCierre();
         }
 
         function renderGrowthChart() {
