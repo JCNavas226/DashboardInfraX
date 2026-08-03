@@ -115,6 +115,36 @@
                     <p class="text-slate-500 font-semibold text-xs mt-0.5">Indicadores de Gestión • Farmacias Xana <span id="current-period-text" class="text-slate-800 font-bold">2026</span></p>
                 </div>
             </div>
+
+            <div class="flex flex-wrap gap-3 items-center w-full lg:w-auto">
+                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200/60 gap-1">
+                    <button onclick="exportarAGoogleSlides()" class="flex items-center gap-2 px-3.5 py-2 bg-[#ea4335] hover:bg-red-600 text-white rounded-lg font-bold text-xs shadow-sm transition-all">
+                        <i data-lucide="presentation" class="w-4 h-4"></i> Exportar Presentación
+                    </button>
+                    <button onclick="exportarReporteExcel()" class="flex items-center gap-2 px-3.5 py-2 bg-white text-slate-700 rounded-lg font-bold text-xs shadow-sm hover:text-orange-600 transition-all">
+                        <i data-lucide="download-cloud" class="w-4 h-4 text-orange-500"></i> Excel
+                    </button>
+                </div>
+
+                <div class="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
+
+                <select id="regSelector" onchange="renderAll()" class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-orange-500/20 shadow-sm">
+                    <option value="Nacional">Consolidado Nacional</option>
+                    <option value="Capital">Región Capital (Azul)</option>
+                    <option value="Occidente">Región Occidente (Verde)</option>
+                    <option value="Oriente">Región Oriente (Púrpura)</option>
+                </select>
+
+                <select id="mesSelector" onchange="renderAll()" class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-orange-500/20 shadow-sm">
+                    <option value="0">Enero</option>
+                    <option value="1">Febrero</option>
+                    <option value="2">Marzo</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Mayo</option>
+                    <option value="5">Junio</option>
+                    <option value="6" selected>Julio</option>
+                </select>
+            </div>
         </header>
 
         <!-- SECCIÓN 1: DASHBOARD GLOBAL SLA -->
@@ -188,6 +218,185 @@
                     </div>
                 </div>
             </div>
+
+            <!-- DEMANDA DE CRECIMIENTO -->
+            <div class="card-pro">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-sky-500"></i> Demanda de Crecimiento
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Evolución del volumen total de solicitudes vs % Tendencia SLA</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-[11px] font-bold">
+                        <span class="flex items-center gap-1 text-slate-600"><span class="w-3 h-3 rounded-sm bg-[#38bdf8] inline-block"></span> Volumen Mensual</span>
+                        <span class="flex items-center gap-1 text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-[#ff5500] inline-block"></span> Tendencia SLA</span>
+                    </div>
+                </div>
+                <div class="h-[340px] relative"><canvas id="growthLineChart"></canvas></div>
+            </div>
+
+            <!-- TOP 10 TIENDAS & CATEGORÍAS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                    <i data-lucide="store" class="w-4 h-4 text-orange-500"></i> Top 10 Tiendas Reales
+                                </h3>
+                                <p class="text-xs text-slate-400 font-medium">Farmacias registradas en Odoo</p>
+                            </div>
+                            <select id="topStoreRegSelector" onchange="renderTopStores()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none focus:ring-2 focus:ring-orange-500/20">
+                                <option value="Global">Consolidado Global</option>
+                                <option value="Capital">Región Capital</option>
+                                <option value="Occidente">Región Occidente</option>
+                                <option value="Oriente">Región Oriente</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2.5 pt-1" id="top-stores-list"></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 card-pro bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                    <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado
+                                </h3>
+                                <p class="text-xs text-slate-400 font-medium">Especialidades con filtro por región (Total: 361)</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none focus:ring-2 focus:ring-orange-500/20">
+                                    <option value="Global">Consolidado Global</option>
+                                    <option value="Capital">Región Capital</option>
+                                    <option value="Occidente">Región Occidente</option>
+                                    <option value="Oriente">Región Oriente</option>
+                                </select>
+                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">Julio 2026</span>
+                            </div>
+                        </div>
+                        <div class="h-[380px] relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPO DE TRABAJO SOLICITADO -->
+            <div class="card-pro">
+                <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-orange-500"></i> Tipo de Trabajo Solicitado (Estatus Operativo)
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Correctivo, Preventivo, Mejora, Predictivo, Apoyo, Sin Clasificar</p>
+                    </div>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">Julio 2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 flex flex-col items-center bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+                        <div class="w-[280px] h-[260px] relative flex items-center justify-center">
+                            <canvas id="workTypePieChart"></canvas>
+                        </div>
+                        <div class="flex flex-wrap justify-center gap-2 mt-4 text-[10px] font-bold text-slate-300">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span> Correctivo</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span> Preventivo</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span> Mejora</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#8b5cf6]"></span> Predictivo</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span> Apoyo</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#64748b]"></span> Sin Clasificar</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80">
+                        <h4 class="font-black text-slate-800 text-xs uppercase mb-3 flex items-center gap-1.5">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i> Comparativo: Mes Activo vs Acumulado Histórico 2026
+                        </h4>
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-2 text-[10px] tracking-wider">
+                                    <th class="text-left pb-3">Tipo de Trabajo</th>
+                                    <th class="text-center pb-3">Mes Seleccionado</th>
+                                    <th class="text-center pb-3">% Mes</th>
+                                    <th class="text-right pb-3">Acumulado Histórico</th>
+                                </tr>
+                            </thead>
+                            <tbody id="worktype-table-body" class="divide-y divide-slate-200/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DISTRIBUCIÓN DE ESTATUS DEL MES -->
+            <div class="card-pro">
+                <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
+                        <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
+                    </div>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">Julio 2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-5 flex justify-center bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+                        <div class="w-[310px] h-[310px] relative flex items-center justify-center">
+                            <canvas id="statusPieChart"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL JULIO:</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">577</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-2 text-[10px] tracking-wider">
+                                    <th class="text-left pb-3">Estado de Ticket</th>
+                                    <th class="text-center pb-3">Cantidad</th>
+                                    <th class="text-right pb-3">Proporción del Mes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="status-table-body" class="divide-y divide-slate-200/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESGLOSE REGIONAL HISTÓRICO ACTUALIZADO -->
+            <div class="space-y-4 pt-4 border-t border-slate-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-600"></i>
+                        Desglose Regional Histórico Actualizado (Capital: Azul • Occidente: Verde • Oriente: Púrpura)
+                    </h3>
+                    <span class="text-xs text-slate-500 font-semibold">Cifras en Vivo</span>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-container"></div>
+            </div>
+
+            <!-- ESTADO DE BACKLOG Y DESGLOSE AL CIERRE DE MES -->
+            <div class="space-y-6 pt-6 border-t border-slate-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+                        <i data-lucide="lock" class="w-4 h-4 text-emerald-600"></i>
+                        Desglose Regional Histórico al Cierre de Mes & Resumen de Backlog
+                    </h3>
+                    <span class="text-xs text-slate-500 font-semibold">Cifras Oficiales Congeladas</span>
+                </div>
+
+                <div class="card-pro bg-slate-900 text-white p-6">
+                    <h4 class="text-sm font-extrabold uppercase tracking-wider text-orange-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="history" class="w-4 h-4"></i> Estado de Backlog y Casos Pendientes (Calculado de Meses Previos)
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="backlog-regional-container"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-cierre-container"></div>
+            </div>
         </div>
 
         <!-- SECCIÓN 2: REPORTES DRIVE Y CASOS TÉCNICOS DETALLADOS POR REGIÓN -->
@@ -199,7 +408,7 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Muestra gráfica de intervenciones (Antes, Durante y Después) ejecutadas en las farmacias por región según informes.
+                        Muestra gráfica de intervenciones (Antes, Durante y Después) ejecutadas en las farmacias por región.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
@@ -248,22 +457,124 @@
     </main>
 
     <script>
-        // GENERADOR DE CONTENEDOR FOTOGRÁFICO RESILIENTE
-        function createPhotoFrame(fase, colorClass, labelText) {
-            return `
-                <div class="space-y-1.5">
-                    <span class="text-[10px] font-black uppercase ${colorClass} px-2 py-0.5 rounded inline-block">${fase}</span>
-                    <div class="h-44 rounded-xl overflow-hidden border border-slate-200 shadow-sm relative bg-slate-900 flex flex-col items-center justify-center p-4 text-center group">
-                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 mb-2 group-hover:scale-110 transition-all">
-                            <i data-lucide="image" class="w-5 h-5"></i>
-                        </div>
-                        <span class="text-[11px] font-black text-white uppercase tracking-wider">${labelText}</span>
-                        <span class="text-[9px] font-semibold text-slate-400 mt-0.5">Evidencia en Informe Oficial</span>
-                    </div>
-                </div>`;
-        }
+        Chart.register(ChartDataLabels);
 
-        const regionalTicketsData = {
+        const REGIONES = ['Capital', 'Occidente', 'Oriente'];
+        const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'];
+        
+        let appData = {
+            Capital: [
+                { sol: 206, at: 182, canc: 19, prevSolv: 0, prevPending: 0 },
+                { sol: 195, at: 158, canc: 30, prevSolv: 12, prevPending: 24 },
+                { sol: 216, at: 163, canc: 22, prevSolv: 18, prevPending: 42 },
+                { sol: 187, at: 156, canc: 24, prevSolv: 25, prevPending: 58 },
+                { sol: 303, at: 235, canc: 20, prevSolv: 38, prevPending: 95 },
+                { sol: 382, at: 293, canc: 20, prevSolv: 45, prevPending: 180 },
+                { sol: 342, at: 219, canc: 10, prevSolv: 54, prevPending: 113 }
+            ],
+            Occidente: [
+                { sol: 99, at: 99, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 56, at: 51, canc: 4, prevSolv: 0, prevPending: 0 },
+                { sol: 192, at: 181, canc: 4, prevSolv: 5, prevPending: 10 },
+                { sol: 75, at: 69, canc: 4, prevSolv: 8, prevPending: 15 },
+                { sol: 62, at: 51, canc: 7, prevSolv: 12, prevPending: 28 },
+                { sol: 165, at: 132, canc: 4, prevSolv: 18, prevPending: 45 },
+                { sol: 180, at: 102, canc: 0, prevSolv: 26, prevPending: 17 }
+            ],
+            Oriente: [
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 5, at: 3, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 13, at: 8, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 29, at: 18, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 15, at: 10, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 }, 
+                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 25 }
+            ]
+        };
+
+        let cierreData = {
+            Capital: [
+                { sol: 206, at: 69 },
+                { sol: 199, at: 37 },
+                { sol: 203, at: 77 },
+                { sol: 186, at: 114 },
+                { sol: 303, at: 204 },
+                { sol: 382, at: 272 },
+                { sol: 342, at: 219 }
+            ],
+            Occidente: [
+                { sol: 99, at: 79 },
+                { sol: 57, at: 33 },
+                { sol: 192, at: 142 },
+                { sol: 75, at: 50 },
+                { sol: 62, at: 43 },
+                { sol: 168, at: 123 },
+                { sol: 180, at: 102 }
+            ],
+            Oriente: [
+                { sol: 0, at: 0 },
+                { sol: 5, at: 3 },
+                { sol: 13, at: 8 },
+                { sol: 29, at: 18 },
+                { sol: 15, at: 10 },
+                { sol: 0, at: 0 },
+                { sol: 55, at: 40 }
+            ]
+        };
+
+        let topStoresByRegion = {
+            Global: [
+                { name: "Farmacia Traki Cabudare", count: 12 },
+                { name: "Farmacia Sanare", count: 10 },
+                { name: "Farmacia Economía", count: 8 },
+                { name: "Farmacia Traki Cumaná", count: 8 },
+                { name: "Farmacia El Tigre", count: 7 },
+                { name: "Farmacia Coral", count: 6 },
+                { name: "Farmacia Apamate", count: 5 },
+                { name: "Farmacia Camoruco", count: 4 },
+                { name: "Farmacia Guácharo", count: 4 },
+                { name: "Farmacia Nirgua Centro", count: 3 }
+            ],
+            Capital: [
+                { name: "Farmacia Mangle", count: 8 },
+                { name: "Farmacia Araguaney", count: 7 },
+                { name: "Farmacia La Cascada", count: 6 },
+                { name: "Farmacia San Charbel", count: 5 },
+                { name: "Farmacia Anaconda", count: 4 }
+            ],
+            Occidente: [
+                { name: "Farmacia Traki Cabudare", count: 12 },
+                { name: "Farmacia Sanare", count: 10 },
+                { name: "Farmacia Economía", count: 8 },
+                { name: "Farmacia Nirgua Centro", count: 3 }
+            ],
+            Oriente: [
+                { name: "Farmacia Traki Cumaná", count: 8 },
+                { name: "Farmacia El Tigre", count: 7 },
+                { name: "Farmacia Coral", count: 6 },
+                { name: "Farmacia Apamate", count: 5 },
+                { name: "Farmacia Camoruco", count: 4 },
+                { name: "Farmacia Guácharo", count: 4 }
+            ]
+        };
+
+        let categoryStatsByRegion = {
+            Global: { 'Civil': 56, 'Electricidad': 48, 'Plomería': 46, 'Aire Acondicionado': 45, 'Mobiliario': 32, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema Contra Incendio': 19, 'Otros': 21, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9 },
+            Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22, 'Plomería': 20, 'Pintura': 15, 'Mobiliario': 14, 'Otros': 10 },
+            Occidente: { 'Plomería': 20, 'Electricidad': 18, 'Aire Acondicionado': 18, 'Civil': 18, 'Mobiliario': 12, 'Refrigeración': 10, 'Otros': 6 },
+            Oriente: { 'Aire Acondicionado': 5, 'Electricidad': 6, 'Plomería': 6, 'Civil': 10, 'Plantas Eléctricas': 5, 'Otros': 5 }
+        };
+
+        let workTypeStats = {
+            'Correctivo': { mes: 285, histo: 1450 },
+            'Preventivo': { mes: 95, histo: 420 },
+            'Sin Clasificar': { mes: 66, histo: 210 },
+            'Apoyo': { mes: 55, histo: 160 },
+            'Mejora': { mes: 52, histo: 210 },
+            'Predictivo': { mes: 24, histo: 95 }
+        };
+
+        let regionalTicketsData = {
             Capital: [
                 {
                     id: "TK-CAP-8041",
@@ -335,10 +646,55 @@
             ]
         };
 
+        let charts = {};
+
         window.onload = () => {
-            renderRegionalTickets();
             lucide.createIcons();
+            renderAll();
+            renderRegionalTickets();
         };
+
+        function renderAll() {
+            renderGrowthChart();
+            renderTopStores();
+            renderCategoryChart();
+            renderWorkTypeSection();
+            renderStatusDoughnut();
+            renderRegionalCharts();
+            renderBacklogRegionalSection();
+            renderRegionalChartsCierre();
+        }
+
+        function createPhotoBox(id, label, faseText, bgBadge, textBadge) {
+            return `
+                <div class="space-y-1.5 text-center group cursor-pointer" onclick="document.getElementById('${id}').click()">
+                    <span class="text-[10px] font-black uppercase ${bgBadge} ${textBadge} px-2 py-0.5 rounded inline-block">${faseText}</span>
+                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden relative bg-slate-900 flex flex-col items-center justify-center p-3">
+                        <img id="img-${id}" class="w-full h-full object-cover hidden" alt="${label}">
+                        <div id="placeholder-${id}" class="flex flex-col items-center justify-center text-slate-400 group-hover:scale-105 transition-all">
+                            <i data-lucide="upload-cloud" class="w-8 h-8 mb-2 text-slate-300"></i>
+                            <span class="text-xs font-black text-white uppercase">${label}</span>
+                            <span class="text-[9px] text-slate-400 mt-1">Haz clic para adjuntar foto</span>
+                        </div>
+                    </div>
+                    <input type="file" id="${id}" accept="image/*" class="hidden" onchange="previewImage(event, 'img-${id}', 'placeholder-${id}')">
+                </div>`;
+        }
+
+        function previewImage(event, imgId, placeholderId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById(imgId);
+                    const placeholder = document.getElementById(placeholderId);
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
 
         function renderRegionalTickets() {
             const capitalContainer = document.getElementById('tickets-capital');
@@ -367,11 +723,10 @@
                                 </div>
                             </div>
 
-                            <!-- GRILLA TRIPLE FOTOGRÁFICA REGIONAL -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                ${createPhotoFrame('1. Antes', 'text-red-600 bg-red-50 border border-red-200', 'Estado Inicial')}
-                                ${createPhotoFrame('2. Durante', 'text-amber-600 bg-amber-50 border border-amber-200', 'Intervención Técnica')}
-                                ${createPhotoFrame('3. Después', 'text-emerald-600 bg-emerald-50 border border-emerald-200', 'Resultado Entregado')}
+                                ${createPhotoBox(ticket.id + '-before', 'Estado Inicial', '1. Antes', 'bg-red-50', 'text-red-600')}
+                                ${createPhotoBox(ticket.id + '-during', 'Intervención Técnica', '2. Durante', 'bg-amber-50', 'text-amber-600')}
+                                ${createPhotoBox(ticket.id + '-after', 'Resultado Entregado', '3. Después', 'bg-emerald-50', 'text-emerald-600')}
                             </div>
                         </div>`;
                 });
@@ -404,6 +759,614 @@
                 contentDash.classList.add('hidden');
                 title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             }
+        }
+
+        function renderGrowthChart() {
+            const ctxGrowth = document.getElementById('growthLineChart').getContext('2d');
+            if (charts.growth) charts.growth.destroy();
+
+            const gradArea = ctxGrowth.createLinearGradient(0, 0, 0, 300);
+            gradArea.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+            gradArea.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+
+            charts.growth = new Chart(ctxGrowth, {
+                type: 'bar',
+                data: {
+                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
+                    datasets: [
+                        {
+                            label: 'Volumen Mensual',
+                            data: [305, 256, 421, 291, 380, 547, 577],
+                            type: 'line',
+                            borderColor: '#38bdf8',
+                            backgroundColor: gradArea,
+                            fill: true,
+                            borderWidth: 3,
+                            tension: 0.35,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#0284c7',
+                            order: 1,
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                offset: 6,
+                                color: '#0284c7',
+                                font: { weight: '900', size: 11 }
+                            }
+                        },
+                        {
+                            label: 'Tendencia SLA',
+                            data: [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6],
+                            type: 'line',
+                            borderColor: '#ff5500',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 5,
+                            pointBackgroundColor: '#ff5500',
+                            yAxisID: 'y1',
+                            order: 0,
+                            datalabels: {
+                                anchor: 'start',
+                                align: 'bottom',
+                                offset: 8,
+                                color: '#ea580c',
+                                font: { weight: '900', size: 10 },
+                                formatter: v => v > 0 ? v + '%' : ''
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { top: 30, bottom: 15 } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true, max: 650 },
+                        y1: { display: false, min: 0, max: 150 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderTopStores() {
+            const container = document.getElementById('top-stores-list');
+            container.innerHTML = '';
+
+            const selectedReg = document.getElementById('topStoreRegSelector').value;
+            const items = topStoresByRegion[selectedReg] || topStoresByRegion.Global;
+            const maxVal = items.length > 0 ? items[0].count : 1;
+
+            items.forEach((item, idx) => {
+                const pct = Math.round((item.count / maxVal) * 100);
+                container.innerHTML += `
+                    <div class="flex items-center justify-between gap-3 text-xs">
+                        <span class="w-5 text-right font-black text-slate-400">${idx + 1}.</span>
+                        <span class="font-bold text-slate-800 truncate w-44">${item.name}</span>
+                        <div class="flex-grow bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="font-black text-slate-900 w-8 text-right">${item.count}</span>
+                    </div>`;
+            });
+        }
+
+        function renderCategoryChart() {
+            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            if (charts.category) charts.category.destroy();
+
+            const selectedReg = document.getElementById('catRegSelector').value;
+            const stats = categoryStatsByRegion[selectedReg] || categoryStatsByRegion.Global;
+
+            const cats = Object.keys(stats);
+            const vals = Object.values(stats);
+            const totalSum = vals.reduce((a, b) => a + b, 0);
+
+            const colors = ['#0284c7', '#2563eb', '#059669', '#06b6d4', '#7c3aed', '#f59e0b', '#d97706', '#ef4444', '#e11d48', '#8b5cf6', '#475569', '#64748b'];
+
+            charts.category = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: cats,
+                    datasets: [{
+                        label: 'Tickets',
+                        data: vals,
+                        backgroundColor: colors,
+                        borderRadius: 6,
+                        barThickness: 16,
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            offset: 6,
+                            color: '#0f172a',
+                            font: { weight: '800', size: 10 },
+                            formatter: (value) => {
+                                const pct = totalSum > 0 ? ((value / totalSum) * 100).toFixed(1) : 0;
+                                return `${value} (${pct}%)`;
+                            }
+                        }
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { right: 85, left: 10 } },
+                    scales: {
+                        x: { display: false, beginAtZero: true },
+                        y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderWorkTypeSection() {
+            const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
+            if (charts.workType) charts.workType.destroy();
+
+            const keys = Object.keys(workTypeStats);
+            const mesVals = keys.map(k => workTypeStats[k].mes);
+            const histoVals = keys.map(k => workTypeStats[k].histo);
+
+            const colors = ['#ef4444', '#10b981', '#64748b', '#f59e0b', '#3b82f6', '#8b5cf6'];
+
+            charts.workType = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: keys,
+                    datasets: [{
+                        data: mesVals,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: { weight: '900', size: 11 },
+                            formatter: (value, ctx) => {
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return ((value / sum) * 100).toFixed(0) + '%';
+                            }
+                        }
+                    }
+                }
+            });
+
+            const tbody = document.getElementById('worktype-table-body');
+            tbody.innerHTML = '';
+            const totalMes = mesVals.reduce((a, b) => a + b, 0);
+
+            keys.forEach((k, i) => {
+                const pMes = totalMes > 0 ? ((mesVals[i] / totalMes) * 100).toFixed(1) : '0.0';
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-sm" style="background:${colors[i]}"></div>
+                            ${k}
+                        </td>
+                        <td class="py-2.5 text-center font-black text-slate-900">${mesVals[i]}</td>
+                        <td class="py-2.5 text-center font-black text-slate-500">${pMes}%</td>
+                        <td class="py-2.5 text-right font-black text-blue-700">${histoVals[i]}</td>
+                    </tr>`;
+            });
+        }
+
+        function renderStatusDoughnut() {
+            const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
+            if (charts.status) charts.status.destroy();
+
+            const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
+            const vals = [361, 115, 55, 36, 10];
+            const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
+
+            charts.status = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: vals,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#0f172a'
+                    }]
+                },
+                options: {
+                    cutout: '66%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: { weight: '900', size: 11 },
+                            formatter: (value, ctx) => {
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return ((value / sum) * 100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('pie-total-val').innerText = vals.reduce((a, b) => a + b, 0).toLocaleString();
+
+            const tbody = document.getElementById('status-table-body');
+            tbody.innerHTML = '';
+            const total = vals.reduce((a, b) => a + b, 0);
+            
+            vals.forEach((v, i) => {
+                const p = total > 0 ? ((v / total) * 100).toFixed(1) : "0.0";
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-3 font-bold text-slate-800 flex items-center gap-2.5">
+                            <div class="w-3 h-3 rounded-md shadow-sm" style="background:${colors[i]}"></div> 
+                            ${labels[i]}
+                        </td>
+                        <td class="py-3 text-center font-black text-slate-900 text-sm">${v}</td>
+                        <td class="py-3 text-right font-black text-slate-500">${p}%</td>
+                    </tr>`;
+            });
+        }
+
+        function renderRegionalCharts() {
+            const container = document.getElementById('regional-charts-container');
+            container.innerHTML = '';
+
+            const regionColors = {
+                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
+                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
+                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
+            };
+
+            REGIONES.forEach(r => {
+                container.innerHTML += `
+                    <div class="card-pro h-[410px] flex flex-col justify-between">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                        </div>
+                        <div class="h-[320px] relative"><canvas id="chart-reg-${r}"></canvas></div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctx = document.getElementById(`chart-reg-${r}`).getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = appData[r].map(d => d.sol);
+                    const atData = appData[r].map(d => d.at + d.canc);
+                    const pctData = appData[r].map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
+                    
+                    const maxValReg = Math.max(...solData, 40);
+                    const dynamicMax = Math.ceil(maxValReg * 2.1); 
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: MESES,
+                            datasets: [
+                                {
+                                    label: 'Sol',
+                                    data: solData,
+                                    backgroundColor: c.sol,
+                                    borderColor: c.borderSol,
+                                    borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 },
+                                    categoryPercentage: 0.65,
+                                    barPercentage: 0.85,
+                                    yAxisID: 'y',
+                                    datalabels: {
+                                        anchor: 'start',
+                                        align: 'bottom',
+                                        offset: -22,
+                                        color: c.borderSol,
+                                        backgroundColor: '#ffffff',
+                                        borderColor: c.sol,
+                                        borderWidth: 1.5,
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                                        font: { weight: '800', size: 9 },
+                                        formatter: v => v > 0 ? v : ''
+                                    }
+                                },
+                                {
+                                    label: 'At',
+                                    data: atData,
+                                    backgroundColor: c.at,
+                                    borderColor: '#0f172a',
+                                    borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 },
+                                    categoryPercentage: 0.65,
+                                    barPercentage: 0.85,
+                                    yAxisID: 'y',
+                                    datalabels: {
+                                        anchor: 'center',
+                                        align: 'center',
+                                        color: '#ffffff',
+                                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                                        font: { weight: '900', size: 9 },
+                                        formatter: v => v > 0 ? v : ''
+                                    }
+                                },
+                                {
+                                    label: '% Atención',
+                                    data: pctData,
+                                    type: 'line',
+                                    borderColor: c.line,
+                                    borderWidth: 2,
+                                    pointRadius: 4,
+                                    pointBackgroundColor: '#ffffff',
+                                    pointBorderColor: c.line,
+                                    yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end',
+                                        align: 'top',
+                                        offset: 8,
+                                        color: c.line,
+                                        font: { weight: '900', size: 9 },
+                                        backgroundColor: '#ffffff',
+                                        borderColor: c.line,
+                                        borderWidth: 1.5,
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 5, right: 5 },
+                                        formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            layout: { padding: { top: 40, right: 10, left: 5, bottom: 20 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true, max: dynamicMax },
+                                y1: { display: false, min: 0, max: 250 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        function renderBacklogRegionalSection() {
+            const container = document.getElementById('backlog-regional-container');
+            container.innerHTML = '';
+
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector').value);
+
+            let totalBacklogPendienteGlobal = 0;
+            let partesPendientesArr = [];
+
+            REGIONES.forEach(r => {
+                let totalBacklogPrevio = 0;
+                let casosSolventadosMesActual = appData[r][selectedMonthIdx].prevSolv || 0;
+
+                for (let i = 0; i < selectedMonthIdx; i++) {
+                    const m = appData[r][i];
+                    totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
+                }
+
+                if (r === 'Oriente') {
+                    totalBacklogPrevio = 35;
+                    casosSolventadosMesActual = 10;
+                }
+
+                const backlogPendienteActual = appData[r][selectedMonthIdx].prevPending || Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
+                totalBacklogPendienteGlobal += backlogPendienteActual;
+                partesPendientesArr.push(backlogPendienteActual);
+
+                const pctResolucion = totalBacklogPrevio > 0 
+                    ? ((casosSolventadosMesActual / totalBacklogPrevio) * 100).toFixed(1) 
+                    : "0.0";
+
+                const strokeDash = `${pctResolucion}, 100`;
+
+                container.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
+                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes en curso.</p>
+                            <div class="pt-2 flex gap-3 text-xs font-bold">
+                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
+            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+        }
+
+        function renderRegionalChartsCierre() {
+            const container = document.getElementById('regional-charts-cierre-container');
+            container.innerHTML = '';
+
+            const regionColors = {
+                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
+                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
+                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
+            };
+
+            REGIONES.forEach(r => {
+                container.innerHTML += `
+                    <div class="card-pro h-[390px] flex flex-col justify-between bg-slate-50/50">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                        </div>
+                        <div class="h-[300px] relative"><canvas id="chart-reg-cierre-${r}"></canvas></div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctx = document.getElementById(`chart-reg-cierre-${r}`).getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = cierreData[r].map(d => d.sol);
+                    const atData = cierreData[r].map(d => d.at);
+                    const pctData = cierreData[r].map(d => d.sol > 0 ? parseFloat(((d.at / d.sol) * 100).toFixed(1)) : 0);
+
+                    const maxValReg = Math.max(...solData, 40);
+                    const dynamicMax = Math.ceil(maxValReg * 2.1);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: MESES,
+                            datasets: [
+                                {
+                                    label: 'Sol',
+                                    data: solData,
+                                    backgroundColor: c.sol,
+                                    borderColor: c.borderSol,
+                                    borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 },
+                                    categoryPercentage: 0.65,
+                                    barPercentage: 0.85,
+                                    yAxisID: 'y',
+                                    datalabels: {
+                                        anchor: 'start',
+                                        align: 'bottom',
+                                        offset: -22,
+                                        color: c.borderSol,
+                                        backgroundColor: '#ffffff',
+                                        borderColor: c.sol,
+                                        borderWidth: 1.5,
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                                        font: { weight: '800', size: 9 },
+                                        formatter: v => v > 0 ? v : ''
+                                    }
+                                },
+                                {
+                                    label: 'At',
+                                    data: atData,
+                                    backgroundColor: c.at,
+                                    borderColor: '#0f172a',
+                                    borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 },
+                                    categoryPercentage: 0.65,
+                                    barPercentage: 0.85,
+                                    yAxisID: 'y',
+                                    datalabels: {
+                                        anchor: 'center',
+                                        align: 'center',
+                                        color: '#ffffff',
+                                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 },
+                                        font: { weight: '900', size: 9 },
+                                        formatter: v => v > 0 ? v : ''
+                                    }
+                                },
+                                {
+                                    label: '% Atención',
+                                    data: pctData,
+                                    type: 'line',
+                                    borderColor: c.line,
+                                    borderWidth: 2,
+                                    pointRadius: 4,
+                                    pointBackgroundColor: '#ffffff',
+                                    pointBorderColor: c.line,
+                                    yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'start',
+                                        align: 'bottom',
+                                        offset: 6,
+                                        color: c.line,
+                                        font: { weight: '900', size: 9 },
+                                        backgroundColor: '#ffffff',
+                                        borderColor: c.line,
+                                        borderWidth: 1.5,
+                                        borderRadius: 4,
+                                        padding: { top: 2, bottom: 2, left: 5, right: 5 },
+                                        formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            layout: { padding: { top: 40, right: 10, left: 5, bottom: 20 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true, max: dynamicMax },
+                                y1: { display: false, min: 0, max: 250 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        function exportarAGoogleSlides() {
+            const htmlContent = `
+                <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:p="urn:schemas-microsoft-com:office:powerpoint">
+                <head>
+                    <meta charset="utf-8">
+                    <title>Presentación de Gestión Xana BI</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: #ffffff; margin: 0; padding: 20px; }
+                        .slide { page-break-after: always; padding: 20px; border: 1px solid #ccc; margin-bottom: 20px; border-radius: 12px; }
+                        h1 { color: #ff5500; }
+                    </style>
+                </head>
+                <body>
+                    <div class="slide">
+                        <h1>Presentación de Gestión - Farmacias Xana</h1>
+                        ${document.getElementById('exportable-doc-area').innerHTML}
+                    </div>
+                </body>
+                </html>`;
+
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Presentacion_Gestion_Xana_Infraestructura.pptx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            window.open('https://docs.google.com/presentation/', '_blank');
+        }
+
+        function exportarReporteExcel() {
+            const data = [["Región", "Mes", "Solicitados", "Atendidos"]];
+            REGIONES.forEach(r => MESES.forEach((m, i) => {
+                data.push([r, m, appData[r][i].sol, appData[r][i].at]);
+            }));
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "SLA_Report");
+            XLSX.writeFile(wb, "Reporte_Xana_BI_v31.xlsx");
         }
     </script>
 </body>
