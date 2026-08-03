@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xana Intelligence Enterprise v31 - SLA & BI Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Chart.js y DataLabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SheetJS Excel Library -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f1f5f9; 
+            color: #0f172a; 
+        }
+        
+        .card-pro { 
+            background: #ffffff; 
+            border-radius: 1.25rem; 
+            border: 1px solid #e2e8f0; 
+            padding: 1.5rem; 
+            box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .card-pro:hover { 
+            box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); 
+            transform: translateY(-2px); 
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        #loader-overlay { 
+            display: none; 
+            background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(8px); 
+        }
+        canvas { max-width: 100%; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <!-- LOADER OVERLAY -->
+    <div id="loader-overlay" class="fixed inset-0 z-[100] flex items-center justify-center">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
+            <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
+            <div>
+                <h4 class="font-black text-slate-900 text-sm" id="loader-title">Conectando Servidores</h4>
+                <p class="text-xs text-slate-500 font-medium mt-1" id="loader-status">Consultando datos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASIDE NAVIGATION MENU -->
+    <aside class="w-72 bg-slate-900 text-white flex flex-col fixed h-full z-50 shadow-2xl">
+        <div class="p-6 border-b border-slate-800">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 bg-[#ff5500] rounded-2xl flex flex-col items-center justify-center shadow-lg shadow-orange-600/30 p-1.5 flex-shrink-0">
+                    <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                        <text x="50%" y="38" dominant-baseline="middle" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="34" fill="#ffffff" letter-spacing="-1">xana</text>
+                        <text x="50%" y="58" dominant-baseline="middle" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="14" fill="#ffffff" letter-spacing="0.5">farmacia</text>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight text-white leading-none">Xana</h1>
+                    <span class="text-[10px] text-orange-400 font-bold uppercase tracking-[2px]">Farmacias BI v31</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6">
+            <nav class="space-y-2">
+                <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global
+                </button>
+                <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
+                </button>
+            </nav>
+        </div>
+
+        <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
+            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
+                <span class="font-mono text-[10px] text-slate-500">JSON-RPC</span>
+            </div>
+            <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 active:scale-[0.98] transition-all">
+                <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR ODOO
+            </button>
+        </div>
+    </aside>
+
+    <main class="ml-72 flex-grow p-8 space-y-8 max-w-[1600px]">
+        
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md">
+                    SLA
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2" id="main-tab-title">
+                        Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>
+                    </h2>
+                    <p class="text-slate-500 font-semibold text-xs mt-0.5">Indicadores de Gestión • Farmacias Xana <span id="current-period-text" class="text-slate-800 font-bold">2026</span></p>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECCIÓN 1: DASHBOARD GLOBAL SLA -->
+        <div id="tab-content-dashboard" class="space-y-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-orange-400"></i>
+                        </div>
+                        <div class="text-4xl font-black text-white tracking-tight mt-1" id="kpi-sla">84.7%</div>
+                    </div>
+                    <div class="pt-3 mt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
+                        <span class="font-bold text-slate-300">Cumplimiento</span>
+                        <span class="text-emerald-400 font-extrabold flex items-center gap-0.5">Meta 85%</span>
+                    </div>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">SOLICITADOS (JULIO)</span>
+                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
+                        </div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">577</div>
+                    </div>
+                    <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-medium">Junio: <b>547</b> | Julio: <b>577</b></span>
+                    </div>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-emerald-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
+                            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
+                        </div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">361</div>
+                    </div>
+                    <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">62.6% del mes</span>
+                    </div>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-blue-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
+                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
+                        </div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">90</div>
+                    </div>
+                    <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-medium">De meses previos</span>
+                        <span class="text-blue-700 font-extrabold">90 Casos</span>
+                    </div>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-amber-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE TOTAL</span>
+                            <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
+                        </div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">155</div>
+                    </div>
+                    <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-medium">Suma 3 Regiones:</span>
+                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">113 + 17 + 25</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: REPORTES DRIVE Y CASOS TÉCNICOS DETALLADOS POR REGIÓN -->
+        <div id="tab-content-drive" class="space-y-8 hidden">
+            <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-500/40 px-3 py-1 rounded-md">
+                        REPORTE OPERATIVO DE INFRAESTRUCTURA
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Muestra gráfica de intervenciones (Antes, Durante y Después) ejecutadas en las farmacias por región según informes.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3 items-center">
+                    <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition-all border border-emerald-500">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR CARPETA DRIVE
+                    </a>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR PRINCIPAL DE TICKETS POR REGIÓN -->
+            <div id="exportable-doc-area" class="space-y-10 bg-white p-6 rounded-2xl border border-slate-200">
+                <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 uppercase">Resumen de Tickets Destacados de Mantenimiento</h3>
+                        <p class="text-xs text-slate-500 font-semibold">Galería secuencial de evidencia fotográfica por intervención</p>
+                    </div>
+                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase">CONTROL TÉCNICO</span>
+                </div>
+
+                <!-- REGION CAPITAL -->
+                <div class="space-y-4">
+                    <h4 class="font-black text-blue-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-blue-100">
+                        <span class="w-3 h-3 rounded-full bg-blue-600"></span> Región Capital - Tickets Relevantes
+                    </h4>
+                    <div class="space-y-6" id="tickets-capital"></div>
+                </div>
+
+                <!-- REGION OCCIDENTE -->
+                <div class="space-y-4 pt-6 border-t border-slate-200">
+                    <h4 class="font-black text-emerald-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-emerald-100">
+                        <span class="w-3 h-3 rounded-full bg-emerald-600"></span> Región Occidente - Tickets Relevantes
+                    </h4>
+                    <div class="space-y-6" id="tickets-occidente"></div>
+                </div>
+
+                <!-- REGION ORIENTE -->
+                <div class="space-y-4 pt-6 border-t border-slate-200">
+                    <h4 class="font-black text-purple-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-purple-100">
+                        <span class="w-3 h-3 rounded-full bg-purple-600"></span> Región Oriente - Tickets Relevantes
+                    </h4>
+                    <div class="space-y-6" id="tickets-oriente"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // GENERADOR DE CONTENEDOR FOTOGRÁFICO RESILIENTE
+        function createPhotoFrame(fase, colorClass, labelText) {
+            return `
+                <div class="space-y-1.5">
+                    <span class="text-[10px] font-black uppercase ${colorClass} px-2 py-0.5 rounded inline-block">${fase}</span>
+                    <div class="h-44 rounded-xl overflow-hidden border border-slate-200 shadow-sm relative bg-slate-900 flex flex-col items-center justify-center p-4 text-center group">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 mb-2 group-hover:scale-110 transition-all">
+                            <i data-lucide="image" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[11px] font-black text-white uppercase tracking-wider">${labelText}</span>
+                        <span class="text-[9px] font-semibold text-slate-400 mt-0.5">Evidencia en Informe Oficial</span>
+                    </div>
+                </div>`;
+        }
+
+        const regionalTicketsData = {
+            Capital: [
+                {
+                    id: "TK-CAP-8041",
+                    farmacia: "Farmacia Mangle",
+                    actividad: "Reemplazo de Compresor y Mantenimiento Preventivo del Sistema de Cielorraso / Aire Acondicionado central",
+                    tecnico: "Pablo Rocha",
+                    fecha: "24/07/2026"
+                },
+                {
+                    id: "TK-CAP-8088",
+                    farmacia: "Farmacia Araguaney",
+                    actividad: "Reparación del Cuadro Principal Eléctrico y Corrección de Caída de Tensión en Tablero General",
+                    tecnico: "José Vásquez",
+                    fecha: "26/07/2026"
+                },
+                {
+                    id: "TK-CAP-8112",
+                    farmacia: "Farmacia La Cascada",
+                    actividad: "Sustitución e Instalación de Grifería Industrial e Impermeabilización de Fugas en Área de Almacén",
+                    tecnico: "Cuadrilla N° 2",
+                    fecha: "28/07/2026"
+                }
+            ],
+            Occidente: [
+                {
+                    id: "TK-OCC-4029",
+                    farmacia: "Farmacia Traki Cabudare",
+                    actividad: "Restauración de Muros Interiores, Friso y Pintura Epóxica en Fachada y Mostrador Principal",
+                    tecnico: "Yanis Valera",
+                    fecha: "21/07/2026"
+                },
+                {
+                    id: "TK-OCC-4071",
+                    farmacia: "Farmacia Sanare",
+                    actividad: "Mantenimiento General y Cambio de Rodamientos en Santa María Metálica de Seguridad",
+                    tecnico: "Yanis Valera",
+                    fecha: "25/07/2026"
+                },
+                {
+                    id: "TK-OCC-4105",
+                    farmacia: "Farmacia Economía",
+                    actividad: "Instalación de Sistema de Iluminación LED de Alta Eficiencia en Piso de Venta",
+                    tecnico: "Cuadrilla Occidente",
+                    fecha: "29/07/2026"
+                }
+            ],
+            Oriente: [
+                {
+                    id: "TK-ORI-2015",
+                    farmacia: "Farmacia Traki Cumaná",
+                    actividad: "Reparación y Puesta en Marcha de Planta Eléctrica Emergente (Generador diésel)",
+                    tecnico: "Cuadrilla Oriente N° 1",
+                    fecha: "18/07/2026"
+                },
+                {
+                    id: "TK-ORI-2033",
+                    farmacia: "Farmacia El Tigre",
+                    actividad: "Mantenimiento Preventivo de Neveras y Sistemas de Refrigeración de Vacunas",
+                    tecnico: "Jesús Moreno",
+                    fecha: "23/07/2026"
+                },
+                {
+                    id: "TK-ORI-2050",
+                    farmacia: "Farmacia Coral",
+                    actividad: "Adecuación y Corrección de Cableado Estructurado e Instalación de Puntos de Red",
+                    tecnico: "Cuadrilla Oriente N° 1",
+                    fecha: "27/07/2026"
+                }
+            ]
+        };
+
+        window.onload = () => {
+            renderRegionalTickets();
+            lucide.createIcons();
+        };
+
+        function renderRegionalTickets() {
+            const capitalContainer = document.getElementById('tickets-capital');
+            const occidenteContainer = document.getElementById('tickets-occidente');
+            const orienteContainer = document.getElementById('tickets-oriente');
+
+            const renderTicketsList = (list, container) => {
+                container.innerHTML = '';
+                list.forEach(ticket => {
+                    container.innerHTML += `
+                        <div class="card-pro bg-slate-50/50 border border-slate-200 overflow-hidden p-5">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4 pb-3 border-b border-slate-200">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-slate-900 text-white font-black text-[10px] px-2.5 py-1 rounded-md tracking-wider uppercase">${ticket.id}</span>
+                                        <h5 class="font-extrabold text-sm text-slate-900">${ticket.farmacia}</h5>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-semibold flex items-center gap-1.5">
+                                        <i data-lucide="wrench" class="w-3.5 h-3.5 text-orange-500"></i>
+                                        <b>Actividad realizada:</b> ${ticket.actividad}
+                                    </p>
+                                </div>
+                                <div class="text-right text-[11px] text-slate-500 font-bold">
+                                    <span class="block text-slate-800">Técnico: ${ticket.tecnico}</span>
+                                    <span>Fecha: ${ticket.fecha}</span>
+                                </div>
+                            </div>
+
+                            <!-- GRILLA TRIPLE FOTOGRÁFICA REGIONAL -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                ${createPhotoFrame('1. Antes', 'text-red-600 bg-red-50 border border-red-200', 'Estado Inicial')}
+                                ${createPhotoFrame('2. Durante', 'text-amber-600 bg-amber-50 border border-amber-200', 'Intervención Técnica')}
+                                ${createPhotoFrame('3. Después', 'text-emerald-600 bg-emerald-50 border border-emerald-200', 'Resultado Entregado')}
+                            </div>
+                        </div>`;
+                });
+            };
+
+            renderTicketsList(regionalTicketsData.Capital, capitalContainer);
+            renderTicketsList(regionalTicketsData.Occidente, occidenteContainer);
+            renderTicketsList(regionalTicketsData.Oriente, orienteContainer);
+
+            lucide.createIcons();
+        }
+
+        function switchTab(tab) {
+            const btnDash = document.getElementById('nav-btn-dashboard');
+            const btnDrive = document.getElementById('nav-btn-drive');
+            const contentDash = document.getElementById('tab-content-dashboard');
+            const contentDrive = document.getElementById('tab-content-drive');
+            const title = document.getElementById('main-tab-title');
+
+            if (tab === 'dashboard') {
+                btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+                contentDash.classList.remove('hidden');
+                contentDrive.classList.add('hidden');
+                title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
+            } else {
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+                contentDrive.classList.remove('hidden');
+                contentDash.classList.add('hidden');
+                title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
