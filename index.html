@@ -31,8 +31,8 @@
         <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
-                <h4 class="font-black text-slate-900 text-sm">Sincronizando Odoo, Drive & AppSheet</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Recalculando estadísticas e indicadores...</p>
+                <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
+                <p class="text-xs text-slate-500 font-medium mt-1">Recalculando indicadores...</p>
             </div>
         </div>
     </div>
@@ -57,10 +57,10 @@
         <div class="p-6">
             <nav class="space-y-2">
                 <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global (Odoo)
                 </button>
                 <button id="nav-btn-inventario" onclick="switchTab('inventario')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="boxes" class="w-4 h-4 text-amber-400"></i> Inventario & Equipos
+                    <i data-lucide="boxes" class="w-4 h-4 text-amber-400"></i> Inventario (AppSheet)
                 </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
@@ -386,152 +386,32 @@
             </div>
         </div>
 
-        <!-- PESTAÑA INVENTARIO & EQUIPOS -->
+        <!-- PESTAÑA INVENTARIO (APPSHEET) -->
         <div id="tab-content-inventario" class="space-y-8 hidden">
-            <!-- BANNER INVENTARIO -->
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
                     <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-500/40 px-3 py-1 rounded-md">
-                        CONTROL DE INVENTARIO & ASSETS XANA
+                        CONTROL DE INVENTARIO INDEPENDIENTE • APPSHEET
                     </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Resumen de Equipos, Mobiliarios y Herramientas</h3>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Gestión de Equipos, Mobiliario y Herramientas</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Visualización consolidada de insumos técnicos, cantidades en stock y ubicaciones por sede/región. Sincronizado dinámicamente desde AppSheet.
+                        Control en tiempo real de insumos técnicos, cantidades y ubicaciones. Módulo $100\%$ independiente de Odoo y Google Drive.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
-                    <button onclick="fetchAppSheetInventory()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all">
-                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR STOCK DESDE APPSHEET
-                    </button>
-                    <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 transition-all border border-slate-700">
-                        <i data-lucide="external-link" class="w-4 h-4 text-amber-400"></i> ABRIR EN APPSHEET
+                    <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR APPSHEET OFICIAL
                     </a>
                 </div>
             </div>
 
-            <!-- METRICAS KPI DE INVENTARIO -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-blue-600">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">EQUIPOS DISPONIBLES</span>
-                        <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="cpu" class="w-4 h-4"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-equipos">0</div>
-                    <p class="text-[11px] text-slate-400 font-semibold mt-1">A/A, Plantas, Compresores, Bombas</p>
-                </div>
-
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-purple-600">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">MOBILIARIOS</span>
-                        <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="armchair" class="w-4 h-4"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-mobiliario">0</div>
-                    <p class="text-[11px] text-slate-400 font-semibold mt-1">Anaqueles, Mostradores, Sillas, Módulos</p>
-                </div>
-
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-amber-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">HERRAMIENTAS</span>
-                        <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="wrench" class="w-4 h-4"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-herramientas">0</div>
-                    <p class="text-[11px] text-slate-400 font-semibold mt-1">Kits Eléctricos, Manómetros, Taladros</p>
-                </div>
-
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-emerald-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">UBICACIONES ACTIVAS</span>
-                        <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-ubicaciones">0</div>
-                    <p class="text-[11px] text-emerald-600 font-bold mt-1">Sedes y Depósitos Registrados</p>
-                </div>
-            </div>
-
-            <!-- SECCIÓN GRAFICOS Y DISTRIBUCIÓN -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-7 card-pro bg-white">
-                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
-                        <div>
-                            <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                <i data-lucide="building-2" class="w-4 h-4 text-amber-500"></i> Distribución de Artículos por Ubicación / Sede
-                            </h3>
-                            <p class="text-xs text-slate-400 font-medium">Consolidado general de inventario asignado por farmacia o depósito central</p>
-                        </div>
-                    </div>
-                    <div class="h-[320px] relative">
-                        <canvas id="inventoryLocationChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
-                            <div>
-                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                    <i data-lucide="pie-chart" class="w-4 h-4 text-amber-500"></i> Proporción por Tipo de Activo
-                                </h3>
-                                <p class="text-xs text-slate-400 font-medium">Porcentaje global de inventario</p>
-                            </div>
-                        </div>
-                        <div class="h-[250px] relative flex justify-center items-center">
-                            <canvas id="inventoryTypePieChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100 grid grid-cols-3 text-center text-xs font-extrabold" id="inventory-type-percentages">
-                        <div><span class="block text-blue-600" id="pct-equipos">0%</span><span class="text-[10px] text-slate-400 uppercase">Equipos</span></div>
-                        <div><span class="block text-purple-600" id="pct-mobiliario">0%</span><span class="text-[10px] text-slate-400 uppercase">Mobiliario</span></div>
-                        <div><span class="block text-amber-500" id="pct-herramientas">0%</span><span class="text-[10px] text-slate-400 uppercase">Herramientas</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABLA COMPLETA DE INVENTARIO -->
-            <div class="card-pro">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-base uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="list" class="w-5 h-5 text-amber-500"></i> Detalle de Inventario: Cantidad y Ubicación
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Registro detallado sincronizado directamente desde AppSheet</p>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <div class="relative flex-grow sm:flex-grow-0">
-                            <input type="text" id="inventorySearch" onkeyup="filterInventoryTable()" placeholder="Buscar equipo, herramienta o ubicación..." class="w-full sm:w-64 pl-9 pr-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-amber-500/20">
-                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
-                        </div>
-
-                        <select id="inventoryCategoryFilter" onchange="filterInventoryTable()" class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
-                            <option value="Todos">Todas las Categorías</option>
-                            <option value="Equipos">Equipos</option>
-                            <option value="Mobiliario">Mobiliario</option>
-                            <option value="Herramientas">Herramientas</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs">
-                        <thead>
-                            <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-3 text-[11px] tracking-wider bg-slate-50">
-                                <th class="text-left p-3 rounded-l-xl">Código / ID</th>
-                                <th class="text-left p-3">Artículo / Descripción</th>
-                                <th class="text-left p-3">Categoría</th>
-                                <th class="text-center p-3">Cantidad</th>
-                                <th class="text-left p-3">Ubicación / Sede</th>
-                                <th class="text-center p-3">Estado / Condición</th>
-                                <th class="text-right p-3 rounded-r-xl">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventory-table-body" class="divide-y divide-slate-100">
-                        </tbody>
-                    </table>
-                </div>
+            <!-- CONTAINER APPSHEET EN VIVO -->
+            <div class="card-pro p-0 overflow-hidden border border-slate-200 h-[750px] relative bg-slate-900 rounded-2xl">
+                <iframe src="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf" class="w-full h-full border-0" title="AppSheet Inventario Xana"></iframe>
             </div>
         </div>
 
-        <!-- REPORTES DRIVE -->
+        <!-- REPORTES DRIVE CON FOTOS VECTORIALES EN BASE64 -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -540,13 +420,10 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Muestra gráfica de intervenciones (Antes, Durante y Después) sincronizada automáticamente desde Google Drive.
+                        Muestra gráfica de intervenciones (Antes, Durante y Después) respaldada con evidencia técnica.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
-                    <button onclick="fetchDrivePhotosAuto()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition-all">
-                        <i data-lucide="refresh-cw" class="w-4 h-4" id="refresh-drive-icon"></i> RECARGAR FOTOS DRIVE
-                    </button>
                     <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 transition-all border border-slate-700">
                         <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR CARPETA DRIVE
                     </a>
@@ -589,10 +466,6 @@
 
     <script>
         Chart.register(ChartDataLabels);
-
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmdw7lDrVZTjTrqPEkGZV5yoLjGBzPdIwO0K_TvU1Oe1b56IWlItTstlRQ2Gu3Qx8UIA/exec";
-        const APPSHEET_APP_ID = "d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf";
-        const APPSHEET_API_KEY = "REEMPLAZAR_CON_TU_API_KEY_DE_APPSHEET";
 
         const REGIONES = ['Capital', 'Occidente', 'Oriente'];
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -680,9 +553,6 @@
             7: { Global: { 'Electricidad': 28, 'Aire Acondicionado': 22, 'Civil': 18, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 22, 'Aire Acondicionado': 18, 'Civil': 14 }, Occidente: { 'Electricidad': 6, 'Aire Acondicionado': 4, 'Plomería': 4 }, Oriente: {} }
         };
 
-        // Arreglo dinámico que se llena exclusivamente desde AppSheet
-        let inventoryData = [];
-
         let workTypeStats = {
             'Correctivo': { mes: 50, histo: 1802 }, 'Preventivo': { mes: 18, histo: 548 },
             'Sin Clasificar': { mes: 8, histo: 288 }, 'Apoyo': { mes: 4, histo: 224 },
@@ -690,7 +560,7 @@
         };
 
         const generateIllustratedPhoto = (bgHex, title, phase) => {
-            return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgHex}" rx="12"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-family="sans-serif" font-weight="900" font-size="20">${title}</text><text x="50%" y="70%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="sans-serif" font-weight="700" font-size="12">${phase} • EVIDENCIA TÉCNICA</text></svg>`;
+            return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgHex}" rx="12"/><text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-family="sans-serif" font-weight="900" font-size="18">${title}</text><text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="sans-serif" font-weight="700" font-size="11">${phase} • CONTROL TÉCNICO</text></svg>`;
         };
 
         let regionalTicketsData = {
@@ -713,8 +583,6 @@
             lucide.createIcons();
             renderAll();
             renderRegionalTickets();
-            fetchAppSheetInventory();
-            fetchDrivePhotosAuto();
         };
 
         function generarMesesDinamicos() {
@@ -768,87 +636,9 @@
 
             setTimeout(() => {
                 renderAll();
-                fetchAppSheetInventory();
                 loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
             }, 800);
-        }
-
-        // PETICIÓN REAL A LA API DE APPSHEET
-        async function fetchAppSheetInventory() {
-            const tbody = document.getElementById('inventory-table-body');
-            if (!tbody) return;
-
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 font-bold">Cargando inventario desde AppSheet...</td></tr>`;
-
-            try {
-                const response = await fetch(`https://api.appsheet.com/api/v2/apps/${APPSHEET_APP_ID}/tables/Herramientas/Action`, {
-                    method: 'POST',
-                    headers: {
-                        'ApplicationAccessKey': APPSHEET_API_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "Action": "Find",
-                        "Properties": { "Locale": "es-ES" },
-                        "Selector": "Filter(Herramientas, true)"
-                    })
-                });
-
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    inventoryData = data.map(item => ({
-                        id: item.ID || item.Codigo || "N/A",
-                        nombre: item.Descripcion || item.Nombre || "Sin Descripción",
-                        categoria: item.Categoria || "Herramientas",
-                        cantidad: parseInt(item.Cantidad) || 1,
-                        ubicacion: item.Ubicacion || "No Especificada",
-                        estado: item.Estado || "Operativo"
-                    }));
-                } else {
-                    inventoryData = [];
-                }
-            } catch (error) {
-                console.error("No se pudo conectar con AppSheet API directamente:", error);
-            } finally {
-                renderInventorySection();
-            }
-        }
-
-        async function fetchDrivePhotosAuto() {
-            const refreshIcon = document.getElementById('refresh-drive-icon');
-            if (refreshIcon) refreshIcon.classList.add('animate-spin');
-
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2000);
-
-                const res = await fetch(APPS_SCRIPT_URL, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                const files = await res.json();
-
-                if (Array.isArray(files) && files.length > 0) {
-                    const photos = files.filter(f => f.mimeType && f.mimeType.startsWith('image/'));
-                    if (photos.length > 0) {
-                        let pIdx = 0;
-                        REGIONES.forEach(r => {
-                            regionalTicketsData[r].forEach(ticket => {
-                                ['before', 'during', 'after'].forEach(phase => {
-                                    if (photos[pIdx]) {
-                                        const imgElem = document.getElementById(`img-${ticket.id}-${phase}`);
-                                        if (imgElem) imgElem.src = "https://lh3.googleusercontent.com/d/" + photos[pIdx].id;
-                                        pIdx = (pIdx + 1) % photos.length;
-                                    }
-                                });
-                            });
-                        });
-                    }
-                }
-            } catch (err) {
-            } finally {
-                if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-            }
         }
 
         function renderRegionalTickets() {
@@ -883,19 +673,19 @@
                                 <div class="space-y-1.5 text-center">
                                     <span class="text-[10px] font-black uppercase bg-red-50 text-red-600 px-2 py-0.5 rounded inline-block">1. Antes</span>
                                     <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img id="img-${ticket.id}-before" src="${ticket.photos.before}" class="w-full h-full object-cover" alt="Antes">
+                                        <img src="${ticket.photos.before}" class="w-full h-full object-cover" alt="Antes">
                                     </div>
                                 </div>
                                 <div class="space-y-1.5 text-center">
                                     <span class="text-[10px] font-black uppercase bg-amber-50 text-amber-600 px-2 py-0.5 rounded inline-block">2. Durante</span>
                                     <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img id="img-${ticket.id}-during" src="${ticket.photos.during}" class="w-full h-full object-cover" alt="Durante">
+                                        <img src="${ticket.photos.during}" class="w-full h-full object-cover" alt="Durante">
                                     </div>
                                 </div>
                                 <div class="space-y-1.5 text-center">
                                     <span class="text-[10px] font-black uppercase bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded inline-block">3. Después</span>
                                     <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img id="img-${ticket.id}-after" src="${ticket.photos.after}" class="w-full h-full object-cover" alt="Después">
+                                        <img src="${ticket.photos.after}" class="w-full h-full object-cover" alt="Después">
                                     </div>
                                 </div>
                             </div>
@@ -938,7 +728,6 @@
                 contentInv.classList.remove('hidden');
                 badgeIcon.innerText = "INV";
                 title.innerHTML = `Gestión de Inventario <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">AppSheet Sync</span>`;
-                setTimeout(() => { renderInventoryCharts(); }, 50);
             } else {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
@@ -1008,148 +797,6 @@
             renderRegionalCharts();
             renderBacklogRegionalSection();
             renderRegionalChartsCierre();
-        }
-
-        // FUNCIONES DE INVENTARIO
-        function renderInventorySection() {
-            recalcularKPIsInventario();
-            filterInventoryTable();
-            renderInventoryCharts();
-        }
-
-        function recalcularKPIsInventario() {
-            let eq = 0, mb = 0, hr = 0;
-            const ubicacionesSet = new Set();
-
-            inventoryData.forEach(item => {
-                const cat = (item.categoria || "").toLowerCase();
-                const cant = parseInt(item.cantidad) || 0;
-                if (cat.includes("equipo")) eq += cant;
-                else if (cat.includes("mobiliario")) mb += cant;
-                else hr += cant;
-
-                if (item.ubicacion) ubicacionesSet.add(item.ubicacion);
-            });
-
-            document.getElementById('kpi-total-equipos').innerText = eq;
-            document.getElementById('kpi-total-mobiliario').innerText = mb;
-            document.getElementById('kpi-total-herramientas').innerText = hr;
-            document.getElementById('kpi-total-ubicaciones').innerText = ubicacionesSet.size > 0 ? `${ubicacionesSet.size} Sedes` : "0 Sedes";
-
-            const total = eq + mb + hr;
-            document.getElementById('pct-equipos').innerText = total > 0 ? ((eq / total) * 100).toFixed(1) + "%" : "0%";
-            document.getElementById('pct-mobiliario').innerText = total > 0 ? ((mb / total) * 100).toFixed(1) + "%" : "0%";
-            document.getElementById('pct-herramientas').innerText = total > 0 ? ((hr / total) * 100).toFixed(1) + "%" : "0%";
-        }
-
-        function filterInventoryTable() {
-            const query = document.getElementById('inventorySearch')?.value.toLowerCase() || '';
-            const categoryFilter = document.getElementById('inventoryCategoryFilter')?.value || 'Todos';
-            const tbody = document.getElementById('inventory-table-body');
-            
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const filtered = inventoryData.filter(item => {
-                const matchSearch = item.nombre.toLowerCase().includes(query) || 
-                                    item.ubicacion.toLowerCase().includes(query) || 
-                                    item.id.toLowerCase().includes(query);
-                const matchCat = (categoryFilter === 'Todos') || (item.categoria === categoryFilter);
-                return matchSearch && matchCat;
-            });
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 font-bold">Sin registros disponibles de AppSheet. Reemplace su API Key en la constante APPSHEET_API_KEY.</td></tr>`;
-                return;
-            }
-
-            filtered.forEach(item => {
-                let badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
-                if (item.categoria === "Mobiliario") badgeColor = "bg-purple-50 text-purple-700 border-purple-200";
-                if (item.categoria === "Herramientas") badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
-
-                let statusBadge = "bg-emerald-50 text-emerald-700";
-                if (item.estado.includes("Mantenimiento")) statusBadge = "bg-amber-50 text-amber-700";
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition-all">
-                        <td class="p-3 font-mono font-bold text-slate-700">${item.id}</td>
-                        <td class="p-3 font-extrabold text-slate-900">${item.nombre}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase border ${badgeColor}">${item.categoria}</span></td>
-                        <td class="p-3 text-center font-black text-slate-900 text-sm">${item.cantidad}</td>
-                        <td class="p-3 font-semibold text-slate-600"><div class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${item.ubicacion}</div></td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusBadge}">${item.estado}</span></td>
-                        <td class="p-3 text-right">
-                            <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf" target="_blank" class="inline-flex items-center gap-1 bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 px-2.5 py-1 rounded-lg font-bold text-[10px] transition-all">
-                                <i data-lucide="edit-3" class="w-3 h-3"></i> Editar
-                            </a>
-                        </td>
-                    </tr>`;
-            });
-
-            lucide.createIcons();
-        }
-
-        function renderInventoryCharts() {
-            const ctxLoc = document.getElementById('inventoryLocationChart')?.getContext('2d');
-            if (ctxLoc) {
-                if (charts.invLoc) charts.invLoc.destroy();
-
-                const locs = [...new Set(inventoryData.map(i => i.ubicacion))].slice(0, 6);
-                const eqData = locs.map(l => inventoryData.filter(i => i.ubicacion === l && i.categoria.toLowerCase().includes("equipo")).reduce((a, b) => a + b.cantidad, 0));
-                const mbData = locs.map(l => inventoryData.filter(i => i.ubicacion === l && i.categoria.toLowerCase().includes("mobiliario")).reduce((a, b) => a + b.cantidad, 0));
-                const hrData = locs.map(l => inventoryData.filter(i => i.ubicacion === l && i.categoria.toLowerCase().includes("herramienta")).reduce((a, b) => a + b.cantidad, 0));
-
-                charts.invLoc = new Chart(ctxLoc, {
-                    type: 'bar',
-                    data: {
-                        labels: locs.length > 0 ? locs : ['Sin Datos'],
-                        datasets: [
-                            { label: 'Equipos', data: eqData, backgroundColor: '#2563eb', borderRadius: 6 },
-                            { label: 'Mobiliario', data: mbData, backgroundColor: '#9333ea', borderRadius: 6 },
-                            { label: 'Herramientas', data: hrData, backgroundColor: '#f59e0b', borderRadius: 6 }
-                        ]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        scales: {
-                            x: { stacked: true, grid: { display: false }, ticks: { font: { weight: '700', size: 10 } } },
-                            y: { stacked: true, grid: { color: '#f1f5f9' }, beginAtZero: true }
-                        },
-                        plugins: { legend: { position: 'top', labels: { font: { weight: '700', size: 11 } } } }
-                    }
-                });
-            }
-
-            const ctxPie = document.getElementById('inventoryTypePieChart')?.getContext('2d');
-            if (ctxPie) {
-                if (charts.invPie) charts.invPie.destroy();
-
-                let eq = 0, mb = 0, hr = 0;
-                inventoryData.forEach(item => {
-                    const cat = item.categoria.toLowerCase();
-                    if (cat.includes("equipo")) eq += item.cantidad;
-                    else if (cat.includes("mobiliario")) mb += item.cantidad;
-                    else hr += item.cantidad;
-                });
-
-                charts.invPie = new Chart(ctxPie, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Equipos', 'Mobiliario', 'Herramientas'],
-                        datasets: [{
-                            data: [eq, mb, hr],
-                            backgroundColor: ['#2563eb', '#9333ea', '#f59e0b'],
-                            borderWidth: 3,
-                            borderColor: '#ffffff'
-                        }]
-                    },
-                    options: {
-                        cutout: '70%', responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { display: false } }
-                    }
-                });
-            }
         }
 
         function renderGrowthChart() {
@@ -1293,7 +940,7 @@
             });
         }
 
-        // CORRECCIÓN DE LA ETIQUETA EN LA FR
+        // CORRECCIÓN RADIAL PARA EVITAR SOLAPAMIENTOS ENTRE MEJORA (2%), APOYO (5%) Y OTROS
         function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
@@ -1310,22 +957,28 @@
                 data: { labels: keys, datasets: [{ data: mesVals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
                 options: {
                     responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { top: 15, bottom: 15, left: 15, right: 15 } },
                     plugins: {
                         legend: { display: false },
                         datalabels: {
                             color: '#ffffff',
                             font: { weight: '900', size: 10 },
+                            clamp: true,
                             anchor: (ctx) => {
                                 const val = ctx.dataset.data[ctx.dataIndex];
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (val / sum) < 0.05 ? 'end' : 'center';
+                                return (val / sum) < 0.08 ? 'end' : 'center';
                             },
                             align: (ctx) => {
                                 const val = ctx.dataset.data[ctx.dataIndex];
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (val / sum) < 0.05 ? 'start' : 'center';
+                                return (val / sum) < 0.08 ? 'start' : 'center';
                             },
-                            offset: 2,
+                            offset: (ctx) => {
+                                const val = ctx.dataset.data[ctx.dataIndex];
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return (val / sum) < 0.05 ? 6 : 2;
+                            },
                             formatter: (value, ctx) => {
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
                                 if (sum === 0 || value === 0) return '';
