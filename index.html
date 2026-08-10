@@ -138,10 +138,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">33</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">82</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>33</b></span>
+                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>82</b></span>
                     </div>
                 </div>
 
@@ -178,11 +178,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE TOTAL</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">33</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">66</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">Capital + Occ. + Ori.</span>
-                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">24 + 9 + 0</span>
+                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">49 + 17 + 0</span>
                     </div>
                 </div>
             </div>
@@ -314,7 +314,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">33</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">82</span>
                             </div>
                         </div>
                     </div>
@@ -448,6 +448,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
+        // DATOS ACTUALIZADOS SEGÚN ODOO
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -456,18 +457,18 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 308, at: 202, canc: 12, prevSolv: 54, prevPending: 72 },
-                { sol: 24, at: 0, canc: 0, prevSolv: 0, prevPending: 24 }
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 }, // Actualizado Julio (363)
+                { sol: 64,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 49 }  // Actualizado Agosto (64)
             ],
             Occidente: [
-                { sol: 99, at: 99, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 56, at: 56, canc: 5, prevSolv: 0, prevPending: 0 },
+                { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 56,  at: 56,  canc: 5, prevSolv: 0, prevPending: 0 },
                 { sol: 192, at: 186, canc: 4, prevSolv: 5, prevPending: 6 },
-                { sol: 75, at: 73, canc: 4, prevSolv: 4, prevPending: 4 },
-                { sol: 62, at: 60, canc: 8, prevSolv: 2, prevPending: 4 },
+                { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
+                { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
                 { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 },
-                { sol: 9, at: 0, canc: 0, prevSolv: 0, prevPending: 9 }
+                { sol: 18,  at: 1,   canc: 0, prevSolv: 0, prevPending: 17 }   // Actualizado Agosto (18)
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -484,11 +485,11 @@
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69 }, { sol: 199, at: 37 }, { sol: 203, at: 77 }, { sol: 186, at: 114 },
-                { sol: 303, at: 204 }, { sol: 382, at: 272 }, { sol: 308, at: 179 }, { sol: 24, at: 0 }
+                { sol: 303, at: 204 }, { sol: 382, at: 272 }, { sol: 363, at: 242 }, { sol: 64, at: 15 }
             ],
             Occidente: [
                 { sol: 99, at: 79 }, { sol: 57, at: 33 }, { sol: 192, at: 142 }, { sol: 75, at: 50 },
-                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 180, at: 102 }, { sol: 9, at: 0 }
+                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 180, at: 102 }, { sol: 18, at: 1 }
             ],
             Oriente: [
                 { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 },
@@ -504,8 +505,8 @@
             3: { resuelto: 253, asignado: 0, progreso: 4, procura: 5, cancelada: 28, workTypes: { 'Correctivo': 195, 'Preventivo': 48, 'Sin Clasificar': 22, 'Apoyo': 15, 'Mejora': 8, 'Predictivo': 5 } },
             4: { resuelto: 315, asignado: 7, progreso: 17, procura: 26, cancelada: 28, workTypes: { 'Correctivo': 240, 'Preventivo': 65, 'Sin Clasificar': 35, 'Apoyo': 28, 'Mejora': 15, 'Predictivo': 10 } },
             5: { resuelto: 457, asignado: 15, progreso: 33, procura: 42, cancelada: 24, workTypes: { 'Correctivo': 350, 'Preventivo': 90, 'Sin Clasificar': 50, 'Apoyo': 32, 'Mejora': 30, 'Predictivo': 15 } },
-            6: { resuelto: 374, asignado: 73, progreso: 38, procura: 45, cancelada: 15, workTypes: { 'Correctivo': 285, 'Preventivo': 95, 'Sin Clasificar': 66, 'Apoyo': 55, 'Mejora': 52, 'Predictivo': 24 } },
-            7: { resuelto: 0, asignado: 25, progreso: 6, procura: 2, cancelada: 0, workTypes: { 'Correctivo': 22, 'Preventivo': 6, 'Sin Clasificar': 3, 'Apoyo': 1, 'Mejora': 1, 'Predictivo': 0 } }
+            6: { resuelto: 389, asignado: 83, progreso: 42, procura: 41, cancelada: 15, workTypes: { 'Correctivo': 285, 'Preventivo': 95, 'Sin Clasificar': 66, 'Apoyo': 55, 'Mejora': 52, 'Predictivo': 24 } },
+            7: { resuelto: 16, asignado: 53, progreso: 9, procura: 4, cancelada: 0, workTypes: { 'Correctivo': 50, 'Preventivo': 18, 'Sin Clasificar': 8, 'Apoyo': 4, 'Mejora': 2, 'Predictivo': 0 } }
         };
 
         // TOP TIENDAS COMPLETO POR MES (0 A 7) Y POR REGIÓN
@@ -517,7 +518,7 @@
             4: { Global: [{ name: "Farmacia Traki Cabudare", count: 16 }, { name: "Farmacia Mangle", count: 14 }, { name: "Farmacia Sanare", count: 12 }], Capital: [{ name: "Farmacia Mangle", count: 14 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 16 }], Oriente: [] },
             5: { Global: [{ name: "Farmacia Mangle", count: 18 }, { name: "Farmacia Traki Cabudare", count: 15 }, { name: "Farmacia Economía", count: 13 }], Capital: [{ name: "Farmacia Mangle", count: 18 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 15 }], Oriente: [] },
             6: { Global: [{ name: "Farmacia Traki Cabudare", count: 14 }, { name: "Farmacia Sanare", count: 11 }, { name: "Farmacia Economía", count: 9 }, { name: "Farmacia Traki Cumaná", count: 8 }, { name: "Farmacia El Tigre", count: 8 }, { name: "Farmacia Coral", count: 7 }], Capital: [{ name: "Farmacia Mangle", count: 8 }, { name: "Farmacia Araguaney", count: 7 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 14 }], Oriente: [{ name: "Farmacia Traki Cumaná", count: 8 }] },
-            7: { Global: [{ name: "Farmacia Mangle", count: 5 }, { name: "Farmacia Araguaney", count: 4 }, { name: "Farmacia Traki Cabudare", count: 4 }], Capital: [{ name: "Farmacia Mangle", count: 5 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 4 }], Oriente: [] }
+            7: { Global: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Araguaney", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }, { name: "Farmacia Sanare", count: 6 }], Capital: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Araguaney", count: 10 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 8 }, { name: "Farmacia Sanare", count: 6 }], Oriente: [] }
         };
 
         // CATEGORÍAS COMPLETAS POR MES (0 A 7) Y POR REGIÓN
@@ -529,13 +530,13 @@
             4: { Global: { 'Civil': 55, 'Electricidad': 48, 'Plomería': 42, 'Aire Acondicionado': 40, 'Mobiliario': 28, 'Pintura': 22 }, Capital: { 'Civil': 28, 'Electricidad': 24 }, Occidente: { 'Plomería': 22, 'Aire Acondicionado': 18 }, Oriente: {} },
             5: { Global: { 'Civil': 68, 'Electricidad': 60, 'Plomería': 55, 'Aire Acondicionado': 52, 'Mobiliario': 38, 'Pintura': 32 }, Capital: { 'Civil': 35, 'Electricidad': 30 }, Occidente: { 'Plomería': 28, 'Aire Acondicionado': 25 }, Oriente: {} },
             6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema Contra Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
-            7: { Global: { 'Civil': 10, 'Electricidad': 8, 'Plomería': 6, 'Aire Acondicionado': 5, 'Mobiliario': 2 }, Capital: { 'Civil': 7, 'Electricidad': 6 }, Occidente: { 'Plomería': 2, 'Electricidad': 2 }, Oriente: {} }
+            7: { Global: { 'Electricidad': 28, 'Aire Acondicionado': 22, 'Civil': 18, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 22, 'Aire Acondicionado': 18, 'Civil': 14 }, Occidente: { 'Electricidad': 6, 'Aire Acondicionado': 4, 'Plomería': 4 }, Oriente: {} }
         };
 
         let workTypeStats = {
-            'Correctivo': { mes: 302, histo: 1752 }, 'Preventivo': { mes: 110, histo: 530 },
-            'Sin Clasificar': { mes: 70, histo: 280 }, 'Apoyo': { mes: 60, histo: 220 },
-            'Mejora': { mes: 48, histo: 258 }, 'Predictivo': { mes: 22, histo: 117 }
+            'Correctivo': { mes: 50, histo: 1802 }, 'Preventivo': { mes: 18, histo: 548 },
+            'Sin Clasificar': { mes: 8, histo: 288 }, 'Apoyo': { mes: 4, histo: 224 },
+            'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
         const generateIllustratedPhoto = (bgHex, title, phase) => {
@@ -785,7 +786,7 @@
 
             let pendVal = Math.max(0, solVal - (atVal + cancVal));
             document.getElementById('kpi-pend').innerText = pendVal;
-            document.getElementById('kpi-pend-sub').innerText = `${appData.Capital[selectedMonthIdx]?.sol || 0} + ${appData.Occidente[selectedMonthIdx]?.sol || 0} + ${appData.Oriente[selectedMonthIdx]?.sol || 0}`;
+            document.getElementById('kpi-pend-sub').innerText = `${appData.Capital[selectedMonthIdx]?.sol || 0 - (appData.Capital[selectedMonthIdx]?.at || 0)} + ${appData.Occidente[selectedMonthIdx]?.sol || 0 - (appData.Occidente[selectedMonthIdx]?.at || 0)} + 0`;
 
             renderGrowthChart();
             renderTopStores();
@@ -817,7 +818,7 @@
                 volData.push(sumM);
             }
 
-            const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6, 0.0];
+            const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6, 19.5];
             const filteredSla = slaBase.slice(startIdx, endIdx + 1);
 
             charts.growth = new Chart(ctxGrowth, {
@@ -878,7 +879,7 @@
             const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 7);
             const selectedReg = document.getElementById('topStoreRegSelector')?.value || 'Global';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[6];
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7];
             const items = monthData[selectedReg] || monthData.Global || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
 
@@ -908,7 +909,7 @@
             const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
             const selectedReg = document.getElementById('catRegSelector')?.value || 'Global';
 
-            const monthCatData = categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[6];
+            const monthCatData = categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[7];
             const stats = monthCatData[selectedReg] || monthCatData.Global || {};
 
             const cats = Object.keys(stats);
