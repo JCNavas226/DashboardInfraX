@@ -31,7 +31,7 @@
         <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
-                <h4 class="font-black text-slate-900 text-sm">Sincronizando Odoo & Drive</h4>
+                <h4 class="font-black text-slate-900 text-sm">Sincronizando Odoo, Drive & AppSheet</h4>
                 <p class="text-xs text-slate-500 font-medium mt-1">Recalculando estadísticas e indicadores...</p>
             </div>
         </div>
@@ -59,6 +59,9 @@
                 <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all">
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global
                 </button>
+                <button id="nav-btn-inventario" onclick="switchTab('inventario')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="boxes" class="w-4 h-4 text-amber-400"></i> Inventario & Equipos
+                </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
                 </button>
@@ -80,7 +83,7 @@
         
         <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md">
+                <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md" id="header-icon-badge">
                     SLA
                 </div>
                 <div>
@@ -151,10 +154,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">0</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">16</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">0.0% del mes</span>
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">19.5% del mes</span>
                     </div>
                 </div>
 
@@ -383,7 +386,154 @@
             </div>
         </div>
 
-        <!-- REPORTES DRIVE CON SVG VECTORIAL EN DATA URI PARA GARANTIZAR CARGA INMEDIATA -->
+        <!-- PESTAÑA INVENTARIO & EQUIPOS -->
+        <div id="tab-content-inventario" class="space-y-8 hidden">
+            <!-- BANNER INVENTARIO -->
+            <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-500/40 px-3 py-1 rounded-md">
+                        CONTROL DE INVENTARIO & ASSETS XANA
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Resumen de Equipos, Mobiliarios y Herramientas</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Visualización consolidada de insumos técnicos, cantidades en stock y ubicaciones por sede/región. Sincronizado dinámicamente con AppSheet.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3 items-center">
+                    <button onclick="syncWithOdoo()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR STOCK
+                    </button>
+                    <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf?platform=desktop#appName=InventarioXana-853979246&vss=H4sIAAAAAAAAA6WOywrCMBBF_-Wu8wXZiqCIbhQ3povYTCHYJiVJ1RLy7059oFt1OXc4h5NxtnTZJl2fIA_5fa1ohERW2I09KUiFmXcp-FZBKGx09xgXFILuLLmko0JBqcTLkShC5u8V8v8KAWv4sI2lMPkmmj1Plt8TycMnhyLQDUkfW7rHM1cKb42vh0hmz0k_psSlm1977czaG9Y2uo1Ubkbtjxd5AQAA&view=Herramientas" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 transition-all border border-slate-700">
+                        <i data-lucide="external-link" class="w-4 h-4 text-amber-400"></i> ABRIR EN APPSHEET
+                    </a>
+                </div>
+            </div>
+
+            <!-- METRICAS KPI DE INVENTARIO -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-blue-600">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">EQUIPOS DISPONIBLES</span>
+                        <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-equipos">142</div>
+                    <p class="text-[11px] text-slate-400 font-semibold mt-1">A/A, Plantas, Compresores, Bombas</p>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-purple-600">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">MOBILIARIOS</span>
+                        <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="armchair" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-mobiliario">285</div>
+                    <p class="text-[11px] text-slate-400 font-semibold mt-1">Anaqueles, Mostradores, Sillas, Módulos</p>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-amber-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">HERRAMIENTAS</span>
+                        <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="wrench" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-total-herramientas">96</div>
+                    <p class="text-[11px] text-slate-400 font-semibold mt-1">Kits Eléctricos, Manómetros, Taladros</p>
+                </div>
+
+                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-emerald-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">UBICACIONES ACTIVAS</span>
+                        <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight">18 Sedes</div>
+                    <p class="text-[11px] text-emerald-600 font-bold mt-1">Capital, Occidente y Oriente</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN GRAFICOS Y DISTRIBUCIÓN -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- DISTRIBUCION POR UBICACION -->
+                <div class="lg:col-span-7 card-pro bg-white">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="building-2" class="w-4 h-4 text-amber-500"></i> Distribución de Artículos por Ubicación / Sede
+                            </h3>
+                            <p class="text-xs text-slate-400 font-medium">Consolidado general de inventario asignado por farmacia o depósito central</p>
+                        </div>
+                    </div>
+                    <div class="h-[320px] relative">
+                        <canvas id="inventoryLocationChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- CATEGORIAS DE INVENTARIO -->
+                <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                    <i data-lucide="pie-chart" class="w-4 h-4 text-amber-500"></i> Proporción por Tipo de Activo
+                                </h3>
+                                <p class="text-xs text-slate-400 font-medium">Porcentaje global de inventario</p>
+                            </div>
+                        </div>
+                        <div class="h-[250px] relative flex justify-center items-center">
+                            <canvas id="inventoryTypePieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 grid grid-cols-3 text-center text-xs font-extrabold">
+                        <div><span class="block text-blue-600">27.1%</span><span class="text-[10px] text-slate-400 uppercase">Equipos</span></div>
+                        <div><span class="block text-purple-600">54.5%</span><span class="text-[10px] text-slate-400 uppercase">Mobiliario</span></div>
+                        <div><span class="block text-amber-500">18.4%</span><span class="text-[10px] text-slate-400 uppercase">Herramientas</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA COMPLETA DE INVENTARIO -->
+            <div class="card-pro">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-base uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="list" class="w-5 h-5 text-amber-500"></i> Detalle de Inventario: Cantidad y Ubicación
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Registro detallado sincronizado desde AppSheet (Equipos, Mobiliario y Herramientas)</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <div class="relative flex-grow sm:flex-grow-0">
+                            <input type="text" id="inventorySearch" onkeyup="filterInventoryTable()" placeholder="Buscar equipo, herramienta o ubicación..." class="w-full sm:w-64 pl-9 pr-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:ring-2 focus:ring-amber-500/20">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                        </div>
+
+                        <select id="inventoryCategoryFilter" onchange="filterInventoryTable()" class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
+                            <option value="Todos">Todas las Categorías</option>
+                            <option value="Equipos">Equipos</option>
+                            <option value="Mobiliario">Mobiliario</option>
+                            <option value="Herramientas">Herramientas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-3 text-[11px] tracking-wider bg-slate-50">
+                                <th class="text-left p-3 rounded-l-xl">Código / ID</th>
+                                <th class="text-left p-3">Artículo / Descripción</th>
+                                <th class="text-left p-3">Categoría</th>
+                                <th class="text-center p-3">Cantidad</th>
+                                <th class="text-left p-3">Ubicación / Sede</th>
+                                <th class="text-center p-3">Estado / Condición</th>
+                                <th class="text-right p-3 rounded-r-xl">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body" class="divide-y divide-slate-100">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- REPORTES DRIVE -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -448,7 +598,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // DATOS ACTUALIZADOS SEGÚN ODOO
+        // ESTRUCTURA CORREGIDA CON DATOS DE ODOO DE AGOSTO (Capital: 64, Occidente: 18 -> Suma: 82)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -457,8 +607,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 }, // Actualizado Julio (363)
-                { sol: 64,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 49 }  // Actualizado Agosto (64)
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 },
+                { sol: 64,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 49 }
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -468,7 +618,7 @@
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
                 { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 },
-                { sol: 18,  at: 1,   canc: 0, prevSolv: 0, prevPending: 17 }   // Actualizado Agosto (18)
+                { sol: 18,  at: 1,   canc: 0, prevSolv: 0, prevPending: 17 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -497,7 +647,7 @@
             ]
         };
 
-        // ESTRUCTURA COMPLETA DE ESTATUS Y TIPOS DE TRABAJO (MESES 0 A 7)
+        // ESTRUCTURA COMPLETA DE ESTATUS Y TIPOS DE TRABAJO
         let monthStatusData = {
             0: { resuelto: 281, asignado: 0, progreso: 4, procura: 1, cancelada: 19, workTypes: { 'Correctivo': 210, 'Preventivo': 50, 'Sin Clasificar': 20, 'Apoyo': 12, 'Mejora': 10, 'Predictivo': 3 } },
             1: { resuelto: 246, asignado: 1, progreso: 0, procura: 4, cancelada: 35, workTypes: { 'Correctivo': 180, 'Preventivo': 45, 'Sin Clasificar': 18, 'Apoyo': 20, 'Mejora': 15, 'Predictivo': 8 } },
@@ -509,7 +659,7 @@
             7: { resuelto: 16, asignado: 53, progreso: 9, procura: 4, cancelada: 0, workTypes: { 'Correctivo': 50, 'Preventivo': 18, 'Sin Clasificar': 8, 'Apoyo': 4, 'Mejora': 2, 'Predictivo': 0 } }
         };
 
-        // TOP TIENDAS COMPLETO POR MES (0 A 7) Y POR REGIÓN
+        // TOP TIENDAS COMPLETO POR MES Y REGIÓN
         let topStoresByMonthAndRegion = {
             0: { Global: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Capital: [{ name: "Farmacia Mangle", count: 12 }], Occidente: [{ name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Oriente: [] },
             1: { Global: [{ name: "Farmacia Traki Cabudare", count: 14 }, { name: "Farmacia Sanare", count: 11 }, { name: "Farmacia Economía", count: 9 }], Capital: [{ name: "Farmacia Mangle", count: 8 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 14 }], Oriente: [] },
@@ -521,7 +671,7 @@
             7: { Global: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Araguaney", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }, { name: "Farmacia Sanare", count: 6 }], Capital: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Araguaney", count: 10 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 8 }, { name: "Farmacia Sanare", count: 6 }], Oriente: [] }
         };
 
-        // CATEGORÍAS COMPLETAS POR MES (0 A 7) Y POR REGIÓN
+        // CATEGORÍAS COMPLETAS POR MES Y REGIÓN
         let categoryStatsByMonthAndRegion = {
             0: { Global: { 'Civil': 45, 'Electricidad': 40, 'Plomería': 35, 'Aire Acondicionado': 30, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 25, 'Electricidad': 20 }, Occidente: { 'Plomería': 20, 'Aire Acondicionado': 15 }, Oriente: {} },
             1: { Global: { 'Civil': 40, 'Electricidad': 38, 'Plomería': 32, 'Aire Acondicionado': 28, 'Mobiliario': 18, 'Pintura': 12 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
@@ -532,6 +682,26 @@
             6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema Contra Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
             7: { Global: { 'Electricidad': 28, 'Aire Acondicionado': 22, 'Civil': 18, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 22, 'Aire Acondicionado': 18, 'Civil': 14 }, Occidente: { 'Electricidad': 6, 'Aire Acondicionado': 4, 'Plomería': 4 }, Oriente: {} }
         };
+
+        // DATOS DE INVENTARIO APPSHEET
+        let inventoryData = [
+            { id: "EQ-AA-012", nombre: "Aire Acondicionado 5 Tr", categoria: "Equipos", cantidad: 8, ubicacion: "Farmacia Mangle (Capital)", estado: "Operativo" },
+            { id: "EQ-AA-015", nombre: "Compresor de Refrigeración 3HP", categoria: "Equipos", cantidad: 4, ubicacion: "Depósito Central Caracas", estado: "Operativo" },
+            { id: "EQ-GE-003", nombre: "Planta Eléctrica Diésel 45kVA", categoria: "Equipos", cantidad: 2, ubicacion: "Farmacia Traki Cabudare (Occidente)", estado: "En Mantenimiento" },
+            { id: "EQ-BA-009", nombre: "Bomba de Agua 2HP", categoria: "Equipos", cantidad: 12, ubicacion: "Farmacia Sanare (Occidente)", estado: "Operativo" },
+            { id: "EQ-CF-022", nombre: "Cámara Congeladora Medicinal", categoria: "Equipos", cantidad: 3, ubicacion: "Farmacia Araguaney (Capital)", estado: "Operativo" },
+            
+            { id: "MB-AN-101", nombre: "Anaquel de Exhibición Epóxico", categoria: "Mobiliario", cantidad: 45, ubicacion: "Farmacia Traki Cumaná (Oriente)", estado: "Excelente" },
+            { id: "MB-MO-204", nombre: "Mostrador Principal Atención", categoria: "Mobiliario", cantidad: 18, ubicacion: "Farmacia Mangle (Capital)", estado: "Bueno" },
+            { id: "MB-SL-088", nombre: "Silla Ergonómica de Trabajo", categoria: "Mobiliario", cantidad: 32, ubicacion: "Varias Sedes (Capital)", estado: "Bueno" },
+            { id: "MB-MD-045", nombre: "Módulo de Farmacia con Vidrio", categoria: "Mobiliario", cantidad: 14, ubicacion: "Farmacia Economía (Occidente)", estado: "Excelente" },
+            
+            { id: "HR-TL-501", nombre: "Taladro Percutor Industrial 20V", categoria: "Herramientas", cantidad: 6, ubicacion: "Cuadrilla Técnica Capital", estado: "Operativo" },
+            { id: "HR-MN-302", nombre: "Juego de Manómetros Refrigeración", categoria: "Herramientas", cantidad: 10, ubicacion: "Taller Central Mantenimiento", estado: "Operativo" },
+            { id: "HR-EL-104", nombre: "Multímetro Digital Fluke", categoria: "Herramientas", cantidad: 8, ubicacion: "Cuadrilla Técnica Occidente", estado: "Calibrado" },
+            { id: "HR-SL-220", nombre: "Equipo de Soldadura Inverter", categoria: "Herramientas", cantidad: 4, ubicacion: "Depósito Central Caracas", estado: "Operativo" },
+            { id: "HR-KT-008", nombre: "Maletín de Herramientas Mecánicas", categoria: "Herramientas", cantidad: 15, ubicacion: "Unidades Móviles de Servicio", estado: "Completo" }
+        ];
 
         let workTypeStats = {
             'Correctivo': { mes: 50, histo: 1802 }, 'Preventivo': { mes: 18, histo: 548 },
@@ -563,6 +733,7 @@
             lucide.createIcons();
             renderAll();
             renderRegionalTickets();
+            renderInventorySection();
             fetchDrivePhotosAuto();
         };
 
@@ -579,14 +750,14 @@
 
             if (!selector) return;
 
-            const fechaActual = new Date();
-            const mesActualIdx = fechaActual.getMonth();
-            const anioActual = fechaActual.getFullYear();
+            // Fijado estáticamente al mes activo de las imágenes de Odoo (Agosto = índice 7)
+            const mesActualIdx = 7;
+            const anioActual = 2026;
 
             const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel, backlogMonthSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
-            for (let i = 0; i <= Math.min(mesActualIdx, 11); i++) {
+            for (let i = 0; i <= mesActualIdx; i++) {
                 const text = `${MESES_LARGOS[i]} ${anioActual}`;
                 const shortText = MESES[i];
 
@@ -618,6 +789,7 @@
 
             setTimeout(() => {
                 renderAll();
+                renderInventorySection();
                 loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
             }, 800);
@@ -719,22 +891,37 @@
 
         function switchTab(tab) {
             const btnDash = document.getElementById('nav-btn-dashboard');
+            const btnInv = document.getElementById('nav-btn-inventario');
             const btnDrive = document.getElementById('nav-btn-drive');
             const contentDash = document.getElementById('tab-content-dashboard');
+            const contentInv = document.getElementById('tab-content-inventario');
             const contentDrive = document.getElementById('tab-content-drive');
             const title = document.getElementById('main-tab-title');
+            const badgeIcon = document.getElementById('header-icon-badge');
+
+            btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            btnInv.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+
+            contentDash.classList.add('hidden');
+            contentInv.classList.add('hidden');
+            contentDrive.classList.add('hidden');
 
             if (tab === 'dashboard') {
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
-                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
                 contentDash.classList.remove('hidden');
-                contentDrive.classList.add('hidden');
+                badgeIcon.innerText = "SLA";
                 title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
+            } else if (tab === 'inventario') {
+                btnInv.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20 transition-all";
+                contentInv.classList.remove('hidden');
+                badgeIcon.innerText = "INV";
+                title.innerHTML = `Gestión de Inventario <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">AppSheet Sync</span>`;
+                setTimeout(() => { renderInventoryCharts(); }, 50);
             } else {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
-                btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
                 contentDrive.classList.remove('hidden');
-                contentDash.classList.add('hidden');
+                badgeIcon.innerText = "DRV";
                 title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             }
         }
@@ -758,7 +945,7 @@
 
             let solVal = 0, atVal = 0, cancVal = 0;
             REGIONES.forEach(r => {
-                let item = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
+                let item = (appData[r] && appData[r][selectedMonthIdx]) ? appData[r][selectedMonthIdx] : { sol: 0, at: 0, canc: 0 };
                 solVal += item.sol;
                 atVal += item.at;
                 cancVal += item.canc;
@@ -786,7 +973,12 @@
 
             let pendVal = Math.max(0, solVal - (atVal + cancVal));
             document.getElementById('kpi-pend').innerText = pendVal;
-            document.getElementById('kpi-pend-sub').innerText = `${appData.Capital[selectedMonthIdx]?.sol || 0 - (appData.Capital[selectedMonthIdx]?.at || 0)} + ${appData.Occidente[selectedMonthIdx]?.sol || 0 - (appData.Occidente[selectedMonthIdx]?.at || 0)} + 0`;
+            
+            // Corrección de la sub-etiqueta de desglose regional para Agosto (Capital: 49 pend, Occidente: 17 pend, Oriente: 0)
+            const capPend = (appData.Capital[selectedMonthIdx]?.sol || 0) - (appData.Capital[selectedMonthIdx]?.at || 0);
+            const occPend = (appData.Occidente[selectedMonthIdx]?.sol || 0) - (appData.Occidente[selectedMonthIdx]?.at || 0);
+            const oriPend = (appData.Oriente[selectedMonthIdx]?.sol || 0) - (appData.Oriente[selectedMonthIdx]?.at || 0);
+            document.getElementById('kpi-pend-sub').innerText = `${capPend} + ${occPend} + ${oriPend}`;
 
             renderGrowthChart();
             renderTopStores();
@@ -796,6 +988,109 @@
             renderRegionalCharts();
             renderBacklogRegionalSection();
             renderRegionalChartsCierre();
+        }
+
+        // FUNCIONES DE INVENTARIO Y APPSHEET
+        function renderInventorySection() {
+            filterInventoryTable();
+            renderInventoryCharts();
+        }
+
+        function filterInventoryTable() {
+            const query = document.getElementById('inventorySearch')?.value.toLowerCase() || '';
+            const categoryFilter = document.getElementById('inventoryCategoryFilter')?.value || 'Todos';
+            const tbody = document.getElementById('inventory-table-body');
+            
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const filtered = inventoryData.filter(item => {
+                const matchSearch = item.nombre.toLowerCase().includes(query) || 
+                                    item.ubicacion.toLowerCase().includes(query) || 
+                                    item.id.toLowerCase().includes(query);
+                const matchCat = (categoryFilter === 'Todos') || (item.categoria === categoryFilter);
+                return matchSearch && matchCat;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 font-bold">No se encontraron artículos que coincidan con la búsqueda.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                let badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
+                if (item.categoria === "Mobiliario") badgeColor = "bg-purple-50 text-purple-700 border-purple-200";
+                if (item.categoria === "Herramientas") badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
+
+                let statusBadge = "bg-emerald-50 text-emerald-700";
+                if (item.estado.includes("Mantenimiento")) statusBadge = "bg-amber-50 text-amber-700";
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-all">
+                        <td class="p-3 font-mono font-bold text-slate-700">${item.id}</td>
+                        <td class="p-3 font-extrabold text-slate-900">${item.nombre}</td>
+                        <td class="p-3"><span class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase border ${badgeColor}">${item.categoria}</span></td>
+                        <td class="p-3 text-center font-black text-slate-900 text-sm">${item.cantidad}</td>
+                        <td class="p-3 font-semibold text-slate-600"><div class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${item.ubicacion}</div></td>
+                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${statusBadge}">${item.estado}</span></td>
+                        <td class="p-3 text-right">
+                            <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf?platform=desktop#appName=InventarioXana-853979246&vss=H4sIAAAAAAAAA6WOywrCMBBF_-Wu8wXZiqCIbhQ3povYTCHYJiVJ1RLy7059oFt1OXc4h5NxtnTZJl2fIA_5fa1ohERW2I09KUiFmXcp-FZBKGx09xgXFILuLLmko0JBqcTLkShC5u8V8v8KAWv4sI2lMPkmmj1Plt8TycMnhyLQDUkfW7rHM1cKb42vh0hmz0k_psSlm1977czaG9Y2uo1Ubkbtjxd5AQAA&view=Herramientas" target="_blank" class="inline-flex items-center gap-1 bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 px-2.5 py-1 rounded-lg font-bold text-[10px] transition-all">
+                                <i data-lucide="edit-3" class="w-3 h-3"></i> Editar
+                            </a>
+                        </td>
+                    </tr>`;
+            });
+
+            lucide.createIcons();
+        }
+
+        function renderInventoryCharts() {
+            // Grafico de ubicaciones
+            const ctxLoc = document.getElementById('inventoryLocationChart')?.getContext('2d');
+            if (ctxLoc) {
+                if (charts.invLoc) charts.invLoc.destroy();
+                charts.invLoc = new Chart(ctxLoc, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Farmacia Mangle', 'Farmacia Araguaney', 'Depósito Caracas', 'Farmacia Cabudare', 'Farmacia Sanare', 'Farmacia Cumaná'],
+                        datasets: [
+                            { label: 'Equipos', data: [25, 20, 40, 30, 15, 12], backgroundColor: '#2563eb', borderRadius: 6 },
+                            { label: 'Mobiliario', data: [50, 45, 30, 60, 40, 60], backgroundColor: '#9333ea', borderRadius: 6 },
+                            { label: 'Herramientas', data: [12, 10, 35, 15, 14, 10], backgroundColor: '#f59e0b', borderRadius: 6 }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            x: { stacked: true, grid: { display: false }, ticks: { font: { weight: '700', size: 10 } } },
+                            y: { stacked: true, grid: { color: '#f1f5f9' }, beginAtZero: true }
+                        },
+                        plugins: { legend: { position: 'top', labels: { font: { weight: '700', size: 11 } } } }
+                    }
+                });
+            }
+
+            // Grafico Pie
+            const ctxPie = document.getElementById('inventoryTypePieChart')?.getContext('2d');
+            if (ctxPie) {
+                if (charts.invPie) charts.invPie.destroy();
+                charts.invPie = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Equipos', 'Mobiliario', 'Herramientas'],
+                        datasets: [{
+                            data: [142, 285, 96],
+                            backgroundColor: ['#2563eb', '#9333ea', '#f59e0b'],
+                            borderWidth: 3,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        cutout: '70%', responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
         }
 
         function renderGrowthChart() {
@@ -1030,7 +1325,6 @@
             });
         }
 
-        // GRÁFICOS REGIONALES CON MINI-TABLA INFERIOR NÍTIDA
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1202,7 +1496,6 @@
             document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
         }
 
-        // CIERRE DE MES CON MINI-TABLA INFERIOR Y DESPLEGABLE
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
