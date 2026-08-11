@@ -386,7 +386,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA INVENTARIO (APPSHEET CONECTADO VÍA GOOGLE APPS SCRIPT API) -->
+        <!-- PESTAÑA INVENTARIO -->
         <div id="tab-content-inventario" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -460,7 +460,7 @@
             </div>
         </div>
 
-        <!-- REPORTES DRIVE (INFORMES DE INFRAESTRUCTURA) -->
+        <!-- REPORTES DRIVE -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -520,7 +520,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // NUEVA URL ACTUALIZADA DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+        // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8If_g3uZ-c6tRmtAvYhtG_ahM-rnlwki_dv036-fji-381lV3OFLqpKBbJkG-J0YJ/exec";
 
         // ESTRUCTURA CON VALORES REALES DE ODOO
@@ -601,7 +601,7 @@
             3: { Global: { 'Civil': 42, 'Electricidad': 36, 'Plomería': 30, 'Aire Acondicionado': 28, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
             4: { Global: { 'Civil': 55, 'Electricidad': 48, 'Plomería': 42, 'Aire Acondicionado': 40, 'Mobiliario': 28, 'Pintura': 22 }, Capital: { 'Civil': 28, 'Electricidad': 24 }, Occidente: { 'Plomería': 22, 'Aire Acondicionado': 18 }, Oriente: {} },
             5: { Global: { 'Civil': 68, 'Electricidad': 60, 'Plomería': 55, 'Aire Acondicionado': 52, 'Mobiliario': 38, 'Pintura': 32 }, Capital: { 'Civil': 35, 'Electricidad': 30 }, Occidente: { 'Plomería': 28, 'Aire Acondicionado': 25 }, Oriente: {} },
-            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: {} },
+            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Aire Acondicionado': 18 }, Oriente: {} },
             7: { Global: { 'Electricidad': 32, 'Aire Acondicionado': 26, 'Civil': 20, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 24, 'Aire Acondicionado': 20, 'Civil': 16 }, Occidente: { 'Electricidad': 8, 'Aire Acondicionado': 6, 'Plomería': 4 }, Oriente: {} }
         };
 
@@ -611,20 +611,21 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // GENERADOR DE FOTOS SVG DE SEGURIDAD
+        // GENERADOR VECTORIAL SVG EN BASE64 LIMPIO (EVITA IMÁGENES ROTAS O NEGRAS)
         const generateSvgPhoto = (bgColor, textTitle, phaseText) => {
-            return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgColor}" rx="12"/><path d="M160 120 L200 80 L240 120 M200 80 L200 170" stroke="%23ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-family="sans-serif" font-weight="900" font-size="16">${textTitle}</text><text x="50%" y="88%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="sans-serif" font-weight="700" font-size="10">${phaseText}</text></svg>`;
+            const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgColor}" rx="12"/><path d="M160 120 L200 80 L240 120 M200 80 L200 170" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="16">${textTitle}</text><text x="50%" y="88%" dominant-baseline="middle" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="700" font-size="10">${phaseText}</text></svg>`;
+            return `data:image/svg+xml;base64,${btoa(svgString)}`;
         };
 
         // REPORTE DE DRIVE RESTRINGIDO A JULIO (MES 6)
         let regionalTicketsDataByMonth = {
             6: {
                 Capital: [
-                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026", photos: { before: generateSvgPhoto("%23991b1b", "COMPRESOR DAÑADO", "FASE 1: ANTES"), during: generateSvgPhoto("%2392400e", "MONTAJE Y CARGA GAS", "FASE 2: DURANTE"), after: generateSvgPhoto("%23065f46", "SISTEMA OPERATIVO 100%", "FASE 3: DESPUÉS") } },
-                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026", photos: { before: generateSvgPhoto("%23991b1b", "TABLERO SOBRECALENTADO", "FASE 1: ANTES"), during: generateSvgPhoto("%2392400e", "CAMBIO DE BREAKER", "FASE 2: DURANTE"), after: generateSvgPhoto("%23065f46", "TENSIÓN ESTABILIZADA", "FASE 3: DESPUÉS") } }
+                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026", photos: { before: generateSvgPhoto("#991b1b", "COMPRESOR DAÑADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "MONTAJE Y CARGA GAS", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "SISTEMA OPERATIVO 100%", "FASE 3: DESPUÉS") } },
+                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026", photos: { before: generateSvgPhoto("#991b1b", "TABLERO SOBRECALENTADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "CAMBIO DE BREAKER", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "TENSIÓN ESTABILIZADA", "FASE 3: DESPUÉS") } }
                 ],
                 Occidente: [
-                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026", photos: { before: generateSvgPhoto("%23991b1b", "FACHADA CON GRIETAS", "FASE 1: ANTES"), during: generateSvgPhoto("%2392400e", "APLICACIÓN PINTURA EPÓXICA", "FASE 2: DURANTE"), after: generateSvgPhoto("%23065f46", "ACABADO NUEVO", "FASE 3: DESPUÉS") } }
+                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026", photos: { before: generateSvgPhoto("#991b1b", "FACHADA CON GRIETAS", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "APLICACIÓN PINTURA EPÓXICA", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "ACABADO NUEVO", "FASE 3: DESPUÉS") } }
                 ],
                 Oriente: []
             }
@@ -715,12 +716,12 @@
 
         function renderFallbackRows() {
             const fallbackData = [
-                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "Foto_Item1": "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
-                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "Foto_Item1": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&auto=format&fit=crop", "_OrigenTabla": "Equipos" },
-                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "Foto_Item1": "https://images.unsplash.com/photo-1580828343064-fde4fc206bc6?w=200&auto=format&fit=crop", "_OrigenTabla": "Mob. & Equipamiento" },
-                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "Foto_Item1": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=200&auto=format&fit=crop", "_OrigenTabla": "Mob. & Equipamiento" }
+                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "Foto_Item1": generateSvgPhoto("#0284c7", "LLAVE INGLESA 14\"", "HERRAMIENTAS"), "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": generateSvgPhoto("#0284c7", "PINZA AMPERÍMETRICA", "HERRAMIENTAS"), "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": generateSvgPhoto("#0284c7", "PIQUETA DE ALBAÑIL", "HERRAMIENTAS"), "_OrigenTabla": "Herramientas" },
+                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "Foto_Item1": generateSvgPhoto("#d97706", "BOMBA VACIO 0.5 HP", "EQUIPOS"), "_OrigenTabla": "Equipos" },
+                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "Foto_Item1": generateSvgPhoto("#2563eb", "CESTA DE MERCADO", "MOB. & EQUIP."), "_OrigenTabla": "Mob. & Equipamiento" },
+                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "Foto_Item1": generateSvgPhoto("#dc2626", "AIRE 20TN", "MOB. & EQUIP."), "_OrigenTabla": "Mob. & Equipamiento" }
             ];
             renderTableRows(fallbackData);
         }
@@ -747,7 +748,12 @@
                 const cantidad = r.Cantidad || "1";
                 const estado = r.Estado || "N/A";
                 const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || "General";
-                const photoUrl = r.Foto_Item1 || r["Foto_Item 1"] || r.Foto_Item || "";
+                
+                // Imagen por defecto Base64 si no hay foto cargada en la fila
+                let photoUrl = r.Foto_Item1 || r["Foto_Item 1"] || r.Foto_Item || "";
+                if (!photoUrl) {
+                    photoUrl = generateSvgPhoto("#475569", descripcion.substring(0, 15).toUpperCase(), origen.toUpperCase());
+                }
 
                 if (origen === "Herramientas") countHerramientas += parseInt(cantidad) || 1;
                 else if (origen === "Equipos") countEquipos += parseInt(cantidad) || 1;
@@ -764,7 +770,7 @@
                     <tr class="hover:bg-slate-50/80 transition-all">
                         <td class="py-3 px-4 flex items-center gap-3">
                             <div class="w-14 h-14 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                                ${photoUrl ? `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\'package\' class=\'w-6 h-6 text-slate-400\'></i>'; lucide.createIcons();">` : `<i data-lucide="package" class="w-6 h-6 text-slate-400"></i>`}
+                                <img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto">
                             </div>
                             <div>
                                 <span class="font-bold text-slate-900 block text-xs">${descripcion}</span>
