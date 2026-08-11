@@ -512,7 +512,7 @@
             </div>
         </div>
 
-        <!-- NUEVA PESTAÑA: CASOS PENDIENTES (>3 MESES) -->
+        <!-- PESTAÑA: CASOS PENDIENTES (>3 MESES) -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 text-white border-red-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -569,8 +569,10 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8If_g3uZ-c6tRmtAvYhtG_ahM-rnlwki_dv036-fji-381lV3OFLqpKBbJkG-J0YJ/exec";
+        // URL ACTUALIZADA DE TU IMPLEMENTACIÓN EN GOOGLE APPS SCRIPT
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
+        // ESTRUCTURA CON VALORES REALES DE ODOO
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -579,8 +581,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 },
-                { sol: 71,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 56 }
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 }, // Julio Odoo Capital
+                { sol: 71,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 56 }  // Agosto Odoo Capital
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -589,8 +591,8 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 },
-                { sol: 21,  at: 1,   canc: 0, prevSolv: 0, prevPending: 20 }
+                { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente
+                { sol: 21,  at: 1,   canc: 0, prevSolv: 0, prevPending: 20 }  // Agosto Odoo Occidente
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -599,7 +601,7 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 15 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 15 }, // Julio Odoo Oriente
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 }
             ]
         };
@@ -658,8 +660,9 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
+        // REPORTES DRIVE CON REGIONAL CAPITAL, OCCIDENTE Y ORIENTE (MANUEL CASTRO) - JULIO 2026
         let regionalTicketsDataByMonth = {
-            6: {
+            6: { // Julio 2026
                 Capital: [
                     { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
                     { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
@@ -727,6 +730,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
+        // CONEXIÓN VÍA GOOGLE APPS SCRIPT
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -841,7 +845,7 @@
                 <tr>
                     <td colspan="6" class="py-8 text-center text-xs font-bold text-slate-400">
                         <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-red-500"></i>
-                        Analizando antigüedad de casos pendientes...
+                        Consultando hoja de Casos Pendientes en vivo...
                     </td>
                 </tr>`;
             lucide.createIcons();
@@ -859,8 +863,10 @@
             // Datos de respaldo con casos reales si no carga el endpoint
             if (!Array.isArray(data) || data.length === 0) {
                 data = [
+                    { "Farmacia": "UVILLA", "Descripción": "SUMINISTRO DE 1300 LITROS DE GASOIL", "Fecha solped": "19/02/2026", "Observaciones": "Aumento a 1300 litros en junio", "Estatus": "En espera" },
                     { "Farmacia": "ARAGUANEY", "Descripción": "INSTALACIÓN DE INVERSOR 3KVA MARCA MUST CON BANCO DE 4 BATERIAS DE 12V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "A espera de fecha de adecuacion e instalacion", "Estatus": "En espera" },
                     { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias", "Estatus": "En espera" },
+                    { "Farmacia": "GUACHARO", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "Pendiente de presupuesto por instalación", "Estatus": "En espera" },
                     { "Farmacia": "CIGARRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001377", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente por aprobación de compras", "Estatus": "En procura" },
                     { "Farmacia": "CORAL", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001375", "Fecha solped": "20/05/2026", "Observaciones": "En proceso de cotización", "Estatus": "En procura" },
                     { "Farmacia": "PAYARA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ (ACTIVO 40001374)", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente de despacho", "Estatus": "En proceso" }
@@ -891,7 +897,7 @@
                 let mesesAntiguedad = 0;
 
                 if (fechaSolpedStr) {
-                    const partes = fechaSolpedStr.split('/');
+                    const partes = fechaSolpedStr.toString().trim().split('/');
                     if (partes.length === 3) {
                         const fechaSolped = new Date(partes[2], partes[1] - 1, partes[0]);
                         const diffTime = Math.abs(hoy - fechaSolped);
@@ -1341,7 +1347,7 @@
             });
         }
 
-        // CORRECCIÓN DE ETIQUETAS DE PORCENTAJES EN GRÁFICO DE DONA
+        // CORRECCIÓN DE ETIQUETAS EN GRÁFICO DE DONA
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
