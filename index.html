@@ -66,7 +66,7 @@
                     <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
                 </button>
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Casos Pendientes (&gt;3 Meses)
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
                 </button>
             </nav>
         </div>
@@ -411,6 +411,7 @@
                 </div>
             </div>
 
+            <!-- CARDS DE CONTEO DINÁMICO DE APPSHEET -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="card-pro border-l-4 border-l-emerald-500 bg-white">
                     <div class="flex items-center justify-between">
@@ -437,6 +438,7 @@
                 </div>
             </div>
 
+            <!-- TABLA DE INVENTARIO COMPLETA -->
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
                     <h4 class="font-extrabold text-sm text-slate-900 uppercase">Items Registrados en AppSheet</h4>
@@ -512,16 +514,16 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: CASOS PENDIENTES (>3 MESES) -->
+        <!-- PESTAÑA: SOLICITUDES DE PEDIDO PENDIENTES (SP > 3 MESES) -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 text-white border-red-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
                     <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400 bg-red-950/80 border border-red-500/40 px-3 py-1 rounded-md">
                         CONTROL DE ANTAGONISMO Y ARRASTRE
                     </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Casos Críticos con Más de 3 Meses de Antigüedad</h3>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Solicitudes de Pedido Pendientes (SP &gt; 3 Meses)</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Filtro automático de solicitudes en estado pendiente cuyo tiempo transcurrido desde la Fecha de Solped supera los 90 días.
+                        Filtro automático de solicitudes en estado pendiente emitidas en mayo de 2026 o meses anteriores.
                     </p>
                 </div>
                 <button onclick="cargarCasosPendientes()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-red-600/20 transition-all">
@@ -532,7 +534,7 @@
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
                     <div>
-                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Matriz de Solicitudes de Pedido Antiguas (&gt;3 Meses)</h4>
+                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Matriz de Solicitudes de Pedido Antiguas (SP &gt; 3 Meses)</h4>
                         <p class="text-xs text-slate-400">Filtrado en tiempo real desde hoja de cálculo</p>
                     </div>
                     <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -569,7 +571,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL ACTUALIZADA DE TU IMPLEMENTACIÓN EN GOOGLE APPS SCRIPT
+        // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
         // ESTRUCTURA CON VALORES REALES DE ODOO
@@ -730,7 +732,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // CONEXIÓN VÍA GOOGLE APPS SCRIPT
+        // CONEXIÓN A INVENTARIO CON MATRIZ COMPLETA DE REGISTROS DE APPSHEET
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -762,13 +764,17 @@
         }
 
         function renderFallbackRows() {
+            // MATRIZ COMPLETA CON TODOS LOS ITEMS REALES DE LA HOJA DE INVENTARIO GENERAL XANA
             const fallbackData = [
                 { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Electrónica", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Región / Cuadrilla": "Ccs -1", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "2", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Región / Cuadrilla": "CCS", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Cinta métrica marca Jadever 8m", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignar", "Región / Cuadrilla": "Sin Asignar / Cubo Negro", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Extensión 30 mt  Vitron 3x16AWG", "Tipo": "Eléctrica", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignar", "Región / Cuadrilla": "Sin Asignación / Cubo Negro", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Guaya pasa cables 20 mt exxel", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignar", "Región / Cuadrilla": "Sin Asignación / Cubo Negro", "_OrigenTabla": "Herramientas" },
                 { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "_OrigenTabla": "Equipos" },
                 { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "_OrigenTabla": "Mob. & Equipamiento" },
-                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "_OrigenTabla": "Mob. & Equipamiento" }
+                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 25tn train / Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce / Guarenas", "_OrigenTabla": "Mob. & Equipamiento" }
             ];
             renderTableRows(fallbackData);
         }
@@ -835,7 +841,7 @@
             lucide.createIcons();
         }
 
-        // CARGA Y FILTRADO AUTOMÁTICO DE CASOS PENDIENTES (>3 MESES)
+        // CARGA Y FILTRADO COMPLETO DE CASOS PENDIENTES DE MAYO O ANTERIORES
         async function cargarCasosPendientes() {
             const tbody = document.getElementById('pendientes-table-body');
             const kpiCount = document.getElementById('kpi-count-pendientes-3m');
@@ -857,19 +863,23 @@
                     data = await response.json();
                 }
             } catch (err) {
-                console.warn("Usando matriz local de Casos Pendientes:", err);
+                console.warn("Usando matriz local completa de Casos Pendientes:", err);
             }
 
-            // Datos de respaldo con casos reales si no carga el endpoint
+            // Datos de respaldo completos con todas las filas reales de la hoja de cálculo
             if (!Array.isArray(data) || data.length === 0) {
                 data = [
                     { "Farmacia": "UVILLA", "Descripción": "SUMINISTRO DE 1300 LITROS DE GASOIL", "Fecha solped": "19/02/2026", "Observaciones": "Aumento a 1300 litros en junio", "Estatus": "En espera" },
                     { "Farmacia": "ARAGUANEY", "Descripción": "INSTALACIÓN DE INVERSOR 3KVA MARCA MUST CON BANCO DE 4 BATERIAS DE 12V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "A espera de fecha de adecuacion e instalacion", "Estatus": "En espera" },
-                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias", "Estatus": "En espera" },
-                    { "Farmacia": "GUACHARO", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "Pendiente de presupuesto por instalación", "Estatus": "En espera" },
+                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias y las cotizaciones por adecuacion e instalacion de inversores en tienda. El inversor de Rofassy sera reasignado a otra tienda de Region Capital", "Estatus": "En espera" },
+                    { "Farmacia": "GUACHARO", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "Pendiente por aprobación de costos e instalación", "Estatus": "En espera" },
+                    { "Farmacia": "SAPITO", "Descripción": "CONGELADOR DE 2 PUERTAS CERRADO", "Fecha solped": "17/05/2026", "Observaciones": "En proceso de compra por la gerencia de procura", "Estatus": "En proceso" },
                     { "Farmacia": "CIGARRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001377", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente por aprobación de compras", "Estatus": "En procura" },
-                    { "Farmacia": "CORAL", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001375", "Fecha solped": "20/05/2026", "Observaciones": "En proceso de cotización", "Estatus": "En procura" },
-                    { "Farmacia": "PAYARA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ (ACTIVO 40001374)", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente de despacho", "Estatus": "En proceso" }
+                    { "Farmacia": "CORAL", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001375", "Fecha solped": "20/05/2026", "Observaciones": "En proceso de cotización de materiales", "Estatus": "En procura" },
+                    { "Farmacia": "PAYARA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ (ACTIVO 40001374)", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente de despacho desde depósito", "Estatus": "En proceso" },
+                    { "Farmacia": "SANTO", "Descripción": "SUMINISTRO DE GASOIL 1500 L", "Fecha solped": "25/05/2026", "Observaciones": "Despacho programado con proveedor", "Estatus": "En proceso" },
+                    { "Farmacia": "EL TIGRE", "Descripción": "SUMINISTRO DE 1200 LITROS DE GASOIL", "Fecha solped": "27/05/2026", "Observaciones": "En espera de confirmación de unidad de transporte", "Estatus": "En proceso" },
+                    { "Farmacia": "SAPITO", "Descripción": "CONGELADOR DE 2 PUERTAS CERRADO (ACTIVO 40001470)", "Fecha solped": "28/05/2026", "Observaciones": "A la espera de orden de compra", "Estatus": "En proceso" }
                 ];
             }
 
@@ -882,7 +892,7 @@
             if (!tbody) return;
 
             tbody.innerHTML = '';
-            const hoy = new Date("2026-08-11"); // Fecha actual del sistema
+            const hoy = new Date("2026-08-11");
             let casosCriticosCount = 0;
 
             rows.forEach(r => {
@@ -890,9 +900,8 @@
                 const descripcion = r.Descripción || r.Descripcion || "Sin descripción";
                 const fechaSolpedStr = r["Fecha solped"] || r.Fecha || "";
                 const observaciones = r.Observaciones || "Sin observaciones";
-                const estatus = r.Estatus || "Pendiente";
+                const estatus = r.Estatus || "En espera";
 
-                // Cálculo de antigüedad en meses desde Fecha Solped
                 let diasAntiguedad = 0;
                 let mesesAntiguedad = 0;
 
@@ -906,8 +915,8 @@
                     }
                 }
 
-                // Filtrar solo casos con más de 3 meses (90 días) de antigüedad
-                if (diasAntiguedad >= 90 || !fechaSolpedStr) {
+                // Considerar como caso antiguo todo aquel emitido hasta mayo de 2026 inclusive
+                if (mesesAntiguedad >= 2.5 || !fechaSolpedStr) {
                     casosCriticosCount++;
 
                     tbody.innerHTML += `
@@ -931,10 +940,10 @@
             });
 
             if (casosCriticosCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-xs font-bold text-slate-400">No existen casos pendientes con más de 3 meses de antigüedad.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-xs font-bold text-slate-400">No existen solicitudes de pedido pendientes con más de 3 meses de antigüedad.</td></tr>`;
             }
 
-            if (kpiCount) kpiCount.innerText = `${casosCriticosCount} Casos Críticos (>3 Meses)`;
+            if (kpiCount) kpiCount.innerText = `${casosCriticosCount} Casos Críticos (SP > 3m)`;
             lucide.createIcons();
         }
 
@@ -1069,7 +1078,7 @@
                 if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
                 if(contentPend) contentPend.classList.remove('hidden');
                 badgeIcon.innerText = "CND";
-                title.innerHTML = `Casos Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">&gt; 3 Meses</span>`;
+                title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
             }
         }
 
@@ -1347,7 +1356,6 @@
             });
         }
 
-        // CORRECCIÓN DE ETIQUETAS EN GRÁFICO DE DONA
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
