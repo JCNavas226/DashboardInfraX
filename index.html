@@ -601,7 +601,7 @@
             3: { Global: { 'Civil': 42, 'Electricidad': 36, 'Plomería': 30, 'Aire Acondicionado': 28, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
             4: { Global: { 'Civil': 55, 'Electricidad': 48, 'Plomería': 42, 'Aire Acondicionado': 40, 'Mobiliario': 28, 'Pintura': 22 }, Capital: { 'Civil': 28, 'Electricidad': 24 }, Occidente: { 'Plomería': 22, 'Aire Acondicionado': 18 }, Oriente: {} },
             5: { Global: { 'Civil': 68, 'Electricidad': 60, 'Plomería': 55, 'Aire Acondicionado': 52, 'Mobiliario': 38, 'Pintura': 32 }, Capital: { 'Civil': 35, 'Electricidad': 30 }, Occidente: { 'Plomería': 28, 'Aire Acondicionado': 25 }, Oriente: {} },
-            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
+            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Aire Acondicionado': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
             7: { Global: { 'Electricidad': 32, 'Aire Acondicionado': 26, 'Civil': 20, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 24, 'Aire Acondicionado': 20, 'Civil': 16 }, Occidente: { 'Electricidad': 8, 'Aire Acondicionado': 6, 'Plomería': 4 }, Oriente: {} }
         };
 
@@ -611,15 +611,15 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // GENERADOR VECTORIAL BASE64 COMPATIBLE
+        // GENERADOR VECTORIAL LIMPIO BASE64
         const generateSvgPhoto = (bgColor, textTitle, phaseText) => {
             const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgColor}" rx="12"/><path d="M160 120 L200 80 L240 120 M200 80 L200 170" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="16">${textTitle}</text><text x="50%" y="88%" dominant-baseline="middle" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="700" font-size="10">${phaseText}</text></svg>`;
             return `data:image/svg+xml;base64,${btoa(svgString)}`;
         };
 
-        // REPORTE DE DRIVE INCLUYENDO REGIONAL CAPITAL, OCCIDENTE Y ORIENTE (MANUEL CASTRO)
+        // REPORTES DRIVE INCLUYENDO REGIONAL CAPITAL, OCCIDENTE Y ORIENTE (MANUEL CASTRO) - JULIO 2026
         let regionalTicketsDataByMonth = {
-            6: { // Julio
+            6: { // Julio 2026
                 Capital: [
                     { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026", photos: { before: generateSvgPhoto("#991b1b", "COMPRESOR DAÑADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "MONTAJE Y CARGA GAS", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "SISTEMA OPERATIVO 100%", "FASE 3: DESPUÉS") } },
                     { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026", photos: { before: generateSvgPhoto("#991b1b", "TABLERO SOBRECALENTADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "CAMBIO DE BREAKER", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "TENSIÓN ESTABILIZADA", "FASE 3: DESPUÉS") } }
@@ -628,7 +628,8 @@
                     { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026", photos: { before: generateSvgPhoto("#991b1b", "FACHADA CON GRIETAS", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "APLICACIÓN PINTURA EPÓXICA", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "ACABADO NUEVO", "FASE 3: DESPUÉS") } }
                 ],
                 Oriente: [
-                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Mantenimiento General y Diagnóstico de Planta Eléctrica", tecnico: "Manuel Castro", fecha: "28/07/2026", photos: { before: generateSvgPhoto("#991b1b", "FALLA DE GENERACIÓN", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "REVISIÓN SISTEMA DIÉSEL", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "PRUEBA EN CARGA OPTIMA", "FASE 3: DESPUÉS") } }
+                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026", photos: { before: generateSvgPhoto("#991b1b", "INSPECCIÓN GENERAL", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "MANTENIMIENTO EN PROCESO", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "TRABAJO CONCLUIDO", "FASE 3: DESPUÉS") } },
+                    { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026", photos: { before: generateSvgPhoto("#991b1b", "LUMINARIAS DAÑADAS", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "CAMBIO DE BALASTROS", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "ILUMINACIÓN OPTIMA", "FASE 3: DESPUÉS") } }
                 ]
             }
         };
@@ -685,7 +686,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // CONEXIÓN DIRECTA EN TIEMPO REAL VÍA GOOGLE APPS SCRIPT
+        // CONEXIÓN VÍA GOOGLE APPS SCRIPT
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -763,14 +764,17 @@
                     badgeColor = "bg-red-50 text-red-700 border-red-200";
                 }
 
-                // Renderizado condicional: foto si existe URL válida o icono ilustrativo de tipo de item si no la hay
+                // Renderizado condicional sin 'image_not_found' roto: si viene la URL la dibuja, de lo contrario coloca un avatar con icono limpio
                 let imgContent = '';
-                if (photoUrl && photoUrl.trim() !== '') {
-                    imgContent = `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto">`;
+                if (photoUrl && photoUrl.trim() !== '' && photoUrl.indexOf('http') === 0) {
+                    imgContent = `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                  <div style="display:none;" class="w-full h-full items-center justify-center bg-slate-100">
+                                      <i data-lucide="${origen === 'Herramientas' ? 'wrench' : (origen === 'Equipos' ? 'cpu' : 'armchair')}" class="w-5 h-5 text-slate-400"></i>
+                                  </div>`;
                 } else {
                     let iconName = origen === "Herramientas" ? "wrench" : (origen === "Equipos" ? "cpu" : "armchair");
                     let iconColor = origen === "Herramientas" ? "text-emerald-500" : (origen === "Equipos" ? "text-amber-500" : "text-blue-500");
-                    imgContent = `<i data-lucide="${iconName}" class="w-6 h-6 ${iconColor}"></i>`;
+                    imgContent = `<i data-lucide="${iconName}" class="w-5 h-5 ${iconColor}"></i>`;
                 }
 
                 tbody.innerHTML += `
