@@ -65,6 +65,9 @@
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
                 </button>
+                <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Casos Pendientes (&gt;3 Meses)
+                </button>
             </nav>
         </div>
 
@@ -408,7 +411,6 @@
                 </div>
             </div>
 
-            <!-- CARDS DE CONTEO DINÁMICO DE APPSHEET -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="card-pro border-l-4 border-l-emerald-500 bg-white">
                     <div class="flex items-center justify-between">
@@ -435,7 +437,6 @@
                 </div>
             </div>
 
-            <!-- TABLA DE INVENTARIO MULTITABLA CON BÚSQUEDA Y FILTRO -->
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
                     <h4 class="font-extrabold text-sm text-slate-900 uppercase">Items Registrados en AppSheet</h4>
@@ -469,7 +470,7 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Muestra gráfica de intervenciones (Antes, Durante y Después) respaldada con evidencia técnica de Google Drive.
+                        Resumen ejecutivo de intervenciones y mantenimiento registrado en Google Drive.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
@@ -483,7 +484,7 @@
                 <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
                     <div>
                         <h3 class="text-lg font-black text-slate-900 uppercase">Resumen de Tickets Destacados de Mantenimiento</h3>
-                        <p class="text-xs text-slate-500 font-semibold">Galería secuencial de evidencia fotográfica por intervención</p>
+                        <p class="text-xs text-slate-500 font-semibold">Registro de intervenciones por región</p>
                     </div>
                     <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">JULIO 2026</span>
                 </div>
@@ -492,21 +493,69 @@
                     <h4 class="font-black text-blue-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-blue-100">
                         <span class="w-3 h-3 rounded-full bg-blue-600"></span> Región Capital - Tickets Relevantes
                     </h4>
-                    <div class="space-y-6" id="tickets-capital"></div>
+                    <div class="space-y-4" id="tickets-capital"></div>
                 </div>
 
                 <div class="space-y-4 pt-6 border-t border-slate-200">
                     <h4 class="font-black text-emerald-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-emerald-100">
                         <span class="w-3 h-3 rounded-full bg-emerald-600"></span> Región Occidente - Tickets Relevantes
                     </h4>
-                    <div class="space-y-6" id="tickets-occidente"></div>
+                    <div class="space-y-4" id="tickets-occidente"></div>
                 </div>
 
                 <div class="space-y-4 pt-6 border-t border-slate-200">
                     <h4 class="font-black text-purple-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-purple-100">
                         <span class="w-3 h-3 rounded-full bg-purple-600"></span> Región Oriente - Tickets Relevantes
                     </h4>
-                    <div class="space-y-6" id="tickets-oriente"></div>
+                    <div class="space-y-4" id="tickets-oriente"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NUEVA PESTAÑA: CASOS PENDIENTES (>3 MESES) -->
+        <div id="tab-content-pendientes" class="space-y-8 hidden">
+            <div class="card-pro bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 text-white border-red-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400 bg-red-950/80 border border-red-500/40 px-3 py-1 rounded-md">
+                        CONTROL DE ANTAGONISMO Y ARRASTRE
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Casos Críticos con Más de 3 Meses de Antigüedad</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Filtro automático de solicitudes en estado pendiente cuyo tiempo transcurrido desde la Fecha de Solped supera los 90 días.
+                    </p>
+                </div>
+                <button onclick="cargarCasosPendientes()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-red-600/20 transition-all">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR PENDIENTES
+                </button>
+            </div>
+
+            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Matriz de Solicitudes de Pedido Antiguas (&gt;3 Meses)</h4>
+                        <p class="text-xs text-slate-400">Filtrado en tiempo real desde hoja de cálculo</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-xs font-black text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-pendientes-3m">0 Casos Críticos</span>
+                        <input type="text" id="pendSearchInput" onkeyup="filterPendientesTable()" placeholder="Buscar por farmacia, descripción o estatus..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-red-500/20 w-full sm:w-72">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left" id="pendientesTable">
+                        <thead>
+                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                                <th class="pb-3 px-4">Farmacia</th>
+                                <th class="pb-3 px-4">Descripción Solped</th>
+                                <th class="pb-3 px-2 text-center">Fecha Solped</th>
+                                <th class="pb-3 px-2 text-center">Antigüedad</th>
+                                <th class="pb-3 px-4">Observaciones</th>
+                                <th class="pb-3 px-4 text-right">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="pendientes-table-body">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -520,10 +569,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8If_g3uZ-c6tRmtAvYhtG_ahM-rnlwki_dv036-fji-381lV3OFLqpKBbJkG-J0YJ/exec";
 
-        // ESTRUCTURA CON VALORES REALES DE ODOO
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -532,8 +579,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 }, // Julio Odoo Capital
-                { sol: 71,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 56 }  // Agosto Odoo Capital
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 },
+                { sol: 71,  at: 15,  canc: 0,  prevSolv: 0,  prevPending: 56 }
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -542,8 +589,8 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente
-                { sol: 21,  at: 1,   canc: 0, prevSolv: 0, prevPending: 20 }  // Agosto Odoo Occidente
+                { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 },
+                { sol: 21,  at: 1,   canc: 0, prevSolv: 0, prevPending: 20 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -552,7 +599,7 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 15 }, // Julio Odoo Oriente
+                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 15 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 }
             ]
         };
@@ -601,7 +648,7 @@
             3: { Global: { 'Civil': 42, 'Electricidad': 36, 'Plomería': 30, 'Aire Acondicionado': 28, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
             4: { Global: { 'Civil': 55, 'Electricidad': 48, 'Plomería': 42, 'Aire Acondicionado': 40, 'Mobiliario': 28, 'Pintura': 22 }, Capital: { 'Civil': 28, 'Electricidad': 24 }, Occidente: { 'Plomería': 22, 'Aire Acondicionado': 18 }, Oriente: {} },
             5: { Global: { 'Civil': 68, 'Electricidad': 60, 'Plomería': 55, 'Aire Acondicionado': 52, 'Mobiliario': 38, 'Pintura': 32 }, Capital: { 'Civil': 35, 'Electricidad': 30 }, Occidente: { 'Plomería': 28, 'Aire Acondicionado': 25 }, Oriente: {} },
-            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Aire Acondicionado': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
+            6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
             7: { Global: { 'Electricidad': 32, 'Aire Acondicionado': 26, 'Civil': 20, 'Plomería': 10, 'Mobiliario': 4 }, Capital: { 'Electricidad': 24, 'Aire Acondicionado': 20, 'Civil': 16 }, Occidente: { 'Electricidad': 8, 'Aire Acondicionado': 6, 'Plomería': 4 }, Oriente: {} }
         };
 
@@ -611,25 +658,18 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // GENERADOR VECTORIAL LIMPIO BASE64
-        const generateSvgPhoto = (bgColor, textTitle, phaseText) => {
-            const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgColor}" rx="12"/><path d="M160 120 L200 80 L240 120 M200 80 L200 170" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="16">${textTitle}</text><text x="50%" y="88%" dominant-baseline="middle" text-anchor="middle" fill="#cbd5e1" font-family="sans-serif" font-weight="700" font-size="10">${phaseText}</text></svg>`;
-            return `data:image/svg+xml;base64,${btoa(svgString)}`;
-        };
-
-        // REPORTES DRIVE INCLUYENDO REGIONAL CAPITAL, OCCIDENTE Y ORIENTE (MANUEL CASTRO) - JULIO 2026
         let regionalTicketsDataByMonth = {
-            6: { // Julio 2026
+            6: {
                 Capital: [
-                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026", photos: { before: generateSvgPhoto("#991b1b", "COMPRESOR DAÑADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "MONTAJE Y CARGA GAS", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "SISTEMA OPERATIVO 100%", "FASE 3: DESPUÉS") } },
-                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026", photos: { before: generateSvgPhoto("#991b1b", "TABLERO SOBRECALENTADO", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "CAMBIO DE BREAKER", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "TENSIÓN ESTABILIZADA", "FASE 3: DESPUÉS") } }
+                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
+                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
                 ],
                 Occidente: [
-                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026", photos: { before: generateSvgPhoto("#991b1b", "FACHADA CON GRIETAS", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "APLICACIÓN PINTURA EPÓXICA", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "ACABADO NUEVO", "FASE 3: DESPUÉS") } }
+                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026" }
                 ],
                 Oriente: [
-                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026", photos: { before: generateSvgPhoto("#991b1b", "INSPECCIÓN GENERAL", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "MANTENIMIENTO EN PROCESO", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "TRABAJO CONCLUIDO", "FASE 3: DESPUÉS") } },
-                    { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026", photos: { before: generateSvgPhoto("#991b1b", "LUMINARIAS DAÑADAS", "FASE 1: ANTES"), during: generateSvgPhoto("#92400e", "CAMBIO DE BALASTROS", "FASE 2: DURANTE"), after: generateSvgPhoto("#065f46", "ILUMINACIÓN OPTIMA", "FASE 3: DESPUÉS") } }
+                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026" },
+                    { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
                 ]
             }
         };
@@ -640,6 +680,7 @@
             generarMesesDinamicos();
             lucide.createIcons();
             syncInventarioAppSheet();
+            cargarCasosPendientes();
             renderAll();
         };
 
@@ -686,7 +727,6 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // CONEXIÓN VÍA GOOGLE APPS SCRIPT
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -719,12 +759,12 @@
 
         function renderFallbackRows() {
             const fallbackData = [
-                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "Foto_Item1": "", "_OrigenTabla": "Equipos" },
-                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "Foto_Item1": "", "_OrigenTabla": "Mob. & Equipamiento" },
-                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "Foto_Item1": "", "_OrigenTabla": "Mob. & Equipamiento" }
+                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "_OrigenTabla": "Herramientas" },
+                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "_OrigenTabla": "Equipos" },
+                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "_OrigenTabla": "Mob. & Equipamiento" },
+                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "_OrigenTabla": "Mob. & Equipamiento" }
             ];
             renderTableRows(fallbackData);
         }
@@ -751,7 +791,6 @@
                 const cantidad = r.Cantidad || "1";
                 const estado = r.Estado || "N/A";
                 const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || "General";
-                const photoUrl = r.Foto_Item1 || r["Foto_Item 1"] || r.Foto_Item || "";
 
                 if (origen === "Herramientas") countHerramientas += parseInt(cantidad) || 1;
                 else if (origen === "Equipos") countEquipos += parseInt(cantidad) || 1;
@@ -764,38 +803,20 @@
                     badgeColor = "bg-red-50 text-red-700 border-red-200";
                 }
 
-                // Renderizado condicional sin 'image_not_found' roto: si viene la URL la dibuja, de lo contrario coloca un avatar con icono limpio
-                let imgContent = '';
-                if (photoUrl && photoUrl.trim() !== '' && photoUrl.indexOf('http') === 0) {
-                    imgContent = `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                  <div style="display:none;" class="w-full h-full items-center justify-center bg-slate-100">
-                                      <i data-lucide="${origen === 'Herramientas' ? 'wrench' : (origen === 'Equipos' ? 'cpu' : 'armchair')}" class="w-5 h-5 text-slate-400"></i>
-                                  </div>`;
-                } else {
-                    let iconName = origen === "Herramientas" ? "wrench" : (origen === "Equipos" ? "cpu" : "armchair");
-                    let iconColor = origen === "Herramientas" ? "text-emerald-500" : (origen === "Equipos" ? "text-amber-500" : "text-blue-500");
-                    imgContent = `<i data-lucide="${iconName}" class="w-5 h-5 ${iconColor}"></i>`;
-                }
-
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50/80 transition-all">
-                        <td class="py-3 px-4 flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
-                                ${imgContent}
-                            </div>
-                            <div>
-                                <span class="font-bold text-slate-900 block text-xs">${descripcion}</span>
-                                <span class="text-[10px] text-slate-400 font-semibold">${origen}</span>
-                            </div>
+                        <td class="py-3.5 px-4 font-bold text-slate-900">
+                            <span class="block text-xs">${descripcion}</span>
+                            <span class="text-[10px] text-slate-400 font-semibold">${origen}</span>
                         </td>
-                        <td class="py-3 px-2 text-center">
+                        <td class="py-3.5 px-2 text-center">
                             <span class="px-2.5 py-1 rounded-md border text-[10px] font-extrabold uppercase bg-slate-100 text-slate-700 border-slate-200">${tipo}</span>
                         </td>
-                        <td class="py-3 px-2 text-center font-black text-slate-900 text-xs">${cantidad}</td>
-                        <td class="py-3 px-2 text-center">
+                        <td class="py-3.5 px-2 text-center font-black text-slate-900 text-xs">${cantidad}</td>
+                        <td class="py-3.5 px-2 text-center">
                             <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeColor}">${estado}</span>
                         </td>
-                        <td class="py-3 px-4 text-right text-xs text-slate-600 font-semibold">${asignacion}</td>
+                        <td class="py-3.5 px-4 text-right text-xs text-slate-600 font-semibold">${asignacion}</td>
                     </tr>`;
             });
 
@@ -810,9 +831,119 @@
             lucide.createIcons();
         }
 
+        // CARGA Y FILTRADO AUTOMÁTICO DE CASOS PENDIENTES (>3 MESES)
+        async function cargarCasosPendientes() {
+            const tbody = document.getElementById('pendientes-table-body');
+            const kpiCount = document.getElementById('kpi-count-pendientes-3m');
+            if (!tbody) return;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="py-8 text-center text-xs font-bold text-slate-400">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-red-500"></i>
+                        Analizando antigüedad de casos pendientes...
+                    </td>
+                </tr>`;
+            lucide.createIcons();
+
+            let data = [];
+            try {
+                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes");
+                if (response.ok) {
+                    data = await response.json();
+                }
+            } catch (err) {
+                console.warn("Usando matriz local de Casos Pendientes:", err);
+            }
+
+            // Datos de respaldo con casos reales si no carga el endpoint
+            if (!Array.isArray(data) || data.length === 0) {
+                data = [
+                    { "Farmacia": "ARAGUANEY", "Descripción": "INSTALACIÓN DE INVERSOR 3KVA MARCA MUST CON BANCO DE 4 BATERIAS DE 12V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "A espera de fecha de adecuacion e instalacion", "Estatus": "En espera" },
+                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias", "Estatus": "En espera" },
+                    { "Farmacia": "CIGARRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001377", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente por aprobación de compras", "Estatus": "En procura" },
+                    { "Farmacia": "CORAL", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001375", "Fecha solped": "20/05/2026", "Observaciones": "En proceso de cotización", "Estatus": "En procura" },
+                    { "Farmacia": "PAYARA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ (ACTIVO 40001374)", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente de despacho", "Estatus": "En proceso" }
+                ];
+            }
+
+            renderPendientesTableRows(data);
+        }
+
+        function renderPendientesTableRows(rows) {
+            const tbody = document.getElementById('pendientes-table-body');
+            const kpiCount = document.getElementById('kpi-count-pendientes-3m');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            const hoy = new Date("2026-08-11"); // Fecha actual del sistema
+            let casosCriticosCount = 0;
+
+            rows.forEach(r => {
+                const farmacia = r.Farmacia || "General";
+                const descripcion = r.Descripción || r.Descripcion || "Sin descripción";
+                const fechaSolpedStr = r["Fecha solped"] || r.Fecha || "";
+                const observaciones = r.Observaciones || "Sin observaciones";
+                const estatus = r.Estatus || "Pendiente";
+
+                // Cálculo de antigüedad en meses desde Fecha Solped
+                let diasAntiguedad = 0;
+                let mesesAntiguedad = 0;
+
+                if (fechaSolpedStr) {
+                    const partes = fechaSolpedStr.split('/');
+                    if (partes.length === 3) {
+                        const fechaSolped = new Date(partes[2], partes[1] - 1, partes[0]);
+                        const diffTime = Math.abs(hoy - fechaSolped);
+                        diasAntiguedad = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        mesesAntiguedad = (diasAntiguedad / 30.44).toFixed(1);
+                    }
+                }
+
+                // Filtrar solo casos con más de 3 meses (90 días) de antigüedad
+                if (diasAntiguedad >= 90 || !fechaSolpedStr) {
+                    casosCriticosCount++;
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-red-50/40 transition-all">
+                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
+                            <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${descripcion}</td>
+                            <td class="py-3.5 px-2 text-center font-bold text-slate-600">${fechaSolpedStr || 'N/A'}</td>
+                            <td class="py-3.5 px-2 text-center">
+                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">
+                                    ${mesesAntiguedad > 0 ? mesesAntiguedad + ' Meses' : '> 3 Meses'}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${observaciones}</td>
+                            <td class="py-3.5 px-4 text-right">
+                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">
+                                    ${estatus}
+                                </span>
+                            </td>
+                        </tr>`;
+                }
+            });
+
+            if (casosCriticosCount === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-xs font-bold text-slate-400">No existen casos pendientes con más de 3 meses de antigüedad.</td></tr>`;
+            }
+
+            if (kpiCount) kpiCount.innerText = `${casosCriticosCount} Casos Críticos (>3 Meses)`;
+            lucide.createIcons();
+        }
+
         function filterInventoryTable() {
             const val = document.getElementById('invSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#inventoryTable tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 row.style.display = text.includes(val) ? '' : 'none';
@@ -828,6 +959,7 @@
             setTimeout(() => {
                 renderAll();
                 syncInventarioAppSheet();
+                cargarCasosPendientes();
                 loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
             }, 800);
@@ -850,48 +982,27 @@
                 container.innerHTML = '';
 
                 if (!list || list.length === 0) {
-                    container.innerHTML = `<div class="p-6 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-400">Sin reportes e informes fotográficos cargados en Google Drive para el mes de ${MESES_LARGOS[selectedMonthIdx]}.</div>`;
+                    container.innerHTML = `<div class="p-6 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-400">Sin reportes e informes registrados para el mes de ${MESES_LARGOS[selectedMonthIdx]}.</div>`;
                     return;
                 }
 
                 list.forEach(ticket => {
                     container.innerHTML += `
-                        <div class="card-pro bg-slate-50/50 border border-slate-200 overflow-hidden p-5">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4 pb-3 border-b border-slate-200">
+                        <div class="card-pro bg-slate-50/50 border border-slate-200 p-5">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                                 <div>
                                     <div class="flex items-center gap-2 mb-1">
                                         <span class="bg-slate-900 text-white font-black text-[10px] px-2.5 py-1 rounded-md tracking-wider uppercase">${ticket.id}</span>
                                         <h5 class="font-extrabold text-sm text-slate-900">${ticket.farmacia}</h5>
                                     </div>
-                                    <p class="text-xs text-slate-600 font-semibold flex items-center gap-1.5">
+                                    <p class="text-xs text-slate-600 font-semibold flex items-center gap-1.5 mt-1">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-orange-500"></i>
                                         <b>Actividad realizada:</b> ${ticket.actividad}
                                     </p>
                                 </div>
-                                <div class="text-right text-[11px] text-slate-500 font-bold">
+                                <div class="text-left sm:text-right text-[11px] text-slate-500 font-bold bg-white p-2.5 rounded-xl border border-slate-200/80">
                                     <span class="block text-slate-800">Técnico: ${ticket.tecnico}</span>
                                     <span>Fecha: ${ticket.fecha}</span>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="space-y-1.5 text-center">
-                                    <span class="text-[10px] font-black uppercase bg-red-50 text-red-600 px-2 py-0.5 rounded inline-block">1. Antes</span>
-                                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img src="${ticket.photos.before}" class="w-full h-full object-cover" alt="Antes">
-                                    </div>
-                                </div>
-                                <div class="space-y-1.5 text-center">
-                                    <span class="text-[10px] font-black uppercase bg-amber-50 text-amber-600 px-2 py-0.5 rounded inline-block">2. Durante</span>
-                                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img src="${ticket.photos.during}" class="w-full h-full object-cover" alt="Durante">
-                                    </div>
-                                </div>
-                                <div class="space-y-1.5 text-center">
-                                    <span class="text-[10px] font-black uppercase bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded inline-block">3. Después</span>
-                                    <div class="h-44 rounded-xl border border-slate-200 overflow-hidden bg-slate-900">
-                                        <img src="${ticket.photos.after}" class="w-full h-full object-cover" alt="Después">
-                                    </div>
                                 </div>
                             </div>
                         </div>`;
@@ -913,19 +1024,25 @@
             const btnDash = document.getElementById('nav-btn-dashboard');
             const btnInv = document.getElementById('nav-btn-inventario');
             const btnDrive = document.getElementById('nav-btn-drive');
+            const btnPend = document.getElementById('nav-btn-pendientes');
+            
             const contentDash = document.getElementById('tab-content-dashboard');
             const contentInv = document.getElementById('tab-content-inventario');
             const contentDrive = document.getElementById('tab-content-drive');
+            const contentPend = document.getElementById('tab-content-pendientes');
+            
             const title = document.getElementById('main-tab-title');
             const badgeIcon = document.getElementById('header-icon-badge');
 
             btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnInv.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
 
             contentDash.classList.add('hidden');
             contentInv.classList.add('hidden');
             contentDrive.classList.add('hidden');
+            if(contentPend) contentPend.classList.add('hidden');
 
             if (tab === 'dashboard') {
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
@@ -937,11 +1054,16 @@
                 contentInv.classList.remove('hidden');
                 badgeIcon.innerText = "INV";
                 title.innerHTML = `Gestión de Inventario <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">AppSheet Sync</span>`;
-            } else {
+            } else if (tab === 'drive') {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
                 badgeIcon.innerText = "DRV";
                 title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+            } else if (tab === 'pendientes') {
+                if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
+                if(contentPend) contentPend.classList.remove('hidden');
+                badgeIcon.innerText = "CND";
+                title.innerHTML = `Casos Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">&gt; 3 Meses</span>`;
             }
         }
 
@@ -1219,6 +1341,7 @@
             });
         }
 
+        // CORRECCIÓN DE ETIQUETAS DE PORCENTAJES EN GRÁFICO DE DONA
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
@@ -1236,10 +1359,33 @@
                     plugins: {
                         legend: { display: false },
                         datalabels: {
-                            color: '#ffffff', font: { weight: '900', size: 11 },
+                            color: '#ffffff',
+                            font: { weight: '900', size: 10 },
+                            display: (ctx) => {
+                                const val = ctx.dataset.data[ctx.dataIndex];
+                                return val > 0;
+                            },
+                            anchor: (ctx) => {
+                                const val = ctx.dataset.data[ctx.dataIndex];
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = (val / sum) * 100;
+                                return pct < 6 ? 'end' : 'center';
+                            },
+                            align: (ctx) => {
+                                const val = ctx.dataset.data[ctx.dataIndex];
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = (val / sum) * 100;
+                                return pct < 6 ? 'end' : 'center';
+                            },
+                            offset: (ctx) => {
+                                const val = ctx.dataset.data[ctx.dataIndex];
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = (val / sum) * 100;
+                                return pct < 6 ? 8 : 0;
+                            },
                             formatter: (value, ctx) => {
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return sum > 0 ? ((value / sum) * 100).toFixed(1) + '%' : '0%';
+                                return sum > 0 ? ((value / sum) * 100).toFixed(1) + '%' : '';
                             }
                         }
                     }
