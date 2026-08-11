@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Sincronizando Odoo & AppSheet API...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Sincronizando Odoo, Drive & AppSheet API...</p>
             </div>
         </div>
     </div>
@@ -386,7 +386,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA INVENTARIO (APPSHEET CONECTADO VÍA GOOGLE APPS SCRIPT) -->
+        <!-- PESTAÑA INVENTARIO (APPSHEET CONECTADO VÍA GOOGLE APPS SCRIPT API) -->
         <div id="tab-content-inventario" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -460,7 +460,7 @@
             </div>
         </div>
 
-        <!-- REPORTES DRIVE (INFORMES EXCLUSIVOS DE JULIO CON SINTAXIS CORREGIDA) -->
+        <!-- REPORTES DRIVE (INFORMES DE INFRAESTRUCTURA) -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -469,7 +469,7 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Muestra gráfica de intervenciones (Antes, Durante y Después) respaldada con evidencia técnica.
+                        Muestra gráfica de intervenciones (Antes, Durante y Después) respaldada con evidencia técnica de Google Drive.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3 items-center">
@@ -520,8 +520,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH1OnkbIl8blINkPWbu84cZnfm0t6cVelx7wyUHAyTiLDB6Bf728pEDjarcw9B8Cmd/exec";
+        // NUEVA URL ACTUALIZADA DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8If_g3uZ-c6tRmtAvYhtG_ahM-rnlwki_dv036-fji-381lV3OFLqpKBbJkG-J0YJ/exec";
 
         // ESTRUCTURA CON VALORES REALES DE ODOO
         let appData = {
@@ -611,7 +611,7 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // GENERADOR DE FOTOS SVG
+        // GENERADOR DE FOTOS SVG DE SEGURIDAD
         const generateSvgPhoto = (bgColor, textTitle, phaseText) => {
             return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 280"><rect width="400" height="280" fill="${bgColor}" rx="12"/><path d="M160 120 L200 80 L240 120 M200 80 L200 170" stroke="%23ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="%23ffffff" font-family="sans-serif" font-weight="900" font-size="16">${textTitle}</text><text x="50%" y="88%" dominant-baseline="middle" text-anchor="middle" fill="%23cbd5e1" font-family="sans-serif" font-weight="700" font-size="10">${phaseText}</text></svg>`;
         };
@@ -697,7 +697,7 @@
             lucide.createIcons();
 
             try {
-                const response = await fetch(APPSCRIPT_URL);
+                const response = await fetch(APPSCRIPT_URL + "?action=inventario");
                 if (!response.ok) throw new Error("Error en la conexión con el servidor");
 
                 const data = await response.json();
@@ -715,12 +715,12 @@
 
         function renderFallbackRows() {
             const fallbackData = [
-                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "", "_OrigenTabla": "Herramientas" },
-                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "Foto_Item1": "", "_OrigenTabla": "Equipos" },
-                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "Foto_Item1": "", "_OrigenTabla": "Mob. & Equipamiento" },
-                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "Foto_Item1": "", "_OrigenTabla": "Mob. & Equipamiento" }
+                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "Foto_Item1": "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Digital", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
+                { "Nombre_Item": "Piqueta de albañil punta y pala", "Tipo": "Manual", "Cantidad": "1", "Estado": "Nuevo", "Asignado a": "Sin Asignación Cubo Negro", "Foto_Item1": "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=200&auto=format&fit=crop", "_OrigenTabla": "Herramientas" },
+                { "Activo": "Herramienta para mtto aire", "Tipo": "Bomba de vacio 0.5 hp", "Nombre_Item": "1", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "Guarenas", "Foto_Item1": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&auto=format&fit=crop", "_OrigenTabla": "Equipos" },
+                { "Activo": "N/A", "Tipo": "Equipamiento de tienda", "Nombre_Item": "Cesta de mercado", "Cantidad": "1", "Estado": "Bueno", "Sede o Sucursal": "cubo negro", "Foto_Item1": "https://images.unsplash.com/photo-1580828343064-fde4fc206bc6?w=200&auto=format&fit=crop", "_OrigenTabla": "Mob. & Equipamiento" },
+                { "Activo": "Vetce", "Tipo": "Refrigeración", "Nombre_Item": "Aire 20tn", "Cantidad": "1", "Estado": "Dañado", "Sede o Sucursal": "Vetce", "Foto_Item1": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=200&auto=format&fit=crop", "_OrigenTabla": "Mob. & Equipamiento" }
             ];
             renderTableRows(fallbackData);
         }
@@ -747,7 +747,7 @@
                 const cantidad = r.Cantidad || "1";
                 const estado = r.Estado || "N/A";
                 const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || "General";
-                const photoUrl = r.Foto_Item1 || r["Foto_Item 1"] || "";
+                const photoUrl = r.Foto_Item1 || r["Foto_Item 1"] || r.Foto_Item || "";
 
                 if (origen === "Herramientas") countHerramientas += parseInt(cantidad) || 1;
                 else if (origen === "Equipos") countEquipos += parseInt(cantidad) || 1;
@@ -763,8 +763,8 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50/80 transition-all">
                         <td class="py-3 px-4 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0">
-                                ${photoUrl ? `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto">` : `<i data-lucide="package" class="w-5 h-5 text-slate-400"></i>`}
+                            <div class="w-14 h-14 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
+                                ${photoUrl ? `<img src="${photoUrl}" class="w-full h-full object-cover" alt="Foto" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\'package\' class=\'w-6 h-6 text-slate-400\'></i>'; lucide.createIcons();">` : `<i data-lucide="package" class="w-6 h-6 text-slate-400"></i>`}
                             </div>
                             <div>
                                 <span class="font-bold text-slate-900 block text-xs">${descripcion}</span>
@@ -772,11 +772,11 @@
                             </div>
                         </td>
                         <td class="py-3 px-2 text-center">
-                            <span class="px-2 py-0.5 rounded-md border text-[10px] font-extrabold uppercase bg-slate-100 text-slate-700 border-slate-200">${tipo}</span>
+                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-extrabold uppercase bg-slate-100 text-slate-700 border-slate-200">${tipo}</span>
                         </td>
                         <td class="py-3 px-2 text-center font-black text-slate-900 text-xs">${cantidad}</td>
                         <td class="py-3 px-2 text-center">
-                            <span class="px-2 py-0.5 rounded-md border text-[10px] font-black uppercase ${badgeColor}">${estado}</span>
+                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeColor}">${estado}</span>
                         </td>
                         <td class="py-3 px-4 text-right text-xs text-slate-600 font-semibold">${asignacion}</td>
                     </tr>`;
