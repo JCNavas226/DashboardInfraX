@@ -38,7 +38,7 @@
     </div>
 
     <!-- ASIDE NAVIGATION MENU -->
-    <aside class="w-72 bg-slate-900 text-white flex flex-col fixed h-full z-50 shadow-2xl">
+    <aside class="w-72 bg-slate-900 text-white flex flex-col fixed h-full z-50 shadow-2xl overflow-y-auto">
         <div class="p-6 border-b border-slate-800">
             <div class="flex items-center gap-3.5">
                 <div class="w-12 h-12 bg-[#ff5500] rounded-2xl flex flex-col items-center justify-center p-1.5 flex-shrink-0 shadow-lg shadow-orange-600/30">
@@ -67,6 +67,12 @@
                 </button>
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
+                </button>
+                <button id="nav-btn-bomberos" onclick="switchTab('bomberos')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="flame" class="w-4 h-4 text-orange-400"></i> Permisos de Bomberos
+                </button>
+                <button id="nav-btn-fumigaciones" onclick="switchTab('fumigaciones')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="bug" class="w-4 h-4 text-sky-400"></i> Control de Fumigaciones
                 </button>
             </nav>
         </div>
@@ -411,6 +417,7 @@
                 </div>
             </div>
 
+            <!-- CARDS DE CONTEO DINÁMICO DE APPSHEET -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="card-pro border-l-4 border-l-emerald-500 bg-white">
                     <div class="flex items-center justify-between">
@@ -437,6 +444,7 @@
                 </div>
             </div>
 
+            <!-- TABLA DE INVENTARIO COMPLETA -->
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
                     <h4 class="font-extrabold text-sm text-slate-900 uppercase">Items Registrados en AppSheet</h4>
@@ -486,7 +494,7 @@
                         <h3 class="text-lg font-black text-slate-900 uppercase">Resumen de Tickets Destacados de Mantenimiento</h3>
                         <p class="text-xs text-slate-500 font-semibold">Registro de intervenciones por región</p>
                     </div>
-                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">JULIO 2026</span>
+                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">AGOSTO 2026</span>
                 </div>
 
                 <div class="space-y-4">
@@ -560,6 +568,100 @@
             </div>
         </div>
 
+        <!-- PESTAÑA: PERMISOS DE BOMBEROS -->
+        <div id="tab-content-bomberos" class="space-y-8 hidden">
+            <div class="card-pro bg-gradient-to-r from-orange-950 via-slate-900 to-slate-900 text-white border-orange-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/80 border border-orange-500/40 px-3 py-1 rounded-md">
+                        CONTROL DE PERMISOLOGÍA MUNICIPAL Y BOMBEROS
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Farmacias con Permisos de Bomberos Próximos a Vencer (&le; 1 Mes)</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Monitoreo preventivo de licencias y certificaciones con vencimiento estimado dentro de los próximos 30 días.
+                    </p>
+                </div>
+                <button onclick="cargarPermisosBomberos()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR BOMBEROS
+                </button>
+            </div>
+
+            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Listado de Vencimientos de Bomberos (&le; 30 Días)</h4>
+                        <p class="text-xs text-slate-400">Consulta en vivo desde hoja de control e indicadores de gestión</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-bomberos">0 Alertas de Bomberos</span>
+                        <input type="text" id="bomberosSearchInput" onkeyup="filterBomberosTable()" placeholder="Buscar farmacia, región o estado..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-orange-500/20 w-full sm:w-72">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left" id="bomberosTable">
+                        <thead>
+                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                                <th class="pb-3 px-4">Farmacia</th>
+                                <th class="pb-3 px-4 text-center">Región</th>
+                                <th class="pb-3 px-4 text-center">Estado</th>
+                                <th class="pb-3 px-2 text-center">Fecha de Vencimiento</th>
+                                <th class="pb-3 px-4 text-right">Días Faltantes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="bomberos-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA: CONTROL DE FUMIGACIONES -->
+        <div id="tab-content-fumigaciones" class="space-y-8 hidden">
+            <div class="card-pro bg-gradient-to-r from-sky-950 via-slate-900 to-slate-900 text-white border-sky-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky-400 bg-sky-950/80 border border-sky-500/40 px-3 py-1 rounded-md">
+                        CONTROL SANITARIO TRIMESTRAL (CICLO 90 DÍAS)
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Alertas de Fumigación Próximas a Vencer (&le; 21 Días)</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Control de renovaciones trimestrales. Alerta automática cuando faltan 21 días o menos para cumplir los 3 meses de vigencia.
+                    </p>
+                </div>
+                <button onclick="cargarFumigaciones()" class="bg-sky-600 hover:bg-sky-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-sky-600/20 transition-all">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR FUMIGACIONES
+                </button>
+            </div>
+
+            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Calendario de Renovación Sanitaria de Fumigación</h4>
+                        <p class="text-xs text-slate-400">Consulta en vivo desde hoja de control de fumigaciones</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-xs font-black text-sky-600 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-fumigaciones">0 Alertas de Fumigación</span>
+                        <input type="text" id="fumigacionesSearchInput" onkeyup="filterFumigacionesTable()" placeholder="Buscar farmacia, región o estado..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-sky-500/20 w-full sm:w-72">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left" id="fumigacionesTable">
+                        <thead>
+                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                                <th class="pb-3 px-4">Farmacia</th>
+                                <th class="pb-3 px-4 text-center">Región</th>
+                                <th class="pb-3 px-4 text-center">Estado</th>
+                                <th class="pb-3 px-2 text-center">Fecha de Fumigación</th>
+                                <th class="pb-3 px-4 text-right">Días Faltantes (Ciclo 3 Meses)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="fumigaciones-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -572,7 +674,7 @@
         // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
-        // ESTRUCTURA ACTUALIZADA CON DATOS REALES DE ODOO (Agosto: Capital 88, Occidente 29 -> Suma exacta: 117)
+        // ESTRUCTURA CON VALORES REALES DE ODOO (Agosto: Capital 88 + Occidente 29 = 117)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -632,7 +734,6 @@
             7: { resuelto: 20, asignado: 78, progreso: 16, procura: 3, cancelada: 0, workTypes: { 'Correctivo': 65, 'Preventivo': 28, 'Sin Clasificar': 14, 'Apoyo': 7, 'Mejora': 3, 'Predictivo': 0 } }
         };
 
-        // TOP 10 TIENDAS REALES CON DISTRIBUCIÓN PROPORCIONAL DE AGOSTO 2026
         let topStoresByMonthAndRegion = {
             0: { Global: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Capital: [{ name: "Farmacia Mangle", count: 12 }], Occidente: [{ name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Oriente: [] },
             1: { Global: [{ name: "Farmacia Traki Cabudare", count: 14 }, { name: "Farmacia Sanare", count: 11 }, { name: "Farmacia Economía", count: 9 }], Capital: [{ name: "Farmacia Mangle", count: 8 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 14 }], Oriente: [] },
@@ -655,8 +756,14 @@
             7: { Global: { 'Electricidad': 42, 'Aire Acondicionado': 32, 'Civil': 24, 'Plomería': 14, 'Mobiliario': 5 }, Capital: { 'Electricidad': 30, 'Aire Acondicionado': 24, 'Civil': 18 }, Occidente: { 'Electricidad': 12, 'Aire Acondicionado': 8, 'Plomería': 6 }, Oriente: {} }
         };
 
+        let workTypeStats = {
+            'Correctivo': { mes: 50, histo: 1802 }, 'Preventivo': { mes: 22, histo: 548 },
+            'Sin Clasificar': { mes: 12, histo: 288 }, 'Apoyo': { mes: 6, histo: 224 },
+            'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
+        };
+
         let regionalTicketsDataByMonth = {
-            6: { // Julio 2026
+            6: { // Julio
                 Capital: [
                     { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
                     { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
@@ -668,6 +775,15 @@
                     { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026" },
                     { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
                 ]
+            },
+            7: { // Agosto
+                Capital: [
+                    { id: "TK-CAP-9012", farmacia: "Farmacia Cutira", actividad: "Mantenimiento Preventivo A/A y Limpieza de Iluminación", tecnico: "Pablo Rocha", fecha: "04/08/2026" }
+                ],
+                Occidente: [
+                    { id: "TK-OCC-5011", farmacia: "Farmacia Sanare", actividad: "Reparación de Bomba de Agua Hidroneumática", tecnico: "Yanis Valera", fecha: "06/08/2026" }
+                ],
+                Oriente: []
             }
         };
 
@@ -678,6 +794,8 @@
             lucide.createIcons();
             syncInventarioAppSheet();
             cargarCasosPendientes();
+            cargarPermisosBomberos();
+            cargarFumigaciones();
             renderAll();
         };
 
@@ -724,7 +842,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // CONEXIÓN A INVENTARIO CON MATRIZ COMPLETA DE 10 REGISTROS REALES DE APPSHEET
+        // CONEXIÓN A INVENTARIO CON MATRIZ COMPLETA DE APPSHEET
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -756,7 +874,6 @@
         }
 
         function renderFallbackRows() {
-            // MATRIZ COMPLETA CON TODOS LOS 10 ITEMS REALES DE TU HOJA DE INVENTARIO GENERAL XANA
             const fallbackData = [
                 { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "_OrigenTabla": "Herramientas" },
                 { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Electrónica", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Región / Cuadrilla": "Ccs -1", "_OrigenTabla": "Herramientas" },
@@ -834,7 +951,7 @@
             lucide.createIcons();
         }
 
-        // CARGA Y FILTRADO DE TODAS LAS SOLICITUDES DE PEDIDO PENDIENTES HASTA MAYO DE 2026
+        // CARGA DE SOLICITUDES DE PEDIDO PENDIENTES
         async function cargarCasosPendientes() {
             const tbody = document.getElementById('pendientes-table-body');
             const kpiCount = document.getElementById('kpi-count-pendientes-3m');
@@ -863,7 +980,7 @@
                 data = [
                     { "Farmacia": "UVILLA", "Descripción": "SUMINISTRO DE 1300 LITROS DE GASOIL", "Fecha solped": "19/02/2026", "Observaciones": "Aumento a 1300 litros en junio", "Estatus": "En espera" },
                     { "Farmacia": "ARAGUANEY", "Descripción": "INSTALACIÓN DE INVERSOR 3KVA MARCA MUST CON BANCO DE 4 BATERIAS DE 12V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "A espera de fecha de adecuacion e instalacion", "Estatus": "En espera" },
-                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias y las cotizaciones por adecuacion e instalacion de inversores en tienda. El inversor de Rofassy sera reasignado a otra tienda de Region Capital", "Estatus": "En espera" },
+                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias", "Estatus": "En espera" },
                     { "Farmacia": "GUACHARO", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "Pendiente por aprobación de costos e instalación", "Estatus": "En espera" },
                     { "Farmacia": "SAPITO", "Descripción": "CONGELADOR DE 2 PUERTAS CERRADO", "Fecha solped": "17/05/2026", "Observaciones": "En proceso de compra por la gerencia de procura", "Estatus": "En proceso" },
                     { "Farmacia": "CIGARRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ ACTIVO 40001377", "Fecha solped": "20/05/2026", "Observaciones": "Pendiente por aprobación de compras", "Estatus": "En procura" },
@@ -907,7 +1024,6 @@
                     }
                 }
 
-                // Condición amplia: mostrar todo caso emitido hasta mayo de 2026 inclusive (SP > 3 Meses)
                 if (mesesAntiguedad >= 2.5 || !fechaSolpedStr) {
                     casosCriticosCount++;
 
@@ -939,6 +1055,188 @@
             lucide.createIcons();
         }
 
+        // CARGA Y FILTRADO DE PERMISOS DE BOMBEROS (VENCIMIENTO EN <= 30 DÍAS)
+        async function cargarPermisosBomberos() {
+            const tbody = document.getElementById('bomberos-table-body');
+            const kpiCount = document.getElementById('kpi-count-bomberos');
+            if (!tbody) return;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="py-8 text-center text-xs font-bold text-slate-400">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-orange-500"></i>
+                        Consultando hoja de Permisos de Bomberos...
+                    </td>
+                </tr>`;
+            lucide.createIcons();
+
+            let data = [];
+            try {
+                const response = await fetch(APPSCRIPT_URL + "?action=bomberos");
+                if (response.ok) data = await response.json();
+            } catch (err) {
+                console.warn("Usando matriz local de Permisos de Bomberos:", err);
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                data = [
+                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaVencimiento": "28/08/2026" },
+                    { "Farmacia": "FARMACIA CUTIRA", "Región": "Capital", "Estado": "Distrito Capital", "FechaVencimiento": "02/09/2026" },
+                    { "Farmacia": "FARMACIA TRAKI CABUDARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "15/08/2026" },
+                    { "Farmacia": "FARMACIA SANARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "10/09/2026" },
+                    { "Farmacia": "FARMACIA TRAKI CUMANÁ", "Región": "Oriente", "Estado": "Sucre", "FechaVencimiento": "05/09/2026" }
+                ];
+            }
+
+            renderBomberosTableRows(data);
+        }
+
+        function renderBomberosTableRows(rows) {
+            const tbody = document.getElementById('bomberos-table-body');
+            const kpiCount = document.getElementById('kpi-count-bomberos');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            const hoy = new Date("2026-08-11");
+            let bomberosCount = 0;
+
+            rows.forEach(r => {
+                const farmacia = r.Farmacia || r.Nombre || "General";
+                const region = r.Región || r.Region || "Nacional";
+                const estadoGeo = r.Estado || r.Ubicacion || "N/A";
+                const fechaVencStr = r.FechaVencimiento || r["Fecha de Vencimiento"] || r.Vencimiento || "";
+
+                let diasFaltantes = 999;
+                if (fechaVencStr) {
+                    const partes = fechaVencStr.toString().trim().split('/');
+                    if (partes.length === 3) {
+                        const fechaVenc = new Date(partes[2], partes[1] - 1, partes[0]);
+                        const diffTime = fechaVenc - hoy;
+                        diasFaltantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    }
+                }
+
+                // Filtrar vencimientos dentro de 30 días o ya vencidos
+                if (diasFaltantes <= 30) {
+                    bomberosCount++;
+                    let badgeClass = diasFaltantes <= 0 ? 'bg-red-100 text-red-700 border-red-300' : 'bg-orange-100 text-orange-700 border-orange-300';
+                    let textTexto = diasFaltantes <= 0 ? 'VENCIDO' : `${diasFaltantes} Días`;
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-orange-50/40 transition-all">
+                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
+                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${region}</td>
+                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${estadoGeo}</td>
+                            <td class="py-3.5 px-2 text-center font-bold text-slate-800">${fechaVencStr || 'N/A'}</td>
+                            <td class="py-3.5 px-4 text-right">
+                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeClass}">
+                                    ${textTexto}
+                                </span>
+                            </td>
+                        </tr>`;
+                }
+            });
+
+            if (bomberosCount === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-xs font-bold text-slate-400">No hay permisos de bomberos próximos a vencer dentro de los próximos 30 días.</td></tr>`;
+            }
+
+            if (kpiCount) kpiCount.innerText = `${bomberosCount} Alertas de Bomberos`;
+            lucide.createIcons();
+        }
+
+        // CARGA Y FILTRADO DE FUMIGACIONES (DURACIÓN 3 MESES / ALERTA <= 21 DÍAS)
+        async function cargarFumigaciones() {
+            const tbody = document.getElementById('fumigaciones-table-body');
+            const kpiCount = document.getElementById('kpi-count-fumigaciones');
+            if (!tbody) return;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="py-8 text-center text-xs font-bold text-slate-400">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-sky-500"></i>
+                        Consultando calendario de Fumigaciones...
+                    </td>
+                </tr>`;
+            lucide.createIcons();
+
+            let data = [];
+            try {
+                const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones");
+                if (response.ok) data = await response.json();
+            } catch (err) {
+                console.warn("Usando matriz local de Fumigaciones:", err);
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                data = [
+                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaFumigacion": "20/05/2026" },
+                    { "Farmacia": "FARMACIA ARAGUANEY", "Región": "Capital", "Estado": "Distrito Capital", "FechaFumigacion": "25/05/2026" },
+                    { "Farmacia": "FARMACIA TRAKI CABUDARE", "Región": "Occidente", "Estado": "Lara", "FechaFumigacion": "18/05/2026" },
+                    { "Farmacia": "FARMACIA SANARE", "Región": "Occidente", "Estado": "Lara", "FechaFumigacion": "01/06/2026" },
+                    { "Farmacia": "FARMACIA EL TIGRE", "Región": "Oriente", "Estado": "Anzoátegui", "FechaFumigacion": "22/05/2026" }
+                ];
+            }
+
+            renderFumigacionesTableRows(data);
+        }
+
+        function renderFumigacionesTableRows(rows) {
+            const tbody = document.getElementById('fumigaciones-table-body');
+            const kpiCount = document.getElementById('kpi-count-fumigaciones');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            const hoy = new Date("2026-08-11");
+            let fumigacionesCount = 0;
+
+            rows.forEach(r => {
+                const farmacia = r.Farmacia || r.Nombre || "General";
+                const region = r.Región || r.Region || "Nacional";
+                const estadoGeo = r.Estado || r.Ubicacion || "N/A";
+                const fechaFumStr = r.FechaFumigacion || r["Fecha de Fumigación"] || r.Fecha || "";
+
+                let diasFaltantes = 999;
+                if (fechaFumStr) {
+                    const partes = fechaFumStr.toString().trim().split('/');
+                    if (partes.length === 3) {
+                        const fechaFum = new Date(partes[2], partes[1] - 1, partes[0]);
+                        // La fumigación vence exactamente a los 90 días (3 meses)
+                        const fechaVencFum = new Date(fechaFum.getTime() + (90 * 24 * 60 * 60 * 1000));
+                        const diffTime = fechaVencFum - hoy;
+                        diasFaltantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    }
+                }
+
+                // Alertar si faltan 21 días o menos para cumplir los 3 meses (o ya pasaron los 90 días)
+                if (diasFaltantes <= 21) {
+                    fumigacionesCount++;
+                    let badgeClass = diasFaltantes <= 0 ? 'bg-red-100 text-red-700 border-red-300' : 'bg-sky-100 text-sky-700 border-sky-300';
+                    let textTexto = diasFaltantes <= 0 ? 'RENOVACIÓN VENCIDA' : `${diasFaltantes} Días Restantes`;
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-sky-50/40 transition-all">
+                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
+                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${region}</td>
+                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${estadoGeo}</td>
+                            <td class="py-3.5 px-2 text-center font-bold text-slate-800">${fechaFumStr || 'N/A'}</td>
+                            <td class="py-3.5 px-4 text-right">
+                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeClass}">
+                                    ${textTexto}
+                                </span>
+                            </td>
+                        </tr>`;
+                }
+            });
+
+            if (fumigacionesCount === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-xs font-bold text-slate-400">No hay farmacias con vencimiento de fumigación dentro de los próximos 21 días.</td></tr>`;
+            }
+
+            if (kpiCount) kpiCount.innerText = `${fumigacionesCount} Alertas de Fumigación`;
+            lucide.createIcons();
+        }
+
         function filterInventoryTable() {
             const val = document.getElementById('invSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#inventoryTable tbody tr');
@@ -957,6 +1255,24 @@
             });
         }
 
+        function filterBomberosTable() {
+            const val = document.getElementById('bomberosSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#bomberosTable tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
+        function filterFumigacionesTable() {
+            const val = document.getElementById('fumigacionesSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#fumigacionesTable tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
         function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -967,6 +1283,8 @@
                 renderAll();
                 syncInventarioAppSheet();
                 cargarCasosPendientes();
+                cargarPermisosBomberos();
+                cargarFumigaciones();
                 loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
             }, 800);
@@ -978,8 +1296,9 @@
             const orienteContainer = document.getElementById('tickets-oriente');
             const badgeMonth = document.getElementById('badge-drive-month');
 
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'AGOSTO';
             if (badgeMonth) {
-                badgeMonth.innerText = `${(MESES_LARGOS[selectedMonthIdx] || 'AGOSTO').toUpperCase()} 2026`;
+                badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
             }
 
             const monthData = regionalTicketsDataByMonth[selectedMonthIdx];
@@ -989,7 +1308,7 @@
                 container.innerHTML = '';
 
                 if (!list || list.length === 0) {
-                    container.innerHTML = `<div class="p-6 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-400">Sin reportes e informes registrados para el mes de ${MESES_LARGOS[selectedMonthIdx]}.</div>`;
+                    container.innerHTML = `<div class="p-6 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-400">Sin reportes e informes registrados para el mes de ${monthName}.</div>`;
                     return;
                 }
 
@@ -1032,11 +1351,15 @@
             const btnInv = document.getElementById('nav-btn-inventario');
             const btnDrive = document.getElementById('nav-btn-drive');
             const btnPend = document.getElementById('nav-btn-pendientes');
+            const btnBomb = document.getElementById('nav-btn-bomberos');
+            const btnFumi = document.getElementById('nav-btn-fumigaciones');
             
             const contentDash = document.getElementById('tab-content-dashboard');
             const contentInv = document.getElementById('tab-content-inventario');
             const contentDrive = document.getElementById('tab-content-drive');
             const contentPend = document.getElementById('tab-content-pendientes');
+            const contentBomb = document.getElementById('tab-content-bomberos');
+            const contentFumi = document.getElementById('tab-content-fumigaciones');
             
             const title = document.getElementById('main-tab-title');
             const badgeIcon = document.getElementById('header-icon-badge');
@@ -1045,11 +1368,15 @@
             btnInv.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnBomb) btnBomb.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnFumi) btnFumi.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
 
             contentDash.classList.add('hidden');
             contentInv.classList.add('hidden');
             contentDrive.classList.add('hidden');
             if(contentPend) contentPend.classList.add('hidden');
+            if(contentBomb) contentBomb.classList.add('hidden');
+            if(contentFumi) contentFumi.classList.add('hidden');
 
             if (tab === 'dashboard') {
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
@@ -1071,6 +1398,16 @@
                 if(contentPend) contentPend.classList.remove('hidden');
                 badgeIcon.innerText = "CND";
                 title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
+            } else if (tab === 'bomberos') {
+                if(btnBomb) btnBomb.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
+                if(contentBomb) contentBomb.classList.remove('hidden');
+                badgeIcon.innerText = "BOM";
+                title.innerHTML = `Permisos de Bomberos <span class="bg-orange-100 text-orange-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Vencimiento &le; 1 Mes</span>`;
+            } else if (tab === 'fumigaciones') {
+                if(btnFumi) btnFumi.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-sky-600 text-white font-bold text-xs shadow-lg shadow-sky-600/20 transition-all";
+                if(contentFumi) contentFumi.classList.remove('hidden');
+                badgeIcon.innerText = "FUM";
+                title.innerHTML = `Control de Fumigaciones <span class="bg-sky-100 text-sky-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Alerta &le; 21 Días</span>`;
             }
         }
 
@@ -1348,6 +1685,7 @@
             });
         }
 
+        // CORRECCIÓN DE ETIQUETAS EN GRÁFICO DE DONA
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
