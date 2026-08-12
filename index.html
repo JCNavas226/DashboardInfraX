@@ -755,7 +755,7 @@
 
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
-        // ESTRUCTURA CON VALORES REALES DE ODOO (Julio Total: 543 | Agosto Total: 127)
+        // ESTRUCTURA CORREGIDA CON CIFRAS REALES DE ODOO (Julio Total: 543 Solicitudes | Agosto Total: 127)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -774,7 +774,7 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente (180) -> 363+180 = 543
+                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente (180) -> Suma exacta: 543
                 { sol: 29,  at: 4,   canc: 0, prevSolv: 0, prevPending: 25 }  // Agosto Odoo Occidente
             ],
             Oriente: [
@@ -844,7 +844,7 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // REPORTES DRIVE DINÁMICOS POR MES (RESTRINGIDO A JULIO RELEVANTE)
+        // REPORTES DRIVE DINÁMICOS POR MES
         let regionalTicketsDataByMonth = {
             6: { // Julio 2026
                 Capital: [
@@ -859,7 +859,7 @@
                     { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
                 ]
             },
-            7: { // Agosto 2026 (Sin informes cargados en Drive)
+            7: { // Agosto 2026
                 Capital: [],
                 Occidente: [],
                 Oriente: []
@@ -922,6 +922,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
+        // CONEXIÓN A INVENTARIO CON FORZADO DE CACHÉ
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -930,13 +931,14 @@
                 <tr>
                     <td colspan="5" class="py-8 text-center text-xs font-bold text-slate-400">
                         <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-amber-500"></i>
-                        Consultando API de Google Apps Script / AppSheet...
+                        Consultando API de Google Apps Script / AppSheet en vivo...
                     </td>
                 </tr>`;
             lucide.createIcons();
 
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=inventario");
+                // Parámetro _nocache para forzar la lectura de datos recién ingresados
+                const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
                 if (!response.ok) throw new Error("Error en la conexión con el servidor");
 
                 const data = await response.json();
@@ -947,7 +949,7 @@
                     renderFallbackRows();
                 }
             } catch (err) {
-                console.warn("Fallo de red en Apps Script API, ejecutando vista de respaldo con matriz completa:", err);
+                console.warn("Fallo de red en Apps Script API, ejecutando vista de respaldo:", err);
                 renderFallbackRows();
             }
         }
@@ -1047,7 +1049,7 @@
 
             let data = [];
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes");
+                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime());
                 if (response.ok) data = await response.json();
             } catch (err) {
                 console.warn("Usando matriz local de Casos Pendientes:", err);
@@ -1149,7 +1151,7 @@
 
             let data = [];
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=bomberos");
+                const response = await fetch(APPSCRIPT_URL + "?action=bomberos&_nocache=" + new Date().getTime());
                 if (response.ok) data = await response.json();
             } catch (err) {
                 console.warn("Usando matriz local de Permisos de Bomberos:", err);
@@ -1238,7 +1240,7 @@
 
             let data = [];
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones");
+                const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones&_nocache=" + new Date().getTime());
                 if (response.ok) data = await response.json();
             } catch (err) {
                 console.warn("Usando matriz local de Fumigaciones:", err);
@@ -1314,7 +1316,7 @@
         // CARGA DE AUDITORÍAS DE INFRAESTRUCTURA (FILTRO DE ÚLTIMO INFORME POR TIENDA)
         let auditoriasGlobalData = [
             { tienda: "FARMACIA CUTIRA", actividades: "Sustitución de balastros en luminarias, reparación de fuga en desagüe de A/A, sellado de grietas en fachada principal.", fecha: "05/08/2026", auditor: "Ing. Reinaldo Guzmán" },
-            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" }, // Registro antiguo descartado
+            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" }, // Registro antiguo filtrado
             { tienda: "FARMACIA MANGLE", actividades: "Ajuste de presostato en compresor A/A, reubicación de extintores CO2, pintura en marco de puerta posterior.", fecha: "02/08/2026", auditor: "Ing. Yanis Valera" },
             { tienda: "FARMACIA ORQUIDEA", actividades: "Soportes de lavamanos desprendidos, reemplazo de breaker trifásico 30A, pintura en paredes internas.", fecha: "07/08/2026", auditor: "Pablo Rocha" },
             { tienda: "FARMACIA TRAKI CABUDARE", actividades: "Reparación de filtración en muro de depósito, engrase de rieles en santamaría.", fecha: "03/08/2026", auditor: "Ing. Yanis Valera" },
@@ -1326,7 +1328,7 @@
             const kpiCount = document.getElementById('kpi-count-auditorias');
             if (!tbody) return;
 
-            // LÓGICA DE ÚLTIMO INFORME: Agrupar por tienda y conservar solo la fecha más reciente
+            // Agrupar por tienda y conservar sólo la fecha de auditoría más reciente
             const ultimasAuditorias = {};
 
             auditoriasGlobalData.forEach(item => {
@@ -1742,7 +1744,7 @@
                 volData.push(sumM);
             }
 
-            const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6, 15.7];
+            const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 68.5, 15.7];
             const filteredSla = slaBase.slice(startIdx, endIdx + 1);
 
             charts.growth = new Chart(ctxGrowth, {
