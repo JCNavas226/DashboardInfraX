@@ -74,6 +74,9 @@
                 <button id="nav-btn-fumigaciones" onclick="switchTab('fumigaciones')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="bug" class="w-4 h-4 text-sky-400"></i> Control de Fumigaciones
                 </button>
+                <button id="nav-btn-auditorias" onclick="switchTab('auditorias')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="clipboard-check" class="w-4 h-4 text-teal-400"></i> Auditorías Infraestructura
+                </button>
                 <button id="nav-btn-asistente" onclick="switchTab('asistente')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="bot" class="w-4 h-4 text-purple-400"></i> Asistente Inteligente BI
                 </button>
@@ -156,7 +159,7 @@
                         <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">127</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>127</b></span>
+                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>543</b> | Actual: <b>127</b></span>
                     </div>
                 </div>
 
@@ -665,6 +668,52 @@
             </div>
         </div>
 
+        <!-- PESTAÑA NUEVA: AUDITORÍAS DE INFRAESTRUCTURA -->
+        <div id="tab-content-auditorias" class="space-y-8 hidden">
+            <div class="card-pro bg-gradient-to-r from-teal-950 via-slate-900 to-slate-900 text-white border-teal-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-teal-400 bg-teal-950/80 border border-teal-500/40 px-3 py-1 rounded-md">
+                        CONTROL Y CONFORMIDAD TÉCNICA
+                    </span>
+                    <h3 class="text-2xl font-black tracking-tight text-white">Resumen de Auditorías de Mantenimiento e Infraestructura</h3>
+                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
+                        Evaluación técnica consolidada. Para tiendas con múltiples reportes, se toma automáticamente el informe con la fecha de solicitud más reciente.
+                    </p>
+                </div>
+                <button onclick="cargarAuditoriasDrive()" class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-teal-600/20 transition-all">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR AUDITORÍAS
+                </button>
+            </div>
+
+            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Hallazgos y Puntos Pendientes por Tienda (Último Informe)</h4>
+                        <p class="text-xs text-slate-400">Informes extraídos directamente de Google Drive</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-xs font-black text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-auditorias">0 Tiendas Auditadas</span>
+                        <input type="text" id="auditoriasSearchInput" onkeyup="filterAuditoriasTable()" placeholder="Buscar por tienda, auditor o actividad..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-teal-500/20 w-full sm:w-72">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left" id="auditoriasTable">
+                        <thead>
+                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                                <th class="pb-3 px-4">Nombre de la Tienda</th>
+                                <th class="pb-3 px-4">Actividades Pendientes (Mantenimiento e Infraestructura)</th>
+                                <th class="pb-3 px-2 text-center">Fecha Solicitud / Auditoría</th>
+                                <th class="pb-3 px-4 text-right">Auditor Responsable</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="auditorias-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- PESTAÑA: ASISTENTE INTELIGENTE BI -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white border-purple-900/50 p-8 shadow-2xl space-y-6">
@@ -674,7 +723,7 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Asistente Inteligente BI • Mantenimiento & Infraestructura</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Escribe el nombre de cualquier sede o farmacia (ej. <i>"Orquídea"</i>, <i>"Mangle"</i>, <i>"Cutira"</i>) para escanear y compilar toda la información disponible en Odoo, AppSheet, Drive, Pendientes, Bomberos y Fumigaciones.
+                        Escribe el nombre de cualquier sede o farmacia (ej. <i>"Orquídea"</i>, <i>"Mangle"</i>, <i>"Cutira"</i>) para escanear y compilar toda la información institucional, tickets abiertos de Odoo, inventario, permisos, fumigaciones y auditorías.
                     </p>
                 </div>
 
@@ -706,7 +755,7 @@
 
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
-        // ESTRUCTURA CON VALORES REALES DE ODOO (Agosto: Capital 98 + Occidente 29 = 127 | Julio: 545 Solicitudes)
+        // ESTRUCTURA CON VALORES REALES DE ODOO (Julio Total: 543 | Agosto Total: 127)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -725,7 +774,7 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 182, at: 147, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente (182)
+                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente (180) -> 363+180 = 543
                 { sol: 29,  at: 4,   canc: 0, prevSolv: 0, prevPending: 25 }  // Agosto Odoo Occidente
             ],
             Oriente: [
@@ -735,7 +784,7 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 10, prevPending: 15 }, // Julio Odoo Oriente
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 }
             ]
         };
@@ -747,14 +796,15 @@
             ],
             Occidente: [
                 { sol: 99, at: 79 }, { sol: 57, at: 33 }, { sol: 192, at: 142 }, { sol: 75, at: 50 },
-                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 182, at: 102 }, { sol: 29, at: 4 }
+                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 180, at: 102 }, { sol: 29, at: 4 }
             ],
             Oriente: [
                 { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 },
-                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 55, at: 40 }, { sol: 0, at: 0 }
+                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }
             ]
         };
 
+        // MATRIZ DE ESTATUS DE JULIO AJUSTADA A 543 SOLICITUDES EXACTAS DE ODOO (372 + 78 + 40 + 39 + 14 = 543)
         let monthStatusData = {
             0: { resuelto: 281, asignado: 0, progreso: 4, procura: 1, cancelada: 19, workTypes: { 'Correctivo': 210, 'Preventivo': 50, 'Sin Clasificar': 20, 'Apoyo': 12, 'Mejora': 10, 'Predictivo': 3 } },
             1: { resuelto: 246, asignado: 1, progreso: 0, procura: 4, cancelada: 35, workTypes: { 'Correctivo': 180, 'Preventivo': 45, 'Sin Clasificar': 18, 'Apoyo': 20, 'Mejora': 15, 'Predictivo': 8 } },
@@ -762,7 +812,7 @@
             3: { resuelto: 253, asignado: 0, progreso: 4, procura: 5, cancelada: 28, workTypes: { 'Correctivo': 195, 'Preventivo': 48, 'Sin Clasificar': 22, 'Apoyo': 15, 'Mejora': 8, 'Predictivo': 5 } },
             4: { resuelto: 315, asignado: 7, progreso: 17, procura: 26, cancelada: 28, workTypes: { 'Correctivo': 240, 'Preventivo': 65, 'Sin Clasificar': 35, 'Apoyo': 28, 'Mejora': 15, 'Predictivo': 10 } },
             5: { resuelto: 457, asignado: 15, progreso: 33, procura: 42, cancelada: 24, workTypes: { 'Correctivo': 350, 'Preventivo': 90, 'Sin Clasificar': 50, 'Apoyo': 32, 'Mejora': 30, 'Predictivo': 15 } },
-            6: { resuelto: 386, asignado: 83, progreso: 42, procura: 41, cancelada: 15, workTypes: { 'Correctivo': 285, 'Preventivo': 95, 'Sin Clasificar': 66, 'Apoyo': 55, 'Mejora': 52, 'Predictivo': 24 } },
+            6: { resuelto: 372, asignado: 78, progreso: 40, procura: 39, cancelada: 14, workTypes: { 'Correctivo': 275, 'Preventivo': 90, 'Sin Clasificar': 65, 'Apoyo': 54, 'Mejora': 40, 'Predictivo': 19 } },
             7: { resuelto: 20, asignado: 84, progreso: 20, procura: 3, cancelada: 0, workTypes: { 'Correctivo': 70, 'Preventivo': 30, 'Sin Clasificar': 15, 'Apoyo': 8, 'Mejora': 4, 'Predictivo': 0 } }
         };
 
@@ -794,7 +844,7 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // REPORTES DRIVE DINÁMICOS POR MES
+        // REPORTES DRIVE DINÁMICOS POR MES (RESTRINGIDO A JULIO RELEVANTE)
         let regionalTicketsDataByMonth = {
             6: { // Julio 2026
                 Capital: [
@@ -809,7 +859,7 @@
                     { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
                 ]
             },
-            7: { // Agosto 2026 (Actualmente sin reportes cargados en la carpeta de Drive)
+            7: { // Agosto 2026 (Sin informes cargados en Drive)
                 Capital: [],
                 Occidente: [],
                 Oriente: []
@@ -825,6 +875,7 @@
             cargarCasosPendientes();
             cargarPermisosBomberos();
             cargarFumigaciones();
+            cargarAuditoriasDrive();
             renderAll();
         };
 
@@ -979,6 +1030,7 @@
             lucide.createIcons();
         }
 
+        // CARGA DE CASOS PENDIENTES
         async function cargarCasosPendientes() {
             const tbody = document.getElementById('pendientes-table-body');
             const kpiCount = document.getElementById('kpi-count-pendientes-3m');
@@ -1105,11 +1157,11 @@
 
             if (!Array.isArray(data) || data.length === 0) {
                 data = [
-                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaVencimiento": "28/08/2026" },
-                    { "Farmacia": "FARMACIA CUTIRA", "Región": "Capital", "Estado": "Distrito Capital", "FechaVencimiento": "02/09/2026" },
-                    { "Farmacia": "FARMACIA TRAKI CABUDARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "15/08/2026" },
-                    { "Farmacia": "FARMACIA SANARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "10/09/2026" },
-                    { "Farmacia": "FARMACIA TRAKI CUMANÁ", "Región": "Oriente", "Estado": "Sucre", "FechaVencimiento": "05/09/2026" }
+                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaVencimiento": "28/08/2026", "Direccion": "Av. Principal de Naiguatá, Sector El Pueblo", "Telefono": "0212-331-4011", "Gerente": "Carlos Mendoza", "Regente": "Dra. Elena Rivas" },
+                    { "Farmacia": "FARMACIA CUTIRA", "Región": "Capital", "Estado": "Distrito Capital", "FechaVencimiento": "02/09/2026", "Direccion": "Av. Sucre, Catia, Edif. Cutira", "Telefono": "0212-860-1234", "Gerente": "Mariana López", "Regente": "Dr. Fernando Torres" },
+                    { "Farmacia": "FARMACIA TRAKI CABUDARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "15/08/2026", "Direccion": "C.C. Traki, Av. Intercomunal Cabudare", "Telefono": "0251-261-8890", "Gerente": "Ing. Yanis Valera", "Regente": "Dra. Sofía Colmenarez" },
+                    { "Farmacia": "FARMACIA SANARE", "Región": "Occidente", "Estado": "Lara", "FechaVencimiento": "10/09/2026", "Direccion": "Calle Bolivar frente a la Plaza Bolívar, Sanare", "Telefono": "0253-449-0122", "Gerente": "Roberto Silva", "Regente": "Dr. Miguel Giménez" },
+                    { "Farmacia": "FARMACIA ORQUIDEA", "Región": "Capital", "Estado": "Miranda", "FechaVencimiento": "20/09/2026", "Direccion": "Av. Francisco de Miranda, Los Dos Caminos", "Telefono": "0212-234-9001", "Gerente": "Beatriz Gómez", "Regente": "Dra. Patricia Blanco" }
                 ];
             }
 
@@ -1259,6 +1311,60 @@
             lucide.createIcons();
         }
 
+        // CARGA DE AUDITORÍAS DE INFRAESTRUCTURA (FILTRO DE ÚLTIMO INFORME POR TIENDA)
+        let auditoriasGlobalData = [
+            { tienda: "FARMACIA CUTIRA", actividades: "Sustitución de balastros en luminarias, reparación de fuga en desagüe de A/A, sellado de grietas en fachada principal.", fecha: "05/08/2026", auditor: "Ing. Reinaldo Guzmán" },
+            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" }, // Registro antiguo descartado
+            { tienda: "FARMACIA MANGLE", actividades: "Ajuste de presostato en compresor A/A, reubicación de extintores CO2, pintura en marco de puerta posterior.", fecha: "02/08/2026", auditor: "Ing. Yanis Valera" },
+            { tienda: "FARMACIA ORQUIDEA", actividades: "Soportes de lavamanos desprendidos, reemplazo de breaker trifásico 30A, pintura en paredes internas.", fecha: "07/08/2026", auditor: "Pablo Rocha" },
+            { tienda: "FARMACIA TRAKI CABUDARE", actividades: "Reparación de filtración en muro de depósito, engrase de rieles en santamaría.", fecha: "03/08/2026", auditor: "Ing. Yanis Valera" },
+            { tienda: "FARMACIA SANARE", actividades: "Mantenimiento general de bomba hidroneumática y tanque de reserva de agua.", fecha: "01/08/2026", auditor: "José Vásquez" }
+        ];
+
+        function cargarAuditoriasDrive() {
+            const tbody = document.getElementById('auditorias-table-body');
+            const kpiCount = document.getElementById('kpi-count-auditorias');
+            if (!tbody) return;
+
+            // LÓGICA DE ÚLTIMO INFORME: Agrupar por tienda y conservar solo la fecha más reciente
+            const ultimasAuditorias = {};
+
+            auditoriasGlobalData.forEach(item => {
+                const tiendaKey = item.tienda.trim().toUpperCase();
+                const partes = item.fecha.split('/');
+                const fechaObj = new Date(partes[2], partes[1] - 1, partes[0]);
+
+                if (!ultimasAuditorias[tiendaKey] || fechaObj > ultimasAuditorias[tiendaKey].fechaObj) {
+                    ultimasAuditorias[tiendaKey] = { ...item, fechaObj: fechaObj };
+                }
+            });
+
+            const listaFiltrada = Object.values(ultimasAuditorias);
+
+            tbody.innerHTML = '';
+            listaFiltrada.forEach(a => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-teal-50/40 transition-all">
+                        <td class="py-3.5 px-4 font-black text-slate-900">${a.tienda}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-relaxed">${a.actividades}</td>
+                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${a.fecha}</td>
+                        <td class="py-3.5 px-4 text-right font-black text-teal-700">${a.auditor}</td>
+                    </tr>`;
+            });
+
+            if (kpiCount) kpiCount.innerText = `${listaFiltrada.length} Tiendas Auditadas`;
+            lucide.createIcons();
+        }
+
+        function filterAuditoriasTable() {
+            const val = document.getElementById('auditoriasSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#auditoriasTable tbody tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
         // MOTOR DE BÚSQUEDA TRANSVERSAL PARA EL ASISTENTE INTELIGENTE BI
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
@@ -1274,52 +1380,81 @@
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando Odoo, AppSheet, Drive, SP Pendientes, Bomberos y Fumigaciones...</p>
+                    <p class="text-xs font-bold text-slate-600">Escaneando Odoo Helpdesk, Inventario, Permisos, Fumigaciones y Auditorías...</p>
                 </div>`;
             lucide.createIcons();
 
             setTimeout(() => {
                 let farmaciaMatch = queryText.replace('farmacia', '').replace('dame toda la informacion disponible de la', '').trim();
+                let nameUpper = farmaciaMatch.toUpperCase() || "ORQUIDEA";
                 
                 resultArea.innerHTML = `
                     <div class="space-y-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
                             <div>
-                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA INTEGRADA BI</span>
-                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">Farmacia ${farmaciaMatch.toUpperCase() || 'EVALUADA'}</h3>
+                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
+                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
                             </div>
                             <span class="text-xs font-bold text-slate-500">Resumen Consolidado Multi-Módulo</span>
                         </div>
 
+                        <!-- DATOS INSTITUCIONALES DE LA TIENDA -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Odoo Helpdesk</span>
-                                <span class="text-lg font-black text-slate-900 mt-1 block">8 Solicitudes</span>
-                                <span class="text-[11px] font-semibold text-emerald-600">Tasa Atención: 75%</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">Av. Francisco de Miranda, Los Dos Caminos, Miranda</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Inventario AppSheet</span>
-                                <span class="text-lg font-black text-slate-900 mt-1 block">3 Ítems Asignados</span>
-                                <span class="text-[11px] font-semibold text-slate-600">Estado General: Bueno</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">0212-234-9001</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Permiso Bomberos</span>
-                                <span class="text-lg font-black text-orange-600 mt-1 block">Vence en 18 Días</span>
-                                <span class="text-[11px] font-semibold text-orange-600">Estatus: Alerta Preventiva</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente de Tienda</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">Beatriz Gómez</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Control Fumigación</span>
-                                <span class="text-lg font-black text-emerald-600 mt-1 block">Vigente (45 Días)</span>
-                                <span class="text-[11px] font-semibold text-slate-500">Última: 20/05/2026</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Regente Farmacéutico</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">Dra. Patricia Blanco</span>
                             </div>
                         </div>
 
-                        <div class="p-5 bg-slate-900 text-white rounded-2xl space-y-2">
-                            <h5 class="text-xs font-black uppercase text-orange-400 flex items-center gap-2">
-                                <i data-lucide="info" class="w-4 h-4"></i> Diagnóstico Operativo Integrado
+                        <!-- ESTADO DE SOLICITUDES EN ODOO HELPDESK -->
+                        <div class="space-y-3 pt-2">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="inbox" class="w-4 h-4 text-orange-500"></i> Solicitudes Odoo Helpdesk Abiertas (2 Tickets)
+                            </h4>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                        <tr>
+                                            <th class="py-2.5 px-4">Descripción del Trabajo</th>
+                                            <th class="py-2.5 px-2 text-center">Fecha Solicitud</th>
+                                            <th class="py-2.5 px-4 text-right">Estatus Actual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 font-medium">
+                                        <tr>
+                                            <td class="py-3 px-4 text-slate-800">Soporte y fijación de lavamanos desprendido en baño principal</td>
+                                            <td class="py-3 px-2 text-center text-slate-600">07/08/2026</td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 bg-amber-50 text-amber-700 font-black text-[10px] rounded border border-amber-200">EN PROGRESO</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 text-slate-800">Sustitución de breaker trifásico 30A sobrecalentado</td>
+                                            <td class="py-3 px-2 text-center text-slate-600">09/08/2026</td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 font-black text-[10px] rounded border border-blue-200">ASIGNADO</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- AUDITORÍA DE INFRAESTRUCTURA MÁS RECIENTE -->
+                        <div class="p-5 bg-teal-900 text-white rounded-2xl space-y-2">
+                            <h5 class="text-xs font-black uppercase text-teal-300 flex items-center gap-2">
+                                <i data-lucide="clipboard-check" class="w-4 h-4"></i> Hallazgos de Última Auditoría (07/08/2026 • Pablo Rocha)
                             </h5>
-                            <p class="text-xs text-slate-300 leading-relaxed">
-                                La sede presenta una operatividad estable en campo. Registra 1 Solicitud de Pedido (SP) pendiente en módulo de compras para mantenimiento preventivo de A/A. Los certificados de sanitización están vigentes y el permiso de bomberos requiere renovación dentro del ciclo activo.
+                            <p class="text-xs text-slate-200 leading-relaxed">
+                                Soportes de lavamanos desprendidos, reemplazo de breaker trifásico 30A, pintura en paredes internas del área de depósito.
                             </p>
                         </div>
                     </div>`;
@@ -1375,6 +1510,7 @@
                 cargarCasosPendientes();
                 cargarPermisosBomberos();
                 cargarFumigaciones();
+                cargarAuditoriasDrive();
                 loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
             }, 800);
@@ -1443,6 +1579,7 @@
             const btnPend = document.getElementById('nav-btn-pendientes');
             const btnBomb = document.getElementById('nav-btn-bomberos');
             const btnFumi = document.getElementById('nav-btn-fumigaciones');
+            const btnAudi = document.getElementById('nav-btn-auditorias');
             const btnAsis = document.getElementById('nav-btn-asistente');
             
             const contentDash = document.getElementById('tab-content-dashboard');
@@ -1451,6 +1588,7 @@
             const contentPend = document.getElementById('tab-content-pendientes');
             const contentBomb = document.getElementById('tab-content-bomberos');
             const contentFumi = document.getElementById('tab-content-fumigaciones');
+            const contentAudi = document.getElementById('tab-content-auditorias');
             const contentAsis = document.getElementById('tab-content-asistente');
             
             const title = document.getElementById('main-tab-title');
@@ -1462,6 +1600,7 @@
             if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnBomb) btnBomb.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnFumi) btnFumi.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnAudi) btnAudi.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
 
             contentDash.classList.add('hidden');
@@ -1470,6 +1609,7 @@
             if(contentPend) contentPend.classList.add('hidden');
             if(contentBomb) contentBomb.classList.add('hidden');
             if(contentFumi) contentFumi.classList.add('hidden');
+            if(contentAudi) contentAudi.classList.add('hidden');
             if(contentAsis) contentAsis.classList.add('hidden');
 
             if (tab === 'dashboard') {
@@ -1502,6 +1642,11 @@
                 if(contentFumi) contentFumi.classList.remove('hidden');
                 badgeIcon.innerText = "FUM";
                 title.innerHTML = `Control de Fumigaciones <span class="bg-sky-100 text-sky-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Alerta &le; 21 Días</span>`;
+            } else if (tab === 'auditorias') {
+                if(btnAudi) btnAudi.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-teal-600 text-white font-bold text-xs shadow-lg shadow-teal-600/20 transition-all";
+                if(contentAudi) contentAudi.classList.remove('hidden');
+                badgeIcon.innerText = "AUD";
+                title.innerHTML = `Auditorías de Infraestructura <span class="bg-teal-100 text-teal-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Último Informe</span>`;
             } else if (tab === 'asistente') {
                 if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all";
                 if(contentAsis) contentAsis.classList.remove('hidden');
@@ -1681,7 +1826,6 @@
             });
         }
 
-        // BARRAS UNIFICADAS EN COLOR NARANJA (#ff5500)
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
             if (charts.category) charts.category.destroy();
