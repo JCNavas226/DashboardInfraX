@@ -864,7 +864,7 @@
         window.onload = () => {
             generarMesesDinamicos();
             lucide.createIcons();
-            syncWithOdoo(); // Llamada inicial real a Odoo
+            syncWithOdoo();
             syncInventarioAppSheet();
             cargarCasosPendientes();
             cargarPermisosBomberos();
@@ -916,7 +916,7 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // FUNCIÓN DE SINCRONIZACIÓN REAL CON ODOO A TRAVÉS DE APPSCRIPT
+        // FUNCIÓN DE SINCRONIZACIÓN DINÁMICA CON ODOO A TRAVÉS DE APPSCRIPT
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -925,23 +925,22 @@
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
             try {
-                // Consulta al Proxy backend seguro en Google Apps Script
                 const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${new Date().getTime()}`);
                 const odooRes = await response.json();
 
-                if (odooRes && odooRes.success && odooRes.tickets) {
-                    const totalOdoo = odooRes.total || odooRes.tickets.length;
+                if (odooRes && odooRes.success) {
                     const selMonth = parseInt(document.getElementById('mesSelector')?.value || 7);
 
-                    // Si devuelve conteo regional o por estado los asignamos
                     if (odooRes.regionalData) {
                         appData = odooRes.regionalData;
-                    } else {
-                        // Si nos devuelve el acumulado total actualizamos dinámicamente
-                        const capVal = Math.round(totalOdoo * 0.70);
-                        const occVal = totalOdoo - capVal;
+                    } else if (odooRes.total !== undefined || odooRes.tickets) {
+                        const totalReal = odooRes.total !== undefined ? odooRes.total : odooRes.tickets.length;
+                        const capVal = Math.round(totalReal * 0.70);
+                        const occVal = totalReal - capVal;
+
                         appData.Capital[selMonth].sol = capVal;
                         appData.Occidente[selMonth].sol = occVal;
+                        appData.Oriente[selMonth].sol = 0;
                     }
 
                     if (odooRes.monthStatusData) {
