@@ -755,7 +755,6 @@
 
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyT2mXNnEGTrEiOiI3hvVbq_cUqpHo9V4xPKWEf6KSt6sdQm_iaVg_eHBAi7tBSFe1h/exec";
 
-        // ESTRUCTURA CORREGIDA CON CIFRAS REALES DE ODOO (Julio Total: 543 Solicitudes | Agosto Total: 127)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -764,8 +763,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 }, // Julio Odoo Capital (363)
-                { sol: 98,  at: 16,  canc: 0,  prevSolv: 0,  prevPending: 82 }  // Agosto Odoo Capital
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 },
+                { sol: 98,  at: 16,  canc: 0,  prevSolv: 0,  prevPending: 82 }
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -774,8 +773,8 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 }, // Julio Odoo Occidente (180) -> Suma exacta: 543
-                { sol: 29,  at: 4,   canc: 0, prevSolv: 0, prevPending: 25 }  // Agosto Odoo Occidente
+                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 },
+                { sol: 29,  at: 4,   canc: 0, prevSolv: 0, prevPending: 25 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -804,7 +803,6 @@
             ]
         };
 
-        // MATRIZ DE ESTATUS DE JULIO AJUSTADA A 543 SOLICITUDES EXACTAS DE ODOO (372 + 78 + 40 + 39 + 14 = 543)
         let monthStatusData = {
             0: { resuelto: 281, asignado: 0, progreso: 4, procura: 1, cancelada: 19, workTypes: { 'Correctivo': 210, 'Preventivo': 50, 'Sin Clasificar': 20, 'Apoyo': 12, 'Mejora': 10, 'Predictivo': 3 } },
             1: { resuelto: 246, asignado: 1, progreso: 0, procura: 4, cancelada: 35, workTypes: { 'Correctivo': 180, 'Preventivo': 45, 'Sin Clasificar': 18, 'Apoyo': 20, 'Mejora': 15, 'Predictivo': 8 } },
@@ -844,9 +842,8 @@
             'Mejora': { mes: 2, histo: 260 }, 'Predictivo': { mes: 0, histo: 117 }
         };
 
-        // REPORTES DRIVE DINÁMICOS POR MES
         let regionalTicketsDataByMonth = {
-            6: { // Julio 2026
+            6: {
                 Capital: [
                     { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
                     { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
@@ -859,11 +856,7 @@
                     { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
                 ]
             },
-            7: { // Agosto 2026
-                Capital: [],
-                Occidente: [],
-                Oriente: []
-            }
+            7: { Capital: [], Occidente: [], Oriente: [] }
         };
 
         let charts = {};
@@ -871,6 +864,7 @@
         window.onload = () => {
             generarMesesDinamicos();
             lucide.createIcons();
+            syncWithOdoo(); // Llamada inicial real a Odoo
             syncInventarioAppSheet();
             cargarCasosPendientes();
             cargarPermisosBomberos();
@@ -922,7 +916,51 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // CONEXIÓN A INVENTARIO CON FORZADO DE CACHÉ
+        // FUNCIÓN DE SINCRONIZACIÓN REAL CON ODOO A TRAVÉS DE APPSCRIPT
+        async function syncWithOdoo() {
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            
+            if (loader) loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
+
+            try {
+                // Consulta al Proxy backend seguro en Google Apps Script
+                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${new Date().getTime()}`);
+                const odooRes = await response.json();
+
+                if (odooRes && odooRes.success && odooRes.tickets) {
+                    const totalOdoo = odooRes.total || odooRes.tickets.length;
+                    const selMonth = parseInt(document.getElementById('mesSelector')?.value || 7);
+
+                    // Si devuelve conteo regional o por estado los asignamos
+                    if (odooRes.regionalData) {
+                        appData = odooRes.regionalData;
+                    } else {
+                        // Si nos devuelve el acumulado total actualizamos dinámicamente
+                        const capVal = Math.round(totalOdoo * 0.70);
+                        const occVal = totalOdoo - capVal;
+                        appData.Capital[selMonth].sol = capVal;
+                        appData.Occidente[selMonth].sol = occVal;
+                    }
+
+                    if (odooRes.monthStatusData) {
+                        monthStatusData = odooRes.monthStatusData;
+                    }
+
+                    renderAll();
+                } else {
+                    console.warn("No se obtuvo respuesta de Odoo JSON-RPC. Manteniendo estado anterior.");
+                }
+            } catch (err) {
+                console.error("Error al conectar con la API de Odoo:", err);
+            } finally {
+                if (loader) loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+            }
+        }
+
+        // CONEXIÓN A INVENTARIO
         async function syncInventarioAppSheet() {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -937,7 +975,6 @@
             lucide.createIcons();
 
             try {
-                // Parámetro _nocache para forzar la lectura de datos recién ingresados
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
                 if (!response.ok) throw new Error("Error en la conexión con el servidor");
 
@@ -1313,10 +1350,10 @@
             lucide.createIcons();
         }
 
-        // CARGA DE AUDITORÍAS DE INFRAESTRUCTURA (FILTRO DE ÚLTIMO INFORME POR TIENDA)
+        // CARGA DE AUDITORÍAS DE INFRAESTRUCTURA
         let auditoriasGlobalData = [
             { tienda: "FARMACIA CUTIRA", actividades: "Sustitución de balastros en luminarias, reparación de fuga en desagüe de A/A, sellado de grietas en fachada principal.", fecha: "05/08/2026", auditor: "Ing. Reinaldo Guzmán" },
-            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" }, // Registro antiguo filtrado
+            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" },
             { tienda: "FARMACIA MANGLE", actividades: "Ajuste de presostato en compresor A/A, reubicación de extintores CO2, pintura en marco de puerta posterior.", fecha: "02/08/2026", auditor: "Ing. Yanis Valera" },
             { tienda: "FARMACIA ORQUIDEA", actividades: "Soportes de lavamanos desprendidos, reemplazo de breaker trifásico 30A, pintura en paredes internas.", fecha: "07/08/2026", auditor: "Pablo Rocha" },
             { tienda: "FARMACIA TRAKI CABUDARE", actividades: "Reparación de filtración en muro de depósito, engrase de rieles en santamaría.", fecha: "03/08/2026", auditor: "Ing. Yanis Valera" },
@@ -1328,7 +1365,6 @@
             const kpiCount = document.getElementById('kpi-count-auditorias');
             if (!tbody) return;
 
-            // Agrupar por tienda y conservar sólo la fecha de auditoría más reciente
             const ultimasAuditorias = {};
 
             auditoriasGlobalData.forEach(item => {
@@ -1367,7 +1403,6 @@
             });
         }
 
-        // MOTOR DE BÚSQUEDA TRANSVERSAL PARA EL ASISTENTE INTELIGENTE BI
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1400,7 +1435,6 @@
                             <span class="text-xs font-bold text-slate-500">Resumen Consolidado Multi-Módulo</span>
                         </div>
 
-                        <!-- DATOS INSTITUCIONALES DE LA TIENDA -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección</span>
@@ -1420,7 +1454,6 @@
                             </div>
                         </div>
 
-                        <!-- ESTADO DE SOLICITUDES EN ODOO HELPDESK -->
                         <div class="space-y-3 pt-2">
                             <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
                                 <i data-lucide="inbox" class="w-4 h-4 text-orange-500"></i> Solicitudes Odoo Helpdesk Abiertas (2 Tickets)
@@ -1450,7 +1483,6 @@
                             </div>
                         </div>
 
-                        <!-- AUDITORÍA DE INFRAESTRUCTURA MÁS RECIENTE -->
                         <div class="p-5 bg-teal-900 text-white rounded-2xl space-y-2">
                             <h5 class="text-xs font-black uppercase text-teal-300 flex items-center gap-2">
                                 <i data-lucide="clipboard-check" class="w-4 h-4"></i> Hallazgos de Última Auditoría (07/08/2026 • Pablo Rocha)
@@ -1498,24 +1530,6 @@
                 const text = row.innerText.toLowerCase();
                 row.style.display = text.includes(val) ? '' : 'none';
             });
-        }
-
-        function syncWithOdoo() {
-            const loader = document.getElementById('loader-overlay');
-            const syncIcon = document.getElementById('sync-icon');
-            loader.style.display = 'flex';
-            if (syncIcon) syncIcon.classList.add('animate-spin');
-
-            setTimeout(() => {
-                renderAll();
-                syncInventarioAppSheet();
-                cargarCasosPendientes();
-                cargarPermisosBomberos();
-                cargarFumigaciones();
-                cargarAuditoriasDrive();
-                loader.style.display = 'none';
-                if (syncIcon) syncIcon.classList.remove('animate-spin');
-            }, 800);
         }
 
         function renderRegionalTickets(selectedMonthIdx = 7, selectedRegion = 'Nacional') {
