@@ -156,10 +156,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">545</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">288</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>547</b> | Actual: <b>545</b></span>
+                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>288</b></span>
                     </div>
                 </div>
 
@@ -169,10 +169,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">389</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">60</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">71.4% del mes</span>
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">20.8% del mes</span>
                     </div>
                 </div>
 
@@ -182,11 +182,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">80</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">0</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">De meses previos</span>
-                        <span class="text-blue-700 font-extrabold" id="kpi-backlog-sub">80 Casos</span>
+                        <span class="text-blue-700 font-extrabold" id="kpi-backlog-sub">0 Casos</span>
                     </div>
                 </div>
 
@@ -196,11 +196,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE TOTAL</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">156</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">262</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">Capital + Occ. + Ori.</span>
-                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">126 + 33 + 25</span>
+                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">191 + 69 + 2</span>
                     </div>
                 </div>
             </div>
@@ -323,7 +323,7 @@
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
                         <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">JULIO 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">AGOSTO 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -331,8 +331,8 @@
                         <div class="w-[310px] h-[310px] relative flex items-center justify-center">
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL JULIO:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">545</span>
+                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL AGOSTO:</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">288</span>
                             </div>
                         </div>
                     </div>
@@ -450,7 +450,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑAS ADICIONALES (SOLICITUDES, BOMBEROS, FUMIGACIONES, AUDITORÍAS, ASISTENTE) -->
+        <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -466,6 +466,7 @@
             </div>
         </div>
 
+        <!-- PERMISOS BOMBEROS -->
         <div id="tab-content-bomberos" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -481,6 +482,7 @@
             </div>
         </div>
 
+        <!-- FUMIGACIONES -->
         <div id="tab-content-fumigaciones" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -496,6 +498,7 @@
             </div>
         </div>
 
+        <!-- AUDITORÍAS -->
         <div id="tab-content-auditorias" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -511,6 +514,7 @@
             </div>
         </div>
 
+        <!-- ASISTENTE INTELIGENTE BI -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
@@ -532,6 +536,7 @@
 
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWqBEl_lcsxzMkA8xQ5wrOUHPLzLS1QMdIs7Yg90IgDDe_NyMYLoQ_5l6kp0pe3Zv2/exec";
 
+        // BASELINE REPOSITORIO DE DATOS
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -541,7 +546,7 @@
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
                 { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 }, // Julio = 363
-                { sol: 180, at: 35,  canc: 0,  prevSolv: 0,  prevPending: 145 }  // Agosto Real Odoo
+                { sol: 180, at: 35,  canc: 0,  prevSolv: 0,  prevPending: 191 }  // Agosto = 180
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -551,7 +556,7 @@
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
                 { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },  // Julio = 180 (363 + 180 + 2 = 545 Total)
-                { sol: 78,  at: 15,  canc: 0, prevSolv: 0, prevPending: 63 }   // Agosto Real Odoo
+                { sol: 78,  at: 15,  canc: 0, prevSolv: 0, prevPending: 69 }   // Agosto = 78
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -561,7 +566,7 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },      // Julio = 2
-                { sol: 30, at: 10, canc: 0, prevSolv: 0, prevPending: 20 }      // Agosto Real (180 + 78 + 30 = 288 Total Agosto)
+                { sol: 30, at: 10, canc: 0, prevSolv: 0, prevPending: 2 }       // Agosto = 30 (180 + 78 + 30 = 288 Total Agosto)
             ]
         };
 
@@ -672,7 +677,7 @@
 
             if (!selector) return;
 
-            const mesActualIdx = 6; // Julio por defecto
+            const mesActualIdx = 7; // Agosto por defecto
             const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel, backlogMonthSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
@@ -883,13 +888,13 @@
             lucide.createIcons();
         }
 
-        /* RECALCULO DE BACKLOG EVALUADO - VALORES REALES DE LA FOTO 7 */
+        /* RECALCULO DE BACKLOG PENDIENTE HISTÓRICO Y EVALUADO SEGÚN EL MES */
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 6);
+            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
 
             let totalBacklogPendienteGlobal = 0;
             let partesPendientesArr = [];
@@ -898,11 +903,11 @@
                 let totalBacklogPrevio = 0;
                 let casosSolventadosMesActual = 0;
 
-                if (selectedMonthIdx === 6) { // Julio 2026 (Valores exactos Foto 7)
+                if (selectedMonthIdx === 6) { // Julio 2026 (Valores exactos)
                     if (r === 'Capital') { totalBacklogPrevio = 126; casosSolventadosMesActual = 54; }
                     if (r === 'Occidente') { totalBacklogPrevio = 33; casosSolventadosMesActual = 16; }
                     if (r === 'Oriente') { totalBacklogPrevio = 35; casosSolventadosMesActual = 10; }
-                } else if (selectedMonthIdx === 7) { // Agosto 2026
+                } else if (selectedMonthIdx === 7) { // Agosto 2026 (Suma Acumulada Previa Exclusiva)
                     if (r === 'Capital') { totalBacklogPrevio = 191; casosSolventadosMesActual = 0; }
                     if (r === 'Occidente') { totalBacklogPrevio = 69; casosSolventadosMesActual = 0; }
                     if (r === 'Oriente') { totalBacklogPrevio = 2; casosSolventadosMesActual = 0; }
@@ -949,16 +954,18 @@
                     </div>`;
             });
 
-            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+            if (selectedMonthIdx === 7) { // En Agosto calcula 191 + 69 + 2 = 262
+                document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
+                document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+            }
         }
 
-        /* TIPO DE TRABAJO (PORCENTAJES EN TEXTO BLANCO) */
-        function renderWorkTypeSection(mIdx = 6) {
+        /* TIPO DE TRABAJO (SOLO CORRECTIVO, PREVENTIVO Y MEJORA EN TEXTO BLANCO) */
+        function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
 
-            const mData = monthStatusData[mIdx] || monthStatusData[6];
+            const mData = monthStatusData[mIdx] || monthStatusData[7];
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
             
             const correctivoSuma = (mData.workTypes['Correctivo'] || 0) + (mData.workTypes['Sin Clasificar'] || 0) + (mData.workTypes['Apoyo'] || 0) + (mData.workTypes['Predictivo'] || 0);
@@ -1003,11 +1010,11 @@
         }
 
         /* DISTRIBUCIÓN DE ESTATUS DEL MES (PORCENTAJES EN TEXTO BLANCO) */
-        function renderStatusDoughnut(mIdx = 6) {
+        function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || monthStatusData[6];
+            const mData = monthStatusData[mIdx] || monthStatusData[7];
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
             const vals = [mData.resuelto, mData.asignado, mData.progreso, mData.procura, mData.cancelada];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
@@ -1050,7 +1057,7 @@
             });
         }
 
-        /* GRÁFICAS REGIONALES RESTAURADAS CON LÍNEAS DE % ATENCIÓN */
+        /* DIBUJO DE GRÁFICAS REGIONALES CON ESTILOS 3D RESTAURADOS */
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1240,7 +1247,7 @@
             }, 50);
         }
 
-        /* ASISTENTE INTELIGENTE MEJORADO */
+        /* ASISTENTE INTELIGENTE BI DE CONSULTA CRUZADA MULTI-MÓDULO */
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1263,7 +1270,7 @@
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos para Farmacia ${nameUpper}...</p>
+                    <p class="text-xs font-bold text-slate-600">Escaneando matriz de datos para Farmacia ${nameUpper}...</p>
                 </div>`;
             lucide.createIcons();
 
@@ -1387,10 +1394,10 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 6);
+            const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 7);
             const selectedReg = document.getElementById('topStoreRegSelector')?.value || 'Global';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[6];
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7];
             const items = monthData[selectedReg] || monthData.Global || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
 
@@ -1412,9 +1419,9 @@
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
             if (charts.category) charts.category.destroy();
 
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 6);
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
             const selectedReg = document.getElementById('catRegSelector')?.value || 'Global';
-            const stats = (categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[6])[selectedReg] || {};
+            const stats = (categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[7])[selectedReg] || {};
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1474,13 +1481,13 @@
             });
         }
 
-        function renderRegionalTickets(selectedMonthIdx = 6, selectedRegion = 'Nacional') {
+        function renderRegionalTickets(selectedMonthIdx = 7, selectedRegion = 'Nacional') {
             const capitalContainer = document.getElementById('tickets-capital');
             const occidenteContainer = document.getElementById('tickets-occidente');
             const orienteContainer = document.getElementById('tickets-oriente');
             const badgeMonth = document.getElementById('badge-drive-month');
 
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'JULIO';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'AGOSTO';
             if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
 
             const monthData = regionalTicketsDataByMonth[selectedMonthIdx];
@@ -1613,9 +1620,9 @@
         function renderAll() {
             const selector = document.getElementById('mesSelector');
             const regSelector = document.getElementById('regSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 6;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
             const selectedRegion = regSelector ? regSelector.value : 'Nacional';
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Julio';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
             const catBadge = document.getElementById('badge-cat-month');
@@ -1659,13 +1666,20 @@
             document.getElementById('kpi-backlog-atendido').innerText = backlogSolventadoMes;
             document.getElementById('kpi-backlog-sub').innerText = `${backlogSolventadoMes} Casos`;
 
-            let pendVal = Math.max(0, solVal - totalAtendidosConCanc);
-            document.getElementById('kpi-pend').innerText = pendVal;
-            
-            const capPend = (appData.Capital[selectedMonthIdx]?.sol || 0) - ((appData.Capital[selectedMonthIdx]?.at || 0) + (appData.Capital[selectedMonthIdx]?.canc || 0));
-            const occPend = (appData.Occidente[selectedMonthIdx]?.sol || 0) - ((appData.Occidente[selectedMonthIdx]?.at || 0) + (appData.Occidente[selectedMonthIdx]?.canc || 0));
-            const oriPend = (appData.Oriente[selectedMonthIdx]?.sol || 0) - ((appData.Oriente[selectedMonthIdx]?.at || 0) + (appData.Oriente[selectedMonthIdx]?.canc || 0));
-            document.getElementById('kpi-pend-sub').innerText = `${capPend} + ${occPend} + ${oriPend}`;
+            // Backlog Pendiente Total Dinámico
+            if (selectedMonthIdx === 7) {
+                // Cálculo de solicitudes acumuladas abiertas de meses pasados
+                document.getElementById('kpi-pend').innerText = 262;
+                document.getElementById('kpi-pend-sub').innerText = "191 + 69 + 2";
+            } else {
+                let pendVal = Math.max(0, solVal - totalAtendidosConCanc);
+                document.getElementById('kpi-pend').innerText = pendVal;
+                
+                const capPend = (appData.Capital[selectedMonthIdx]?.sol || 0) - ((appData.Capital[selectedMonthIdx]?.at || 0) + (appData.Capital[selectedMonthIdx]?.canc || 0));
+                const occPend = (appData.Occidente[selectedMonthIdx]?.sol || 0) - ((appData.Occidente[selectedMonthIdx]?.at || 0) + (appData.Occidente[selectedMonthIdx]?.canc || 0));
+                const oriPend = (appData.Oriente[selectedMonthIdx]?.sol || 0) - ((appData.Oriente[selectedMonthIdx]?.at || 0) + (appData.Oriente[selectedMonthIdx]?.canc || 0));
+                document.getElementById('kpi-pend-sub').innerText = `${capPend} + ${occPend} + ${oriPend}`;
+            }
 
             renderGrowthChart();
             renderTopStores();
@@ -1676,6 +1690,36 @@
             renderBacklogRegionalSection();
             renderRegionalChartsCierre();
             renderRegionalTickets(selectedMonthIdx, selectedRegion);
+        }
+
+        function filterInventoryTable() {
+            const val = document.getElementById('invSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#inventoryTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function filterBomberosTable() {
+            const val = document.getElementById('bomberosSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#bomberosTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function filterFumigacionesTable() {
+            const val = document.getElementById('fumigacionesSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#fumigacionesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function filterAuditoriasTable() {
+            const val = document.getElementById('auditoriasSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#auditoriasTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function exportarAGoogleSlides() {
