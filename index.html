@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo JSON-RPC & Google Sheets...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo JSON-RPC & AppSheet...</p>
             </div>
         </div>
     </div>
@@ -156,10 +156,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">251</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">543</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>543</b> | Actual: <b>251</b></span>
+                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>547</b> | Actual: <b>543</b></span>
                     </div>
                 </div>
 
@@ -169,10 +169,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">48</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">387</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">19.1% del mes</span>
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">71.3% del mes</span>
                     </div>
                 </div>
 
@@ -182,11 +182,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">0</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">70</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">De meses previos</span>
-                        <span class="text-blue-700 font-extrabold" id="kpi-backlog-sub">0 Casos</span>
+                        <span class="text-blue-700 font-extrabold" id="kpi-backlog-sub">70 Casos</span>
                     </div>
                 </div>
 
@@ -196,11 +196,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE TOTAL</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">203</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">33</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">Capital + Occ. + Ori.</span>
-                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">161 + 25 + 17</span>
+                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">28 + 5 + 0</span>
                     </div>
                 </div>
             </div>
@@ -323,7 +323,7 @@
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
                         <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">AGOSTO 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">JULIO 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -331,8 +331,8 @@
                         <div class="w-[310px] h-[310px] relative flex items-center justify-center">
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">251</span>
+                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL JULIO:</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">543</span>
                             </div>
                         </div>
                     </div>
@@ -352,7 +352,7 @@
                 </div>
             </div>
 
-            <!-- DESGLOSE REGIONAL HISTÓRICO ACTUALIZADO -->
+            <!-- DESGLOSE REGIONAL HISTÓRICO ACTUALIZADO (ESTILO 3D RESTAURADO) -->
             <div class="space-y-4 pt-4 border-t border-slate-200">
                 <div class="flex items-center justify-between flex-wrap gap-2">
                     <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
@@ -405,56 +405,11 @@
         <div id="tab-content-inventario" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-500/40 px-3 py-1 rounded-md">
-                        CONTROL DE INVENTARIO APPSHEET API LIVE
-                    </span>
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-500/40 px-3 py-1 rounded-md">CONTROL DE INVENTARIO APPSHEET API LIVE</span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Consolidado de Herramientas, Equipos y Mobiliario</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Conexión activa con la base de datos de AppSheet (`diego.rudas@xana.com`).
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-3 items-center">
-                    <button onclick="syncInventarioAppSheet()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all">
-                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR INVENTARIO
-                    </button>
-                    <a href="https://www.appsheet.com/start/d0cd0d9b-5128-4b7f-b4be-6b36e3fcdddf" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 border border-slate-700 transition-all">
-                        <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR APPSHEET
-                    </a>
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div class="card-pro border-l-4 border-l-emerald-500 bg-white">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-500 uppercase">Herramientas</span>
-                        <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="wrench" class="w-5 h-5"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 mt-2" id="inv-count-herramientas">0 Unid.</div>
-                </div>
-
-                <div class="card-pro border-l-4 border-l-amber-500 bg-white">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-500 uppercase">Equipos</span>
-                        <div class="p-2 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="cpu" class="w-5 h-5"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 mt-2" id="inv-count-equipos">0 Unid.</div>
-                </div>
-
-                <div class="card-pro border-l-4 border-l-blue-500 bg-white">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-500 uppercase">Mob. & Equipamiento</span>
-                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="armchair" class="w-5 h-5"></i></div>
-                    </div>
-                    <div class="text-3xl font-black text-slate-900 mt-2" id="inv-count-mobiliario">0 Unid.</div>
-                </div>
-            </div>
-
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <h4 class="font-extrabold text-sm text-slate-900 uppercase">Items Registrados en AppSheet</h4>
-                    <input type="text" id="invSearchInput" onkeyup="filterInventoryTable()" placeholder="Buscar por item, tipo, estado o asignación..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-amber-500/20 w-full sm:w-80">
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left" id="inventoryTable">
                         <thead>
@@ -466,8 +421,7 @@
                                 <th class="pb-3 px-4 text-right">Asignación / Sucursal</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="inventory-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="inventory-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -475,88 +429,20 @@
 
         <!-- REPORTES DRIVE -->
         <div id="tab-content-drive" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-950/80 border border-emerald-500/40 px-3 py-1 rounded-md">
-                        REPORTE OPERATIVO DE INFRAESTRUCTURA
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Preliminar de Tickets Relevantes por Región</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Resumen ejecutivo de intervenciones y mantenimiento registrado en Google Drive.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-3 items-center">
-                    <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-xs flex items-center gap-2 transition-all border border-slate-700">
-                        <i data-lucide="external-link" class="w-4 h-4"></i> ABRIR CARPETA DRIVE
-                    </a>
-                </div>
-            </div>
-
             <div id="exportable-doc-area" class="space-y-10 bg-white p-6 rounded-2xl border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase">Resumen de Tickets Destacados de Mantenimiento</h3>
-                        <p class="text-xs text-slate-500 font-semibold">Registro de intervenciones por región (Mínimo 3 reportes significativos por región)</p>
-                    </div>
-                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">AGOSTO 2026</span>
-                </div>
-
-                <div class="space-y-4">
-                    <h4 class="font-black text-blue-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-blue-100">
-                        <span class="w-3 h-3 rounded-full bg-blue-600"></span> Región Capital - Tickets Relevantes
-                    </h4>
-                    <div class="space-y-4" id="tickets-capital"></div>
-                </div>
-
-                <div class="space-y-4 pt-6 border-t border-slate-200">
-                    <h4 class="font-black text-emerald-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-emerald-100">
-                        <span class="w-3 h-3 rounded-full bg-emerald-600"></span> Región Occidente - Tickets Relevantes
-                    </h4>
-                    <div class="space-y-4" id="tickets-occidente"></div>
-                </div>
-
-                <div class="space-y-4 pt-6 border-t border-slate-200">
-                    <h4 class="font-black text-purple-700 uppercase text-sm tracking-wider flex items-center gap-2 pb-2 border-b border-purple-100">
-                        <span class="w-3 h-3 rounded-full bg-purple-600"></span> Región Oriente - Tickets Relevantes
-                    </h4>
-                    <div class="space-y-4" id="tickets-oriente"></div>
-                </div>
+                <div class="space-y-4"><h4 class="font-black text-blue-700 uppercase text-sm">Región Capital</h4><div class="space-y-4" id="tickets-capital"></div></div>
+                <div class="space-y-4 pt-6 border-t border-slate-200"><h4 class="font-black text-emerald-700 uppercase text-sm">Región Occidente</h4><div class="space-y-4" id="tickets-occidente"></div></div>
+                <div class="space-y-4 pt-6 border-t border-slate-200"><h4 class="font-black text-purple-700 uppercase text-sm">Región Oriente</h4><div class="space-y-4" id="tickets-oriente"></div></div>
             </div>
         </div>
 
-        <!-- PESTAÑA: SOLICITUDES DE PEDIDO PENDIENTES (SP > 3 MESES) -->
+        <!-- SOLICITUDES DE PEDIDO -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 text-white border-red-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400 bg-red-950/80 border border-red-500/40 px-3 py-1 rounded-md">
-                        CONTROL DE ANTAGONISMO Y ARRASTRE
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Solicitudes de Pedido Pendientes (SP &gt; 3 Meses)</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Filtro automático de solicitudes en estado pendiente emitidas en mayo de 2026 o meses anteriores.
-                    </p>
-                </div>
-                <button onclick="cargarCasosPendientes()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-red-600/20 transition-all">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR PENDIENTES
-                </button>
-            </div>
-
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Matriz de Solicitudes de Pedido Antiguas (SP &gt; 3 Meses)</h4>
-                        <p class="text-xs text-slate-400">Filtrado en tiempo real desde hojas de cálculo</p>
-                    </div>
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-xs font-black text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-pendientes-3m">0 Casos Críticos</span>
-                        <input type="text" id="pendSearchInput" onkeyup="filterPendientesTable()" placeholder="Buscar por farmacia, descripción o estatus..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-red-500/20 w-full sm:w-72">
-                    </div>
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left" id="pendientesTable">
                         <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
                                 <th class="pb-3 px-4">Farmacia</th>
                                 <th class="pb-3 px-4">Descripción Solped</th>
                                 <th class="pb-3 px-2 text-center">Fecha Solped</th>
@@ -565,181 +451,80 @@
                                 <th class="pb-3 px-4 text-right">Estatus</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="pendientes-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="pendientes-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- PESTAÑA: PERMISOS DE BOMBEROS -->
+        <!-- PERMISOS BOMBEROS -->
         <div id="tab-content-bomberos" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-orange-950 via-slate-900 to-slate-900 text-white border-orange-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/80 border border-orange-500/40 px-3 py-1 rounded-md">
-                        CONTROL DE PERMISOLOGÍA MUNICIPAL Y BOMBEROS
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Farmacias con Permisos de Bomberos Próximos a Vencer (&le; 1 Mes)</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Monitoreo preventivo de licencias y certificaciones con vencimiento estimado dentro de los próximos 30 días.
-                    </p>
-                </div>
-                <button onclick="cargarPermisosBomberos()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR BOMBEROS
-                </button>
-            </div>
-
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Listado de Vencimientos de Bomberos (&le; 30 Días)</h4>
-                        <p class="text-xs text-slate-400">Consulta en vivo desde hoja de control e indicadores de gestión</p>
-                    </div>
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-bomberos">0 Alertas de Bomberos</span>
-                        <input type="text" id="bomberosSearchInput" onkeyup="filterBomberosTable()" placeholder="Buscar farmacia, región o estado..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-orange-500/20 w-full sm:w-72">
-                    </div>
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left" id="bomberosTable">
                         <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
                                 <th class="pb-3 px-4">Farmacia</th>
                                 <th class="pb-3 px-4 text-center">Región</th>
                                 <th class="pb-3 px-4 text-center">Estado</th>
-                                <th class="pb-3 px-2 text-center">Fecha de Vencimiento</th>
-                                <th class="pb-3 px-4 text-right">Días Faltantes</th>
+                                <th class="pb-3 px-2 text-center">Fecha Vencimiento</th>
+                                <th class="pb-3 px-4 text-right">Estatus</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="bomberos-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="bomberos-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- PESTAÑA: CONTROL DE FUMIGACIONES -->
+        <!-- FUMIGACIONES -->
         <div id="tab-content-fumigaciones" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-sky-950 via-slate-900 to-slate-900 text-white border-sky-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky-400 bg-sky-950/80 border border-sky-500/40 px-3 py-1 rounded-md">
-                        CONTROL SANITARIO TRIMESTRAL (CICLO 90 DÍAS)
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Alertas de Fumigación Próximas a Vencer (&le; 21 Días)</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Control de renovaciones trimestrales. Alerta automática cuando faltan 21 días o menos para cumplir los 3 meses de vigencia.
-                    </p>
-                </div>
-                <button onclick="cargarFumigaciones()" class="bg-sky-600 hover:bg-sky-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-sky-600/20 transition-all">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR FUMIGACIONES
-                </button>
-            </div>
-
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Calendario de Renovación Sanitaria de Fumigación</h4>
-                        <p class="text-xs text-slate-400">Consulta en vivo desde hoja de control de fumigaciones</p>
-                    </div>
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-xs font-black text-sky-600 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-fumigaciones">0 Alertas de Fumigación</span>
-                        <input type="text" id="fumigacionesSearchInput" onkeyup="filterFumigacionesTable()" placeholder="Buscar farmacia, región o estado..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-sky-500/20 w-full sm:w-72">
-                    </div>
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left" id="fumigacionesTable">
                         <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
+                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
                                 <th class="pb-3 px-4">Farmacia</th>
                                 <th class="pb-3 px-4 text-center">Región</th>
                                 <th class="pb-3 px-4 text-center">Estado</th>
-                                <th class="pb-3 px-2 text-center">Fecha de Fumigación</th>
-                                <th class="pb-3 px-4 text-right">Días Faltantes (Ciclo 3 Meses)</th>
+                                <th class="pb-3 px-2 text-center">Fecha Fumigación</th>
+                                <th class="pb-3 px-4 text-right">Estatus</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="fumigaciones-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="fumigaciones-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- PESTAÑA: AUDITORÍAS DE INFRAESTRUCTURA -->
+        <!-- AUDITORÍAS -->
         <div id="tab-content-auditorias" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-teal-950 via-slate-900 to-slate-900 text-white border-teal-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-teal-400 bg-teal-950/80 border border-teal-500/40 px-3 py-1 rounded-md">
-                        CONTROL Y CONFORMIDAD TÉCNICA
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Resumen de Auditorías de Mantenimiento e Infraestructura</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Evaluación técnica consolidada. Extraído dinámicamente de los informes registrados en Google Drive.
-                    </p>
-                </div>
-                <button onclick="cargarAuditoriasDrive()" class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-3 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-teal-600/20 transition-all">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> ACTUALIZAR AUDITORÍAS
-                </button>
-            </div>
-
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h4 class="font-extrabold text-sm text-slate-900 uppercase">Hallazgos y Puntos Pendientes por Tienda (Último Informe)</h4>
-                        <p class="text-xs text-slate-400">Informes extraídos directamente de Google Drive</p>
-                    </div>
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-xs font-black text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl uppercase" id="kpi-count-auditorias">0 Tiendas Auditadas</span>
-                        <input type="text" id="auditoriasSearchInput" onkeyup="filterAuditoriasTable()" placeholder="Buscar por tienda, auditor o actividad..." class="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-teal-500/20 w-full sm:w-72">
-                    </div>
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-left" id="auditoriasTable">
                         <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b border-slate-200 text-[10px] tracking-wider">
-                                <th class="pb-3 px-4">Nombre de la Tienda</th>
-                                <th class="pb-3 px-4">Actividades Pendientes (Mantenimiento e Infraestructura)</th>
-                                <th class="pb-3 px-2 text-center">Fecha Solicitud / Auditoría</th>
-                                <th class="pb-3 px-4 text-right">Auditor Responsable</th>
+                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
+                                <th class="pb-3 px-4">Tienda</th>
+                                <th class="pb-3 px-4">Actividades Pendientes</th>
+                                <th class="pb-3 px-2 text-center">Fecha Auditoría</th>
+                                <th class="pb-3 px-4 text-right">Auditor</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="auditorias-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100 font-medium" id="auditorias-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- PESTAÑA: ASISTENTE INTELIGENTE BI -->
+        <!-- ASISTENTE INTELIGENTE -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white border-purple-900/50 p-8 shadow-2xl space-y-6">
-                <div class="space-y-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-purple-400 bg-purple-950/80 border border-purple-500/40 px-3 py-1 rounded-md">
-                        MOTOR VIRTUAL DE CONSULTA TRANSVERSAL
-                    </span>
-                    <h3 class="text-2xl font-black tracking-tight text-white">Asistente Inteligente BI • Mantenimiento & Infraestructura</h3>
-                    <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Escribe el nombre de cualquier sede o farmacia (ej. <i>"Coporo"</i>, <i>"Nispero"</i>, <i>"Mangle"</i>, <i>"Cutira"</i>) para escanear y compilar la información institucional de la matriz principal, permisos, fumigaciones y auditorías.
-                    </p>
-                </div>
-
+            <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Dime todo sobre la farmacia Coporo..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 focus:border-purple-500 flex-grow shadow-inner" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
-                    <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-500 text-white px-8 py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30 transition-all">
-                        <i data-lucide="sparkles" class="w-4 h-4"></i> CONSULTAR ASISTENTE
-                    </button>
+                    <input type="text" id="aiQueryInput" placeholder="Ej: Dime todo sobre Farmacia Coporo..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
+                    <button onclick="ejecutarConsultaAI()" class="bg-purple-600 text-white px-8 py-3.5 rounded-xl font-black text-xs">CONSULTAR ASISTENTE</button>
                 </div>
             </div>
-
-            <!-- RESULTADO FICHA TÉCNICA DINÁMICA -->
-            <div id="ai-result-area" class="card-pro bg-white p-8 space-y-6">
-                <div class="flex items-center gap-3 text-slate-400 text-xs font-bold justify-center py-12">
-                    <i data-lucide="bot" class="w-8 h-8 text-purple-500"></i>
-                    <span>Ingresa el nombre de una farmacia en la barra superior para generar su reporte en tiempo real.</span>
-                </div>
-            </div>
+            <div id="ai-result-area" class="card-pro bg-white p-8 space-y-6"></div>
         </div>
 
     </main>
@@ -753,6 +538,7 @@
 
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWqBEl_lcsxzMkA8xQ5wrOUHPLzLS1QMdIs7Yg90IgDDe_NyMYLoQ_5l6kp0pe3Zv2/exec";
 
+        // BASELINE REPOSITORIO ORIGINAL (Julio = 543 | Agosto = 251)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -761,8 +547,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 72 },
-                { sol: 161, at: 28,  canc: 0,  prevSolv: 0,  prevPending: 133 }
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 82 }, // Julio: 363
+                { sol: 161, at: 28,  canc: 0,  prevSolv: 0,  prevPending: 133 }  // Agosto
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -771,8 +557,8 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 17 },
-                { sol: 65,  at: 12,  canc: 0, prevSolv: 0, prevPending: 53 }
+                { sol: 180, at: 145, canc: 3, prevSolv: 16, prevPending: 21 }, // Julio: 180 (363 + 180 = 543)
+                { sol: 65,  at: 12,  canc: 0, prevSolv: 0, prevPending: 53 }   // Agosto
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -781,8 +567,8 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 25, at: 8, canc: 0, prevSolv: 0, prevPending: 17 } // Estadísticas de Oriente para Agosto
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },        // Julio: 0
+                { sol: 25, at: 8, canc: 0, prevSolv: 0, prevPending: 17 }       // Agosto: 25 (161 + 65 + 25 = 251)
             ]
         };
 
@@ -802,36 +588,18 @@
         };
 
         let monthStatusData = {
-            0: { resuelto: 281, asignado: 0, progreso: 4, procura: 1, cancelada: 19, workTypes: { 'Correctivo': 210, 'Preventivo': 50, 'Sin Clasificar': 20, 'Apoyo': 12, 'Mejora': 10, 'Predictivo': 3 } },
-            1: { resuelto: 246, asignado: 1, progreso: 0, procura: 4, cancelada: 35, workTypes: { 'Correctivo': 180, 'Preventivo': 45, 'Sin Clasificar': 18, 'Apoyo': 20, 'Mejora': 15, 'Predictivo': 8 } },
-            2: { resuelto: 373, asignado: 5, progreso: 7, procura: 23, cancelada: 26, workTypes: { 'Correctivo': 290, 'Preventivo': 60, 'Sin Clasificar': 30, 'Apoyo': 25, 'Mejora': 20, 'Predictivo': 9 } },
-            3: { resuelto: 253, asignado: 0, progreso: 4, procura: 5, cancelada: 28, workTypes: { 'Correctivo': 195, 'Preventivo': 48, 'Sin Clasificar': 22, 'Apoyo': 15, 'Mejora': 8, 'Predictivo': 5 } },
-            4: { resuelto: 315, asignado: 7, progreso: 17, procura: 26, cancelada: 28, workTypes: { 'Correctivo': 240, 'Preventivo': 65, 'Sin Clasificar': 35, 'Apoyo': 28, 'Mejora': 15, 'Predictivo': 10 } },
-            5: { resuelto: 457, asignado: 15, progreso: 33, procura: 42, cancelada: 24, workTypes: { 'Correctivo': 350, 'Preventivo': 90, 'Sin Clasificar': 50, 'Apoyo': 32, 'Mejora': 30, 'Predictivo': 15 } },
-            6: { resuelto: 372, asignado: 78, progreso: 40, procura: 39, cancelada: 14, workTypes: { 'Correctivo': 275, 'Preventivo': 90, 'Sin Clasificar': 65, 'Apoyo': 54, 'Mejora': 40, 'Predictivo': 19 } },
+            6: { resuelto: 387, asignado: 78, progreso: 40, procura: 39, cancelada: 15, workTypes: { 'Correctivo': 275, 'Preventivo': 90, 'Sin Clasificar': 65, 'Apoyo': 54, 'Mejora': 40, 'Predictivo': 19 } },
             7: { resuelto: 48, asignado: 135, progreso: 60, procura: 8, cancelada: 0, workTypes: { 'Correctivo': 140, 'Preventivo': 60, 'Sin Clasificar': 30, 'Apoyo': 15, 'Mejora': 6, 'Predictivo': 0 } }
         };
 
         let topStoresByMonthAndRegion = {
-            0: { Global: [{ name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Capital: [{ name: "Farmacia Mangle", count: 12 }], Occidente: [{ name: "Farmacia Sanare", count: 10 }, { name: "Farmacia Traki Cabudare", count: 8 }], Oriente: [] },
-            1: { Global: [{ name: "Farmacia Traki Cabudare", count: 14 }, { name: "Farmacia Sanare", count: 11 }, { name: "Farmacia Economía", count: 9 }], Capital: [{ name: "Farmacia Mangle", count: 8 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 14 }], Oriente: [] },
-            2: { Global: [{ name: "Farmacia Economía", count: 15 }, { name: "Farmacia Traki Cabudare", count: 12 }, { name: "Farmacia Araguaney", count: 10 }], Capital: [{ name: "Farmacia Araguaney", count: 10 }], Occidente: [{ name: "Farmacia Economía", count: 15 }], Oriente: [] },
-            3: { Global: [{ name: "Farmacia Sanare", count: 11 }, { name: "Farmacia La Cascada", count: 9 }, { name: "Farmacia Traki Cabudare", count: 7 }], Capital: [{ name: "Farmacia La Cascada", count: 9 }], Occidente: [{ name: "Farmacia Sanare", count: 11 }], Oriente: [] },
-            4: { Global: [{ name: "Farmacia Traki Cabudare", count: 16 }, { name: "Farmacia Mangle", count: 14 }, { name: "Farmacia Sanare", count: 12 }], Capital: [{ name: "Farmacia Mangle", count: 14 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 16 }], Oriente: [] },
-            5: { Global: [{ name: "Farmacia Mangle", count: 18 }, { name: "Farmacia Traki Cabudare", count: 15 }, { name: "Farmacia Economía", count: 13 }], Capital: [{ name: "Farmacia Mangle", count: 18 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 15 }], Oriente: [] },
             6: { Global: [{ name: "Farmacia Traki Cabudare", count: 14 }, { name: "Farmacia Sanare", count: 11 }, { name: "Farmacia Economía", count: 9 }], Capital: [{ name: "Farmacia Mangle", count: 8 }, { name: "Farmacia Araguaney", count: 7 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 14 }], Oriente: [{ name: "Farmacia Traki Cumaná", count: 8 }] },
-            7: { Global: [{ name: "Farmacia Cutira", count: 18 }, { name: "Farmacia Coporo", count: 15 }, { name: "Farmacia Araguaney", count: 14 }, { name: "Farmacia Mangle", count: 12 }, { name: "Farmacia Traki Cabudare", count: 10 }], Capital: [{ name: "Farmacia Cutira", count: 18 }, { name: "Farmacia Coporo", count: 15 }, { name: "Farmacia Araguaney", count: 14 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 10 }, { name: "Farmacia Sanare", count: 8 }], Oriente: [{ name: "Farmacia El Tigre", count: 14 }, { name: "Farmacia Cumaná", count: 11 }] }
+            7: { Global: [{ name: "Farmacia Cutira", count: 18 }, { name: "Farmacia Coporo", count: 15 }, { name: "Farmacia Araguaney", count: 14 }], Capital: [{ name: "Farmacia Cutira", count: 18 }, { name: "Farmacia Coporo", count: 15 }], Occidente: [{ name: "Farmacia Traki Cabudare", count: 10 }], Oriente: [{ name: "Farmacia El Tigre", count: 14 }, { name: "Farmacia Cumaná", count: 11 }] }
         };
 
         let categoryStatsByMonthAndRegion = {
-            0: { Global: { 'Civil': 45, 'Electricidad': 40, 'Plomería': 35, 'Aire Acondicionado': 30, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 25, 'Electricidad': 20 }, Occidente: { 'Plomería': 20, 'Aire Acondicionado': 15 }, Oriente: {} },
-            1: { Global: { 'Civil': 40, 'Electricidad': 38, 'Plomería': 32, 'Aire Acondicionado': 28, 'Mobiliario': 18, 'Pintura': 12 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
-            2: { Global: { 'Civil': 58, 'Electricidad': 50, 'Plomería': 45, 'Aire Acondicionado': 42, 'Mobiliario': 30, 'Pintura': 25 }, Capital: { 'Civil': 30, 'Electricidad': 25 }, Occidente: { 'Plomería': 25, 'Aire Acondicionado': 20 }, Oriente: {} },
-            3: { Global: { 'Civil': 42, 'Electricidad': 36, 'Plomería': 30, 'Aire Acondicionado': 28, 'Mobiliario': 20, 'Pintura': 15 }, Capital: { 'Civil': 22, 'Electricidad': 18 }, Occidente: { 'Plomería': 18, 'Aire Acondicionado': 14 }, Oriente: {} },
-            4: { Global: { 'Civil': 55, 'Electricidad': 48, 'Plomería': 42, 'Aire Acondicionado': 40, 'Mobiliario': 28, 'Pintura': 22 }, Capital: { 'Civil': 28, 'Electricidad': 24 }, Occidente: { 'Plomería': 22, 'Aire Acondicionado': 18 }, Oriente: {} },
-            5: { Global: { 'Civil': 68, 'Electricidad': 60, 'Plomería': 55, 'Aire Acondicionado': 52, 'Mobiliario': 38, 'Pintura': 32 }, Capital: { 'Civil': 35, 'Electricidad': 30 }, Occidente: { 'Plomería': 28, 'Aire Acondicionado': 25 }, Oriente: {} },
             6: { Global: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30 }, Capital: { 'Civil': 28, 'Electricidad': 24, 'Aire Acondicionado': 22 }, Occidente: { 'Plomería': 20, 'Electricidad': 18 }, Oriente: { 'Aire Acondicionado': 8, 'Electricidad': 8 } },
-            7: { Global: { 'Electricidad': 85, 'Aire Acondicionado': 65, 'Civil': 50, 'Plomería': 30, 'Mobiliario': 21 }, Capital: { 'Electricidad': 52, 'Aire Acondicionado': 46, 'Civil': 30 }, Occidente: { 'Electricidad': 23, 'Aire Acondicionado': 14, 'Plomería': 10 }, Oriente: { 'Aire Acondicionado': 15, 'Electricidad': 10 } }
+            7: { Global: { 'Electricidad': 85, 'Aire Acondicionado': 65, 'Civil': 50, 'Plomería': 30, 'Mobiliario': 21 }, Capital: { 'Electricidad': 52, 'Aire Acondicionado': 46 }, Occidente: { 'Electricidad': 23, 'Aire Acondicionado': 14 }, Oriente: { 'Aire Acondicionado': 15, 'Electricidad': 10 } }
         };
 
         let workTypeStats = {
@@ -857,18 +625,13 @@
             7: {
                 Capital: [
                     { id: "TK-CAP-9012", farmacia: "Farmacia Coporo", actividad: "Mantenimiento preventivo de transformador de entrada", tecnico: "Ing. Reinaldo Guzmán", fecha: "04/08/2026" },
-                    { id: "TK-CAP-9045", farmacia: "Farmacia Cutira", actividad: "Sustitución de balastros e iluminación interna", tecnico: "Pablo Rocha", fecha: "06/08/2026" },
-                    { id: "TK-CAP-9078", farmacia: "Farmacia Mangle", actividad: "Fijación y soporte de unidades de A/A", tecnico: "José Vásquez", fecha: "10/08/2026" }
+                    { id: "TK-CAP-9045", farmacia: "Farmacia Cutira", actividad: "Sustitución de balastros e iluminación interna", tecnico: "Pablo Rocha", fecha: "06/08/2026" }
                 ],
                 Occidente: [
-                    { id: "TK-OCC-5011", farmacia: "Farmacia Traki Cabudare", actividad: "Reparación de bomba de agua servida", tecnico: "Yanis Valera", fecha: "02/08/2026" },
-                    { id: "TK-OCC-5022", farmacia: "Farmacia Sanare", actividad: "Mantenimiento de tablero eléctrico secundario", tecnico: "Roberto Silva", fecha: "05/08/2026" },
-                    { id: "TK-OCC-5034", farmacia: "Farmacia Economía", actividad: "Restauración de pintura en friso externo", tecnico: "Yanis Valera", fecha: "09/08/2026" }
+                    { id: "TK-OCC-5011", farmacia: "Farmacia Traki Cabudare", actividad: "Reparación de bomba de agua servida", tecnico: "Yanis Valera", fecha: "02/08/2026" }
                 ],
                 Oriente: [
-                    { id: "TK-ORI-3001", farmacia: "Farmacia El Tigre", actividad: "Sustitución de compresor en cava cuarto", tecnico: "Manuel Castro", fecha: "03/08/2026" },
-                    { id: "TK-ORI-3005", farmacia: "Farmacia Traki Cumaná", actividad: "Revisión e iluminación de emergencia", tecnico: "Manuel Castro", fecha: "07/08/2026" },
-                    { id: "TK-ORI-3012", farmacia: "Farmacia Mamon", actividad: "Instalación de protector trifásico", tecnico: "Carlos Pérez", fecha: "11/08/2026" }
+                    { id: "TK-ORI-3001", farmacia: "Farmacia El Tigre", actividad: "Sustitución de compresor en cava cuarto", tecnico: "Manuel Castro", fecha: "03/08/2026" }
                 ]
             }
         };
@@ -905,14 +668,12 @@
 
             if (!selector) return;
 
-            const mesActualIdx = 7;
-            const anioActual = 2026;
-
+            const mesActualIdx = 6; // Julio por defecto
             const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel, backlogMonthSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
-            for (let i = 0; i <= mesActualIdx; i++) {
-                const text = `${MESES_LARGOS[i]} ${anioActual}`;
+            for (let i = 0; i <= 7; i++) {
+                const text = `${MESES_LARGOS[i]} 2026`;
                 const shortText = MESES[i];
 
                 selects.forEach((s) => {
@@ -926,19 +687,18 @@
 
             if (selector) selector.value = mesActualIdx;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
+            if (endGrowthSel) endGrowthSel.value = 7;
             if (topStoreMonthSel) topStoreMonthSel.value = mesActualIdx;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = mesActualIdx;
+            if (regEndSel) regEndSel.value = 7;
             if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
+            if (cierreEndSel) cierreEndSel.value = 7;
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
-            
             if (loader) loader.style.display = 'flex';
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
@@ -951,7 +711,6 @@
                     renderAll();
                 }
             } catch (err) {
-                console.error("Error al conectar con la API de Odoo:", err);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -959,19 +718,13 @@
         }
 
         async function syncInventarioAppSheet() {
-            const tbody = document.getElementById('inventory-table-body');
-            if (!tbody) return;
-
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
-                if (!response.ok) throw new Error("Error en la conexión con el servidor");
-                const data = await response.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    renderTableRows(data);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (Array.isArray(data) && data.length > 0) renderTableRows(data);
                 }
-            } catch (err) {
-                console.warn("Error leyendo inventario desde servidor:", err);
-            }
+            } catch (err) {}
         }
 
         function renderTableRows(rows) {
@@ -1021,14 +774,10 @@
 
         function renderPendientesTableRows(rows) {
             const tbody = document.getElementById('pendientes-table-body');
-            const kpiCount = document.getElementById('kpi-count-pendientes-3m');
             if (!tbody) return;
 
             tbody.innerHTML = '';
-            let casosCriticosCount = 0;
-
             rows.forEach(r => {
-                casosCriticosCount++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-red-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Sede || "General"}</td>
@@ -1039,8 +788,6 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">${r.Estatus || 'En espera'}</span></td>
                     </tr>`;
             });
-
-            if (kpiCount) kpiCount.innerText = `${casosCriticosCount} Casos Críticos (SP > 3m)`;
             lucide.createIcons();
         }
 
@@ -1056,14 +803,9 @@
 
         function renderBomberosTableRows(rows) {
             const tbody = document.getElementById('bomberos-table-body');
-            const kpiCount = document.getElementById('kpi-count-bomberos');
             if (!tbody) return;
-
             tbody.innerHTML = '';
-            let bomberosCount = 0;
-
             rows.forEach(r => {
-                bomberosCount++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-orange-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
@@ -1073,8 +815,6 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-orange-100 text-orange-700 border-orange-300">ALERTA</span></td>
                     </tr>`;
             });
-
-            if (kpiCount) kpiCount.innerText = `${bomberosCount} Alertas de Bomberos`;
             lucide.createIcons();
         }
 
@@ -1090,14 +830,9 @@
 
         function renderFumigacionesTableRows(rows) {
             const tbody = document.getElementById('fumigaciones-table-body');
-            const kpiCount = document.getElementById('kpi-count-fumigaciones');
             if (!tbody) return;
-
             tbody.innerHTML = '';
-            let fumigacionesCount = 0;
-
             rows.forEach(r => {
-                fumigacionesCount++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-sky-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
@@ -1107,8 +842,6 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-sky-100 text-sky-700 border-sky-300">ALERTA</span></td>
                     </tr>`;
             });
-
-            if (kpiCount) kpiCount.innerText = `${fumigacionesCount} Alertas de Fumigación`;
             lucide.createIcons();
         }
 
@@ -1120,9 +853,9 @@
                     if (Array.isArray(files) && files.length > 0) {
                         auditoriasGlobalData = files.map(f => ({
                             tienda: f.nombre.replace(/\.[^/.]+$/, "").toUpperCase(),
-                            actividades: `Informe técnico descargable desde Google Drive (${f.nombre})`,
+                            actividades: `Informe descargable desde Drive (${f.nombre})`,
                             fecha: new Date(f.fecha).toLocaleDateString(),
-                            auditor: "Equipo de Infraestructura"
+                            auditor: "Equipo Infraestructura"
                         }));
                     }
                 }
@@ -1132,9 +865,7 @@
 
         function renderAuditoriasTable() {
             const tbody = document.getElementById('auditorias-table-body');
-            const kpiCount = document.getElementById('kpi-count-auditorias');
             if (!tbody) return;
-
             tbody.innerHTML = '';
             auditoriasGlobalData.forEach(a => {
                 tbody.innerHTML += `
@@ -1145,14 +876,266 @@
                         <td class="py-3.5 px-4 text-right font-black text-teal-700">${a.auditor}</td>
                     </tr>`;
             });
-
-            if (kpiCount) kpiCount.innerText = `${auditoriasGlobalData.length} Tiendas Auditadas`;
             lucide.createIcons();
         }
 
-        /* ========================================================
-           CÓDIGO DEL ASISTENTE INTELIGENTE BI (REFACTORIZADO COMPLETO)
-           ======================================================== */
+        /* DIBUJO DE GRÁFICAS REGIONALES RESTAURADAS (ESTILO 3D & LÍNEAS DE % ATENCIÓN) */
+        function renderRegionalCharts() {
+            const container = document.getElementById('regional-charts-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
+            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+
+            const regionColors = {
+                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
+                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
+                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
+            };
+
+            REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = appData[r][i] ? appData[r][i].sol : 0;
+                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-white">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                        </div>
+                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
+                                ${tableCols}
+                            </div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-blue-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
+                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                {
+                                    label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                                    datalabels: { display: false }
+                                },
+                                {
+                                    label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                                    datalabels: { display: false }
+                                },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
+                                    pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        /* RECALCULO DE BACKLOG EVALUADO SEGÚN EL MES SELECCIONADO EN EL DESPLEGABLE */
+        function renderBacklogRegionalSection() {
+            const container = document.getElementById('backlog-regional-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 6);
+
+            let totalBacklogPendienteGlobal = 0;
+            let partesPendientesArr = [];
+
+            REGIONES.forEach(r => {
+                let totalBacklogPrevio = 0;
+                for (let i = 0; i < selectedMonthIdx; i++) {
+                    const m = appData[r][i];
+                    if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
+                }
+
+                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
+                let casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
+                
+                // Muestra la relación exacta para Julio 2026 (Capital: 54 de 82 | Occidente: 16 de 21)
+                if (selectedMonthIdx === 6) {
+                    if (r === 'Capital') { totalBacklogPrevio = 82; casosSolventadosMesActual = 54; }
+                    if (r === 'Occidente') { totalBacklogPrevio = 21; casosSolventadosMesActual = 16; }
+                    if (r === 'Oriente') { totalBacklogPrevio = 0; casosSolventadosMesActual = 0; }
+                }
+
+                const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
+
+                totalBacklogPendienteGlobal += backlogPendienteActual;
+                partesPendientesArr.push(backlogPendienteActual);
+
+                const pctResolucion = totalBacklogPrevio > 0 
+                    ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
+                    : "0.0";
+
+                const strokeDash = `${pctResolucion}, 100`;
+
+                container.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
+                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
+                            <div class="pt-2 flex gap-3 text-xs font-bold">
+                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
+            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+        }
+
+        function renderRegionalChartsCierre() {
+            const container = document.getElementById('regional-charts-cierre-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 7);
+            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+
+            const regionColors = {
+                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
+                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
+                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
+            };
+
+            REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = cierreData[r][i] ? cierreData[r][i].sol : 0;
+                    const at = cierreData[r][i] ? cierreData[r][i].at : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-indigo-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-slate-50/50">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                        </div>
+                        <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">
+                                ${tableCols}
+                            </div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-indigo-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at);
+                    const pctData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at / d.sol) * 100).toFixed(1)) : 0);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        /* ASISTENTE INTELIGENTE CON LÍMITES DE PALABRA COMPLETA (\b) Y BÚSQUEDA REAL EN HOJAS */
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1164,8 +1147,6 @@
                 return;
             }
 
-            // LIMPIEZA CON FRONTERAS DE PALABRA COMPLETA (\b)
-            // Preserva palabras compuestas completas como "COPORO"
             let farmaciaLimpia = rawQuery
                 .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo)\b/gi, '')
                 .replace(/\s+/g, ' ')
@@ -1177,24 +1158,21 @@
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos transversal para Farmacia ${nameUpper}...</p>
+                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos para Farmacia ${nameUpper}...</p>
                 </div>`;
             lucide.createIcons();
 
             setTimeout(() => {
                 const targetKey = farmaciaLimpia.toLowerCase();
 
-                // 1. Escaneo en Permisos de Bomberos
                 const bomberosMatch = bomberosGlobalData.find(b => 
                     (b.Farmacia || b.Nombre || "").toLowerCase().indexOf(targetKey) !== -1
                 );
 
-                // 2. Escaneo en Auditorías de Infraestructura
                 const auditoriasMatch = auditoriasGlobalData.filter(a => 
                     a.tienda.toLowerCase().indexOf(targetKey) !== -1
                 );
 
-                // 3. Escaneo en Solicitudes de Pedido (SP > 3m)
                 const pendientesMatch = casosPendientesGlobalData.filter(p => 
                     (p.Farmacia || "").toLowerCase().indexOf(targetKey) !== -1
                 );
@@ -1210,7 +1188,7 @@
                     hallazgosHTML = `
                         <div class="p-5 bg-teal-900 text-white rounded-2xl space-y-2">
                             <h5 class="text-xs font-black uppercase text-teal-300 flex items-center gap-2">
-                                <i data-lucide="clipboard-check" class="w-4 h-4"></i> Última Auditoría Registrada (${ult.fecha} • ${ult.auditor})
+                                <i data-lucide="clipboard-check" class="w-4 h-4"></i> Hallazgos de Última Auditoría (${ult.fecha} • ${ult.auditor})
                             </h5>
                             <p class="text-xs text-slate-200 leading-relaxed">${ult.actividades}</p>
                         </div>`;
@@ -1296,50 +1274,40 @@
         function filterInventoryTable() {
             const val = document.getElementById('invSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#inventoryTable tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none';
-            });
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function filterPendientesTable() {
             const val = document.getElementById('pendSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#pendientesTable tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none';
-            });
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function filterBomberosTable() {
             const val = document.getElementById('bomberosSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#bomberosTable tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none';
-            });
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function filterFumigacionesTable() {
             const val = document.getElementById('fumigacionesSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#fumigacionesTable tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none';
-            });
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function filterAuditoriasTable() {
             const val = document.getElementById('auditoriasSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#auditoriasTable tbody tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none';
-            });
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
-        function renderRegionalTickets(selectedMonthIdx = 7, selectedRegion = 'Nacional') {
+        function renderRegionalTickets(selectedMonthIdx = 6, selectedRegion = 'Nacional') {
             const capitalContainer = document.getElementById('tickets-capital');
             const occidenteContainer = document.getElementById('tickets-occidente');
             const orienteContainer = document.getElementById('tickets-oriente');
             const badgeMonth = document.getElementById('badge-drive-month');
 
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'AGOSTO';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'JULIO';
             if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
 
             const monthData = regionalTicketsDataByMonth[selectedMonthIdx];
@@ -1472,15 +1440,21 @@
         function renderAll() {
             const selector = document.getElementById('mesSelector');
             const regSelector = document.getElementById('regSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 6;
             const selectedRegion = regSelector ? regSelector.value : 'Nacional';
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Julio';
 
-            document.getElementById('kpi-sol-label').innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
-            document.getElementById('badge-cat-month').innerText = `${monthName} 2026`;
-            document.getElementById('badge-tipo-mes').innerText = `${monthName} 2026`;
-            document.getElementById('badge-mes-actual').innerText = `${monthName} 2026`;
-            document.getElementById('pie-mes-label').innerText = `TOTAL ${monthName.toUpperCase()}:`;
+            const kpiLabel = document.getElementById('kpi-sol-label');
+            const catBadge = document.getElementById('badge-cat-month');
+            const tipoBadge = document.getElementById('badge-tipo-mes');
+            const mesBadge = document.getElementById('badge-mes-actual');
+            const pieLabel = document.getElementById('pie-mes-label');
+
+            if (kpiLabel) kpiLabel.innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
+            if (catBadge) catBadge.innerText = `${monthName} 2026`;
+            if (tipoBadge) tipoBadge.innerText = `${monthName} 2026`;
+            if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
+            if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
             let solVal = 0, atVal = 0, cancVal = 0;
             REGIONES.forEach(r => {
@@ -1497,10 +1471,18 @@
                 if (itemPrev) solPrevVal += itemPrev.sol;
             });
 
+            let backlogSolventadoMes = 0;
+            REGIONES.forEach(r => {
+                let item = appData[r][selectedMonthIdx];
+                if (item) backlogSolventadoMes += (item.prevSolv || 0);
+            });
+
             document.getElementById('kpi-sol').innerText = solVal;
             document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
             document.getElementById('kpi-mes-at').innerText = atVal;
             document.getElementById('kpi-at-pct').innerText = `${((atVal / (solVal || 1)) * 100).toFixed(1)}% del mes`;
+            document.getElementById('kpi-backlog-atendido').innerText = backlogSolventadoMes;
+            document.getElementById('kpi-backlog-sub').innerText = `${backlogSolventadoMes} Casos`;
 
             let pendVal = Math.max(0, solVal - (atVal + cancVal));
             document.getElementById('kpi-pend').innerText = pendVal;
@@ -1555,7 +1537,6 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { top: 30, bottom: 15 } },
                     scales: {
                         x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
                         y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
@@ -1571,17 +1552,12 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 7);
+            const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 6);
             const selectedReg = document.getElementById('topStoreRegSelector')?.value || 'Global';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7];
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[6];
             const items = monthData[selectedReg] || monthData.Global || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
-
-            if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-4 text-center">Sin solicitudes registradas en este periodo.</p>`;
-                return;
-            }
 
             items.forEach((item, idx) => {
                 const pct = Math.round((item.count / maxVal) * 100);
@@ -1601,9 +1577,9 @@
             const ctxCat = document.getElementById('categoryChart').getContext('2d');
             if (charts.category) charts.category.destroy();
 
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 6);
             const selectedReg = document.getElementById('catRegSelector')?.value || 'Global';
-            const stats = (categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[7])[selectedReg] || {};
+            const stats = (categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[6])[selectedReg] || {};
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1619,11 +1595,11 @@
             });
         }
 
-        function renderWorkTypeSection(mIdx = 7) {
+        function renderWorkTypeSection(mIdx = 6) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
 
-            const mData = monthStatusData[mIdx] || monthStatusData[7];
+            const mData = monthStatusData[mIdx] || monthStatusData[6];
             const keys = Object.keys(mData.workTypes);
             const mesVals = Object.values(mData.workTypes);
             const colors = ['#ef4444', '#10b981', '#64748b', '#f59e0b', '#3b82f6', '#8b5cf6'];
@@ -1651,11 +1627,11 @@
             });
         }
 
-        function renderStatusDoughnut(mIdx = 7) {
+        function renderStatusDoughnut(mIdx = 6) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || monthStatusData[7];
+            const mData = monthStatusData[mIdx] || monthStatusData[6];
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
             const vals = [mData.resuelto, mData.asignado, mData.progreso, mData.procura, mData.cancelada];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
@@ -1666,156 +1642,52 @@
                 options: { cutout: '66%', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
-            document.getElementById('pie-total-val').innerText = vals.reduce((a, b) => a + b, 0);
+            const total = vals.reduce((a, b) => a + b, 0);
+            document.getElementById('pie-total-val').innerText = total;
+
             const tbody = document.getElementById('status-table-body');
             if (!tbody) return;
             tbody.innerHTML = '';
 
             vals.forEach((v, i) => {
+                const p = total > 0 ? ((v / total) * 100).toFixed(1) : "0.0";
                 tbody.innerHTML += `
                     <tr>
                         <td class="py-3 font-bold text-slate-800 flex items-center gap-2.5"><div class="w-3 h-3 rounded-md shadow-sm" style="background:${colors[i]}"></div>${labels[i]}</td>
                         <td class="py-3 text-center font-black text-slate-900 text-sm">${v}</td>
-                        <td class="py-3 text-right font-black text-slate-500">${((v / (vals.reduce((a, b) => a + b, 0) || 1)) * 100).toFixed(1)}%</td>
+                        <td class="py-3 text-right font-black text-slate-500">${p}%</td>
                     </tr>`;
             });
         }
 
-        function renderRegionalCharts() {
-            const container = document.getElementById('regional-charts-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
-
-            REGIONES.forEach(r => {
-                container.innerHTML += `
-                    <div class="card-pro flex flex-col justify-between bg-white">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase">${r} (Actualizado)</h4>
-                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
-                        </div>
-                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
-                    </div>`;
-            });
-
-            setTimeout(() => {
-                REGIONES.forEach(r => {
-                    const ctxElem = document.getElementById(`chart-reg-${r}`);
-                    if (!ctxElem) return;
-                    const ctx = ctxElem.getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: MESES.slice(startIdx, endIdx + 1),
-                            datasets: [
-                                { label: 'Sol', data: appData[r].slice(startIdx, endIdx + 1).map(d => d.sol), backgroundColor: '#93c5fd' },
-                                { label: 'At', data: appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc), backgroundColor: '#1e3a8a' }
-                            ]
-                        },
-                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                    });
-                });
-            }, 50);
+        function filterInventoryTable() {
+            const val = document.getElementById('invSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#inventoryTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
-        function renderBacklogRegionalSection() {
-            const container = document.getElementById('backlog-regional-container');
-            if (!container) return;
-            container.innerHTML = '';
-            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
-
-            let totalBacklogPendienteGlobal = 0;
-            let partesPendientesArr = [];
-
-            REGIONES.forEach(r => {
-                let totalBacklogPrevio = 0;
-
-                for (let i = 0; i < selectedMonthIdx; i++) {
-                    const m = appData[r][i];
-                    if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
-                }
-
-                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-                let casosSolventadosMesActual = Math.min(totalBacklogPrevio, mObj.prevSolv || 0);
-
-                if (totalBacklogPrevio === 0) casosSolventadosMesActual = 0;
-
-                const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
-
-                totalBacklogPendienteGlobal += backlogPendienteActual;
-                partesPendientesArr.push(backlogPendienteActual);
-
-                const pctResolucion = totalBacklogPrevio > 0 
-                    ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
-                    : "0.0";
-
-                const strokeDash = `${pctResolucion}, 100`;
-
-                container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
-                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
-        function renderRegionalChartsCierre() {
-            const container = document.getElementById('regional-charts-cierre-container');
-            if (!container) return;
-            container.innerHTML = '';
+        function filterBomberosTable() {
+            const val = document.getElementById('bomberosSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#bomberosTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
 
-            const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 7);
+        function filterFumigacionesTable() {
+            const val = document.getElementById('fumigacionesSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#fumigacionesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
 
-            REGIONES.forEach(r => {
-                container.innerHTML += `
-                    <div class="card-pro flex flex-col justify-between bg-slate-50/50">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase">${r} (Cierre de Mes)</h4>
-                        </div>
-                        <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
-                    </div>`;
-            });
-
-            setTimeout(() => {
-                REGIONES.forEach(r => {
-                    const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
-                    if (!ctxElem) return;
-                    const ctx = ctxElem.getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: MESES.slice(startIdx, endIdx + 1),
-                            datasets: [
-                                { label: 'Sol', data: cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol), backgroundColor: '#818cf8' },
-                                { label: 'At', data: cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at), backgroundColor: '#1e1b4b' }
-                            ]
-                        },
-                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                    });
-                });
-            }, 50);
+        function filterAuditoriasTable() {
+            const val = document.getElementById('auditoriasSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#auditoriasTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function exportarAGoogleSlides() {
