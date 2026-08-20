@@ -524,7 +524,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: SOLICITUDES DE PEDIDO PENDIENTES (SP > 3 MESES) -->
+        <!-- PESTAÑA: SOLICITUDES DE PEDIDO PENDIENTES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 text-white border-red-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 shadow-2xl">
                 <div class="space-y-2">
@@ -712,7 +712,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: ASISTENTE INTELIGENTE BI (REFACTORIZADO CON BÚSQUEDA DINÁMICA REAL) -->
+        <!-- PESTAÑA: ASISTENTE INTELIGENTE BI (REFACTORIZADO COMPLETO) -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white border-purple-900/50 p-8 shadow-2xl space-y-6">
                 <div class="space-y-2">
@@ -721,23 +721,23 @@
                     </span>
                     <h3 class="text-2xl font-black tracking-tight text-white">Asistente Inteligente BI • Mantenimiento & Infraestructura</h3>
                     <p class="text-xs text-slate-300 max-w-xl leading-relaxed">
-                        Escribe el nombre de cualquier sede o farmacia (ej. <i>"Orquídea"</i>, <i>"Mangle"</i>, <i>"Cutira"</i>, <i>"Nispero"</i>) para escanear y compilar la información real existente en Auditorías, Bomberos, Fumigaciones y Solicitudes.
+                        Escribe el nombre de cualquier sede o farmacia (ej. <i>"Coporo"</i>, <i>"Nispero"</i>, <i>"Mangle"</i>, <i>"Cutira"</i>) para escanear y compilar la información real existente en la base de datos.
                     </p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Dame toda la información disponible de la Farmacia Nispero..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 focus:border-purple-500 flex-grow shadow-inner" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
+                    <input type="text" id="aiQueryInput" placeholder="Ej: Dame información de la farmacia Coporo..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 focus:border-purple-500 flex-grow shadow-inner" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
                     <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-500 text-white px-8 py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30 transition-all">
                         <i data-lucide="sparkles" class="w-4 h-4"></i> CONSULTAR ASISTENTE
                     </button>
                 </div>
             </div>
 
-            <!-- RESULTADO DE LA FICHA CONSOLIDADA DINÁMICA -->
+            <!-- RESULTADO FICHA TÉCNICA DINÁMICA DE LA FARMACIA CONSULTADA -->
             <div id="ai-result-area" class="card-pro bg-white p-8 space-y-6">
                 <div class="flex items-center gap-3 text-slate-400 text-xs font-bold justify-center py-12">
                     <i data-lucide="bot" class="w-8 h-8 text-purple-500"></i>
-                    <span>Ingresa el nombre de una farmacia en la barra superior para generar su reporte consolidado real.</span>
+                    <span>Ingresa el nombre de una farmacia en la barra superior para generar su reporte en tiempo real.</span>
                 </div>
             </div>
         </div>
@@ -859,11 +859,9 @@
 
         let auditoriasGlobalData = [
             { tienda: "FARMACIA CUTIRA", actividades: "Sustitución de balastros en luminarias, reparación de fuga en desagüe de A/A, sellado de grietas en fachada principal.", fecha: "05/08/2026", auditor: "Ing. Reinaldo Guzmán" },
-            { tienda: "FARMACIA CUTIRA", actividades: "Instalación previa de luces LED en depósito.", fecha: "15/06/2026", auditor: "Alejandro Villegas" },
             { tienda: "FARMACIA MANGLE", actividades: "Ajuste de presostato en compresor A/A, reubicación de extintores CO2, pintura en marco de puerta posterior.", fecha: "02/08/2026", auditor: "Ing. Yanis Valera" },
-            { tienda: "FARMACIA ORQUIDEA", actividades: "Soportes de lavamanos desprendidos, reemplazo de breaker trifásico 30A, pintura en paredes internas.", fecha: "07/08/2026", auditor: "Pablo Rocha" },
-            { tienda: "FARMACIA TRAKI CABUDARE", actividades: "Reparación de filtración en muro de depósito, engrase de rieles en santamaría.", fecha: "03/08/2026", auditor: "Ing. Yanis Valera" },
-            { tienda: "FARMACIA SANARE", actividades: "Mantenimiento general de bomba hidroneumática y tanque de reserva de agua.", fecha: "01/08/2026", auditor: "José Vásquez" }
+            { tienda: "FARMACIA NISPERO", actividades: "Revisión general de planta eléctrica, cambio de iluminación en pasillo central.", fecha: "08/08/2026", auditor: "José Vásquez" },
+            { tienda: "FARMACIA COPORO", actividades: "Reparación de filtración en baño de personal, mantenimiento preventivo de unidades A/A.", fecha: "10/08/2026", auditor: "Pablo Rocha" }
         ];
 
         let bomberosGlobalData = [];
@@ -938,16 +936,11 @@
                 const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${new Date().getTime()}`);
                 const odooRes = await response.json();
 
-                if (odooRes && odooRes.success) {
-                    if (odooRes.regionalData) {
-                        appData = odooRes.regionalData;
-                    }
-                    if (odooRes.monthStatusData) {
-                        monthStatusData = odooRes.monthStatusData;
-                    }
+                if (odooRes && odooRes.success && odooRes.regionalData) {
+                    appData = odooRes.regionalData;
                     renderAll();
                 } else {
-                    console.warn("No se obtuvo respuesta de Odoo JSON-RPC. Manteniendo estado anterior.");
+                    console.warn("Respuesta parcial o sin datos de Odoo JSON-RPC.");
                 }
             } catch (err) {
                 console.error("Error al conectar con la API de Odoo:", err);
@@ -965,32 +958,29 @@
                 <tr>
                     <td colspan="5" class="py-8 text-center text-xs font-bold text-slate-400">
                         <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin mx-auto mb-2 text-amber-500"></i>
-                        Consultando API de Google Apps Script / AppSheet en vivo...
+                        Consultando API de Google Apps Script en vivo...
                     </td>
                 </tr>`;
             lucide.createIcons();
 
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
-                if (!response.ok) throw new Error("Error en la conexión con el servidor");
+                if (!response.ok) throw new Error("Error de respuesta");
 
                 const data = await response.json();
-                
                 if (Array.isArray(data) && data.length > 0) {
                     renderTableRows(data);
                 } else {
                     renderFallbackRows();
                 }
             } catch (err) {
-                console.warn("Fallo de red en Apps Script API, ejecutando vista de respaldo:", err);
                 renderFallbackRows();
             }
         }
 
         function renderFallbackRows() {
             const fallbackData = [
-                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "_OrigenTabla": "Herramientas" },
-                { "Nombre_Item": "Pinza Amperímetrica Digital Marca Troen", "Tipo": "Electrónica", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Sin Asignación Cubo Negro", "Región / Cuadrilla": "Ccs -1", "_OrigenTabla": "Herramientas" }
+                { "Nombre_Item": "Llave inglesa 14\"", "Tipo": "Manual", "Cantidad": "1", "Estado": "Bueno", "Asignado a": "Pablo Rocha", "Región / Cuadrilla": "Ccs/1", "_OrigenTabla": "Herramientas" }
             ];
             renderTableRows(fallbackData);
         }
@@ -1000,19 +990,11 @@
             if (!tbody) return;
 
             tbody.innerHTML = '';
-
-            let countHerramientas = 0;
-            let countEquipos = 0;
-            let countMobiliario = 0;
+            let countHerramientas = 0, countEquipos = 0, countMobiliario = 0;
 
             rows.forEach(r => {
                 const origen = r._OrigenTabla || "General";
-                
                 let descripcion = r.Nombre_Item || r.Activo || "Sin descripción";
-                if (r.Nombre_Item && r.Nombre_Item.toString().trim() === "1" && r.Activo) {
-                    descripcion = `${r.Activo} (${r.Tipo || ''})`;
-                }
-
                 const tipo = r.Tipo || origen;
                 const cantidad = r.Cantidad || "1";
                 const estado = r.Estado || "N/A";
@@ -1022,305 +1004,137 @@
                 else if (origen === "Equipos") countEquipos += parseInt(cantidad) || 1;
                 else countMobiliario += parseInt(cantidad) || 1;
 
-                let badgeColor = "bg-slate-100 text-slate-700 border-slate-300";
-                if (estado.toLowerCase() === "bueno" || estado.toLowerCase() === "nuevo") {
-                    badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
-                } else if (estado.toLowerCase() === "dañado" || estado.toLowerCase() === "malo") {
-                    badgeColor = "bg-red-50 text-red-700 border-red-200";
-                }
-
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50/80 transition-all">
-                        <td class="py-3.5 px-4 font-bold text-slate-900">
-                            <span class="block text-xs">${descripcion}</span>
-                            <span class="text-[10px] text-slate-400 font-semibold">${origen}</span>
-                        </td>
-                        <td class="py-3.5 px-2 text-center">
-                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-extrabold uppercase bg-slate-100 text-slate-700 border-slate-200">${tipo}</span>
-                        </td>
-                        <td class="py-3.5 px-2 text-center font-black text-slate-900 text-xs">${cantidad}</td>
-                        <td class="py-3.5 px-2 text-center">
-                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeColor}">${estado}</span>
-                        </td>
-                        <td class="py-3.5 px-4 text-right text-xs text-slate-600 font-semibold">${asignacion}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-900">${descripcion}</td>
+                        <td class="py-3.5 px-2 text-center"><span class="px-2 py-0.5 rounded border text-[10px] uppercase font-bold bg-slate-100">${tipo}</span></td>
+                        <td class="py-3.5 px-2 text-center font-black">${cantidad}</td>
+                        <td class="py-3.5 px-2 text-center font-bold">${estado}</td>
+                        <td class="py-3.5 px-4 text-right text-slate-600 font-semibold">${asignacion}</td>
                     </tr>`;
             });
 
-            const kpiEq = document.getElementById('inv-count-equipos');
-            const kpiMob = document.getElementById('inv-count-mobiliario');
-            const kpiHerr = document.getElementById('inv-count-herramientas');
-
-            if (kpiEq) kpiEq.innerText = `${countEquipos} Unid.`;
-            if (kpiMob) kpiMob.innerText = `${countMobiliario} Unid.`;
-            if (kpiHerr) kpiHerr.innerText = `${countHerramientas} Unid.`;
-
+            document.getElementById('inv-count-equipos').innerText = `${countEquipos} Unid.`;
+            document.getElementById('inv-count-mobiliario').innerText = `${countMobiliario} Unid.`;
+            document.getElementById('inv-count-herramientas').innerText = `${countHerramientas} Unid.`;
             lucide.createIcons();
         }
 
         async function cargarCasosPendientes() {
-            let data = [];
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime());
-                if (response.ok) data = await response.json();
+                if (response.ok) {
+                    casosPendientesGlobalData = await response.json();
+                    renderPendientesTableRows(casosPendientesGlobalData);
+                }
             } catch (err) {
-                console.warn("Usando matriz local de Casos Pendientes:", err);
+                console.warn(err);
             }
-
-            if (!Array.isArray(data) || data.length === 0) {
-                data = [
-                    { "Farmacia": "UVILLA", "Descripción": "SUMINISTRO DE 1300 LITROS DE GASOIL", "Fecha solped": "19/02/2026", "Observaciones": "Aumento a 1300 litros en junio", "Estatus": "En espera" },
-                    { "Farmacia": "ARAGUANEY", "Descripción": "INSTALACIÓN DE INVERSOR 3KVA MARCA MUST CON BANCO DE 4 BATERIAS DE 12V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "A espera de fecha de adecuacion e instalacion", "Estatus": "En espera" },
-                    { "Farmacia": "CUTIRA", "Descripción": "SUM E INSTALACIÓN DE INVERSOR 3KVA, 120VAC,50HZ/60HZ CON BANCO DE 4 BATERIAS DE 12 V 200AH", "Fecha solped": "28/04/2026", "Observaciones": "La proxima semana se deben recibir los inversores, faltan las baterias", "Estatus": "En espera" }
-                ];
-            }
-            casosPendientesGlobalData = data;
-            renderPendientesTableRows(data);
         }
 
         function renderPendientesTableRows(rows) {
             const tbody = document.getElementById('pendientes-table-body');
-            const kpiCount = document.getElementById('kpi-count-pendientes-3m');
             if (!tbody) return;
-
             tbody.innerHTML = '';
-            const hoy = new Date("2026-08-11");
-            let casosCriticosCount = 0;
+            let count = 0;
 
             rows.forEach(r => {
-                const farmacia = r.Farmacia || "General";
-                const descripcion = r.Descripción || r.Descripcion || "Sin descripción";
-                const fechaSolpedStr = r["Fecha solped"] || r.Fecha || "";
-                const observaciones = r.Observaciones || "Sin observaciones";
-                const estatus = r.Estatus || "En espera";
-
-                let diasAntiguedad = 0;
-                let mesesAntiguedad = 0;
-
-                if (fechaSolpedStr) {
-                    const partes = fechaSolpedStr.toString().trim().split('/');
-                    if (partes.length === 3) {
-                        const fechaSolped = new Date(partes[2], partes[1] - 1, partes[0]);
-                        const diffTime = Math.abs(hoy - fechaSolped);
-                        diasAntiguedad = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        mesesAntiguedad = (diasAntiguedad / 30.44).toFixed(1);
-                    }
-                }
-
-                if (mesesAntiguedad >= 2.5 || !fechaSolpedStr) {
-                    casosCriticosCount++;
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-red-50/40 transition-all">
-                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
-                            <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${descripcion}</td>
-                            <td class="py-3.5 px-2 text-center font-bold text-slate-600">${fechaSolpedStr || 'N/A'}</td>
-                            <td class="py-3.5 px-2 text-center">
-                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">
-                                    ${mesesAntiguedad > 0 ? mesesAntiguedad + ' Meses' : '> 3 Meses'}
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${observaciones}</td>
-                            <td class="py-3.5 px-4 text-right">
-                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">
-                                    ${estatus}
-                                </span>
-                            </td>
-                        </tr>`;
-                }
+                count++;
+                tbody.innerHTML += `
+                    <tr class="hover:bg-red-50/40 transition-all">
+                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || 'General'}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">${r.Descripción || r.Descripcion || 'Sin detalle'}</td>
+                        <td class="py-3.5 px-2 text-center">${r["Fecha solped"] || 'N/A'}</td>
+                        <td class="py-3.5 px-2 text-center"><span class="px-2 py-0.5 rounded bg-red-100 text-red-700 font-bold text-[10px]">&gt; 3 Meses</span></td>
+                        <td class="py-3.5 px-4 text-slate-600">${r.Observaciones || 'N/A'}</td>
+                        <td class="py-3.5 px-4 text-right"><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">${r.Estatus || 'Pendiente'}</span></td>
+                    </tr>`;
             });
 
-            if (casosCriticosCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-xs font-bold text-slate-400">No existen solicitudes de pedido pendientes con más de 3 meses de antigüedad.</td></tr>`;
-            }
-
-            if (kpiCount) kpiCount.innerText = `${casosCriticosCount} Casos Críticos (SP > 3m)`;
+            document.getElementById('kpi-count-pendientes-3m').innerText = `${count} Casos Críticos`;
             lucide.createIcons();
         }
 
         async function cargarPermisosBomberos() {
-            let data = [];
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=bomberos&_nocache=" + new Date().getTime());
-                if (response.ok) data = await response.json();
+                if (response.ok) {
+                    bomberosGlobalData = await response.json();
+                    renderBomberosTableRows(bomberosGlobalData);
+                }
             } catch (err) {
-                console.warn("Usando matriz local de Permisos de Bomberos:", err);
+                console.warn(err);
             }
-
-            if (!Array.isArray(data) || data.length === 0) {
-                data = [
-                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaVencimiento": "28/08/2026", "Direccion": "Av. Principal de Naiguatá, Sector El Pueblo", "Telefono": "0212-331-4011", "Gerente": "Carlos Mendoza", "Regente": "Dra. Elena Rivas" },
-                    { "Farmacia": "FARMACIA CUTIRA", "Región": "Capital", "Estado": "Distrito Capital", "FechaVencimiento": "02/09/2026", "Direccion": "Av. Sucre, Catia, Edif. Cutira", "Telefono": "0212-860-1234", "Gerente": "Mariana López", "Regente": "Dr. Fernando Torres" },
-                    { "Farmacia": "FARMACIA NISPERO", "Región": "Capital", "Estado": "Miranda", "FechaVencimiento": "18/09/2026", "Direccion": "Av. Principal de San Antonio, C.C. La Cascada", "Telefono": "0212-372-9988", "Gerente": "Andrés Páez", "Regente": "Dra. Carmen Silva" }
-                ];
-            }
-            bomberosGlobalData = data;
-            renderBomberosTableRows(data);
         }
 
         function renderBomberosTableRows(rows) {
             const tbody = document.getElementById('bomberos-table-body');
-            const kpiCount = document.getElementById('kpi-count-bomberos');
             if (!tbody) return;
-
             tbody.innerHTML = '';
-            const hoy = new Date("2026-08-11");
-            let bomberosCount = 0;
 
             rows.forEach(r => {
-                const farmacia = r.Farmacia || r.Nombre || "General";
-                const region = r.Región || r.Region || "Nacional";
-                const estadoGeo = r.Estado || r.Ubicacion || "N/A";
-                const fechaVencStr = r.FechaVencimiento || r["Fecha de Vencimiento"] || r.Vencimiento || "";
-
-                let diasFaltantes = 999;
-                if (fechaVencStr) {
-                    const partes = fechaVencStr.toString().trim().split('/');
-                    if (partes.length === 3) {
-                        const fechaVenc = new Date(partes[2], partes[1] - 1, partes[0]);
-                        const diffTime = fechaVenc - hoy;
-                        diasFaltantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    }
-                }
-
-                if (diasFaltantes <= 30) {
-                    bomberosCount++;
-                    let badgeClass = diasFaltantes <= 0 ? 'bg-red-100 text-red-700 border-red-300' : 'bg-orange-100 text-orange-700 border-orange-300';
-                    let textTexto = diasFaltantes <= 0 ? 'VENCIDO' : `${diasFaltantes} Días`;
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-orange-50/40 transition-all">
-                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
-                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${region}</td>
-                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${estadoGeo}</td>
-                            <td class="py-3.5 px-2 text-center font-bold text-slate-800">${fechaVencStr || 'N/A'}</td>
-                            <td class="py-3.5 px-4 text-right">
-                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeClass}">
-                                    ${textTexto}
-                                </span>
-                            </td>
-                        </tr>`;
-                }
+                tbody.innerHTML += `
+                    <tr class="hover:bg-orange-50/40 transition-all">
+                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || 'N/A'}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Región || r.Region || 'Capital'}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Estado || 'N/A'}</td>
+                        <td class="py-3.5 px-2 text-center font-bold">${r.FechaVencimiento || r["Fecha de Vencimiento"] || 'N/A'}</td>
+                        <td class="py-3.5 px-4 text-right"><span class="px-2 py-0.5 rounded bg-orange-100 text-orange-700 font-black text-[10px]">ALERTA</span></td>
+                    </tr>`;
             });
-
-            if (bomberosCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-xs font-bold text-slate-400">No hay permisos de bomberos próximos a vencer dentro de los próximos 30 días.</td></tr>`;
-            }
-
-            if (kpiCount) kpiCount.innerText = `${bomberosCount} Alertas de Bomberos`;
             lucide.createIcons();
         }
 
         async function cargarFumigaciones() {
-            let data = [];
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones&_nocache=" + new Date().getTime());
-                if (response.ok) data = await response.json();
+                if (response.ok) {
+                    fumigacionesGlobalData = await response.json();
+                    renderFumigacionesTableRows(fumigacionesGlobalData);
+                }
             } catch (err) {
-                console.warn("Usando matriz local de Fumigaciones:", err);
+                console.warn(err);
             }
-
-            if (!Array.isArray(data) || data.length === 0) {
-                data = [
-                    { "Farmacia": "FARMACIA MANGLE", "Región": "Capital", "Estado": "Vargas", "FechaFumigacion": "20/05/2026" },
-                    { "Farmacia": "FARMACIA ARAGUANEY", "Región": "Capital", "Estado": "Distrito Capital", "FechaFumigacion": "25/05/2026" },
-                    { "Farmacia": "FARMACIA NISPERO", "Región": "Capital", "Estado": "Miranda", "FechaFumigacion": "28/05/2026" }
-                ];
-            }
-            fumigacionesGlobalData = data;
-            renderFumigacionesTableRows(data);
         }
 
         function renderFumigacionesTableRows(rows) {
             const tbody = document.getElementById('fumigaciones-table-body');
-            const kpiCount = document.getElementById('kpi-count-fumigaciones');
             if (!tbody) return;
-
             tbody.innerHTML = '';
-            const hoy = new Date("2026-08-11");
-            let fumigacionesCount = 0;
 
             rows.forEach(r => {
-                const farmacia = r.Farmacia || r.Nombre || "General";
-                const region = r.Región || r.Region || "Nacional";
-                const estadoGeo = r.Estado || r.Ubicacion || "N/A";
-                const fechaFumStr = r.FechaFumigacion || r["Fecha de Fumigación"] || r.Fecha || "";
-
-                let diasFaltantes = 999;
-                if (fechaFumStr) {
-                    const partes = fechaFumStr.toString().trim().split('/');
-                    if (partes.length === 3) {
-                        const fechaFum = new Date(partes[2], partes[1] - 1, partes[0]);
-                        const fechaVencFum = new Date(fechaFum.getTime() + (90 * 24 * 60 * 60 * 1000));
-                        const diffTime = fechaVencFum - hoy;
-                        diasFaltantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    }
-                }
-
-                if (diasFaltantes <= 21) {
-                    fumigacionesCount++;
-                    let badgeClass = diasFaltantes <= 0 ? 'bg-red-100 text-red-700 border-red-300' : 'bg-sky-100 text-sky-700 border-sky-300';
-                    let textTexto = diasFaltantes <= 0 ? 'RENOVACIÓN VENCIDA' : `${diasFaltantes} Días Restantes`;
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-sky-50/40 transition-all">
-                            <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
-                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${region}</td>
-                            <td class="py-3.5 px-4 text-center font-bold text-slate-600">${estadoGeo}</td>
-                            <td class="py-3.5 px-2 text-center font-bold text-slate-800">${fechaFumStr || 'N/A'}</td>
-                            <td class="py-3.5 px-4 text-right">
-                                <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase ${badgeClass}">
-                                    ${textTexto}
-                                </span>
-                            </td>
-                        </tr>`;
-                }
+                tbody.innerHTML += `
+                    <tr class="hover:bg-sky-50/40 transition-all">
+                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || 'N/A'}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Región || r.Region || 'Capital'}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Estado || 'N/A'}</td>
+                        <td class="py-3.5 px-2 text-center font-bold">${r.FechaFumigacion || r["Fecha de Fumigación"] || 'N/A'}</td>
+                        <td class="py-3.5 px-4 text-right"><span class="px-2 py-0.5 rounded bg-sky-100 text-sky-700 font-black text-[10px]">PROGRAMADO</span></td>
+                    </tr>`;
             });
-
-            if (fumigacionesCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-xs font-bold text-slate-400">No hay farmacias con vencimiento de fumigación dentro de los próximos 21 días.</td></tr>`;
-            }
-
-            if (kpiCount) kpiCount.innerText = `${fumigacionesCount} Alertas de Fumigación`;
             lucide.createIcons();
         }
 
         function cargarAuditoriasDrive() {
             const tbody = document.getElementById('auditorias-table-body');
-            const kpiCount = document.getElementById('kpi-count-auditorias');
             if (!tbody) return;
-
-            const ultimasAuditorias = {};
-
-            auditoriasGlobalData.forEach(item => {
-                const tiendaKey = item.tienda.trim().toUpperCase();
-                const partes = item.fecha.split('/');
-                const fechaObj = new Date(partes[2], partes[1] - 1, partes[0]);
-
-                if (!ultimasAuditorias[tiendaKey] || fechaObj > ultimasAuditorias[tiendaKey].fechaObj) {
-                    ultimasAuditorias[tiendaKey] = { ...item, fechaObj: fechaObj };
-                }
-            });
-
-            const listaFiltrada = Object.values(ultimasAuditorias);
-
             tbody.innerHTML = '';
-            listaFiltrada.forEach(a => {
+
+            auditoriasGlobalData.forEach(a => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-teal-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${a.tienda}</td>
-                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-relaxed">${a.actividades}</td>
-                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${a.fecha}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">${a.actividades}</td>
+                        <td class="py-3.5 px-2 text-center font-bold">${a.fecha}</td>
                         <td class="py-3.5 px-4 text-right font-black text-teal-700">${a.auditor}</td>
                     </tr>`;
             });
-
-            if (kpiCount) kpiCount.innerText = `${listaFiltrada.length} Tiendas Auditadas`;
             lucide.createIcons();
         }
 
-        /* ==========================================
-           CÓDIGO DEL ASISTENTE INTELIGENTE MEJORADO
-           ========================================== */
+        /* ========================================================
+           CÓDIGO REFACTORIZADO DEL ASISTENTE INTELIGENTE BI (FIXED)
+           ======================================================== */
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1328,89 +1142,91 @@
 
             const rawQuery = queryInput.value.trim();
             if (!rawQuery) {
-                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Por favor ingresa el nombre de una farmacia para consultar.</div>`;
+                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Ingresa el nombre de una farmacia para consultar.</div>`;
                 return;
             }
 
-            // Limpiar la cadena de búsqueda extraendo únicamente la palabra clave
-            let farmaciaLimpia = rawQuery.toLowerCase()
-                .replace(/dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los/g, '')
+            // LIMPIEZA INTELIGENTE MEDIANTE LIMITES DE PALABRAS COMPLETAS (\b) PARA EVITAR MUTAR PALABRAS COMO "COPORO" -> "COO"
+            let farmaciaLimpia = rawQuery
+                .replace(/\b(dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver)\b/gi, '')
+                .replace(/\s+/g, ' ')
                 .trim();
 
-            if (!farmaciaLimpia) farmaciaLimpia = rawQuery.trim();
+            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
             const nameUpper = farmaciaLimpia.toUpperCase();
 
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos transversal para Farmacia ${nameUpper}...</p>
+                    <p class="text-xs font-bold text-slate-600">Procesando consulta transversal para FARMACIA ${nameUpper}...</p>
                 </div>`;
             lucide.createIcons();
 
             setTimeout(() => {
-                // 1. Escanear Auditorías
-                const auditoriasMatch = auditoriasGlobalData.filter(a => 
-                    a.tienda.toLowerCase().includes(farmaciaLimpia)
+                const targetKey = farmaciaLimpia.toLowerCase();
+
+                // 1. Escanear Bomberos / Permisología
+                const bombMatch = bomberosGlobalData.find(b => 
+                    (b.Farmacia || b.Nombre || "").toLowerCase().includes(targetKey)
                 );
 
-                // 2. Escanear Bomberos / Ficha Institucional Real
-                const bomberosMatch = bomberosGlobalData.find(b => 
-                    (b.Farmacia || b.Nombre || "").toLowerCase().includes(farmaciaLimpia)
+                // 2. Escanear Fumigaciones
+                const fumiMatch = fumigacionesGlobalData.find(f => 
+                    (f.Farmacia || f.Nombre || "").toLowerCase().includes(targetKey)
                 );
 
-                // 3. Escanear Fumigaciones
-                const fumigacionMatch = fumigacionesGlobalData.find(f => 
-                    (f.Farmacia || f.Nombre || "").toLowerCase().includes(farmaciaLimpia)
+                // 3. Escanear Auditorías
+                const audiMatch = auditoriasGlobalData.filter(a => 
+                    a.tienda.toLowerCase().includes(targetKey)
                 );
 
                 // 4. Escanear Casos Pendientes SP > 3m
-                const pendientesMatch = casosPendientesGlobalData.filter(p => 
-                    (p.Farmacia || "").toLowerCase().includes(farmaciaLimpia)
+                const pendMatch = casosPendientesGlobalData.filter(p => 
+                    (p.Farmacia || "").toLowerCase().includes(targetKey)
                 );
 
-                let dir = bomberosMatch?.Direccion || "No registrada en matriz principal";
-                let tel = bomberosMatch?.Telefono || "N/A";
-                let ger = bomberosMatch?.Gerente || "No asignado";
-                let reg = bomberosMatch?.Regente || "No asignado";
+                let direccion = bombMatch?.Direccion || bombMatch?.Dirección || "No registrada en matriz principal";
+                let telefono = bombMatch?.Telefono || bombMatch?.Teléfono || "N/A";
+                let gerente = bombMatch?.Gerente || "No asignado";
+                let regente = bombMatch?.Regente || "No asignado";
 
                 let hallazgosHTML = "";
-                if (auditoriasMatch.length > 0) {
-                    const ult = auditoriasMatch[0];
-                    hallazgosHTML = `
-                        <div class="p-5 bg-teal-900 text-white rounded-2xl space-y-2">
-                            <h5 class="text-xs font-black uppercase text-teal-300 flex items-center gap-2">
-                                <i data-lucide="clipboard-check" class="w-4 h-4"></i> Último Informe de Auditoría (${ult.fecha} • ${ult.auditor})
-                            </h5>
-                            <p class="text-xs text-slate-200 leading-relaxed">${ult.actividades}</p>
-                        </div>`;
+                if (audiMatch.length > 0) {
+                    let items = audiMatch.map(a => `
+                        <div class="p-4 bg-teal-900 text-white rounded-xl space-y-1 my-2">
+                            <div class="flex justify-between text-[11px] font-black text-teal-300">
+                                <span>INFORME DE AUDITORÍA (${a.fecha})</span>
+                                <span>AUDITOR: ${a.auditor}</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed">${a.actividades}</p>
+                        </div>
+                    `).join('');
+                    hallazgosHTML = `<div class="space-y-2"><h4 class="font-extrabold text-xs text-slate-900 uppercase">Hallazgos de Auditoría Infraestructura (${audiMatch.length})</h4>${items}</div>`;
                 } else {
-                    hallazgosHTML = `
-                        <div class="p-4 bg-slate-100 text-slate-500 rounded-xl text-xs font-bold">
-                            Sin informes de auditoría técnica registrados en Google Drive.
-                        </div>`;
+                    hallazgosHTML = `<div class="p-4 bg-slate-100 text-slate-500 rounded-xl text-xs font-bold">No hay reportes de auditoría de infraestructura registrados para esta sede.</div>`;
                 }
 
                 let pendientesHTML = "";
-                if (pendientesMatch.length > 0) {
-                    let rows = pendientesMatch.map(p => `
+                if (pendMatch.length > 0) {
+                    let rows = pendMatch.map(p => `
                         <tr>
-                            <td class="py-2.5 px-4 text-slate-800">${p.Descripción || p.Descripcion || 'Sin detalle'}</td>
+                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripción || p.Descripcion || 'Sin detalle'}</td>
                             <td class="py-2.5 px-2 text-center text-slate-600">${p["Fecha solped"] || 'N/A'}</td>
-                            <td class="py-2.5 px-4 text-right"><span class="px-2 py-0.5 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
+                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'En espera'}</span></td>
                         </tr>
                     `).join('');
 
                     pendientesHTML = `
-                        <div class="space-y-3 pt-2">
+                        <div class="space-y-3">
                             <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas / Pendientes (${pendientesMatch.length})
+                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas (SP > 3 Meses)
                             </h4>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl">
                                 <table class="w-full text-xs text-left">
                                     <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
                                         <tr>
                                             <th class="py-2.5 px-4">Descripción Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Fecha</th>
+                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
                                             <th class="py-2.5 px-4 text-right">Estatus</th>
                                         </tr>
                                     </thead>
@@ -1421,7 +1237,7 @@
                 } else {
                     pendientesHTML = `
                         <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no registra Solicitudes de Pedido antiguas pendientes.
                         </div>`;
                 }
 
@@ -1432,25 +1248,25 @@
                                 <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
                                 <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
                             </div>
-                            <span class="text-xs font-bold text-slate-500">Escaneo Cross-Tab Completado</span>
+                            <span class="text-xs font-bold text-slate-500">Resumen Consolidado Multi-Módulo</span>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${direccion}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${telefono}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente de Tienda</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ger}</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${gerente}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-400 uppercase block">Regente Farmacéutico</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${reg}</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${regente}</span>
                             </div>
                         </div>
 
@@ -1459,15 +1275,14 @@
                         ${hallazgosHTML}
                     </div>`;
                 lucide.createIcons();
-            }, 500);
+            }, 400);
         }
 
         function filterInventoryTable() {
             const val = document.getElementById('invSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#inventoryTable tbody tr');
             rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
+                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
             });
         }
 
@@ -1475,8 +1290,7 @@
             const val = document.getElementById('pendSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#pendientesTable tbody tr');
             rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
+                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
             });
         }
 
@@ -1484,8 +1298,7 @@
             const val = document.getElementById('bomberosSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#bomberosTable tbody tr');
             rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
+                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
             });
         }
 
@@ -1493,8 +1306,7 @@
             const val = document.getElementById('fumigacionesSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#fumigacionesTable tbody tr');
             rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
+                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
             });
         }
 
@@ -1502,8 +1314,7 @@
             const val = document.getElementById('auditoriasSearchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#auditoriasTable tbody tr');
             rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
+                row.style.display = row.innerText.toLowerCase().includes(val) ? '' : 'none';
             });
         }
 
@@ -1514,9 +1325,7 @@
             const badgeMonth = document.getElementById('badge-drive-month');
 
             const monthName = MESES_LARGOS[selectedMonthIdx] || 'AGOSTO';
-            if (badgeMonth) {
-                badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
-            }
+            if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
 
             const monthData = regionalTicketsDataByMonth[selectedMonthIdx];
 
@@ -1559,7 +1368,6 @@
             renderTicketsList(capList, capitalContainer);
             renderTicketsList(occList, occidenteContainer);
             renderTicketsList(oriList, orienteContainer);
-
             lucide.createIcons();
         }
 
@@ -1653,17 +1461,11 @@
             const selectedRegion = regSelector ? regSelector.value : 'Nacional';
             const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
 
-            const kpiLabel = document.getElementById('kpi-sol-label');
-            const catBadge = document.getElementById('badge-cat-month');
-            const tipoBadge = document.getElementById('badge-tipo-mes');
-            const mesBadge = document.getElementById('badge-mes-actual');
-            const pieLabel = document.getElementById('pie-mes-label');
-
-            if (kpiLabel) kpiLabel.innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
-            if (catBadge) catBadge.innerText = `${monthName} 2026`;
-            if (tipoBadge) tipoBadge.innerText = `${monthName} 2026`;
-            if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
-            if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
+            document.getElementById('kpi-sol-label').innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
+            document.getElementById('badge-cat-month').innerText = `${monthName} 2026`;
+            document.getElementById('badge-tipo-mes').innerText = `${monthName} 2026`;
+            document.getElementById('badge-mes-actual').innerText = `${monthName} 2026`;
+            document.getElementById('pie-mes-label').innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
             let solVal = 0, atVal = 0, cancVal = 0;
             REGIONES.forEach(r => {
@@ -1680,18 +1482,10 @@
                 if (itemPrev) solPrevVal += itemPrev.sol;
             });
 
-            let backlogSolventadoMes = 0;
-            REGIONES.forEach(r => {
-                let item = appData[r][selectedMonthIdx];
-                if (item) backlogSolventadoMes += (item.prevSolv || 0);
-            });
-
             document.getElementById('kpi-sol').innerText = solVal;
             document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
             document.getElementById('kpi-mes-at').innerText = atVal;
             document.getElementById('kpi-at-pct').innerText = `${((atVal / (solVal || 1)) * 100).toFixed(1)}% del mes`;
-            document.getElementById('kpi-backlog-atendido').innerText = backlogSolventadoMes;
-            document.getElementById('kpi-backlog-sub').innerText = `${backlogSolventadoMes} Casos`;
 
             let pendVal = Math.max(0, solVal - (atVal + cancVal));
             document.getElementById('kpi-pend').innerText = pendVal;
@@ -1709,7 +1503,6 @@
             renderRegionalCharts();
             renderBacklogRegionalSection();
             renderRegionalChartsCierre();
-            
             renderRegionalTickets(selectedMonthIdx, selectedRegion);
         }
 
@@ -1719,12 +1512,7 @@
 
             const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
             const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 7);
-
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
-
-            const gradArea = ctxGrowth.createLinearGradient(0, 0, 0, 300);
-            gradArea.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
-            gradArea.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
 
             const volData = [];
             for (let i = startIdx; i <= endIdx; i++) {
@@ -1734,7 +1522,6 @@
             }
 
             const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 68.5, 15.7];
-            const filteredSla = slaBase.slice(startIdx, endIdx + 1);
 
             charts.growth = new Chart(ctxGrowth, {
                 type: 'bar',
@@ -1742,34 +1529,12 @@
                     labels: filteredLabels,
                     datasets: [
                         {
-                            label: 'Volumen Mensual',
-                            data: volData,
-                            type: 'line',
-                            borderColor: '#38bdf8',
-                            backgroundColor: gradArea,
-                            fill: true,
-                            borderWidth: 3,
-                            tension: 0.35,
-                            pointRadius: 6,
-                            pointBackgroundColor: '#0284c7',
-                            order: 1,
+                            label: 'Volumen Mensual', data: volData, type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 6, pointBackgroundColor: '#0284c7',
                             datalabels: { anchor: 'end', align: 'top', offset: 6, color: '#0284c7', font: { weight: '900', size: 11 } }
                         },
                         {
-                            label: 'Tendencia SLA',
-                            data: filteredSla,
-                            type: 'line',
-                            borderColor: '#ff5500',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            pointRadius: 5,
-                            pointBackgroundColor: '#ff5500',
-                            yAxisID: 'y1',
-                            order: 0,
-                            datalabels: {
-                                anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 },
-                                formatter: v => v > 0 ? v + '%' : ''
-                            }
+                            label: 'Tendencia SLA', data: slaBase.slice(startIdx, endIdx + 1), type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
+                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
                         }
                     ]
                 },
@@ -1778,7 +1543,7 @@
                     layout: { padding: { top: 30, bottom: 15 } },
                     scales: {
                         x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
-                        y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true, max: 700 },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
                         y1: { display: false, min: 0, max: 150 }
                     },
                     plugins: { legend: { display: false } }
@@ -1799,7 +1564,7 @@
             const maxVal = items.length > 0 ? items[0].count : 1;
 
             if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-4 text-center">Sin solicitudes registradas en este periodo.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-4 text-center">Sin solicitudes en este periodo.</p>`;
                 return;
             }
 
@@ -1823,33 +1588,16 @@
 
             const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
             const selectedReg = document.getElementById('catRegSelector')?.value || 'Global';
-
-            const monthCatData = categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[7];
-            const stats = monthCatData[selectedReg] || monthCatData.Global || {};
-
-            const cats = Object.keys(stats);
-            const vals = Object.values(stats);
-            const totalSum = vals.reduce((a, b) => a + b, 0);
+            const stats = (categoryStatsByMonthAndRegion[selectedMonthIdx] || categoryStatsByMonthAndRegion[7])[selectedReg] || {};
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
                 data: {
-                    labels: cats,
-                    datasets: [{
-                        label: 'Tickets', 
-                        data: vals, 
-                        backgroundColor: '#ff5500', 
-                        borderRadius: 6, 
-                        barThickness: 16,
-                        datalabels: {
-                            anchor: 'end', align: 'end', offset: 6, color: '#0f172a', font: { weight: '800', size: 10 },
-                            formatter: (value) => `${value} (${totalSum > 0 ? ((value / totalSum) * 100).toFixed(1) : 0}%)`
-                        }
-                    }]
+                    labels: Object.keys(stats),
+                    datasets: [{ label: 'Tickets', data: Object.values(stats), backgroundColor: '#ff5500', borderRadius: 6, barThickness: 16 }]
                 },
                 options: {
                     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { right: 85, left: 10 } },
                     scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } },
                     plugins: { legend: { display: false } }
                 }
@@ -1863,46 +1611,12 @@
             const mData = monthStatusData[mIdx] || monthStatusData[7];
             const keys = Object.keys(mData.workTypes);
             const mesVals = Object.values(mData.workTypes);
-            const histoVals = keys.map(k => workTypeStats[k] ? workTypeStats[k].histo : 100);
-
             const colors = ['#ef4444', '#10b981', '#64748b', '#f59e0b', '#3b82f6', '#8b5cf6'];
 
             charts.workType = new Chart(ctxPie, {
                 type: 'pie',
                 data: { labels: keys, datasets: [{ data: mesVals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { top: 15, bottom: 15, left: 15, right: 15 } },
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 10 },
-                            clamp: true,
-                            anchor: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (val / sum) < 0.08 ? 'end' : 'center';
-                            },
-                            align: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (val / sum) < 0.08 ? 'start' : 'center';
-                            },
-                            offset: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return (val / sum) < 0.05 ? 6 : 2;
-                            },
-                            formatter: (value, ctx) => {
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                if (sum === 0 || value === 0) return '';
-                                const pct = (value / sum) * 100;
-                                return pct.toFixed(0) + '%';
-                            }
-                        }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
             const tbody = document.getElementById('worktype-table-body');
@@ -1917,7 +1631,7 @@
                         <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2"><div class="w-3 h-3 rounded-sm" style="background:${colors[i]}"></div>${k}</td>
                         <td class="py-2.5 text-center font-black text-slate-900">${mesVals[i]}</td>
                         <td class="py-2.5 text-center font-black text-slate-500">${pMes}%</td>
-                        <td class="py-2.5 text-right font-black text-blue-700">${histoVals[i]}</td>
+                        <td class="py-2.5 text-right font-black text-blue-700">${workTypeStats[k] ? workTypeStats[k].histo : 100}</td>
                     </tr>`;
             });
         }
@@ -1934,58 +1648,20 @@
             charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
                 data: { labels: labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
-                options: {
-                    cutout: '66%', responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 10 },
-                            display: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                return val > 0;
-                            },
-                            anchor: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                const pct = (val / sum) * 100;
-                                return pct < 6 ? 'end' : 'center';
-                            },
-                            align: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                const pct = (val / sum) * 100;
-                                return pct < 6 ? 'end' : 'center';
-                            },
-                            offset: (ctx) => {
-                                const val = ctx.dataset.data[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                const pct = (val / sum) * 100;
-                                return pct < 6 ? 8 : 0;
-                            },
-                            formatter: (value, ctx) => {
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                return sum > 0 ? ((value / sum) * 100).toFixed(1) + '%' : '';
-                            }
-                        }
-                    }
-                }
+                options: { cutout: '66%', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
-            const total = vals.reduce((a, b) => a + b, 0);
-            document.getElementById('pie-total-val').innerText = total;
-
+            document.getElementById('pie-total-val').innerText = vals.reduce((a, b) => a + b, 0);
             const tbody = document.getElementById('status-table-body');
             if (!tbody) return;
             tbody.innerHTML = '';
 
             vals.forEach((v, i) => {
-                const p = total > 0 ? ((v / total) * 100).toFixed(1) : "0.0";
                 tbody.innerHTML += `
                     <tr>
-                        <td class="py-3 font-bold text-slate-800 flex items-center gap-2.5"><div class="w-3 h-3 rounded-md shadow-sm" style="background:${colors[i]}"></div>${labels[i]}</td>
-                        <td class="py-3 text-center font-black text-slate-900 text-sm">${v}</td>
-                        <td class="py-3 text-right font-black text-slate-500">${p}%</td>
+                        <td class="py-3 font-bold text-slate-800 flex items-center gap-2.5"><div class="w-3 h-3 rounded-md" style="background:${colors[i]}"></div>${labels[i]}</td>
+                        <td class="py-3 text-center font-black text-slate-900">${v}</td>
+                        <td class="py-3 text-right font-black text-slate-500">${((v / (vals.reduce((a, b) => a + b, 0) || 1)) * 100).toFixed(1)}%</td>
                     </tr>`;
             });
         }
@@ -1997,43 +1673,15 @@
 
             const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
             const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
-
-            const regionColors = {
-                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
-                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
-                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
-            };
 
             REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = appData[r][i] ? appData[r][i].sol : 0;
-                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
-                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                        </div>`;
-                }
-
                 container.innerHTML += `
                     <div class="card-pro flex flex-col justify-between bg-white">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
-                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase">${r}</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado</span>
                         </div>
                         <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
-                        
-                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
-                                ${tableCols}
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                                <span><b class="text-blue-600">■</b> Solicitados</span>
-                                <span><b class="text-slate-900">■</b> Atendidos</span>
-                            </div>
-                        </div>
                     </div>`;
             });
 
@@ -2042,48 +1690,16 @@
                     const ctxElem = document.getElementById(`chart-reg-${r}`);
                     if (!ctxElem) return;
                     const ctx = ctxElem.getContext('2d');
-                    const c = regionColors[r];
-
-                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
-                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
-
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: filteredLabels,
+                            labels: MESES.slice(startIdx, endIdx + 1),
                             datasets: [
-                                {
-                                    label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
-                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                                    datalabels: { display: false }
-                                },
-                                {
-                                    label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
-                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                                    datalabels: { display: false }
-                                },
-                                {
-                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
-                                    pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                                    datalabels: {
-                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                                    }
-                                }
+                                { label: 'Sol', data: appData[r].slice(startIdx, endIdx + 1).map(d => d.sol), backgroundColor: '#93c5fd' },
+                                { label: 'At', data: appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc), backgroundColor: '#1e3a8a' }
                             ]
                         },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                                y: { display: false, beginAtZero: true },
-                                y1: { display: false, min: 0, max: 200 }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
                     });
                 });
             }, 50);
@@ -2093,61 +1709,20 @@
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
             container.innerHTML = '';
-
             const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
 
-            let totalBacklogPendienteGlobal = 0;
-            let partesPendientesArr = [];
-
             REGIONES.forEach(r => {
-                let totalBacklogPrevio = 0;
-
+                let totalPrev = 0;
                 for (let i = 0; i < selectedMonthIdx; i++) {
                     const m = appData[r][i];
-                    if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
+                    if (m) totalPrev += Math.max(0, m.sol - (m.at + m.canc));
                 }
-
-                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-                let casosSolventadosMesActual = Math.min(totalBacklogPrevio, mObj.prevSolv || 0);
-
-                if (totalBacklogPrevio === 0) casosSolventadosMesActual = 0;
-
-                const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
-
-                totalBacklogPendienteGlobal += backlogPendienteActual;
-                partesPendientesArr.push(backlogPendienteActual);
-
-                const pctResolucion = totalBacklogPrevio > 0 
-                    ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
-                    : "0.0";
-
-                const strokeDash = `${pctResolucion}, 100`;
-
                 container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
-                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                            </div>
-                        </div>
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 space-y-2">
+                        <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                        <span class="text-orange-400 text-lg font-black block">${totalPrev} Casos Pendientes</span>
                     </div>`;
             });
-
-            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
         }
 
         function renderRegionalChartsCierre() {
@@ -2157,43 +1732,14 @@
 
             const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
             const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 7);
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
-
-            const regionColors = {
-                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
-                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
-                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
-            };
 
             REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = cierreData[r][i] ? cierreData[r][i].sol : 0;
-                    const at = cierreData[r][i] ? cierreData[r][i].at : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                            <span class="block font-extrabold text-[10px] text-indigo-600">${sol}</span>
-                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                        </div>`;
-                }
-
                 container.innerHTML += `
                     <div class="card-pro flex flex-col justify-between bg-slate-50/50">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
-                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase">${r} (Cierre)</h4>
                         </div>
                         <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
-                        
-                        <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">
-                                ${tableCols}
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                                <span><b class="text-indigo-600">■</b> Solicitados</span>
-                                <span><b class="text-slate-900">■</b> Atendidos</span>
-                            </div>
-                        </div>
                     </div>`;
             });
 
@@ -2202,74 +1748,28 @@
                     const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
                     if (!ctxElem) return;
                     const ctx = ctxElem.getContext('2d');
-                    const c = regionColors[r];
-
-                    const solData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-                    const atData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at);
-                    const pctData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at / d.sol) * 100).toFixed(1)) : 0);
-
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: filteredLabels,
+                            labels: MESES.slice(startIdx, endIdx + 1),
                             datasets: [
-                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                {
-                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                                    datalabels: {
-                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                                    }
-                                }
+                                { label: 'Sol', data: cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol), backgroundColor: '#818cf8' },
+                                { label: 'At', data: cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at), backgroundColor: '#1e1b4b' }
                             ]
                         },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                                y: { display: false, beginAtZero: true },
-                                y1: { display: false, min: 0, max: 200 }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
                     });
                 });
             }, 50);
         }
 
         function exportarAGoogleSlides() {
-            const htmlContent = `
-                <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:p="urn:schemas-microsoft-com:office:powerpoint">
-                <head>
-                    <meta charset="utf-8">
-                    <title>Presentación de Gestión Xana BI</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; background: #ffffff; margin: 0; padding: 20px; }
-                        .slide { page-break-after: always; padding: 20px; border: 1px solid #ccc; margin-bottom: 20px; border-radius: 12px; }
-                        h1 { color: #ff5500; }
-                    </style>
-                </head>
-                <body>
-                    <div class="slide">
-                        <h1>Presentación de Gestión - Farmacias Xana</h1>
-                        ${document.getElementById('exportable-doc-area').innerHTML}
-                    </div>
-                </body>
-                </html>`;
-
+            const htmlContent = `<html><body>${document.getElementById('exportable-doc-area').innerHTML}</body></html>`;
             const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
-            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Presentacion_Gestion_Xana_Infraestructura.pptx';
-            document.body.appendChild(a);
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Presentacion_Xana.pptx';
             a.click();
-            document.body.removeChild(a);
-
-            window.open('https://docs.google.com/presentation/', '_blank');
         }
 
         function exportarReporteExcel() {
