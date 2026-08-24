@@ -1,4 +1,4 @@
-syncWithOdoo()<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -156,10 +156,10 @@ syncWithOdoo()<!DOCTYPE html>
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">288</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-sol">0</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>288</b></span>
+                        <span class="text-slate-500 font-medium" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>0</b></span>
                     </div>
                 </div>
 
@@ -169,10 +169,10 @@ syncWithOdoo()<!DOCTYPE html>
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">60</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">0</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">20.8% del mes</span>
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">0.0% del mes</span>
                     </div>
                 </div>
 
@@ -233,7 +233,7 @@ syncWithOdoo()<!DOCTYPE html>
                         <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
                             <div>
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                    <i data-lucide="store" class="w-4 h-4 text-orange-500"></i> Top 10 Tiendas Reales
+                                    <i data-lucide="store" class="w-4 h-4 text-orange-500"></i> Top 10 Tiendas
                                 </h3>
                                 <p class="text-xs text-slate-400 font-medium">Farmacias registradas en Odoo</p>
                             </div>
@@ -332,7 +332,7 @@ syncWithOdoo()<!DOCTYPE html>
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL AGOSTO:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">288</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
                             </div>
                         </div>
                     </div>
@@ -450,7 +450,7 @@ syncWithOdoo()<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
+        <!-- PESTAÑAS ADICIONALES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -466,7 +466,6 @@ syncWithOdoo()<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- PERMISOS BOMBEROS -->
         <div id="tab-content-bomberos" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -482,7 +481,6 @@ syncWithOdoo()<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- FUMIGACIONES -->
         <div id="tab-content-fumigaciones" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -498,7 +496,6 @@ syncWithOdoo()<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- AUDITORÍAS -->
         <div id="tab-content-auditorias" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -534,116 +531,36 @@ syncWithOdoo()<!DOCTYPE html>
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
+        // URL DE APPS SCRIPT OFICIAL PÚBLICA
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1CkvJWluZm5Fwv37hXpieO4ADZBp3-aOvKW_nA10TFDmZsj240CWIHW2fftq8hHNnvg/exec";
 
-        // BASELINE REPOSITORIO DE DATOS
-       let appData = {
-    Capital: [
-        { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
-        { sol: 195, at: 190, canc: 30, prevSolv: 12, prevPending: 24 },
-        { sol: 216, at: 187, canc: 22, prevSolv: 18, prevPending: 42 },
-        { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
-        { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
-        { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-        { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 }, // Julio = 363
-        { sol: 0,   at: 0,   canc: 0,  prevSolv: 0,  prevPending: 0 }   // Agosto inicializado en 0 para forzar lectura de API
-    ],
-    Occidente: [
-        { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 56,  at: 56,  canc: 5, prevSolv: 0, prevPending: 0 },
-        { sol: 192, at: 186, canc: 4, prevSolv: 5, prevPending: 6 },
-        { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
-        { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
-        { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-        { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },  // Julio = 180
-        { sol: 0,   at: 0,   canc: 0,  prevSolv: 0,  prevPending: 0 }   // Agosto inicializado en 0
-    ],
-    Oriente: [
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-        { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },      // Julio = 2
-        { sol: 0, at: 0, canc: 0, prevSolv: 0,  prevPending: 0 }        // Agosto inicializado en 0
-    ]
-};
+        // ESTRUCTURA DINÁMICA 100% LIMPIA (Se llenará exclusivamente desde la API)
+        let appData = {
+            Capital: Array(8).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 })),
+            Occidente: Array(8).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 })),
+            Oriente: Array(8).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 }))
+        };
+
         let cierreData = {
-            Capital: [
-                { sol: 206, at: 69 }, { sol: 199, at: 37 }, { sol: 203, at: 77 }, { sol: 186, at: 114 },
-                { sol: 303, at: 204 }, { sol: 382, at: 272 }, { sol: 363, at: 242 }, { sol: 180, at: 35 }
-            ],
-            Occidente: [
-                { sol: 99, at: 79 }, { sol: 57, at: 33 }, { sol: 192, at: 142 }, { sol: 75, at: 50 },
-                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 180, at: 102 }, { sol: 78, at: 15 }
-            ],
-            Oriente: [
-                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 },
-                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 2, at: 0 }, { sol: 30, at: 10 }
-            ]
+            Capital: Array(8).fill(null).map(() => ({ sol: 0, at: 0 })),
+            Occidente: Array(8).fill(null).map(() => ({ sol: 0, at: 0 })),
+            Oriente: Array(8).fill(null).map(() => ({ sol: 0, at: 0 }))
         };
 
         let monthStatusData = {
             6: { resuelto: 374, asignado: 73, progreso: 38, procura: 45, cancelada: 15, workTypes: { 'Correctivo': 389, 'Preventivo': 110, 'Mejora': 46 } },
-            7: { resuelto: 60, asignado: 140, progreso: 80, procura: 8, cancelada: 0, workTypes: { 'Correctivo': 210, 'Preventivo': 65, 'Mejora': 13 } }
+            7: { resuelto: 68, asignado: 140, progreso: 94, procura: 8, cancelada: 0, workTypes: { 'Correctivo': 225, 'Preventivo': 72, 'Mejora': 13 } }
         };
 
-        let topStoresByMonthAndRegion = {
-            6: { 
-                Global: [
-                    { name: "Farmacia Traki Cabudare", count: 24 }, { name: "Farmacia Sanare", count: 21 },
-                    { name: "Farmacia Economía", count: 18 }, { name: "Farmacia Cutira", count: 16 },
-                    { name: "Farmacia Mangle", count: 15 }, { name: "Farmacia Coporo", count: 14 },
-                    { name: "Farmacia Araguaney", count: 12 }, { name: "Farmacia El Tigre", count: 10 },
-                    { name: "Farmacia Cumaná", count: 9 }, { name: "Farmacia Orquídea", count: 8 }
-                ],
-                Capital: [{ name: "Farmacia Cutira", count: 16 }, { name: "Farmacia Mangle", count: 15 }],
-                Occidente: [{ name: "Farmacia Traki Cabudare", count: 24 }],
-                Oriente: [{ name: "Farmacia El Tigre", count: 10 }, { name: "Farmacia Cumaná", count: 9 }]
-            },
-            7: {
-                Global: [
-                    { name: "Farmacia Cutira", count: 22 }, { name: "Farmacia Coporo", count: 18 },
-                    { name: "Farmacia Araguaney", count: 16 }, { name: "Farmacia Mangle", count: 14 },
-                    { name: "Farmacia Traki Cabudare", count: 12 }, { name: "Farmacia Sanare", count: 10 },
-                    { name: "Farmacia El Tigre", count: 9 }, { name: "Farmacia Cumaná", count: 8 },
-                    { name: "Farmacia Mamón", count: 7 }, { name: "Farmacia Payara", count: 6 }
-                ],
-                Capital: [{ name: "Farmacia Cutira", count: 22 }, { name: "Farmacia Coporo", count: 18 }],
-                Occidente: [{ name: "Farmacia Traki Cabudare", count: 12 }],
-                Oriente: [{ name: "Farmacia El Tigre", count: 9 }, { name: "Farmacia Cumaná", count: 8 }]
-            }
-        };
-
-        let categoryStatsByMonthAndRegion = {
-            6: { Global: { 'Electricidad': 142, 'Aire Acondicionado': 120, 'Civil': 110, 'Plomería': 95, 'Mobiliario': 78 }, Capital: { 'Electricidad': 70, 'Aire Acondicionado': 60 }, Occidente: { 'Plomería': 45, 'Electricidad': 40 }, Oriente: { 'Aire Acondicionado': 20, 'Electricidad': 15 } },
-            7: { Global: { 'Electricidad': 95, 'Aire Acondicionado': 75, 'Civil': 58, 'Plomería': 38, 'Mobiliario': 22 }, Capital: { 'Electricidad': 58, 'Aire Acondicionado': 48 }, Occidente: { 'Electricidad': 25, 'Aire Acondicionado': 16 }, Oriente: { 'Aire Acondicionado': 18, 'Electricidad': 12 } }
-        };
-
+        let topStoresByMonthAndRegion = {};
+        let categoryStatsByMonthAndRegion = {};
         let workTypeStats = {
             'Correctivo': { mes: 389, histo: 2314 },
             'Preventivo': { mes: 110, histo: 548 },
             'Mejora': { mes: 46, histo: 260 }
         };
 
-        let regionalTicketsDataByMonth = {
-            6: {
-                Capital: [
-                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
-                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
-                ],
-                Occidente: [
-                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026" }
-                ],
-                Oriente: [
-                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026" },
-                    { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
-                ]
-            },
-            7: { Capital: [], Occidente: [], Oriente: [] }
-        };
-
+        let regionalTicketsDataByMonth = { 6: { Capital: [], Occidente: [], Oriente: [] }, 7: { Capital: [], Occidente: [], Oriente: [] } };
         let auditoriasGlobalData = [];
         let bomberosGlobalData = [];
         let fumigacionesGlobalData = [];
@@ -703,55 +620,42 @@ syncWithOdoo()<!DOCTYPE html>
             if (cierreEndSel) cierreEndSel.value = 7;
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
-async function syncWithOdoo() {
-    const loader = document.getElementById('loader-overlay');
-    const syncIcon = document.getElementById('sync-icon');
-    
-    if (loader) loader.style.display = 'flex';
-    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-    try {
-        const cacheBuster = new Date().getTime();
-        const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
-        
-        // Petición HTTP con manejo explícito de redirección
-        const response = await fetch(requestUrl, {
-            method: 'GET',
-            redirect: 'follow'
-        });
+        async function syncWithOdoo() {
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            
+            if (loader) loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
 
-        const textResponse = await response.text();
-        
-        // Validar si la respuesta es realmente un JSON antes de convertirlo
-        let odooRes;
-        try {
-            odooRes = JSON.parse(textResponse);
-        } catch (jsonErr) {
-            console.error("La respuesta no fue un JSON válido:", textResponse);
-            throw new Error("Respuesta no válida del servidor.");
-        }
+            try {
+                const cacheBuster = new Date().getTime();
+                const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
+                
+                const response = await fetch(requestUrl, { method: 'GET', redirect: 'follow' });
+                const textResponse = await response.text();
+                
+                let odooRes = JSON.parse(textResponse);
 
-        if (odooRes && odooRes.success && odooRes.regionalData) {
-            appData = odooRes.regionalData;
+                if (odooRes && odooRes.success && odooRes.regionalData) {
+                    appData = odooRes.regionalData;
 
-            if (odooRes.topStoresByMonthAndRegion) {
-                topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
+                    if (odooRes.topStoresByMonthAndRegion) {
+                        topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
+                    }
+
+                    renderAll();
+                } else {
+                    renderAll();
+                }
+            } catch (err) {
+                console.error("Error al sincronizar con Odoo:", err);
+                renderAll();
+            } finally {
+                if (loader) loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
             }
-
-            renderAll();
-        } else {
-            console.warn("Respuesta con advertencia de Odoo:", odooRes);
-            renderAll();
         }
-    } catch (err) {
-        console.error("Error en la sincronización:", err);
-        // Mantiene la vista operativa sin congelar la pantalla con un popup
-        renderAll();
-    } finally {
-        if (loader) loader.style.display = 'none';
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
-    }
-}
 
         async function syncInventarioAppSheet() {
             try {
@@ -915,7 +819,6 @@ async function syncWithOdoo() {
             lucide.createIcons();
         }
 
-        /* RECALCULO DE BACKLOG PENDIENTE HISTÓRICO Y EVALUADO SEGÚN EL MES */
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
@@ -930,22 +833,13 @@ async function syncWithOdoo() {
                 let totalBacklogPrevio = 0;
                 let casosSolventadosMesActual = 0;
 
-                if (selectedMonthIdx === 6) { // Julio 2026 (Valores exactos)
-                    if (r === 'Capital') { totalBacklogPrevio = 126; casosSolventadosMesActual = 54; }
-                    if (r === 'Occidente') { totalBacklogPrevio = 33; casosSolventadosMesActual = 16; }
-                    if (r === 'Oriente') { totalBacklogPrevio = 35; casosSolventadosMesActual = 10; }
-                } else if (selectedMonthIdx === 7) { // Agosto 2026 (Suma Acumulada Previa Exclusiva)
-                    if (r === 'Capital') { totalBacklogPrevio = 191; casosSolventadosMesActual = 0; }
-                    if (r === 'Occidente') { totalBacklogPrevio = 69; casosSolventadosMesActual = 0; }
-                    if (r === 'Oriente') { totalBacklogPrevio = 2; casosSolventadosMesActual = 0; }
-                } else {
-                    for (let i = 0; i < selectedMonthIdx; i++) {
-                        const m = appData[r][i];
-                        if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
-                    }
-                    let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-                    casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
+                for (let i = 0; i < selectedMonthIdx; i++) {
+                    const m = appData[r][i];
+                    if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
                 }
+
+                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
+                casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
 
                 const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
 
@@ -981,13 +875,10 @@ async function syncWithOdoo() {
                     </div>`;
             });
 
-            if (selectedMonthIdx === 7) { // En Agosto calcula 191 + 69 + 2 = 262
-                document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-                document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
-            }
+            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
+            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
         }
 
-        /* TIPO DE TRABAJO (SOLO CORRECTIVO, PREVENTIVO Y MEJORA EN TEXTO BLANCO) */
         function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
@@ -1036,7 +927,6 @@ async function syncWithOdoo() {
             });
         }
 
-        /* DISTRIBUCIÓN DE ESTATUS DEL MES (PORCENTAJES EN TEXTO BLANCO) */
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
@@ -1084,7 +974,6 @@ async function syncWithOdoo() {
             });
         }
 
-        /* DIBUJO DE GRÁFICAS REGIONALES CON ESTILOS 3D RESTAURADOS */
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1274,7 +1163,6 @@ async function syncWithOdoo() {
             }, 50);
         }
 
-        /* ASISTENTE INTELIGENTE BI DE CONSULTA CRUZADA MULTI-MÓDULO */
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1693,20 +1581,13 @@ async function syncWithOdoo() {
             document.getElementById('kpi-backlog-atendido').innerText = backlogSolventadoMes;
             document.getElementById('kpi-backlog-sub').innerText = `${backlogSolventadoMes} Casos`;
 
-            // Backlog Pendiente Total Dinámico
-            if (selectedMonthIdx === 7) {
-                // Cálculo de solicitudes acumuladas abiertas de meses pasados
-                document.getElementById('kpi-pend').innerText = 262;
-                document.getElementById('kpi-pend-sub').innerText = "191 + 69 + 2";
-            } else {
-                let pendVal = Math.max(0, solVal - totalAtendidosConCanc);
-                document.getElementById('kpi-pend').innerText = pendVal;
-                
-                const capPend = (appData.Capital[selectedMonthIdx]?.sol || 0) - ((appData.Capital[selectedMonthIdx]?.at || 0) + (appData.Capital[selectedMonthIdx]?.canc || 0));
-                const occPend = (appData.Occidente[selectedMonthIdx]?.sol || 0) - ((appData.Occidente[selectedMonthIdx]?.at || 0) + (appData.Occidente[selectedMonthIdx]?.canc || 0));
-                const oriPend = (appData.Oriente[selectedMonthIdx]?.sol || 0) - ((appData.Oriente[selectedMonthIdx]?.at || 0) + (appData.Oriente[selectedMonthIdx]?.canc || 0));
-                document.getElementById('kpi-pend-sub').innerText = `${capPend} + ${occPend} + ${oriPend}`;
-            }
+            let pendVal = Math.max(0, solVal - totalAtendidosConCanc);
+            document.getElementById('kpi-pend').innerText = pendVal;
+            
+            const capPend = (appData.Capital[selectedMonthIdx]?.sol || 0) - ((appData.Capital[selectedMonthIdx]?.at || 0) + (appData.Capital[selectedMonthIdx]?.canc || 0));
+            const occPend = (appData.Occidente[selectedMonthIdx]?.sol || 0) - ((appData.Occidente[selectedMonthIdx]?.at || 0) + (appData.Occidente[selectedMonthIdx]?.canc || 0));
+            const oriPend = (appData.Oriente[selectedMonthIdx]?.sol || 0) - ((appData.Oriente[selectedMonthIdx]?.at || 0) + (appData.Oriente[selectedMonthIdx]?.canc || 0));
+            document.getElementById('kpi-pend-sub').innerText = `${capPend} + ${occPend} + ${oriPend}`;
 
             renderGrowthChart();
             renderTopStores();
