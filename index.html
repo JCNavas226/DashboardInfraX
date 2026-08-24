@@ -712,29 +712,41 @@ async function syncWithOdoo() {
 
     try {
         const cacheBuster = new Date().getTime();
-        const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`);
-        const odooRes = await response.json();
+        const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
+        
+        // Petición HTTP con manejo explícito de redirección
+        const response = await fetch(requestUrl, {
+            method: 'GET',
+            redirect: 'follow'
+        });
+
+        const textResponse = await response.text();
+        
+        // Validar si la respuesta es realmente un JSON antes de convertirlo
+        let odooRes;
+        try {
+            odooRes = JSON.parse(textResponse);
+        } catch (jsonErr) {
+            console.error("La respuesta no fue un JSON válido:", textResponse);
+            throw new Error("Respuesta no válida del servidor.");
+        }
 
         if (odooRes && odooRes.success && odooRes.regionalData) {
-            // Asigna los datos frescos recibidos desde la API
             appData = odooRes.regionalData;
 
             if (odooRes.topStoresByMonthAndRegion) {
                 topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
             }
 
-            // Vuelve a calcular y renderizar todos los gráficos y KPIs
             renderAll();
-            
-            // Confirma el número total de tickets sincronizados
-            const totalAgosto = (appData.Capital[7]?.sol || 0) + (appData.Occidente[7]?.sol || 0) + (appData.Oriente[7]?.sol || 0);
-            console.log("Sincronización exitosa. Total Agosto:", totalAgosto);
         } else {
-            alert("Atención: Odoo no devolvió la estructura esperada.");
+            console.warn("Respuesta con advertencia de Odoo:", odooRes);
+            renderAll();
         }
     } catch (err) {
-        console.error("Error al sincronizar con Odoo:", err);
-        alert("Error de conexión al sincronizar con Odoo. Por favor intenta de nuevo.");
+        console.error("Error en la sincronización:", err);
+        // Mantiene la vista operativa sin congelar la pantalla con un popup
+        renderAll();
     } finally {
         if (loader) loader.style.display = 'none';
         if (syncIcon) syncIcon.classList.remove('animate-spin');
