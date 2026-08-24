@@ -537,39 +537,38 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWqBEl_lcsxzMkA8xQ5wrOUHPLzLS1QMdIs7Yg90IgDDe_NyMYLoQ_5l6kp0pe3Zv2/exec";
 
         // BASELINE REPOSITORIO DE DATOS
-        let appData = {
-            Capital: [
-                { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
-                { sol: 195, at: 190, canc: 30, prevSolv: 12, prevPending: 24 },
-                { sol: 216, at: 187, canc: 22, prevSolv: 18, prevPending: 42 },
-                { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
-                { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
-                { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 }, // Julio = 363
-                { sol: 180, at: 35,  canc: 0,  prevSolv: 0,  prevPending: 191 }  // Agosto = 180
-            ],
-            Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 56,  at: 56,  canc: 5, prevSolv: 0, prevPending: 0 },
-                { sol: 192, at: 186, canc: 4, prevSolv: 5, prevPending: 6 },
-                { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
-                { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
-                { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },  // Julio = 180 (363 + 180 + 2 = 545 Total)
-                { sol: 78,  at: 15,  canc: 0, prevSolv: 0, prevPending: 69 }   // Agosto = 78
-            ],
-            Oriente: [
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },      // Julio = 2
-                { sol: 30, at: 10, canc: 0, prevSolv: 0, prevPending: 2 }       // Agosto = 30 (180 + 78 + 30 = 288 Total Agosto)
-            ]
-        };
-
+       let appData = {
+    Capital: [
+        { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
+        { sol: 195, at: 190, canc: 30, prevSolv: 12, prevPending: 24 },
+        { sol: 216, at: 187, canc: 22, prevSolv: 18, prevPending: 42 },
+        { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
+        { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
+        { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
+        { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 }, // Julio = 363
+        { sol: 0,   at: 0,   canc: 0,  prevSolv: 0,  prevPending: 0 }   // Agosto inicializado en 0 para forzar lectura de API
+    ],
+    Occidente: [
+        { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 56,  at: 56,  canc: 5, prevSolv: 0, prevPending: 0 },
+        { sol: 192, at: 186, canc: 4, prevSolv: 5, prevPending: 6 },
+        { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
+        { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
+        { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
+        { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },  // Julio = 180
+        { sol: 0,   at: 0,   canc: 0,  prevSolv: 0,  prevPending: 0 }   // Agosto inicializado en 0
+    ],
+    Oriente: [
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+        { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },      // Julio = 2
+        { sol: 0, at: 0, canc: 0, prevSolv: 0,  prevPending: 0 }        // Agosto inicializado en 0
+    ]
+};
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69 }, { sol: 199, at: 37 }, { sol: 203, at: 77 }, { sol: 186, at: 114 },
