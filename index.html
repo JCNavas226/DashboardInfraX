@@ -904,76 +904,67 @@
         }
 
         function renderBacklogRegionalSection() {
-            const container = document.getElementById('backlog-regional-container');
-            if (!container) return;
-            container.innerHTML = '';
+    const container = document.getElementById('backlog-regional-container');
+    if (!container) return;
+    container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
+    const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
 
-            let totalBacklogPendienteGlobal = 0;
-            let partesPendientesArr = [];
+    let totalBacklogPendienteGlobal = 0;
+    let partesPendientesArr = [];
 
-            REGIONES.forEach(r => {
-                let totalBacklogPrevio = 0;
-                let casosSolventadosMesActual = 0;
+    REGIONES.forEach(r => {
+        let totalBacklogPrevio = 0;
+        let casosSolventadosMesActual = 0;
 
-                if (selectedMonthIdx === 6) { // Julio 2026 (Valores exactos)
-                    if (r === 'Capital') { totalBacklogPrevio = 126; casosSolventadosMesActual = 54; }
-                    if (r === 'Occidente') { totalBacklogPrevio = 33; casosSolventadosMesActual = 16; }
-                    if (r === 'Oriente') { totalBacklogPrevio = 35; casosSolventadosMesActual = 10; }
-                } else if (selectedMonthIdx === 7) { // Agosto 2026
-                    if (r === 'Capital') { totalBacklogPrevio = 191; casosSolventadosMesActual = 0; }
-                    if (r === 'Occidente') { totalBacklogPrevio = 69; casosSolventadosMesActual = 0; }
-                    if (r === 'Oriente') { totalBacklogPrevio = 2; casosSolventadosMesActual = 0; }
-                } else {
-                    for (let i = 0; i < selectedMonthIdx; i++) {
-                        const m = appData[r][i];
-                        if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
-                    }
-                    let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-                    casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
-                }
-
-                const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
-
-                totalBacklogPendienteGlobal += backlogPendienteActual;
-                partesPendientesArr.push(backlogPendienteActual);
-
-                const pctResolucion = totalBacklogPrevio > 0 
-                    ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
-                    : "0.0";
-
-                const strokeDash = `${pctResolucion}, 100`;
-
-                container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
-                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            if (selectedMonthIdx === 7) {
-                document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-                document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
-            }
+        // Cálculo dinámico acumulativo real de meses pasados
+        for (let i = 0; i < selectedMonthIdx; i++) {
+            const m = appData[r][i];
+            if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
         }
 
+        let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
+        casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
+
+        const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
+
+        totalBacklogPendienteGlobal += backlogPendienteActual;
+        partesPendientesArr.push(backlogPendienteActual);
+
+        const pctResolucion = totalBacklogPrevio > 0 
+            ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
+            : "0.0";
+
+        const strokeDash = `${pctResolucion}, 100`;
+
+        container.innerHTML += `
+            <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-black text-white">${pctResolucion}%</span>
+                        <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                    <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
+                    <div class="pt-2 flex gap-3 text-xs font-bold">
+                        <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                        <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                    </div>
+                </div>
+            </div>`;
+    });
+
+    const kpiPend = document.getElementById('kpi-pend');
+    const kpiPendSub = document.getElementById('kpi-pend-sub');
+    if (kpiPend) kpiPend.innerText = totalBacklogPendienteGlobal;
+    if (kpiPendSub) kpiPendSub.innerText = partesPendientesArr.join(' + ');
+}
         function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
