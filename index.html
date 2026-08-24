@@ -196,11 +196,11 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE TOTAL</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">262</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-pend">242</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium">Capital + Occ. + Ori.</span>
-                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">191 + 69 + 2</span>
+                        <span class="text-amber-700 font-extrabold" id="kpi-pend-sub">175 + 65 + 2</span>
                     </div>
                 </div>
             </div>
@@ -450,7 +450,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑAS ADICIONALES -->
+        <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -466,6 +466,7 @@
             </div>
         </div>
 
+        <!-- PERMISOS BOMBEROS -->
         <div id="tab-content-bomberos" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -481,6 +482,7 @@
             </div>
         </div>
 
+        <!-- FUMIGACIONES -->
         <div id="tab-content-fumigaciones" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -496,6 +498,7 @@
             </div>
         </div>
 
+        <!-- AUDITORÍAS -->
         <div id="tab-content-auditorias" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -531,9 +534,9 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbykGLM6j4oRIIiLWyhs9iobwJt-I7dMsEgV-6P80NXG886jqqL7vruz3npJiRrMhnHFgw/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwsJyYHwoD47SwNDkSL8pY6QWHiDdRRGK1Af036vGI7UXA891aIIt1BgJH-eJocR_aIdw/exec";
 
-        // BASELINE REPOSITORIO DE DATOS DE RESPALDO
+        // DATOS BASE DE RESPALDO
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -542,8 +545,8 @@
                 { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
                 { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
                 { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 }, // Julio = 363
-                { sol: 195, at: 42,  canc: 0,  prevSolv: 0,  prevPending: 191 }  // Agosto
+                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 },
+                { sol: 195, at: 42,  canc: 0,  prevSolv: 0,  prevPending: 153 }
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
@@ -552,8 +555,8 @@
                 { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
                 { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
                 { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },  // Julio = 180
-                { sol: 85,  at: 18,  canc: 0, prevSolv: 0, prevPending: 69 }   // Agosto
+                { sol: 180, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },
+                { sol: 85,  at: 18,  canc: 0, prevSolv: 0, prevPending: 67 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -562,8 +565,8 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },      // Julio = 2
-                { sol: 30, at: 8, canc: 0, prevSolv: 0, prevPending: 2 }       // Agosto = 30 (Total Agosto = 310)
+                { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },
+                { sol: 30, at: 8, canc: 0, prevSolv: 0, prevPending: 22 }
             ]
         };
 
@@ -587,36 +590,10 @@
             7: { resuelto: 68, asignado: 140, progreso: 94, procura: 8, cancelada: 0, workTypes: { 'Correctivo': 225, 'Preventivo': 72, 'Mejora': 13 } }
         };
 
-        let topStoresByMonthAndRegion = {
-            6: { 
-                Global: [
-                    { name: "Farmacia Traki Cabudare", count: 24 }, { name: "Farmacia Sanare", count: 21 },
-                    { name: "Farmacia Economía", count: 18 }, { name: "Farmacia Cutira", count: 16 },
-                    { name: "Farmacia Mangle", count: 15 }, { name: "Farmacia Coporo", count: 14 },
-                    { name: "Farmacia Araguaney", count: 12 }, { name: "Farmacia El Tigre", count: 10 },
-                    { name: "Farmacia Cumaná", count: 9 }, { name: "Farmacia Orquídea", count: 8 }
-                ],
-                Capital: [{ name: "Farmacia Cutira", count: 16 }, { name: "Farmacia Mangle", count: 15 }],
-                Occidente: [{ name: "Farmacia Traki Cabudare", count: 24 }],
-                Oriente: [{ name: "Farmacia El Tigre", count: 10 }, { name: "Farmacia Cumaná", count: 9 }]
-            },
-            7: {
-                Global: [
-                    { name: "Farmacia Cutira", count: 22 }, { name: "Farmacia Coporo", count: 18 },
-                    { name: "Farmacia Araguaney", count: 16 }, { name: "Farmacia Mangle", count: 14 },
-                    { name: "Farmacia Traki Cabudare", count: 12 }, { name: "Farmacia Sanare", count: 10 },
-                    { name: "Farmacia El Tigre", count: 9 }, { name: "Farmacia Cumaná", count: 8 },
-                    { name: "Farmacia Mamón", count: 7 }, { name: "Farmacia Payara", count: 6 }
-                ],
-                Capital: [{ name: "Farmacia Cutira", count: 22 }, { name: "Farmacia Coporo", count: 18 }],
-                Occidente: [{ name: "Farmacia Traki Cabudare", count: 12 }],
-                Oriente: [{ name: "Farmacia El Tigre", count: 9 }, { name: "Farmacia Cumaná", count: 8 }]
-            }
-        };
-
+        let topStoresByMonthAndRegion = {};
         let categoryStatsByMonthAndRegion = {
             6: { Global: { 'Electricidad': 142, 'Aire Acondicionado': 120, 'Civil': 110, 'Plomería': 95, 'Mobiliario': 78 }, Capital: { 'Electricidad': 70, 'Aire Acondicionado': 60 }, Occidente: { 'Plomería': 45, 'Electricidad': 40 }, Oriente: { 'Aire Acondicionado': 20, 'Electricidad': 15 } },
-            7: { Global: { 'Electricidad': 105, 'Aire Acondicionado': 82, 'Civil': 64, 'Plomería': 38, 'Mobiliario': 22 }, Capital: { 'Electricidad': 58, 'Aire Acondicionado': 48 }, Occidente: { 'Electricidad': 25, 'Aire Acondicionado': 16 }, Oriente: { 'Aire Acondicionado': 18, 'Electricidad': 12 } }
+            7: { Global: { 'Electricidad': 105, 'Aire Acondicionado': 82, 'Civil': 64, 'Plomería': 38, 'Mobiliario': 21 }, Capital: { 'Electricidad': 58, 'Aire Acondicionado': 48 }, Occidente: { 'Electricidad': 25, 'Aire Acondicionado': 16 }, Oriente: { 'Aire Acondicionado': 18, 'Electricidad': 12 } }
         };
 
         let workTypeStats = {
@@ -625,23 +602,7 @@
             'Mejora': { mes: 46, histo: 260 }
         };
 
-        let regionalTicketsDataByMonth = {
-            6: {
-                Capital: [
-                    { id: "TK-CAP-8041", farmacia: "Farmacia Mangle", actividad: "Reemplazo de Compresor A/A", tecnico: "Pablo Rocha", fecha: "24/07/2026" },
-                    { id: "TK-CAP-8088", farmacia: "Farmacia Araguaney", actividad: "Reparación del Cuadro Principal Eléctrico", tecnico: "José Vásquez", fecha: "26/07/2026" }
-                ],
-                Occidente: [
-                    { id: "TK-OCC-4029", farmacia: "Farmacia Traki Cabudare", actividad: "Restauración de Muros y Pintura", tecnico: "Yanis Valera", fecha: "21/07/2026" }
-                ],
-                Oriente: [
-                    { id: "TK-ORI-2015", farmacia: "Farmacia Traki Cumaná", actividad: "Control y Registro de Trabajos - Mantenimiento General", tecnico: "Manuel Castro", fecha: "28/07/2026" },
-                    { id: "TK-ORI-2018", farmacia: "Farmacia El Tigre", actividad: "Adecuación Iluminación y Mantenimiento A/A", tecnico: "Manuel Castro", fecha: "30/07/2026" }
-                ]
-            },
-            7: { Capital: [], Occidente: [], Oriente: [] }
-        };
-
+        let regionalTicketsDataByMonth = { 6: { Capital: [], Occidente: [], Oriente: [] }, 7: { Capital: [], Occidente: [], Oriente: [] } };
         let auditoriasGlobalData = [];
         let bomberosGlobalData = [];
         let fumigacionesGlobalData = [];
@@ -674,7 +635,7 @@
 
             if (!selector) return;
 
-            const mesActualIdx = 7; // Agosto por defecto
+            const mesActualIdx = 7;
             const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel, backlogMonthSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
@@ -702,48 +663,45 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        // SINCRONIZACIÓN ASÍNCRONA SEGURA DE ODOO
         async function syncWithOdoo() {
-    const loader = document.getElementById('loader-overlay');
-    const syncIcon = document.getElementById('sync-icon');
-    
-    if (loader) loader.style.display = 'flex';
-    if (syncIcon) syncIcon.classList.add('animate-spin');
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            if (loader) loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
 
-    try {
-        const cacheBuster = new Date().getTime();
-        const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
-        
-        const response = await fetch(requestUrl, { method: 'GET', redirect: 'follow' });
-        const textResponse = await response.text();
-        const odooRes = JSON.parse(textResponse);
+            try {
+                const cacheBuster = new Date().getTime();
+                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
 
-        if (odooRes && odooRes.success && odooRes.regionalData) {
-            appData = odooRes.regionalData;
+                if (!response.ok) throw new Error("Error en la conexión con Apps Script");
 
-            if (odooRes.cierreData) {
-                cierreData = odooRes.cierreData;
+                const odooRes = await response.json();
+
+                if (odooRes && odooRes.success && odooRes.regionalData) {
+                    appData = odooRes.regionalData;
+
+                    if (odooRes.cierreData) cierreData = odooRes.cierreData;
+                    if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
+
+                    renderAll();
+                } else {
+                    renderAll();
+                }
+            } catch (err) {
+                console.warn("Falla temporal de sincronización de Odoo:", err);
+                renderAll();
+            } finally {
+                if (loader) loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
             }
-
-            if (odooRes.topStoresByMonthAndRegion) {
-                topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
-            }
-
-            renderAll();
-        } else {
-            renderAll();
         }
-    } catch (err) {
-        console.error("Error al sincronizar con Odoo:", err);
-        renderAll();
-    } finally {
-        if (loader) loader.style.display = 'none';
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
-    }
-}
+
         async function syncInventarioAppSheet() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
+                const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime(), { redirect: 'follow' });
                 if (response.ok) {
                     const data = await response.json();
                     if (Array.isArray(data) && data.length > 0) renderTableRows(data);
@@ -759,15 +717,15 @@
             let countHerramientas = 0, countEquipos = 0, countMobiliario = 0;
 
             rows.forEach(r => {
-                const origen = r._OrigenTabla || "General";
-                let descripcion = r.Nombre_Item || r.Activo || r.Descripcion || "Sin descripción";
-                const tipo = r.Tipo || origen;
+                const origen = (r._OrigenTabla || r.Tabla || "").toString().toLowerCase();
+                let descripcion = r.Nombre_Item || r.Activo || r.Descripcion || r.Item || "Sin descripción";
+                const tipo = r.Tipo || r._OrigenTabla || "General";
                 const cantidad = parseInt(r.Cantidad) || 1;
-                const estado = r.Estado || "N/A";
+                const estado = r.Estado || "Bueno";
                 const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || "General";
 
-                if (origen.toLowerCase().indexOf("herramienta") !== -1) countHerramientas += cantidad;
-                else if (origen.toLowerCase().indexOf("equipo") !== -1) countEquipos += cantidad;
+                if (origen.indexOf("herramienta") !== -1) countHerramientas += cantidad;
+                else if (origen.indexOf("equipo") !== -1) countEquipos += cantidad;
                 else countMobiliario += cantidad;
 
                 tbody.innerHTML += `
@@ -788,7 +746,7 @@
 
         async function cargarCasosPendientes() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime());
+                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime(), { redirect: 'follow' });
                 if (response.ok) {
                     casosPendientesGlobalData = await response.json();
                     renderPendientesTableRows(casosPendientesGlobalData);
@@ -798,10 +756,14 @@
 
         function renderPendientesTableRows(rows) {
             const tbody = document.getElementById('pendientes-table-body');
+            const kpiCount = document.getElementById('kpi-count-pendientes-3m');
             if (!tbody) return;
 
             tbody.innerHTML = '';
+            let count = 0;
+
             rows.forEach(r => {
+                count++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-red-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Sede || "General"}</td>
@@ -812,12 +774,14 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">${r.Estatus || 'En espera'}</span></td>
                     </tr>`;
             });
+
+            if (kpiCount) kpiCount.innerText = `${count} Casos Críticos (SP > 3m)`;
             lucide.createIcons();
         }
 
         async function cargarPermisosBomberos() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=bomberos&_nocache=" + new Date().getTime());
+                const response = await fetch(APPSCRIPT_URL + "?action=bomberos&_nocache=" + new Date().getTime(), { redirect: 'follow' });
                 if (response.ok) {
                     bomberosGlobalData = await response.json();
                     renderBomberosTableRows(bomberosGlobalData);
@@ -827,9 +791,14 @@
 
         function renderBomberosTableRows(rows) {
             const tbody = document.getElementById('bomberos-table-body');
+            const kpiCount = document.getElementById('kpi-count-bomberos');
             if (!tbody) return;
+
             tbody.innerHTML = '';
+            let count = 0;
+
             rows.forEach(r => {
+                count++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-orange-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
@@ -839,12 +808,14 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-orange-100 text-orange-700 border-orange-300">ALERTA</span></td>
                     </tr>`;
             });
+
+            if (kpiCount) kpiCount.innerText = `${count} Alertas de Bomberos`;
             lucide.createIcons();
         }
 
         async function cargarFumigaciones() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones&_nocache=" + new Date().getTime());
+                const response = await fetch(APPSCRIPT_URL + "?action=fumigaciones&_nocache=" + new Date().getTime(), { redirect: 'follow' });
                 if (response.ok) {
                     fumigacionesGlobalData = await response.json();
                     renderFumigacionesTableRows(fumigacionesGlobalData);
@@ -854,9 +825,14 @@
 
         function renderFumigacionesTableRows(rows) {
             const tbody = document.getElementById('fumigaciones-table-body');
+            const kpiCount = document.getElementById('kpi-count-fumigaciones');
             if (!tbody) return;
+
             tbody.innerHTML = '';
+            let count = 0;
+
             rows.forEach(r => {
+                count++;
                 tbody.innerHTML += `
                     <tr class="hover:bg-sky-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
@@ -866,20 +842,22 @@
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-sky-100 text-sky-700 border-sky-300">ALERTA</span></td>
                     </tr>`;
             });
+
+            if (kpiCount) kpiCount.innerText = `${count} Alertas de Fumigación`;
             lucide.createIcons();
         }
 
         async function cargarAuditoriasDrive() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=auditorias&_nocache=" + new Date().getTime());
+                const response = await fetch(APPSCRIPT_URL + "?action=auditorias&_nocache=" + new Date().getTime(), { redirect: 'follow' });
                 if (response.ok) {
                     const files = await response.json();
                     if (Array.isArray(files) && files.length > 0) {
                         auditoriasGlobalData = files.map(f => ({
                             tienda: f.nombre.replace(/\.[^/.]+$/, "").toUpperCase(),
-                            actividades: `Informe descargable desde Drive (${f.nombre})`,
+                            actividades: `Informe técnico descargable desde Google Drive (${f.nombre})`,
                             fecha: new Date(f.fecha).toLocaleDateString(),
-                            auditor: "Equipo Infraestructura"
+                            auditor: "Equipo de Infraestructura"
                         }));
                     }
                 }
@@ -889,7 +867,9 @@
 
         function renderAuditoriasTable() {
             const tbody = document.getElementById('auditorias-table-body');
+            const kpiCount = document.getElementById('kpi-count-auditorias');
             if (!tbody) return;
+
             tbody.innerHTML = '';
             auditoriasGlobalData.forEach(a => {
                 tbody.innerHTML += `
@@ -900,71 +880,71 @@
                         <td class="py-3.5 px-4 text-right font-black text-teal-700">${a.auditor}</td>
                     </tr>`;
             });
+
+            if (kpiCount) kpiCount.innerText = `${auditoriasGlobalData.length} Tiendas Auditadas`;
             lucide.createIcons();
         }
 
         function renderBacklogRegionalSection() {
-    const container = document.getElementById('backlog-regional-container');
-    if (!container) return;
-    container.innerHTML = '';
+            const container = document.getElementById('backlog-regional-container');
+            if (!container) return;
+            container.innerHTML = '';
 
-    const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
+            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
 
-    let totalBacklogPendienteGlobal = 0;
-    let partesPendientesArr = [];
+            let totalBacklogPendienteGlobal = 0;
+            let partesPendientesArr = [];
 
-    REGIONES.forEach(r => {
-        let totalBacklogPrevio = 0;
-        let casosSolventadosMesActual = 0;
+            REGIONES.forEach(r => {
+                let totalBacklogPrevio = 0;
+                let casosSolventadosMesActual = 0;
 
-        // Cálculo dinámico acumulativo real de meses pasados
-        for (let i = 0; i < selectedMonthIdx; i++) {
-            const m = appData[r][i];
-            if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
+                for (let i = 0; i < selectedMonthIdx; i++) {
+                    const m = appData[r][i];
+                    if (m) totalBacklogPrevio += Math.max(0, m.sol - (m.at + m.canc));
+                }
+
+                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
+                casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
+
+                const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
+
+                totalBacklogPendienteGlobal += backlogPendienteActual;
+                partesPendientesArr.push(backlogPendienteActual);
+
+                const pctResolucion = totalBacklogPrevio > 0 
+                    ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
+                    : "0.0";
+
+                const strokeDash = `${pctResolucion}, 100`;
+
+                container.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
+                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
+                            <div class="pt-2 flex gap-3 text-xs font-bold">
+                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
+            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
         }
 
-        let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-        casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
-
-        const backlogPendienteActual = Math.max(0, totalBacklogPrevio - casosSolventadosMesActual);
-
-        totalBacklogPendienteGlobal += backlogPendienteActual;
-        partesPendientesArr.push(backlogPendienteActual);
-
-        const pctResolucion = totalBacklogPrevio > 0 
-            ? Math.min(100, ((casosSolventadosMesActual / totalBacklogPrevio) * 100)).toFixed(1) 
-            : "0.0";
-
-        const strokeDash = `${pctResolucion}, 100`;
-
-        container.innerHTML += `
-            <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                        <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    </svg>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                        <span class="text-xs font-black text-white">${pctResolucion}%</span>
-                        <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
-                    <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
-                    <div class="pt-2 flex gap-3 text-xs font-bold">
-                        <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${totalBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                        <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                    </div>
-                </div>
-            </div>`;
-    });
-
-    const kpiPend = document.getElementById('kpi-pend');
-    const kpiPendSub = document.getElementById('kpi-pend-sub');
-    if (kpiPend) kpiPend.innerText = totalBacklogPendienteGlobal;
-    if (kpiPendSub) kpiPendSub.innerText = partesPendientesArr.join(' + ');
-}
         function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
@@ -1060,109 +1040,105 @@
             });
         }
 
-    function renderRegionalCharts() {
-    const container = document.getElementById('regional-charts-container');
-    if (!container) return;
-    container.innerHTML = '';
+        function renderRegionalCharts() {
+            const container = document.getElementById('regional-charts-container');
+            if (!container) return;
+            container.innerHTML = '';
 
-    const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-    const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
-    const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
+            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
-    const regionColors = {
-        'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
-        'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
-        'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
-    };
+            const regionColors = {
+                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
+                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
+                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
+            };
 
-    REGIONES.forEach(r => {
-        let tableCols = '';
-        for (let i = startIdx; i <= endIdx; i++) {
-            const sol = appData[r][i] ? appData[r][i].sol : 0;
-            const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
-            tableCols += `
-                <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                    <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
-                    <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                </div>`;
+            REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = appData[r][i] ? appData[r][i].sol : 0;
+                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-white">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                        </div>
+                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
+                                ${tableCols}
+                            </div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-blue-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
+                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                {
+                                    label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                                    datalabels: { display: false }
+                                },
+                                {
+                                    label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
+                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                                    datalabels: { display: false }
+                                },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
+                                    pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
         }
 
-        container.innerHTML += `
-            <div class="card-pro flex flex-col justify-between bg-white">
-                <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                    <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
-                    <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
-                </div>
-                <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
-                
-                <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
-                    <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
-                        ${tableCols}
-                    </div>
-                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                        <span><b class="text-blue-600">■</b> Solicitados</span>
-                        <span><b class="text-slate-900">■</b> Atendidos</span>
-                    </div>
-                </div>
-            </div>`;
-    });
-
-    setTimeout(() => {
-        REGIONES.forEach(r => {
-            const ctxElem = document.getElementById(`chart-reg-${r}`);
-            if (!ctxElem) return;
-            const ctx = ctxElem.getContext('2d');
-            const c = regionColors[r];
-
-            const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-            const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
-            
-            // FÓRMULA DE PORCENTAJE CORREGIDA DERECHA Y PRECISA
-            const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => {
-                const totalAtend = d.at + d.canc;
-                return d.sol > 0 ? parseFloat(((totalAtend / d.sol) * 100).toFixed(1)) : 0;
-            });
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: filteredLabels,
-                    datasets: [
-                        {
-                            label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
-                            borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                            datalabels: { display: false }
-                        },
-                        {
-                            label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
-                            borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                            datalabels: { display: false }
-                        },
-                        {
-                            label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
-                            pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                            datalabels: {
-                                anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                            }
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                        y: { display: false, beginAtZero: true },
-                        y1: { display: false, min: 0, max: 200 }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        });
-    }, 50);
-}
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1671,7 +1647,6 @@
             document.getElementById('kpi-backlog-atendido').innerText = backlogSolventadoMes;
             document.getElementById('kpi-backlog-sub').innerText = `${backlogSolventadoMes} Casos`;
 
-            // Backlog Pendiente Total Dinámico
             if (selectedMonthIdx === 7) {
                 document.getElementById('kpi-pend').innerText = 262;
                 document.getElementById('kpi-pend-sub').innerText = "191 + 69 + 2";
