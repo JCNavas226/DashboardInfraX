@@ -169,10 +169,10 @@
                             <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">68</div>
+                        <div class="text-3xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">171</div>
                     </div>
                     <div class="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">19.7% del mes</span>
+                        <span class="text-emerald-700 font-extrabold" id="kpi-at-pct">49.6% del mes</span>
                     </div>
                 </div>
 
@@ -448,7 +448,7 @@
             </div>
         </div>
 
-        <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
+        <!-- PESTAÑAS ADICIONALES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -464,7 +464,6 @@
             </div>
         </div>
 
-        <!-- PERMISOS BOMBEROS -->
         <div id="tab-content-bomberos" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -480,7 +479,6 @@
             </div>
         </div>
 
-        <!-- FUMIGACIONES -->
         <div id="tab-content-fumigaciones" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -496,7 +494,6 @@
             </div>
         </div>
 
-        <!-- AUDITORÍAS -->
         <div id="tab-content-auditorias" class="space-y-8 hidden">
             <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
                 <div class="overflow-x-auto">
@@ -532,9 +529,10 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
+        // URL DE APPS SCRIPT OFICIAL PÚBLICA DE PRODUCCIÓN
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycby31aJ1ijjPF7KTw06X7uaPpyNQJXHWUXsKKSX-q4aAVakFMCWJ_WHrqwWpHP3s6osCWA/exec";
 
-        // BASELINE EXACTO DE ODOO DE TUS IMÁGENES PIVOT (210 Capital + 127 Occidente + 8 Oriente = 345)
+        // BASELINE DE CONSOLIDADO EXACTO DE ODOO (210 Capital + 127 Occidente + 8 Oriente = 345)
         let appData = {
             Capital: [
                 { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
@@ -686,6 +684,7 @@
                     renderAll();
                 }
             } catch (err) {
+                console.warn("Llamada en segundo plano de Odoo:", err);
                 renderAll();
             } finally {
                 if (loader) loader.style.display = 'none';
@@ -1428,13 +1427,22 @@
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
 
             const volData = [];
-            for (let i = startIdx; i <= endIdx; i++) {
-                let sumM = 0;
-                REGIONES.forEach(r => { if (appData[r][i]) sumM += appData[r][i].sol; });
-                volData.push(sumM);
-            }
+            const slaDataReal = [];
 
-            const slaBase = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 68.5, 15.7];
+            for (let i = startIdx; i <= endIdx; i++) {
+                let sumSol = 0;
+                let sumAt = 0;
+                REGIONES.forEach(r => { 
+                    if (appData[r][i]) {
+                        sumSol += appData[r][i].sol;
+                        sumAt += (appData[r][i].at + appData[r][i].canc);
+                    } 
+                });
+                volData.push(sumSol);
+                
+                let pctSla = sumSol > 0 ? parseFloat(((sumAt / sumSol) * 100).toFixed(2)) : 0;
+                slaDataReal.push(pctSla);
+            }
 
             charts.growth = new Chart(ctxGrowth, {
                 type: 'bar',
@@ -1446,8 +1454,8 @@
                             datalabels: { anchor: 'end', align: 'top', offset: 6, color: '#0284c7', font: { weight: '900', size: 11 } }
                         },
                         {
-                            label: 'Tendencia SLA', data: slaBase.slice(startIdx, endIdx + 1), type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
-                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
+                            label: 'Tendencia SLA', data: slaDataReal, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
+                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v.toFixed(1) + '%' : '' }
                         }
                     ]
                 },
