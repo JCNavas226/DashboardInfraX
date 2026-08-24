@@ -705,27 +705,43 @@
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
-        async function syncWithOdoo() {
-            const loader = document.getElementById('loader-overlay');
-            const syncIcon = document.getElementById('sync-icon');
-            if (loader) loader.style.display = 'flex';
-            if (syncIcon) syncIcon.classList.add('animate-spin');
+       async function syncWithOdoo() {
+    const loader = document.getElementById('loader-overlay');
+    const syncIcon = document.getElementById('sync-icon');
+    
+    if (loader) loader.style.display = 'flex';
+    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-            try {
-                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${new Date().getTime()}`);
-                const odooRes = await response.json();
+    try {
+        // Petición con parámetro único de fecha para forzar la lectura fresca de Google Apps Script sin usar caché
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        const odooRes = await response.json();
 
-                if (odooRes && odooRes.success && odooRes.regionalData) {
-                    appData = odooRes.regionalData;
-                    renderAll();
-                }
-            } catch (err) {
-            } finally {
-                if (loader) loader.style.display = 'none';
-                if (syncIcon) syncIcon.classList.remove('animate-spin');
+        if (odooRes && odooRes.success && odooRes.regionalData) {
+            // Reemplaza por completo el objeto local con los datos reales traídos de Odoo
+            appData = odooRes.regionalData;
+
+            if (odooRes.topStoresByMonthAndRegion) {
+                topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
             }
-        }
 
+            // Renderiza inmediatamente la pantalla con los nuevos valores de Agosto
+            renderAll();
+        } else {
+            console.warn("Respuesta de Odoo parcial o con error de formato.");
+        }
+    } catch (err) {
+        console.error("Error al sincronizar con Odoo JSON-RPC:", err);
+    } finally {
+        if (loader) loader.style.display = 'none';
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+    }
+}
         async function syncInventarioAppSheet() {
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
