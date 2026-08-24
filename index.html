@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+syncWithOdoo()<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -703,8 +703,7 @@
             if (cierreEndSel) cierreEndSel.value = 7;
             if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
-
-       async function syncWithOdoo() {
+async function syncWithOdoo() {
     const loader = document.getElementById('loader-overlay');
     const syncIcon = document.getElementById('sync-icon');
     
@@ -712,35 +711,36 @@
     if (syncIcon) syncIcon.classList.add('animate-spin');
 
     try {
-        // Petición con parámetro único de fecha para forzar la lectura fresca de Google Apps Script sin usar caché
         const cacheBuster = new Date().getTime();
-        const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' }
-        });
-        
+        const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`);
         const odooRes = await response.json();
 
         if (odooRes && odooRes.success && odooRes.regionalData) {
-            // Reemplaza por completo el objeto local con los datos reales traídos de Odoo
+            // Asigna los datos frescos recibidos desde la API
             appData = odooRes.regionalData;
 
             if (odooRes.topStoresByMonthAndRegion) {
                 topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
             }
 
-            // Renderiza inmediatamente la pantalla con los nuevos valores de Agosto
+            // Vuelve a calcular y renderizar todos los gráficos y KPIs
             renderAll();
+            
+            // Confirma el número total de tickets sincronizados
+            const totalAgosto = (appData.Capital[7]?.sol || 0) + (appData.Occidente[7]?.sol || 0) + (appData.Oriente[7]?.sol || 0);
+            console.log("Sincronización exitosa. Total Agosto:", totalAgosto);
         } else {
-            console.warn("Respuesta de Odoo parcial o con error de formato.");
+            alert("Atención: Odoo no devolvió la estructura esperada.");
         }
     } catch (err) {
-        console.error("Error al sincronizar con Odoo JSON-RPC:", err);
+        console.error("Error al sincronizar con Odoo:", err);
+        alert("Error de conexión al sincronizar con Odoo. Por favor intenta de nuevo.");
     } finally {
         if (loader) loader.style.display = 'none';
         if (syncIcon) syncIcon.classList.remove('animate-spin');
     }
 }
+
         async function syncInventarioAppSheet() {
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
