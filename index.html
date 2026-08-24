@@ -531,7 +531,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz4MPCskszhC7MRPQP__wIjQP7_VuXrwrfCL1v1R1EXjgRGeOly4hRzLq6l22JlnL-7nA/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbykGLM6j4oRIIiLWyhs9iobwJt-I7dMsEgV-6P80NXG886jqqL7vruz3npJiRrMhnHFgw/exec";
 
         // BASELINE REPOSITORIO DE DATOS DE RESPALDO
         let appData = {
@@ -704,36 +704,43 @@
 
         // SINCRONIZACIÓN ASÍNCRONA SEGURA DE ODOO
         async function syncWithOdoo() {
-            const loader = document.getElementById('loader-overlay');
-            const syncIcon = document.getElementById('sync-icon');
-            if (loader) loader.style.display = 'flex';
-            if (syncIcon) syncIcon.classList.add('animate-spin');
+    const loader = document.getElementById('loader-overlay');
+    const syncIcon = document.getElementById('sync-icon');
+    
+    if (loader) loader.style.display = 'flex';
+    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-            try {
-                const cacheBuster = new Date().getTime();
-                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`);
-                const odooRes = await response.json();
+    try {
+        const cacheBuster = new Date().getTime();
+        const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
+        
+        const response = await fetch(requestUrl, { method: 'GET', redirect: 'follow' });
+        const textResponse = await response.text();
+        const odooRes = JSON.parse(textResponse);
 
-                if (odooRes && odooRes.success && odooRes.regionalData) {
-                    appData = odooRes.regionalData;
+        if (odooRes && odooRes.success && odooRes.regionalData) {
+            appData = odooRes.regionalData;
 
-                    if (odooRes.topStoresByMonthAndRegion) {
-                        topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
-                    }
-
-                    renderAll();
-                } else {
-                    renderAll();
-                }
-            } catch (err) {
-                console.warn("Llamada en segundo plano activa:", err);
-                renderAll();
-            } finally {
-                if (loader) loader.style.display = 'none';
-                if (syncIcon) syncIcon.classList.remove('animate-spin');
+            if (odooRes.cierreData) {
+                cierreData = odooRes.cierreData;
             }
-        }
 
+            if (odooRes.topStoresByMonthAndRegion) {
+                topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
+            }
+
+            renderAll();
+        } else {
+            renderAll();
+        }
+    } catch (err) {
+        console.error("Error al sincronizar con Odoo:", err);
+        renderAll();
+    } finally {
+        if (loader) loader.style.display = 'none';
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+    }
+}
         async function syncInventarioAppSheet() {
             try {
                 const response = await fetch(APPSCRIPT_URL + "?action=inventario&_nocache=" + new Date().getTime());
