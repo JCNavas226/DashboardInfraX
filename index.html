@@ -1069,105 +1069,109 @@
             });
         }
 
-        function renderRegionalCharts() {
-            const container = document.getElementById('regional-charts-container');
-            if (!container) return;
-            container.innerHTML = '';
+    function renderRegionalCharts() {
+    const container = document.getElementById('regional-charts-container');
+    if (!container) return;
+    container.innerHTML = '';
 
-            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+    const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
+    const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
+    const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
-            const regionColors = {
-                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
-                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
-                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
-            };
+    const regionColors = {
+        'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
+        'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
+        'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
+    };
 
-            REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = appData[r][i] ? appData[r][i].sol : 0;
-                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
-                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                        </div>`;
-                }
-
-                container.innerHTML += `
-                    <div class="card-pro flex flex-col justify-between bg-white">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
-                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
-                        </div>
-                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
-                        
-                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
-                                ${tableCols}
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                                <span><b class="text-blue-600">■</b> Solicitados</span>
-                                <span><b class="text-slate-900">■</b> Atendidos</span>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            setTimeout(() => {
-                REGIONES.forEach(r => {
-                    const ctxElem = document.getElementById(`chart-reg-${r}`);
-                    if (!ctxElem) return;
-                    const ctx = ctxElem.getContext('2d');
-                    const c = regionColors[r];
-
-                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
-                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: filteredLabels,
-                            datasets: [
-                                {
-                                    label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
-                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                                    datalabels: { display: false }
-                                },
-                                {
-                                    label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
-                                    borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
-                                    datalabels: { display: false }
-                                },
-                                {
-                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
-                                    pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                                    datalabels: {
-                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                                    }
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                                y: { display: false, beginAtZero: true },
-                                y1: { display: false, min: 0, max: 200 }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
-                    });
-                });
-            }, 50);
+    REGIONES.forEach(r => {
+        let tableCols = '';
+        for (let i = startIdx; i <= endIdx; i++) {
+            const sol = appData[r][i] ? appData[r][i].sol : 0;
+            const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
+            tableCols += `
+                <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                    <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
+                    <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                </div>`;
         }
 
+        container.innerHTML += `
+            <div class="card-pro flex flex-col justify-between bg-white">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
+                    <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                </div>
+                <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
+                
+                <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
+                    <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
+                        ${tableCols}
+                    </div>
+                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                        <span><b class="text-blue-600">■</b> Solicitados</span>
+                        <span><b class="text-slate-900">■</b> Atendidos</span>
+                    </div>
+                </div>
+            </div>`;
+    });
+
+    setTimeout(() => {
+        REGIONES.forEach(r => {
+            const ctxElem = document.getElementById(`chart-reg-${r}`);
+            if (!ctxElem) return;
+            const ctx = ctxElem.getContext('2d');
+            const c = regionColors[r];
+
+            const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+            const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
+            
+            // FÓRMULA DE PORCENTAJE CORREGIDA DERECHA Y PRECISA
+            const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => {
+                const totalAtend = d.at + d.canc;
+                return d.sol > 0 ? parseFloat(((totalAtend / d.sol) * 100).toFixed(1)) : 0;
+            });
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [
+                        {
+                            label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5,
+                            borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                            datalabels: { display: false }
+                        },
+                        {
+                            label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5,
+                            borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8,
+                            datalabels: { display: false }
+                        },
+                        {
+                            label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4,
+                            pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                            datalabels: {
+                                anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                        y: { display: false, beginAtZero: true },
+                        y1: { display: false, min: 0, max: 200 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        });
+    }, 50);
+}
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
