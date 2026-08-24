@@ -529,30 +529,30 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL DE APPS SCRIPT OFICIAL PÚBLICA DE PRODUCCIÓN
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycby31aJ1ijjPF7KTw06X7uaPpyNQJXHWUXsKKSX-q4aAVakFMCWJ_WHrqwWpHP3s6osCWA/exec";
+        // URL DE APPS SCRIPT
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9yTOwISbRfZ0TFn-KWWMPW2KwACWaWXczS9o72MJ78gJKH5lm4kaR9Roj_63xGBGn-Q/exec";
 
-        // BASELINE DE CONSOLIDADO EXACTO DE ODOO (210 Capital + 127 Occidente + 8 Oriente = 345)
+        // BASELINE CONSOLIDADOS CIERRE DE MES HISTÓRICOS (FOTO 1: Ene=305, Feb=251, Mar=408, Abr=262, May=365, Jun=547, Jul=545)
         let appData = {
             Capital: [
-                { sol: 206, at: 201, canc: 19, prevSolv: 0, prevPending: 0 },
-                { sol: 195, at: 190, canc: 30, prevSolv: 12, prevPending: 24 },
-                { sol: 216, at: 187, canc: 22, prevSolv: 18, prevPending: 42 },
-                { sol: 187, at: 180, canc: 24, prevSolv: 25, prevPending: 58 },
-                { sol: 303, at: 255, canc: 20, prevSolv: 38, prevPending: 95 },
-                { sol: 382, at: 315, canc: 20, prevSolv: 45, prevPending: 180 },
-                { sol: 363, at: 242, canc: 12, prevSolv: 54, prevPending: 126 },
-                { sol: 210, at: 69,  canc: 5,  prevSolv: 0,  prevPending: 175 }
+                { sol: 305, at: 168, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 251, at: 121, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 408, at: 260, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 262, at: 164, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 365, at: 246, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 547, at: 337, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 545, at: 341, canc: 0, prevSolv: 0, prevPending: 0 }, // Julio = 545 | 62.6% SLA
+                { sol: 210, at: 69,  canc: 5, prevSolv: 0, prevPending: 175 } // Agosto
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 56,  at: 56,  canc: 5, prevSolv: 0, prevPending: 0 },
-                { sol: 192, at: 186, canc: 4, prevSolv: 5, prevPending: 6 },
-                { sol: 75,  at: 73,  canc: 4, prevSolv: 4, prevPending: 4 },
-                { sol: 62,  at: 60,  canc: 8, prevSolv: 2, prevPending: 4 },
-                { sol: 165, at: 142, canc: 4, prevSolv: 4, prevPending: 23 },
-                { sol: 182, at: 123, canc: 9, prevSolv: 16, prevPending: 33 },
-                { sol: 127, at: 94,  canc: 0, prevSolv: 0, prevPending: 65 }
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 127, at: 94, canc: 0, prevSolv: 0, prevPending: 65 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
@@ -561,23 +561,26 @@
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
-                { sol: 2, at: 0, canc: 0, prevSolv: 10, prevPending: 35 },
+                { sol: 0, at: 0, canc: 0, prevSolv: 0, prevPending: 0 },
                 { sol: 8, at: 3, canc: 0, prevSolv: 0, prevPending: 2 }
             ]
         };
 
+        // VALORES FIJOS HISTÓRICOS DE SLA AL CIERRE DE MES (FOTO 1)
+        const FIXED_SLA_HISTORICO = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6];
+
         let cierreData = {
             Capital: [
-                { sol: 206, at: 69 }, { sol: 199, at: 37 }, { sol: 203, at: 77 }, { sol: 186, at: 114 },
-                { sol: 303, at: 204 }, { sol: 382, at: 272 }, { sol: 363, at: 242 }, { sol: 210, at: 69 }
+                { sol: 305, at: 168 }, { sol: 251, at: 121 }, { sol: 408, at: 260 }, { sol: 262, at: 164 },
+                { sol: 365, at: 246 }, { sol: 547, at: 337 }, { sol: 545, at: 341 }, { sol: 210, at: 69 }
             ],
             Occidente: [
-                { sol: 99, at: 79 }, { sol: 57, at: 33 }, { sol: 192, at: 142 }, { sol: 75, at: 50 },
-                { sol: 62, at: 43 }, { sol: 168, at: 123 }, { sol: 182, at: 102 }, { sol: 127, at: 94 }
+                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 },
+                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 127, at: 94 }
             ],
             Oriente: [
                 { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 },
-                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 2, at: 0 }, { sol: 8, at: 3 }
+                { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 0, at: 0 }, { sol: 8, at: 3 }
             ]
         };
 
@@ -684,7 +687,7 @@
                     renderAll();
                 }
             } catch (err) {
-                console.warn("Llamada en segundo plano de Odoo:", err);
+                console.warn("Sincronización en segundo plano de Odoo:", err);
                 renderAll();
             } finally {
                 if (loader) loader.style.display = 'none';
@@ -702,6 +705,7 @@
             } catch (err) {}
         }
 
+        // LECTURA DINÁMICA DE INVENTARIO MULTI-PESTAÑA (HERRAMIENTAS, EQUIPOS Y MOBILIARIO)
         function renderTableRows(rows) {
             const tbody = document.getElementById('inventory-table-body');
             if (!tbody) return;
@@ -711,11 +715,11 @@
 
             rows.forEach(r => {
                 const origen = (r._OrigenTabla || r.Tabla || r.Tipo || "").toString().toLowerCase();
-                let descripcion = r.Nombre_Item || r.Activo || r.Descripcion || r.Item || "Sin descripción";
+                let descripcion = r.Nombre_Item || r.Nombre_item || r.Activo || r.Descripcion || r.Item || "Sin descripción";
                 const tipo = r.Tipo || r._OrigenTabla || "General";
                 const cantidad = parseInt(r.Cantidad) || 1;
                 const estado = r.Estado || "Bueno";
-                const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || "General";
+                const asignacion = r["Asignado a"] || r["Sede o Sucursal"] || r["Región / Cuadrilla"] || r["Sede"] || "General";
 
                 if (origen.indexOf("herramienta") !== -1) countHerramientas += cantidad;
                 else if (origen.indexOf("equipo") !== -1) countEquipos += cantidad;
@@ -1418,6 +1422,7 @@
             });
         }
 
+        // RENDERING DE DEMANDA DE CRECIMIENTO CON VALORES FIJOS AL CIERRE DE MES (FOTO 1)
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart').getContext('2d');
             if (charts.growth) charts.growth.destroy();
@@ -1432,16 +1437,24 @@
             for (let i = startIdx; i <= endIdx; i++) {
                 let sumSol = 0;
                 let sumAt = 0;
-                REGIONES.forEach(r => { 
-                    if (appData[r][i]) {
-                        sumSol += appData[r][i].sol;
-                        sumAt += (appData[r][i].at + appData[r][i].canc);
-                    } 
-                });
-                volData.push(sumSol);
-                
-                let pctSla = sumSol > 0 ? parseFloat(((sumAt / sumSol) * 100).toFixed(2)) : 0;
-                slaDataReal.push(pctSla);
+
+                if (i < 7) {
+                    // Valores históricos fijos al Cierre de Mes (Foto 1: Ene=305, Feb=251, Mar=408, Abr=262, May=365, Jun=547, Jul=545)
+                    REGIONES.forEach(r => { if (appData[r][i]) sumSol += appData[r][i].sol; });
+                    volData.push(sumSol);
+                    slaDataReal.push(FIXED_SLA_HISTORICO[i]);
+                } else {
+                    // Mes de Agosto en Curso (Cálculo dinámico con Odoo)
+                    REGIONES.forEach(r => { 
+                        if (appData[r][i]) {
+                            sumSol += appData[r][i].sol;
+                            sumAt += (appData[r][i].at + appData[r][i].canc);
+                        } 
+                    });
+                    volData.push(sumSol);
+                    let pctSlaAgosto = sumSol > 0 ? parseFloat(((sumAt / sumSol) * 100).toFixed(1)) : 0;
+                    slaDataReal.push(pctSlaAgosto);
+                }
             }
 
             charts.growth = new Chart(ctxGrowth, {
@@ -1455,7 +1468,7 @@
                         },
                         {
                             label: 'Tendencia SLA', data: slaDataReal, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
-                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v.toFixed(1) + '%' : '' }
+                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
                         }
                     ]
                 },
