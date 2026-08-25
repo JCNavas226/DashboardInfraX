@@ -552,8 +552,7 @@
         // URL DE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9yTOwISbRfZ0TFn-KWWMPW2KwACWaWXczS9o72MJ78gJKH5lm4kaR9Roj_63xGBGn-Q/exec";
 
-        // 1. appData: DATOS REALES DINÁMICOS DE ODOO DE CADA REGIÓN
-        // at: Resueltos, canc: Cancelados (Atendidos Totales = at + canc)
+        // 1. appData: DATOS EN TIEMPO REAL / DINÁMICOS DE ODOO (ACTUALIZADO CONTINUAMENTE PARA TODOS LOS MESES)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, // Ene
@@ -563,7 +562,7 @@
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 }, // May
                 { sol: 382, at: 315, canc: 20, prevSolv: 35 }, // Jun
                 { sol: 363, at: 266, canc: 15, prevSolv: 40 }, // Jul
-                { sol: 221, at: 72,  canc: 5,  prevSolv: 30 }  // Ago (Sum 221)
+                { sol: 221, at: 72,  canc: 5,  prevSolv: 30 }  // Ago
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 5  }, // Ene
@@ -573,7 +572,7 @@
                 { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, // May
                 { sol: 165, at: 151, canc: 4, prevSolv: 15 }, // Jun
                 { sol: 182, at: 159, canc: 3, prevSolv: 18 }, // Jul
-                { sol: 133, at: 94,  canc: 0, prevSolv: 15 }  // Ago (Sum 133)
+                { sol: 133, at: 94,  canc: 0, prevSolv: 15 }  // Ago
             ],
             Oriente: [
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Ene
@@ -582,33 +581,33 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Abr
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // May
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Jun
-                { sol: 55, at: 40, canc: 0, prevSolv: 2 }, // Jul (Inicio Oriente)
-                { sol: 13, at: 4,  canc: 0, prevSolv: 1 }  // Ago (Sum 13)
+                { sol: 55, at: 40, canc: 0, prevSolv: 2 }, // Jul
+                { sol: 13, at: 4,  canc: 0, prevSolv: 1 }  // Ago
             ]
         };
 
-        // 2. cierreData: VALORES FIJOS HISTÓRICOS AL CIERRE DE MES DE FOTO 4
-        // En atendidos se incluye at + canc.
+        // 2. cierreData: VALORES ESTÁTICOS / FIJOS EXACTOS DE LA REFERENCIA ADJUNTA (ENERO A JULIO PERMANECEN FIJOS)
+        // Únicamente el mes en curso (Agosto = índice 7) es dinámico en vivo hasta el cierre formal del mes.
         let cierreData = {
             Capital: [
-                { sol: 206, at: 184, canc: 19 }, // Ene (Total Atendidos: 203)
-                { sol: 195, at: 161, canc: 30 }, // Feb (Total Atendidos: 191)
-                { sol: 216, at: 167, canc: 22 }, // Mar (Total Atendidos: 189)
-                { sol: 187, at: 157, canc: 24 }, // Abr (Total Atendidos: 181)
-                { sol: 303, at: 241, canc: 21 }, // May (Total Atendidos: 262)
-                { sol: 382, at: 315, canc: 20 }, // Jun (Total Atendidos: 335)
-                { sol: 363, at: 266, canc: 15 }, // Jul (Total Atendidos: 281)
-                { sol: 221, at: 72,  canc: 5  }  // Ago
+                { sol: 206, at: 69,  canc: 0 }, // Ene (69/206 = 33.5%)
+                { sol: 199, at: 37,  canc: 0 }, // Feb (37/199 = 18.6%)
+                { sol: 203, at: 77,  canc: 0 }, // Mar (77/203 = 37.9%)
+                { sol: 186, at: 114, canc: 0 }, // Abr (114/186 = 61.3%)
+                { sol: 303, at: 204, canc: 0 }, // May (204/303 = 67.3%)
+                { sol: 382, at: 272, canc: 0 }, // Jun (272/382 = 71.2%)
+                { sol: 308, at: 179, canc: 0 }, // Jul (179/308 = 58.1%)
+                { sol: 221, at: 72,  canc: 5 }  // Ago (En curso desde Odoo)
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0 }, // Ene
-                { sol: 56,  at: 51,  canc: 5 }, // Feb
-                { sol: 192, at: 184, canc: 4 }, // Mar
-                { sol: 75,  at: 70,  canc: 4 }, // Abr
-                { sol: 62,  at: 53,  canc: 8 }, // May
-                { sol: 165, at: 151, canc: 4 }, // Jun
-                { sol: 182, at: 159, canc: 3 }, // Jul
-                { sol: 133, at: 94,  canc: 0 }  // Ago
+                { sol: 99,  at: 79,  canc: 0 }, // Ene (79/99 = 79.8%)
+                { sol: 57,  at: 33,  canc: 0 }, // Feb (33/57 = 57.9%)
+                { sol: 192, at: 142, canc: 0 }, // Mar (142/192 = 74.0%)
+                { sol: 75,  at: 50,  canc: 0 }, // Abr (50/75 = 66.7%)
+                { sol: 62,  at: 43,  canc: 0 }, // May (43/62 = 69.4%)
+                { sol: 168, at: 123, canc: 0 }, // Jun (123/168 = 73.2%)
+                { sol: 180, at: 102, canc: 0 }, // Jul (102/180 = 56.7%)
+                { sol: 133, at: 94,  canc: 0 }  // Ago (En curso desde Odoo)
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, // Ene
@@ -617,8 +616,8 @@
                 { sol: 0,  at: 0, canc: 0 }, // Abr
                 { sol: 0,  at: 0, canc: 0 }, // May
                 { sol: 0,  at: 0, canc: 0 }, // Jun
-                { sol: 55, at: 40, canc: 0 }, // Jul
-                { sol: 13, at: 4,  canc: 0 }  // Ago
+                { sol: 55, at: 40, canc: 0 }, // Jul (40/55 = 72.7%)
+                { sol: 13, at: 4,  canc: 0 }  // Ago (En curso desde Odoo)
             ]
         };
 
@@ -636,7 +635,7 @@
             7: { resuelto: 170, asignado: 147, progreso: 31, procura: 14, cancelada: 5,  workTypes: { 'Correctivo': 250, 'Preventivo': 85, 'Mejora': 32 } }
         };
 
-        // 4. TOP 10 TIENDAS COMPLETO POR MES Y REGIÓN
+        // 4. TOP 10 TIENDAS POR MES Y REGIÓN
         let topStoresByMonthAndRegion = {
             7: { // Agosto (367 Total)
                 Global: [
@@ -685,7 +684,7 @@
                     { name: "Farmacia Guácharo", count: 1 }
                 ]
             },
-            6: { // Julio (600 Total)
+            6: { // Julio
                 Global: [
                     { name: "Farmacia Traki Cabudare", count: 35 },
                     { name: "Farmacia Cutira", count: 32 },
@@ -734,20 +733,19 @@
             }
         };
 
-        // Fallbacks para los meses 0-5 de Top Stores
         for (let i = 0; i < 6; i++) {
             topStoresByMonthAndRegion[i] = topStoresByMonthAndRegion[6];
         }
 
         // 5. CATEGORÍAS DE SERVICIO POR MES Y REGIÓN (DINÁMICAS)
         let categoryStatsByMonthAndRegion = {
-            7: { // Agosto (367 Total)
+            7: { // Agosto
                 Global: { 'Electricidad': 135, 'Aire Acondicionado': 105, 'Civil': 62, 'Plomería': 38, 'Mobiliario': 27 },
                 Capital: { 'Electricidad': 80, 'Aire Acondicionado': 65, 'Civil': 38, 'Plomería': 22, 'Mobiliario': 16 },
                 Occidente: { 'Electricidad': 50, 'Aire Acondicionado': 36, 'Civil': 22, 'Plomería': 14, 'Mobiliario': 11 },
                 Oriente: { 'Electricidad': 5, 'Aire Acondicionado': 4, 'Civil': 2, 'Plomería': 2 }
             },
-            6: { // Julio (600 Total)
+            6: { // Julio
                 Global: { 'Electricidad': 210, 'Aire Acondicionado': 180, 'Civil': 110, 'Plomería': 60, 'Mobiliario': 40 },
                 Capital: { 'Electricidad': 130, 'Aire Acondicionado': 110, 'Civil': 65, 'Plomería': 35, 'Mobiliario': 23 },
                 Occidente: { 'Electricidad': 65, 'Aire Acondicionado': 55, 'Civil': 35, 'Plomería': 18, 'Mobiliario': 9 },
@@ -851,15 +849,20 @@
                 const odooRes = await response.json();
 
                 if (odooRes && odooRes.success && odooRes.regionalData) {
+                    // appData: Actualización completa en tiempo real para 'Desglose Regional Histórico Actualizado'
                     appData = odooRes.regionalData;
 
-                    if (odooRes.cierreData) {
-                        REGIONES.forEach(r => {
-                            if (odooRes.cierreData[r] && odooRes.cierreData[r][7]) {
-                                cierreData[r][7] = odooRes.cierreData[r][7];
-                            }
-                        });
-                    }
+                    // cierreData: Preserva los cierres de mes históricos estáticos (Ene-Jul) y solo actualiza el mes activo en curso (Agosto)
+                    REGIONES.forEach(r => {
+                        if (odooRes.regionalData[r] && odooRes.regionalData[r][7]) {
+                            cierreData[r][7] = {
+                                sol: odooRes.regionalData[r][7].sol,
+                                at: odooRes.regionalData[r][7].at,
+                                canc: odooRes.regionalData[r][7].canc || 0
+                            };
+                        }
+                    });
+
                     if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                     renderAll();
                 } else {
@@ -1127,7 +1130,6 @@
             document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
         }
 
-        // 6. RENDER DINÁMICO TIPO DE TRABAJO AL CAMBIAR DE MES
         function renderWorkTypeSection(mIdx = 7) {
             const ctxPie = document.getElementById('workTypePieChart').getContext('2d');
             if (charts.workType) charts.workType.destroy();
@@ -1176,7 +1178,6 @@
             });
         }
 
-        // 7. RENDER DINÁMICO ESTATUS DE TICKETS AL CAMBIAR DE MES
         function renderStatusDoughnut(mIdx = 7) {
             const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
             if (charts.status) charts.status.destroy();
@@ -1224,7 +1225,7 @@
             });
         }
 
-        // DESGLOSE HISTÓRICO ACTUALIZADO (ODOO TIEMPO REAL POR REGIÓN)
+        // DESGLOSE HISTÓRICO ACTUALIZADO (100% TIEMPO REAL / DINÁMICO DE ODOO PARA TODOS LOS MESES)
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1324,7 +1325,7 @@
             }, 50);
         }
 
-        // DESGLOSE CIERRE DE MES (OFICIAL FIJO - ATENDIDOS SUMA CANCELADOS)
+        // DESGLOSE REGIONAL HISTÓRICO AL CIERRE DE MES (VALORES FIJOS ESTÁTICOS PARA ENE-JUL, Y DINÁMICO SOLO PARA EL MES EN CURSO)
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1846,7 +1847,6 @@
 
             const totalAtendidosConCanc = atVal + cancVal;
 
-            // CÁLCULO DINÁMICO DE SLA GLOBAL SEGÚN MES SELECCIONADO
             const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
             document.getElementById('kpi-sla').innerText = `${slaGlobalCalc}%`;
 
@@ -1933,3 +1933,6 @@
     </script>
 </body>
 </html>
+```eof
+
+El archivo `index.html` ha sido actualizado con los valores estáticos solicitados para la sección de cierre de mes.
