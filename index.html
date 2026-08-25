@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; }
         .card-pro { background: #ffffff; border-radius: 1.25rem; border: 1px solid #e2e8f0; padding: 1.25rem; box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); transition: all 0.25s ease; }
         .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
         #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
@@ -136,70 +136,70 @@
         <!-- DASHBOARD GLOBAL -->
         <div id="tab-content-dashboard" class="space-y-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-                <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl min-h-[140px]">
+                <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1" id="kpi-sla">84.7%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">84.7%</div>
                     </div>
-                    <div class="pt-2 mt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
+                    <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
                         <span class="text-emerald-400 font-extrabold">Meta 85%</span>
                     </div>
                 </div>
 
-                <div class="card-pro bg-white border-slate-200 flex flex-col justify-between min-h-[140px]">
+                <div class="card-pro bg-white border border-slate-200 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight" id="kpi-sol">345</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">345</div>
                     </div>
-                    <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>345</b></span>
                     </div>
                 </div>
 
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-emerald-500 flex flex-col justify-between min-h-[140px]">
+                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-emerald-500 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight" id="kpi-mes-at">171</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">171</div>
                     </div>
-                    <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">49.6% del mes</span>
                     </div>
                 </div>
 
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-blue-500 flex flex-col justify-between min-h-[140px]">
+                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-blue-500 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight" id="kpi-backlog-atendido">46</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-backlog-atendido">46</div>
                     </div>
-                    <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">De meses previos</span>
                         <span class="text-blue-700 font-extrabold text-[10px]" id="kpi-backlog-sub">46 Casos</span>
                     </div>
                 </div>
 
-                <div class="card-pro bg-white border-slate-200 border-l-4 border-l-amber-500 flex flex-col justify-between min-h-[140px]">
+                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-amber-500 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight" id="kpi-pend">810</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">810</div>
                     </div>
-                    <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]">Capital + Occ. + Ori.</span>
+                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
                         <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">628 + 170 + 12</span>
                     </div>
                 </div>
@@ -529,7 +529,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // CLASIFICACIÓN EXACTA DE TIENDAS POR REGIÓN DE LAS FOTOS 1, 2 Y 3
+        // CLASIFICACIÓN EXACTA DE TIENDAS POR REGIÓN
         const TIENDAS_POR_REGION = {
             Capital: [
                 'mangle', 'araguaney', 'la cascada', 'chiguire', 'chigüire', 'escorpion', 'escorpión', 'pamela', 
@@ -586,7 +586,7 @@
             ]
         };
 
-        // 2. cierreData: VALORES FIJOS EXACTOS DE FOTO 4 (ENERO A JULIO PERMANECEN FIJOS)
+        // 2. cierreData: VALORES FIJOS EXACTOS DE FOTO 4
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69 },  // Ene
@@ -620,7 +620,6 @@
             ]
         };
 
-        // VALORES FIJOS HISTÓRICOS DE SLA AL CIERRE DE MES DE FOTO 4
         const FIXED_SLA_HISTORICO = [33.5, 18.6, 37.9, 61.3, 67.3, 71.2, 58.1];
 
         let monthStatusData = {
@@ -1804,11 +1803,3 @@
     </script>
 </body>
 </html>
-```eof
-
-### Solución a los Detalles Visuales:
-1. **Eliminación del texto de resumen en cabecera**: Se eliminó cualquier bloque de texto residual o etiqueta que aparecía en la esquina superior derecha del HTML.
-2. **Ajuste de las Tarjetas KPI**: Se ajustó el tamaño de fuente, la altura mínima (`min-h-[140px]`) y el padding (`p-5` a `p-4`) en el contenedor grid para que los números grandes y textos descriptivos encajen limpiamente sin superponerse ni salirse de sus recuadros.
-3. **Mantenimiento de Datos Exactos**:
-   - `cierreData`: Enero a Julio cerrados con los valores fijos exactos de la Foto 4.
-   - `appData`: Datos dinámicos conectados a Odoo con separación regional de tiendas según la clasificación de las Fotos 1, 2 y 3.
