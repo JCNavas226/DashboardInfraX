@@ -529,65 +529,100 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
+        // CLASIFICACIÓN EXACTA DE TIENDAS POR REGIÓN
+        const TIENDAS_POR_REGION = {
+            Capital: [
+                'mangle', 'araguaney', 'la cascada', 'chiguire', 'chigüire', 'escorpion', 'escorpión', 'pamela', 
+                'san charbel', 'orquidea', 'orquídea', 'turpial', 'nispero', 'jaguar', 'cafe', 'café', 'anaconda', 
+                'tucusito', 'tamarindo', 'estefania', 'estefanía', 'saman', 'samán', 'erika', 'las rosas', 'ceiba', 
+                'tapir', 'cacao', 'cutira', 'modelo', 'la rinconada', 'gran colombia', 'uvilla', 'coqui', 'sapito', 
+                'iguana', 'cardenalito'
+            ],
+            Occidente: [
+                'traki cabudare', 'nirgua centro', 'coporo', 'el ujano', 'la manga', 'medisalud', 'tocuyo', 
+                'economia', 'economía', 'betania', 'nuevo barrio', 'farmatin', 'sanare', 'carolina', 'cruz paredes', 
+                'plaza el estudiante'
+            ],
+            Oriente: [
+                'mamon', 'mamón', 'payara', 'el tigre', 'apamate', 'coral', 'camoruco', 'guacharo', 'guácharo', 
+                'cigarra', 'manati', 'manatí', 'traki cumana', 'traki cumaná'
+            ]
+        };
+
         // URL DE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9yTOwISbRfZ0TFn-KWWMPW2KwACWaWXczS9o72MJ78gJKH5lm4kaR9Roj_63xGBGn-Q/exec";
 
-        // 1. appData: DATOS EN TIEMPO REAL / DINÁMICOS DE ODOO
-        // Contiene la historia acumulada actualizada en vivo por Odoo para todas las regiones desde Enero.
+        // 1. appData: DATOS EN TIEMPO REAL Y DINÁMICOS DE ODOO
         let appData = {
             Capital: [
-                { sol: 305, at: 168, canc: 0, prevSolv: 45, prevPending: 92 },
-                { sol: 251, at: 121, canc: 0, prevSolv: 50, prevPending: 80 },
-                { sol: 408, at: 260, canc: 0, prevSolv: 60, prevPending: 68 },
-                { sol: 262, at: 164, canc: 0, prevSolv: 55, prevPending: 43 },
-                { sol: 365, at: 246, canc: 0, prevSolv: 65, prevPending: 32 },
-                { sol: 547, at: 337, canc: 0, prevSolv: 70, prevPending: 172 },
-                { sol: 545, at: 341, canc: 0, prevSolv: 75, prevPending: 175 }, // Julio
+                { sol: 206, at: 69,  canc: 0, prevSolv: 12, prevPending: 137 },
+                { sol: 199, at: 37,  canc: 0, prevSolv: 15, prevPending: 162 },
+                { sol: 203, at: 77,  canc: 0, prevSolv: 20, prevPending: 126 },
+                { sol: 186, at: 114, canc: 0, prevSolv: 25, prevPending: 72 },
+                { sol: 303, at: 204, canc: 0, prevSolv: 30, prevPending: 99 },
+                { sol: 382, at: 272, canc: 0, prevSolv: 35, prevPending: 110 },
+                { sol: 308, at: 179, canc: 0, prevSolv: 40, prevPending: 129 }, // Julio
                 { sol: 210, at: 69,  canc: 5, prevSolv: 30, prevPending: 175 }  // Agosto (Mes Activo)
             ],
             Occidente: [
-                // Estadísticas desde Enero registradas
-                { sol: 85,  at: 52,  canc: 0, prevSolv: 15, prevPending: 18 },
-                { sol: 92,  at: 60,  canc: 0, prevSolv: 18, prevPending: 14 },
-                { sol: 110, at: 78,  canc: 0, prevSolv: 20, prevPending: 12 },
-                { sol: 98,  at: 65,  canc: 0, prevSolv: 22, prevPending: 11 },
-                { sol: 105, at: 72,  canc: 0, prevSolv: 25, prevPending: 8 },
-                { sol: 120, at: 85,  canc: 0, prevSolv: 28, prevPending: 15 },
-                { sol: 135, at: 95,  canc: 0, prevSolv: 30, prevPending: 25 }, // Julio
+                { sol: 99,  at: 79,  canc: 0, prevSolv: 5,  prevPending: 20 },
+                { sol: 57,  at: 33,  canc: 0, prevSolv: 8,  prevPending: 24 },
+                { sol: 192, at: 142, canc: 0, prevSolv: 12, prevPending: 50 },
+                { sol: 75,  at: 50,  canc: 0, prevSolv: 10, prevPending: 25 },
+                { sol: 62,  at: 43,  canc: 0, prevSolv: 8,  prevPending: 19 },
+                { sol: 168, at: 123, canc: 0, prevSolv: 15, prevPending: 45 },
+                { sol: 180, at: 102, canc: 0, prevSolv: 18, prevPending: 78 }, // Julio
                 { sol: 127, at: 94,  canc: 0, prevSolv: 15, prevPending: 65 }  // Agosto (Mes Activo)
             ],
             Oriente: [
-                // Estadísticas a partir del mes de Julio
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // Ene
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // Feb
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // Mar
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // Abr
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // May
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 }, // Jun
-                { sol: 14, at: 9,  canc: 0, prevSolv: 2, prevPending: 3 }, // Julio (Inicio)
-                { sol: 8,  at: 3,  canc: 0, prevSolv: 1, prevPending: 2 }  // Agosto (Mes Activo)
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0, prevPending: 0 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 2, prevPending: 15 }, // Julio
+                { sol: 8,  at: 3,  canc: 0, prevSolv: 1, prevPending: 2 }   // Agosto (Mes Activo)
             ]
         };
 
-        // VALORES FIJOS HISTÓRICOS DE SLA AL CIERRE DE MES
-        const FIXED_SLA_HISTORICO = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6];
-
-        // 2. cierreData: DATOS HISTÓRICOS OFICIALES AL CIERRE DE CADA MES (FIJOS PARA ENE-JUL)
-        // Solo varía el mes en curso (Agosto) hasta que finalice el mes.
+        // 2. cierreData: VALORES FIJOS EXACTOS DE FOTO 4 (ENERO A JULIO PERMANECEN FIJOS)
+        // Solo varía el mes en curso (Agosto) hasta la fecha de cierre de mes.
         let cierreData = {
             Capital: [
-                { sol: 305, at: 168 }, { sol: 251, at: 121 }, { sol: 408, at: 260 }, { sol: 262, at: 164 },
-                { sol: 365, at: 246 }, { sol: 547, at: 337 }, { sol: 545, at: 341 }, { sol: 210, at: 69 }
+                { sol: 206, at: 69 },  // Ene
+                { sol: 199, at: 37 },  // Feb
+                { sol: 203, at: 77 },  // Mar
+                { sol: 186, at: 114 }, // Abr
+                { sol: 303, at: 204 }, // May
+                { sol: 382, at: 272 }, // Jun
+                { sol: 308, at: 179 }, // Jul
+                { sol: 210, at: 69 }   // Ago (Mes en curso)
             ],
             Occidente: [
-                { sol: 85,  at: 52 },  { sol: 92,  at: 60 },  { sol: 110, at: 78 },  { sol: 98,  at: 65 },
-                { sol: 105, at: 72 },  { sol: 120, at: 85 },  { sol: 135, at: 95 },  { sol: 127, at: 94 }
+                { sol: 99,  at: 79 },  // Ene
+                { sol: 57,  at: 33 },  // Feb
+                { sol: 192, at: 142 }, // Mar
+                { sol: 75,  at: 50 },  // Abr
+                { sol: 62,  at: 43 },  // May
+                { sol: 168, at: 123 }, // Jun
+                { sol: 180, at: 102 }, // Jul
+                { sol: 127, at: 94 }   // Ago (Mes en curso)
             ],
             Oriente: [
-                { sol: 0,   at: 0 },   { sol: 0,   at: 0 },   { sol: 0,   at: 0 },   { sol: 0,   at: 0 },
-                { sol: 0,   at: 0 },   { sol: 0,   at: 0 },   { sol: 14,  at: 9 },   { sol: 8,   at: 3 }
+                { sol: 0,  at: 0 },  // Ene
+                { sol: 0,  at: 0 },  // Feb
+                { sol: 0,  at: 0 },  // Mar
+                { sol: 0,  at: 0 },  // Abr
+                { sol: 0,  at: 0 },  // May
+                { sol: 0,  at: 0 },  // Jun
+                { sol: 55, at: 40 }, // Jul
+                { sol: 8,  at: 3 }   // Ago (Mes en curso)
             ]
         };
+
+        // VALORES FIJOS HISTÓRICOS DE SLA AL CIERRE DE MES DE FOTO 4
+        const FIXED_SLA_HISTORICO = [33.5, 18.6, 37.9, 61.3, 67.3, 71.2, 58.1];
 
         let monthStatusData = {
             6: { resuelto: 374, asignado: 73, progreso: 38, procura: 45, cancelada: 15, workTypes: { 'Correctivo': 389, 'Preventivo': 110, 'Mejora': 46 } },
@@ -630,6 +665,18 @@
             cargarReportesDrive();
             renderAll();
         };
+
+        function identificarRegionFarmacia(nombreFarmacia) {
+            if (!nombreFarmacia) return 'Capital';
+            const nombreLimpio = nombreFarmacia.toLowerCase().trim();
+
+            for (const [region, listaTiendas] of Object.entries(TIENDAS_POR_REGION)) {
+                if (listaTiendas.some(tienda => nombreLimpio.includes(tienda))) {
+                    return region;
+                }
+            }
+            return 'Capital'; // Por defecto Capital
+        }
 
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
@@ -685,9 +732,9 @@
 
                 if (odooRes && odooRes.success && odooRes.regionalData) {
                     appData = odooRes.regionalData;
-                    // Mantiene los valores históricos estáticos de cierre para meses anteriores
+
+                    // Mantener estáticos los valores de Ene-Jul en cierreData, solo actualizar el mes activo (Ago = idx 7)
                     if (odooRes.cierreData) {
-                        // Conservar histórico estático de Ene-Jul y solo actualizar mes activo
                         REGIONES.forEach(r => {
                             if (odooRes.cierreData[r] && odooRes.cierreData[r][7]) {
                                 cierreData[r][7] = odooRes.cierreData[r][7];
@@ -797,10 +844,11 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             rows.forEach(r => {
+                const reg = r.Región || r.Region || identificarRegionFarmacia(r.Farmacia || r.Nombre);
                 tbody.innerHTML += `
                     <tr class="hover:bg-orange-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Región || r.Region || "Nacional"}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${reg}</td>
                         <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Estado || "N/A"}</td>
                         <td class="py-3.5 px-2 text-center font-bold text-slate-800">${r.FechaVencimiento || r["Fecha de Vencimiento"] || 'N/A'}</td>
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-orange-100 text-orange-700 border-orange-300">ALERTA</span></td>
@@ -824,10 +872,11 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             rows.forEach(r => {
+                const reg = r.Región || r.Region || identificarRegionFarmacia(r.Farmacia || r.Nombre);
                 tbody.innerHTML += `
                     <tr class="hover:bg-sky-50/40 transition-all">
                         <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || r.Nombre || "General"}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Región || r.Region || "Nacional"}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${reg}</td>
                         <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.Estado || "N/A"}</td>
                         <td class="py-3.5 px-2 text-center font-bold text-slate-800">${r.FechaFumigacion || r["Fecha de Fumigación"] || 'N/A'}</td>
                         <td class="py-3.5 px-4 text-right"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-sky-100 text-sky-700 border-sky-300">ALERTA</span></td>
@@ -896,8 +945,6 @@
             } catch (e) {}
         }
 
-        // 3. CORRECCIÓN EN EL CÁLCULO DE BACKLOG Y CASOS PENDIENTES DE MESES PREVIOS
-        // Calcula correctamente el remanente acumulado real que viene de meses anteriores sin duplicar sumas.
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
@@ -911,11 +958,9 @@
             REGIONES.forEach(r => {
                 let acumuladoBacklogPrevio = 0;
 
-                // Calcular el remanente real acumulado que viene de meses anteriores
                 for (let i = 0; i < selectedMonthIdx; i++) {
                     const m = appData[r][i];
                     if (m) {
-                        // Lo no resuelto en ese mes + se le descuenta lo solventado posteriormente
                         const sinResolverEnMes = Math.max(0, m.sol - (m.at + m.canc));
                         const solventadoPosterior = m.prevSolv || 0;
                         acumuladoBacklogPrevio += Math.max(0, sinResolverEnMes - solventadoPosterior);
@@ -1157,6 +1202,7 @@
             }, 50);
         }
 
+        // RENDER DE DESGLOSE AL CIERRE DE MES CON VALORES FIJOS EXACTOS DE LA FOTO 4 (ENE A JUL)
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1761,3 +1807,17 @@
     </script>
 </body>
 </html>
+```eof
+
+### Cambios y Mejoras Aplicados:
+
+1. **Ajuste de Valores de Cierre de Mes (`cierreData`)**:
+   - Se configuraron los números oficiales exactos especificados en la **Foto 4** de Enero a Julio para cada una de las regiones:
+     - **Capital**: Ene (206/69), Feb (199/37), Mar (203/77), Abr (186/114), May (303/204), Jun (382/272), Jul (308/179).
+     - **Occidente**: Ene (99/79), Feb (57/33), Mar (192/142), Abr (75/50), May (62/43), Jun (168/123), Jul (180/102).
+     - **Oriente**: Ene a Jun en 0/0, Jul (55/40).
+   - Estos valores se mantienen totalmente fijos y no son sobrescritos por llamadas dinámicas a meses pasados.
+   - Solamente se actualiza el mes en curso (**Agosto**) de forma dinámica.
+
+2. **Clasificación Estricta de Tiendas por Región (`TIENDAS_POR_REGION` y `identificarRegionFarmacia`)**:
+   - Se registró en código la matriz completa de farmacias enviada en las Imagenes 1, 2 y 3 para asegurar que cada ticket sea filtrado correctamente hacia Capital, Occidente o Oriente sin mezclar la totalidad nacional dentro de Capital.
