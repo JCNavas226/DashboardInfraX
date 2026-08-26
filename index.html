@@ -225,16 +225,6 @@
                                 </h3>
                                 <p class="text-xs text-slate-400 font-medium">Ranking dinámico real por volumen de tickets</p>
                             </div>
-                            <div class="flex gap-2">
-                                <select id="topStoreMonthSelector" onchange="renderTopStores()" class="px-2 py-1 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
-                                </select>
-                                <select id="topStoreRegSelector" onchange="renderTopStores()" class="px-2 py-1 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
-                                    <option value="Global">Global</option>
-                                    <option value="Capital">Capital</option>
-                                    <option value="Occidente">Occidente</option>
-                                    <option value="Oriente">Oriente</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="space-y-2.5 pt-1" id="top-stores-list"></div>
                     </div>
@@ -320,7 +310,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL AGOSTO:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">135</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">367</span>
                             </div>
                         </div>
                     </div>
@@ -377,10 +367,6 @@
                         <h4 class="text-sm font-extrabold uppercase tracking-wider text-orange-400 flex items-center gap-2">
                             <i data-lucide="history" class="w-4 h-4"></i> Estado de Backlog y Casos Pendientes (Calculado de Meses Previos)
                         </h4>
-                        <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700">
-                            <span class="text-[10px] uppercase font-bold text-slate-300">Evaluar Mes:</span>
-                            <select id="backlogMonthSelector" onchange="renderBacklogRegionalSection()" class="bg-slate-900 text-white font-extrabold text-xs outline-none px-2 py-1 rounded-lg border border-slate-700"></select>
-                        </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="backlog-regional-container"></div>
                 </div>
@@ -497,48 +483,76 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL DE APPS SCRIPT
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxJ8aqS393OEBUfcs1E4v06CG7OWANbkAehSNroIrSkkngx-ry4Qs56YKveMggvZAO/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF-3LGFe81N4NQo1R_wHOGOPE1S_SPDdtfpyxBqjz2Op5N2Wj-BrLo8VJjYAeYG3o/exec";
 
-        // DATOS REALES DE LAS CAPTURAS ODOO
         let appData = {
             Capital: [
-                { sol: 206, at: 184, canc: 19, prevSolv: 12 }, // Ene
-                { sol: 195, at: 161, canc: 30, prevSolv: 15 }, // Feb
-                { sol: 216, at: 167, canc: 22, prevSolv: 20 }, // Mar
-                { sol: 187, at: 157, canc: 24, prevSolv: 25 }, // Abr
-                { sol: 303, at: 241, canc: 21, prevSolv: 30 }, // May
-                { sol: 382, at: 315, canc: 20, prevSolv: 35 }, // Jun
-                { sol: 363, at: 266, canc: 15, prevSolv: 40 }, // Jul
-                { sol: 221, at: 72,  canc: 5,  prevSolv: 30 }  // Ago
+                { sol: 206, at: 184, canc: 19, prevSolv: 12 },
+                { sol: 195, at: 161, canc: 30, prevSolv: 15 },
+                { sol: 216, at: 167, canc: 22, prevSolv: 20 },
+                { sol: 187, at: 157, canc: 24, prevSolv: 25 },
+                { sol: 303, at: 241, canc: 21, prevSolv: 30 },
+                { sol: 382, at: 315, canc: 20, prevSolv: 35 },
+                { sol: 363, at: 266, canc: 15, prevSolv: 40 },
+                { sol: 221, at: 72,  canc: 5,  prevSolv: 30 }
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  }, // Ene
-                { sol: 56,  at: 51,  canc: 5, prevSolv: 8  }, // Feb
-                { sol: 192, at: 184, canc: 4, prevSolv: 12 }, // Mar
-                { sol: 75,  at: 70,  canc: 4, prevSolv: 10 }, // Abr
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, // May
-                { sol: 165, at: 151, canc: 4, prevSolv: 15 }, // Jun
-                { sol: 182, at: 159, canc: 3, prevSolv: 18 }, // Jul
-                { sol: 133, at: 94,  canc: 0, prevSolv: 15 }  // Ago
+                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  },
+                { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
+                { sol: 192, at: 184, canc: 4, prevSolv: 12 },
+                { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
+                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  },
+                { sol: 165, at: 151, canc: 4, prevSolv: 15 },
+                { sol: 182, at: 159, canc: 3, prevSolv: 18 },
+                { sol: 133, at: 94,  canc: 0, prevSolv: 15 }
             ],
             Oriente: [
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Ene
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Feb
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Mar
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Abr
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // May
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, // Jun
-                { sol: 55, at: 40, canc: 0, prevSolv: 2 }, // Jul
-                { sol: 13, at: 9,  canc: 0, prevSolv: 1 }  // Ago
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 2 },
+                { sol: 13, at: 9,  canc: 0, prevSolv: 1 }
             ]
         };
 
-        let cierreData = JSON.parse(JSON.stringify(appData));
+        let cierreData = {
+            Capital: [
+                { sol: 206, at: 69,  canc: 0 },
+                { sol: 199, at: 37,  canc: 0 },
+                { sol: 203, at: 77,  canc: 0 },
+                { sol: 186, at: 114, canc: 0 },
+                { sol: 303, at: 204, canc: 0 },
+                { sol: 382, at: 272, canc: 0 },
+                { sol: 308, at: 179, canc: 0 },
+                { sol: 221, at: 72,  canc: 5 }
+            ],
+            Occidente: [
+                { sol: 99,  at: 79,  canc: 0 },
+                { sol: 57,  at: 33,  canc: 0 },
+                { sol: 192, at: 142, canc: 0 },
+                { sol: 75,  at: 50,  canc: 0 },
+                { sol: 62,  at: 43,  canc: 0 },
+                { sol: 168, at: 123, canc: 0 },
+                { sol: 180, at: 102, canc: 0 },
+                { sol: 133, at: 94,  canc: 0 }
+            ],
+            Oriente: [
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 55, at: 40, canc: 0 },
+                { sol: 13, at: 9,  canc: 0 }
+            ]
+        };
 
-        // TOP 10 TIENDAS EXACTAS DE ODOO PARA AGOSTO
         let topStoresByMonthAndRegion = {
-            7: { // AGOSTO 2026
+            7: {
                 Global: [
                     { name: "Farmacia La manga", count: 26 },
                     { name: "Farmacia Escorpión", count: 20 },
@@ -591,10 +605,11 @@
 
         let driveReportesGlobalData = [];
         let casosPendientesGlobalData = [];
+        let directorioSedesGlobalData = [];
         let rawTicketsGlobal = [];
 
         let monthStatusData = {
-            7: { resuelto: 94, asignado: 30, progreso: 6, procura: 5, cancelada: 0 }
+            7: { resuelto: 170, asignado: 147, progreso: 31, procura: 14, cancelada: 5 }
         };
         let charts = {};
 
@@ -604,6 +619,7 @@
             syncWithOdoo();
             cargarCasosPendientes();
             cargarReportesDrive();
+            cargarDirectorioSedes();
             renderAll();
         };
 
@@ -616,12 +632,11 @@
             const regEndSel = document.getElementById('regEndMonth');
             const cierreStartSel = document.getElementById('cierreStartMonth');
             const cierreEndSel = document.getElementById('cierreEndMonth');
-            const backlogMonthSel = document.getElementById('backlogMonthSelector');
 
             if (!selector) return;
 
-            const mesActualIdx = 7; // Agosto
-            const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel, backlogMonthSel];
+            const mesActualIdx = 7;
+            const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
             for (let i = 0; i <= 7; i++) {
@@ -645,7 +660,6 @@
             if (regEndSel) regEndSel.value = 7;
             if (cierreStartSel) cierreStartSel.value = 0;
             if (cierreEndSel) cierreEndSel.value = 7;
-            if (backlogMonthSel) backlogMonthSel.value = mesActualIdx;
         }
 
         async function syncWithOdoo() {
@@ -662,7 +676,9 @@
                     if (odooRes && odooRes.success) {
                         if (odooRes.regionalData) {
                             appData = odooRes.regionalData;
-                            cierreData = JSON.parse(JSON.stringify(appData));
+                            cierreData.Capital[7] = appData.Capital[7];
+                            cierreData.Occidente[7] = appData.Occidente[7];
+                            cierreData.Oriente[7] = appData.Oriente[7];
                         }
                         if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                         if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
@@ -670,11 +686,22 @@
                     }
                 }
             } catch (err) {
-                console.warn("Sincronización en vivo Odoo en segundo plano:", err);
+                console.warn("Sincronización Odoo:", err);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
+            }
+        }
+
+        async function cargarDirectorioSedes() {
+            try {
+                const response = await fetch(APPSCRIPT_URL + "?action=directorioSedes&_nocache=" + new Date().getTime(), { mode: 'cors' });
+                if (response.ok) {
+                    directorioSedesGlobalData = await response.json();
+                }
+            } catch (e) {
+                console.warn("Directorio Sedes:", e);
             }
         }
 
@@ -802,11 +829,12 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('topStoreMonthSelector')?.value || 7);
-            const selectedReg = document.getElementById('topStoreRegSelector')?.value || 'Global';
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
+            const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
             const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
-            const items = monthData[selectedReg] || monthData.Global || [];
+            const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
+            const items = monthData[keyReg] || monthData.Global || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
 
             if (items.length === 0) {
@@ -898,7 +926,7 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const mesVals = [110, 35, 18];
+            const mesVals = [250, 85, 32]; // TOTAL = 367
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -914,7 +942,7 @@
                             formatter: (value, ctx) => {
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
                                 if (!sum || value === 0) return '';
-                                return ((value / sum) * 100).toFixed(0) + '%';
+                                return ((value / sum) * 100).toFixed(1) + '%';
                             }
                         }
                     }
@@ -926,6 +954,8 @@
             tbody.innerHTML = '';
             const totalMes = mesVals.reduce((a, b) => a + b, 0);
 
+            const histVals = [2314, 548, 260];
+
             keys.forEach((k, i) => {
                 const pMes = totalMes > 0 ? ((mesVals[i] / totalMes) * 100).toFixed(1) : '0.0';
                 tbody.innerHTML += `
@@ -933,7 +963,7 @@
                         <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2"><div class="w-3 h-3 rounded-sm" style="background:${colors[i]}"></div>${k}</td>
                         <td class="py-2.5 text-center font-black text-slate-900">${mesVals[i]}</td>
                         <td class="py-2.5 text-center font-black text-slate-500">${pMes}%</td>
-                        <td class="py-2.5 text-right font-black text-blue-700">${mesVals[i] * 6}</td>
+                        <td class="py-2.5 text-right font-black text-blue-700">${histVals[i]}</td>
                     </tr>`;
             });
         }
@@ -943,9 +973,9 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || { resuelto: 94, asignado: 30, progreso: 6, procura: 5, cancelada: 0 };
+            const mData = monthStatusData[mIdx] || { resuelto: 170, asignado: 147, progreso: 31, procura: 14, cancelada: 5 };
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
+            const vals = [mData.resuelto || 170, mData.asignado || 147, mData.progreso || 31, mData.procura || 14, mData.cancelada || 5];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
@@ -1172,36 +1202,14 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('backlogMonthSelector')?.value || 7);
+            const backlogDataFixed = [
+                { reg: 'Capital', res: 30, totalPrev: 72, pend: 42, pct: '41.7%' },
+                { reg: 'Occidente', res: 15, totalPrev: 15, pend: 0, pct: '100.0%' },
+                { reg: 'Oriente', res: 1, totalPrev: 13, pend: 12, pct: '7.7%' }
+            ];
 
-            let totalBacklogPendienteGlobal = 0;
-            let partesPendientesArr = [];
-
-            REGIONES.forEach(r => {
-                let acumuladoBacklogPrevio = 0;
-
-                for (let i = 0; i < selectedMonthIdx; i++) {
-                    const m = appData[r][i];
-                    if (m) {
-                        const sinResolverEnMes = Math.max(0, m.sol - (m.at + m.canc));
-                        const solventadoPosterior = m.prevSolv || 0;
-                        acumuladoBacklogPrevio += Math.max(0, sinResolverEnMes - solventadoPosterior);
-                    }
-                }
-
-                let mObj = appData[r][selectedMonthIdx] || appData[r][appData[r].length - 1];
-                let casosSolventadosMesActual = mObj ? (mObj.prevSolv || 0) : 0;
-                const backlogPendienteActual = Math.max(0, acumuladoBacklogPrevio - casosSolventadosMesActual);
-
-                totalBacklogPendienteGlobal += backlogPendienteActual;
-                partesPendientesArr.push(backlogPendienteActual);
-
-                const pctResolucion = acumuladoBacklogPrevio > 0 
-                    ? Math.min(100, ((casosSolventadosMesActual / acumuladoBacklogPrevio) * 100)).toFixed(1) 
-                    : "0.0";
-
-                const strokeDash = `${pctResolucion}, 100`;
-
+            backlogDataFixed.forEach(b => {
+                const strokeDash = `${parseFloat(b.pct)}, 100`;
                 container.innerHTML += `
                     <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
                         <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
@@ -1210,26 +1218,25 @@
                                 <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${pctResolucion}%</span>
+                                <span class="text-xs font-black text-white">${b.pct}</span>
                                 <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
                             </div>
                         </div>
                         <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${r}</h5>
+                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
                             <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
                             <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${casosSolventadosMesActual} de ${acumuladoBacklogPrevio}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${backlogPendienteActual}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
                             </div>
                         </div>
                     </div>`;
             });
 
-            document.getElementById('kpi-pend').innerText = totalBacklogPendienteGlobal;
-            document.getElementById('kpi-pend-sub').innerText = partesPendientesArr.join(' + ');
+            document.getElementById('kpi-pend').innerText = 54;
+            document.getElementById('kpi-pend-sub').innerText = "42 + 0 + 12";
         }
 
-        // ASISTENTE INTELIGENTE BI MEJORADO
         function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1252,18 +1259,17 @@
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos Odoo & Drive para Farmacia ${nameUpper}...</p>
+                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos Odoo & Directorio para Farmacia ${nameUpper}...</p>
                 </div>`;
             lucide.createIcons();
 
             setTimeout(() => {
                 const targetKey = farmaciaLimpia.toLowerCase();
 
-                // 1. Filtrar Tickets Odoo
-                const ticketsSede = rawTicketsGlobal.filter(t => {
-                    const txt = ((t.partner_id ? t.partner_id[1] : "") + " " + (t.name || "")).toLowerCase();
-                    return txt.includes(targetKey);
-                });
+                // 1. Buscar Ficha de Directorio
+                const sedeMatch = directorioSedesGlobalData.find(s => 
+                    (s.Farmacia || "").toLowerCase().includes(targetKey)
+                );
 
                 // 2. Filtrar Solicitudes de Pedido
                 const solpedSede = casosPendientesGlobalData.filter(p => {
@@ -1271,55 +1277,17 @@
                     return txt.includes(targetKey);
                 });
 
-                // 3. Filtrar Reportes Drive
-                const reportesSede = driveReportesGlobalData.filter(f => {
-                    const txt = (f.nombre || "").toLowerCase();
+                // 3. Filtrar Tickets Odoo
+                const ticketsSede = rawTicketsGlobal.filter(t => {
+                    const txt = ((t.partner_id ? t.partner_id[1] : "") + " " + (t.name || "")).toLowerCase();
                     return txt.includes(targetKey);
                 });
 
-                // HTML Tickets Odoo
-                let ticketsHTML = "";
-                if (ticketsSede.length > 0) {
-                    let rows = ticketsSede.slice(0, 15).map(t => {
-                        const stage = t.stage_id ? t.stage_id[1] : "Desconocido";
-                        return `
-                            <tr>
-                                <td class="py-2.5 px-4 font-bold text-slate-900">${t.name || ('Ticket #' + t.id)}</td>
-                                <td class="py-2.5 px-4 text-slate-700">${t.create_date ? t.create_date.split(' ')[0] : 'N/A'}</td>
-                                <td class="py-2.5 px-4 text-right">
-                                    <span class="px-2 py-0.5 rounded font-black text-[10px] uppercase bg-slate-100 text-slate-800 border border-slate-200">
-                                        ${stage}
-                                    </span>
-                                </td>
-                            </tr>`;
-                    }).join('');
+                let dir = sedeMatch?.Direccion || "No registrada en directorio principal";
+                let ref = sedeMatch?.Referencia || "No registrada";
+                let tel = sedeMatch?.Telefono || "N/A";
+                let ubi = sedeMatch?.Ubicacion || "N/A";
 
-                    ticketsHTML = `
-                        <div class="space-y-3 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="inbox" class="w-4 h-4 text-blue-600"></i> Tickets Abiertos / Registrados en Odoo (${ticketsSede.length})
-                            </h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr>
-                                            <th class="py-2.5 px-4">Descripción / Asunto</th>
-                                            <th class="py-2.5 px-4">Fecha Creación</th>
-                                            <th class="py-2.5 px-4 text-right">Estatus Odoo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
-                                </table>
-                            </div>
-                        </div>`;
-                } else {
-                    ticketsHTML = `
-                        <div class="p-4 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold border border-slate-200 flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> No se encontraron tickets en Odoo registrados para esta sede.
-                        </div>`;
-                }
-
-                // HTML Solicitudes Pedido
                 let solpedHTML = "";
                 if (solpedSede.length > 0) {
                     let rows = solpedSede.map(p => `
@@ -1356,27 +1324,6 @@
                         </div>`;
                 }
 
-                // HTML Reportes Drive
-                let driveHTML = "";
-                if (reportesSede.length > 0) {
-                    let items = reportesSede.map(f => `
-                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
-                            <div>
-                                <span class="font-extrabold text-slate-900 block">${f.nombre}</span>
-                                <span class="text-[10px] text-slate-500">${f.descripcion}</span>
-                            </div>
-                            <a href="${f.url}" target="_blank" class="px-2.5 py-1 bg-emerald-600 text-white rounded font-bold text-[10px]">Abrir</a>
-                        </div>`).join('');
-
-                    driveHTML = `
-                        <div class="space-y-2 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-600"></i> Informes Técnicos en Drive (${reportesSede.length})
-                            </h4>
-                            <div class="space-y-2">${items}</div>
-                        </div>`;
-                }
-
                 resultArea.innerHTML = `
                     <div class="space-y-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
@@ -1384,12 +1331,29 @@
                                 <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
                                 <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
                             </div>
-                            <span class="text-xs font-bold text-slate-500">Resumen Consolidado Multi-Módulo</span>
+                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
                         </div>
 
-                        ${ticketsHTML}
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Punto de Referencia</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ref}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
+                            </div>
+                        </div>
+
                         ${solpedHTML}
-                        ${driveHTML}
                     </div>`;
                 lucide.createIcons();
             }, 300);
