@@ -517,6 +517,7 @@
             ]
         };
 
+        // URL DE APPS SCRIPT
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxJ8aqS393OEBUfcs1E4v06CG7OWANbkAehSNroIrSkkngx-ry4Qs56YKveMggvZAO/exec";
 
         let appData = {
@@ -1203,7 +1204,7 @@
             }
 
             let farmaciaLimpia = rawQuery
-                .replace(/(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)/gi, '')
+                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
                 .replace(/\s+/g, ' ')
                 .trim();
 
@@ -1463,7 +1464,7 @@
 
         function exportarAGoogleSlides() {
             const htmlContent = `<html><body>${document.getElementById('exportable-doc-area').innerHTML}</body></html>`;
-            const blob = new Blob(['﻿', htmlContent], { type: 'application/vnd.ms-powerpoint' });
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'Presentacion_Xana.pptx';
