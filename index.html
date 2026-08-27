@@ -483,9 +483,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF-3LGFe81N4NQo1R_wHOGOPE1S_SPDdtfpyxBqjz2Op5N2Wj-BrLo8VJjYAeYG3o/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxJ8aqS393OEBUfcs1E4v06CG7OWANbkAehSNroIrSkkngx-ry4Qs56YKveMggvZAO/exec";
 
-        // BASE DE DATOS ESTRUCTURADA DE SOLICITUDES DE PEDIDO (SP > 3 MESES)
         const LOCAL_SOLPED_DATA = [
             { Farmacia: "Farmacia Payara", Descripcion: "Reemplazo de motor de extractor comercial y accesorios de montaje", FechaSolped: "12/03/2026", Antiguedad: "167 días (5.5 m)", Observaciones: "Pendiente por aprobación presupuestaria en compras", Estatus: "En Espera", Actualizacion: "26/08/2026" },
             { Farmacia: "Farmacia Coporo", Descripcion: "Adquisición de compresor hermético 3HP para cava de medicinas", FechaSolped: "05/04/2026", Antiguedad: "143 días (4.7 m)", Observaciones: "En cotización con proveedor técnico autorizado", Estatus: "En Procura", Actualizacion: "26/08/2026" },
@@ -494,7 +493,6 @@
             { Farmacia: "Farmacia La manga", Descripcion: "Compra e instalación de bomba de agua sumergible de 2HP", FechaSolped: "15/05/2026", Antiguedad: "103 días (3.4 m)", Observaciones: "En proceso de despacho desde depósito central", Estatus: "En Proceso", Actualizacion: "26/08/2026" }
         ];
 
-        // BASE DE DATOS ESTRUCTURADA DEL DIRECTORIO DE SEDES
         const LOCAL_DIRECTORIO_DATA = [
             { Farmacia: "Farmacia Payara", Direccion: "Av. Intercomunal Jorge Rodríguez, Sector Payara, C.C. Payara Plaza", Referencia: "Al lado de la Estación de Servicio Payara", Telefono: "0281-2864511", Ubicacion: "Anzoátegui / Oriente" },
             { Farmacia: "Farmacia Coporo", Direccion: "Calle Comercio con Av. Principal, Sector El Coporo, Edif. Xana", Referencia: "Frente a la Plaza Bolívar de Coporo", Telefono: "0251-4467812", Ubicacion: "Lara / Occidente" },
@@ -570,53 +568,6 @@
                 { sol: 13, at: 9,  canc: 0 }
             ]
         };
-
-        const REPORTE_TEMPLATES = {
-            Capital: {
-                7: [
-                    { nombre: "Ticket #1482 - Mantenimiento Chiller HVAC Farmacia Cutira.pdf", descripcion: "Reemplazo de compresor principal y recarga de refrigerante R410A.", fecha: "2026-08-22", tecnico: "Ing. Carlos Mendoza / Serviclimas" },
-                    { nombre: "Ticket #1509 - Corrección Tablero Eléctrico Principal Farmacia Araguaney.pdf", descripcion: "Sustitución de breaker principal de 250A y balanceo de cargas.", fecha: "2026-08-18", tecnico: "Elec. Roberto Silva / Electra" },
-                    { nombre: "Ticket #1540 - Corrección Filtración e Inspección Estructural Farmacia La Cascada.pdf", descripcion: "Impermeabilización de losa de techo de 120m² e inspección drywall.", fecha: "2026-08-10", tecnico: "Constructora Capital" }
-                ],
-                6: [
-                    { nombre: "Ticket #1320 - Mantenimiento Preventivo Planta Eléctrica Farmacia Cutira.pdf", descripcion: "Cambio de filtros de aceite y combustible.", fecha: "2026-07-28", tecnico: "Generadores VE" },
-                    { nombre: "Ticket #1388 - Reparación Sistema de Cava Farmacéutica Farmacia Escorpión.pdf", descripcion: "Reemplazo de evaporador y calibración de termostato digital.", fecha: "2026-07-15", tecnico: "FrioControl C.A." },
-                    { nombre: "Ticket #1410 - Adecuación Iluminación LED Comercial Farmacia Mangle.pdf", descripcion: "Sustitución de 45 luminarias por paneles LED.", fecha: "2026-07-05", tecnico: "Equipo Técnico Capital" }
-                ]
-            },
-            Occidente: {
-                7: [
-                    { nombre: "Ticket #1490 - Mantenimiento General Planta Hyundai Farmacia Traki Cabudare.pdf", descripcion: "Mantenimiento del sistema de arranque y batería industrial.", fecha: "2026-08-25", tecnico: "Ing. Javier Ríos / PlantaPower" },
-                    { nombre: "Ticket #1512 - Reparación Sistema HVAC Central Farmacia Coporo.pdf", descripcion: "Cambio de rodamientos e higienización de ductos.", fecha: "2026-08-19", tecnico: "ClimaOccidente" },
-                    { nombre: "Ticket #1533 - Mantenimiento Sistema Hidroneumático Farmacia Sanare.pdf", descripcion: "Sustitución de presostato y limpieza de tanque 10.000L.", fecha: "2026-08-12", tecnico: "Plomería Lara" }
-                ],
-                6: [
-                    { nombre: "Ticket #1350 - Reparación Filtración de Paredes Farmacia La Manga.pdf", descripcion: "Friso y pintura antiumedad en depósito.", fecha: "2026-07-24", tecnico: "Constructora Occidente" },
-                    { nombre: "Ticket #1395 - Mantenimiento Cava de Medicamentos Farmacia Medi-salud.pdf", descripcion: "Ajuste de presiones y reemplazo de filtro deshidratador.", fecha: "2026-07-18", tecnico: "Refrigeración Lara" },
-                    { nombre: "Ticket #1422 - Revisión de Tableros Secundarios Farmacia Betania.pdf", descripcion: "Reapriete de bornes y rotulación de circuitos.", fecha: "2026-07-08", tecnico: "Eléctricos Zulia" }
-                ]
-            },
-            Oriente: {
-                7: [
-                    { nombre: "Ticket #1501 - Mantenimiento Correctivo Aire Central Farmacia El Tigre.pdf", descripcion: "Sustitución de capacitor de arranque y limpieza de condensadora.", fecha: "2026-08-21", tecnico: "Ing. Manuel Gómez / OrienteClima" },
-                    { nombre: "Ticket #1525 - Reparación Bomba Hidroneumática Farmacia Payara.pdf", descripcion: "Reemplazo de sello mecánico e impulsores de bomba de 2HP.", fecha: "2026-08-15", tecnico: "Servicios Anzoátegui" },
-                    { nombre: "Ticket #1555 - Inspección Operativa Sistema Eléctrico Farmacia Guácharo.pdf", descripcion: "Medición de tierras físicas y ajuste de reguladores de voltaje.", fecha: "2026-08-05", tecnico: "Técnicos Oriente" }
-                ],
-                6: [
-                    { nombre: "Ticket #1310 - Mantenimiento Preventivo Unidades Split Farmacia Apamate.pdf", descripcion: "Limpieza química de serpentines de 4 unidades Split.", fecha: "2026-07-29", tecnico: "OrienteClima" },
-                    { nombre: "Ticket #1377 - Reparación Fachada y Letrero Comercial Farmacia Mamón.pdf", descripcion: "Fijación de estructura metálica y transformadores LED.", fecha: "2026-07-14", tecnico: "Estructuras C.A." },
-                    { nombre: "Ticket #1405 - Adecuación de Red y Rack Técnico Farmacia Coral.pdf", descripcion: "Organización de cableado UTP Cat6 y sustitución de UPS.", fecha: "2026-07-02", tecnico: "Sistemas Monagas" }
-                ]
-            }
-        };
-
-        function getFallbackReports(region, monthName) {
-            return [
-                { nombre: `Ticket #1201 - Mantenimiento Preventivo HVAC Región ${region}.pdf`, descripcion: `Inspección de sistemas de aire acondicionado programada para ${monthName}.`, fecha: `2026`, tecnico: "Equipo Técnico de Infraestructura" },
-                { nombre: `Ticket #1202 - Inspección de Tableros Eléctricos Región ${region}.pdf`, descripcion: `Revisión de carga y mantenimiento de breakers principales en ${monthName}.`, fecha: `2026`, tecnico: "Servicios Eléctricos Integrales" },
-                { nombre: `Ticket #1203 - Reporte de Reparaciones Menores Región ${region}.pdf`, descripcion: `Atención de incidencias de plomería y cerrajería en el mes de ${monthName}.`, fecha: `2026`, tecnico: "Mantenimiento General Xana" }
-            ];
-        }
 
         let topStoresByMonthAndRegion = {
             7: {
@@ -851,18 +802,11 @@
 
             REGIONES.forEach(reg => {
                 let targetContainer = reg === 'Capital' ? capBox : (reg === 'Occidente' ? occBox : oriBox);
+                
+                // Muestra únicamente los reportes del Drive cargados para el mes seleccionado
                 let listFromDrive = (driveReportesGlobalData || []).filter(f => f.mesIdx === selectedMonthIdx && f.region === reg);
                 
-                let finalReports = [];
-                if (listFromDrive.length > 0) {
-                    finalReports = listFromDrive.slice(0, 3);
-                } else if (REPORTE_TEMPLATES[reg] && REPORTE_TEMPLATES[reg][selectedMonthIdx]) {
-                    finalReports = REPORTE_TEMPLATES[reg][selectedMonthIdx];
-                } else {
-                    finalReports = getFallbackReports(reg, monthName);
-                }
-
-                renderDriveRegionBox(finalReports, targetContainer, reg, monthName);
+                renderDriveRegionBox(listFromDrive, targetContainer, reg, monthName);
             });
 
             lucide.createIcons();
@@ -871,6 +815,15 @@
         function renderDriveRegionBox(files, container, regionName, monthName) {
             if (!container) return;
             container.innerHTML = '';
+
+            if (!files || files.length === 0) {
+                container.innerHTML = `
+                    <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-1">
+                        <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
+                        <p class="text-xs font-bold text-slate-400">Sin reportes de gestión cargados para ${regionName} en el mes de ${monthName}.</p>
+                    </div>`;
+                return;
+            }
 
             files.forEach((f, idx) => {
                 const dateStr = f.fecha ? (f.fecha.includes('-') ? f.fecha : new Date(f.fecha).toLocaleDateString()) : '2026';
@@ -1511,6 +1464,7 @@
             const totalAtendidosConCanc = atVal + cancVal;
             const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
 
+            // Se fuerza la alineación estricta con el porcentaje de atención mensual (47.7%)
             document.getElementById('kpi-sla').innerText = `${slaGlobalCalc}%`;
             document.getElementById('kpi-sol').innerText = solVal;
             document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
