@@ -130,7 +130,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">47.7%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">0.0%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -141,13 +141,13 @@
                 <div class="card-pro bg-white border border-slate-200 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS (AGOSTO)</span>
+                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">367</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">0</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>545</b> | Actual: <b>367</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>0</b> | Actual: <b>0</b></span>
                     </div>
                 </div>
 
@@ -157,10 +157,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">175</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">0</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">47.7% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">0% del mes</span>
                     </div>
                 </div>
 
@@ -309,8 +309,8 @@
                         <div class="w-[310px] h-[310px] relative flex items-center justify-center">
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL AGOSTO:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">367</span>
+                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
                             </div>
                         </div>
                     </div>
@@ -390,7 +390,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- REGIÓN CAPITAL -->
                     <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
@@ -403,7 +402,6 @@
                         </div>
                     </div>
 
-                    <!-- REGIÓN OCCIDENTE -->
                     <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
@@ -416,7 +414,6 @@
                         </div>
                     </div>
 
-                    <!-- REGIÓN ORIENTE -->
                     <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
@@ -483,152 +480,26 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvFsa1nyHqhy3bZjy_WHPWpfpXDWDGQFDtzdsi6ua7hx3401tbDq6B0bN5fKuU5NCT/exec";
-
-        const LOCAL_SOLPED_DATA = [
-            { Farmacia: "Farmacia Payara", Descripcion: "Reemplazo de motor de extractor comercial y accesorios de montaje", FechaSolped: "12/03/2026", Antiguedad: "167 días (5.5 m)", Observaciones: "Pendiente por aprobación presupuestaria en compras", Estatus: "En Espera", Actualizacion: "26/08/2026" },
-            { Farmacia: "Farmacia Coporo", Descripcion: "Adquisición de compresor hermético 3HP para cava de medicinas", FechaSolped: "05/04/2026", Antiguedad: "143 días (4.7 m)", Observaciones: "En cotización con proveedor técnico autorizado", Estatus: "En Procura", Actualizacion: "26/08/2026" },
-            { Farmacia: "Farmacia Betania", Descripcion: "Sustitución de breaker principal 200A e instalación de protector trifásico", FechaSolped: "20/04/2026", Antiguedad: "128 días (4.2 m)", Observaciones: "Aprobado, asignado a cuadrilla técnica para ejecución", Estatus: "Asignado", Actualizacion: "26/08/2026" },
-            { Farmacia: "Farmacia Escorpión", Descripcion: "Impermeabilización de techo principal y restitución de manto asfáltico", FechaSolped: "10/05/2026", Antiguedad: "108 días (3.5 m)", Observaciones: "Esperando ventana de mantenimiento por clima", Estatus: "Planificado", Actualizacion: "26/08/2026" },
-            { Farmacia: "Farmacia La manga", Descripcion: "Compra e instalación de bomba de agua sumergible de 2HP", FechaSolped: "15/05/2026", Antiguedad: "103 días (3.4 m)", Observaciones: "En proceso de despacho desde depósito central", Estatus: "En Proceso", Actualizacion: "26/08/2026" }
-        ];
-
-        const LOCAL_DIRECTORIO_DATA = [
-            { Farmacia: "Farmacia Payara", Direccion: "Av. Intercomunal Jorge Rodríguez, Sector Payara, C.C. Payara Plaza", Referencia: "Al lado de la Estación de Servicio Payara", Telefono: "0281-2864511", Ubicacion: "Anzoátegui / Oriente" },
-            { Farmacia: "Farmacia Coporo", Direccion: "Calle Comercio con Av. Principal, Sector El Coporo, Edif. Xana", Referencia: "Frente a la Plaza Bolívar de Coporo", Telefono: "0251-4467812", Ubicacion: "Lara / Occidente" },
-            { Farmacia: "Farmacia Betania", Direccion: "Av. Las Industrias, Sector Betania, C.C. Betania Mall, Local 4", Referencia: "Diagonal al Hospital San José", Telefono: "0251-5521900", Ubicacion: "Lara / Occidente" },
-            { Farmacia: "Farmacia Escorpión", Direccion: "Av. Francisco de Miranda, Los Palos Grandes, Edif. Escorpión", Referencia: "A 50m de la Estación de Metro Altamira", Telefono: "0212-2859011", Ubicacion: "Caracas / Capital" },
-            { Farmacia: "Farmacia La manga", Direccion: "Calle 12 con Carrera 22, Sector La Manga, Barquisimeto", Referencia: "Frente al galpón de distribución regional", Telefono: "0251-7104322", Ubicacion: "Lara / Occidente" },
-            { Farmacia: "Farmacia Guácharo", Direccion: "Av. Bella Vista, Sector Guácharo, Maturín", Referencia: "Cerca del Distribuidor Viento Colao", Telefono: "0291-6428900", Ubicacion: "Monagas / Oriente" },
-            { Farmacia: "Farmacia Mangle", Direccion: "Av. Principal de Las Mercedes, Edif. Mangle, PB", Referencia: "Al lado del Centro Financiero", Telefono: "0212-9934155", Ubicacion: "Caracas / Capital" }
-        ];
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxJ8aqS393OEBUfcs1E4v06CG7OWANbkAehSNroIrSkkngx-ry4Qs56YKveMggvZAO/exec";
 
         let appData = {
-            Capital: [
-                { sol: 206, at: 184, canc: 19, prevSolv: 12 },
-                { sol: 195, at: 161, canc: 30, prevSolv: 15 },
-                { sol: 216, at: 167, canc: 22, prevSolv: 20 },
-                { sol: 187, at: 157, canc: 24, prevSolv: 25 },
-                { sol: 303, at: 241, canc: 21, prevSolv: 30 },
-                { sol: 382, at: 315, canc: 20, prevSolv: 35 },
-                { sol: 363, at: 266, canc: 15, prevSolv: 40 },
-                { sol: 221, at: 72,  canc: 5,  prevSolv: 30 }
-            ],
-            Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  },
-                { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
-                { sol: 192, at: 184, canc: 4, prevSolv: 12 },
-                { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  },
-                { sol: 165, at: 151, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 159, canc: 3, prevSolv: 18 },
-                { sol: 133, at: 94,  canc: 0, prevSolv: 15 }
-            ],
-            Oriente: [
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 2 },
-                { sol: 13, at: 9,  canc: 0, prevSolv: 1 }
-            ]
+            Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 })),
+            Occidente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 })),
+            Oriente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 }))
         };
 
         let cierreData = {
-            Capital: [
-                { sol: 206, at: 69,  canc: 0 },
-                { sol: 199, at: 37,  canc: 0 },
-                { sol: 203, at: 77,  canc: 0 },
-                { sol: 186, at: 114, canc: 0 },
-                { sol: 303, at: 204, canc: 0 },
-                { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 },
-                { sol: 221, at: 72,  canc: 5 }
-            ],
-            Occidente: [
-                { sol: 99,  at: 79,  canc: 0 },
-                { sol: 57,  at: 33,  canc: 0 },
-                { sol: 192, at: 142, canc: 0 },
-                { sol: 75,  at: 50,  canc: 0 },
-                { sol: 62,  at: 43,  canc: 0 },
-                { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 },
-                { sol: 133, at: 94,  canc: 0 }
-            ],
-            Oriente: [
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 },
-                { sol: 13, at: 9,  canc: 0 }
-            ]
+            Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 })),
+            Occidente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 })),
+            Oriente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 }))
         };
 
-        let topStoresByMonthAndRegion = {
-            7: {
-                Global: [
-                    { name: "Farmacia La manga", count: 26 },
-                    { name: "Farmacia Escorpión", count: 20 },
-                    { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia Coporo", count: 16 },
-                    { name: "Farmacia Mangle", count: 14 },
-                    { name: "Farmacia Medi-salud", count: 13 },
-                    { name: "Farmacia Orquídea", count: 12 },
-                    { name: "Farmacia Modelo", count: 11 },
-                    { name: "Farmacia Guácharo", count: 10 },
-                    { name: "Farmacia Nuevo Barrio", count: 9 }
-                ],
-                Capital: [
-                    { name: "Farmacia Escorpión", count: 20 },
-                    { name: "Farmacia Mangle", count: 14 },
-                    { name: "Farmacia Orquídea", count: 12 },
-                    { name: "Farmacia Modelo", count: 11 },
-                    { name: "Farmacia Araguaney", count: 8 },
-                    { name: "Farmacia Turpial", count: 8 },
-                    { name: "Farmacia Las Rosas", count: 6 },
-                    { name: "Farmacia Anaconda", count: 6 },
-                    { name: "Farmacia Jaguar", count: 5 },
-                    { name: "Farmacia Ceiba", count: 5 }
-                ],
-                Occidente: [
-                    { name: "Farmacia La manga", count: 26 },
-                    { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia Coporo", count: 16 },
-                    { name: "Farmacia Medi-salud", count: 13 },
-                    { name: "Farmacia Nuevo Barrio", count: 9 },
-                    { name: "Farmacia Estudiante", count: 8 },
-                    { name: "Farmacia El Ujano", count: 7 },
-                    { name: "Farmacia Nirgua", count: 6 },
-                    { name: "Farmacia Carolina", count: 3 },
-                    { name: "Farmacia Damelys Marquez", count: 3 }
-                ],
-                Oriente: [
-                    { name: "Farmacia Payara", count: 6 },
-                    { name: "Farmacia Guácharo", count: 4 },
-                    { name: "Farmacia Apamate", count: 1 },
-                    { name: "Farmacia Cigarra", count: 1 },
-                    { name: "Farmacia Coral", count: 1 }
-                ]
-            }
-        };
-
-        for (let i = 0; i < 7; i++) {
-            topStoresByMonthAndRegion[i] = topStoresByMonthAndRegion[7];
-        }
-
+        let topStoresByMonthAndRegion = {};
         let driveReportesGlobalData = [];
-        let casosPendientesGlobalData = LOCAL_SOLPED_DATA;
-        let directorioSedesGlobalData = LOCAL_DIRECTORIO_DATA;
+        let casosPendientesGlobalData = [];
+        let directorioSedesGlobalData = [];
         let rawTicketsGlobal = [];
-
-        let monthStatusData = {
-            7: { resuelto: 170, asignado: 147, progreso: 31, procura: 14, cancelada: 5 }
-        };
+        let monthStatusData = {};
         let charts = {};
 
         window.onload = () => {
@@ -638,14 +509,12 @@
             cargarCasosPendientes();
             cargarReportesDrive();
             cargarDirectorioSedes();
-            renderAll();
         };
 
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
             const startGrowthSel = document.getElementById('growthStartMonth');
             const endGrowthSel = document.getElementById('growthEndMonth');
-            const topStoreMonthSel = document.getElementById('topStoreMonthSelector');
             const regStartSel = document.getElementById('regStartMonth');
             const regEndSel = document.getElementById('regEndMonth');
             const cierreStartSel = document.getElementById('cierreStartMonth');
@@ -653,11 +522,11 @@
 
             if (!selector) return;
 
-            const mesActualIdx = 7;
-            const selects = [selector, startGrowthSel, endGrowthSel, topStoreMonthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
+            const mesActualIdx = new Date().getMonth();
+            const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
-            for (let i = 0; i <= 7; i++) {
+            for (let i = 0; i <= mesActualIdx; i++) {
                 const text = `${MESES_LARGOS[i]} 2026`;
                 const shortText = MESES[i];
 
@@ -672,12 +541,11 @@
 
             if (selector) selector.value = mesActualIdx;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = 7;
-            if (topStoreMonthSel) topStoreMonthSel.value = mesActualIdx;
+            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = 7;
+            if (regEndSel) regEndSel.value = mesActualIdx;
             if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = 7;
+            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
         }
 
         async function syncWithOdoo() {
@@ -692,11 +560,12 @@
                 if (response.ok) {
                     const odooRes = await response.json();
                     if (odooRes && odooRes.success) {
+                        const curMonth = new Date().getMonth();
                         if (odooRes.regionalData) {
                             appData = odooRes.regionalData;
-                            cierreData.Capital[7] = appData.Capital[7];
-                            cierreData.Occidente[7] = appData.Occidente[7];
-                            cierreData.Oriente[7] = appData.Oriente[7];
+                            cierreData.Capital[curMonth] = appData.Capital[curMonth];
+                            cierreData.Occidente[curMonth] = appData.Occidente[curMonth];
+                            cierreData.Oriente[curMonth] = appData.Oriente[curMonth];
                         }
                         if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                         if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
@@ -704,7 +573,7 @@
                     }
                 }
             } catch (err) {
-                console.warn("Sincronización Odoo:", err);
+                console.warn("Sincronización Odoo error:", err);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -717,12 +586,10 @@
                 const response = await fetch(APPSCRIPT_URL + "?action=directorioSedes&_nocache=" + new Date().getTime(), { mode: 'cors' });
                 if (response.ok) {
                     const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) {
-                        directorioSedesGlobalData = res;
-                    }
+                    if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
                 }
             } catch (e) {
-                console.warn("Directorio Sedes desde Apps Script:", e);
+                console.warn("Directorio Sedes error:", e);
             }
         }
 
@@ -731,12 +598,10 @@
                 const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime(), { mode: 'cors' });
                 if (response.ok) {
                     const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) {
-                        casosPendientesGlobalData = res;
-                    }
+                    if (Array.isArray(res) && res.length > 0) casosPendientesGlobalData = res;
                 }
             } catch (err) {
-                console.warn("Solped desde Apps Script:", err);
+                console.warn("Solped error:", err);
             }
             renderPendientesTableRows(casosPendientesGlobalData);
         }
@@ -744,11 +609,10 @@
         function renderPendientesTableRows(rows) {
             const tbody = document.getElementById('pendientes-table-body');
             if (!tbody) return;
-
             tbody.innerHTML = '';
 
             if (!rows || rows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-xs font-bold text-slate-400">No se encontraron Solicitudes de Pedido antiguas pendientes (> 3 meses) en el archivo de Drive.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-xs font-bold text-slate-400">No se encontraron Solicitudes de Pedido pendientes (> 3 meses).</td></tr>`;
                 return;
             }
 
@@ -780,18 +644,16 @@
                 const response = await fetch(APPSCRIPT_URL + "?action=reportesDrive&_nocache=" + new Date().getTime(), { mode: 'cors' });
                 if (response.ok) {
                     const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) {
-                        driveReportesGlobalData = res;
-                    }
+                    if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
                 }
             } catch (e) {
-                console.warn("Reportes Drive desde Apps Script:", e);
+                console.warn("Reportes Drive error:", e);
             }
             renderDriveTab();
         }
 
         function renderDriveTab() {
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || new Date().getMonth());
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
@@ -802,10 +664,7 @@
 
             REGIONES.forEach(reg => {
                 let targetContainer = reg === 'Capital' ? capBox : (reg === 'Occidente' ? occBox : oriBox);
-                
-                // Muestra únicamente los reportes del Drive cargados para el mes seleccionado
                 let listFromDrive = (driveReportesGlobalData || []).filter(f => f.mesIdx === selectedMonthIdx && f.region === reg);
-                
                 renderDriveRegionBox(listFromDrive, targetContainer, reg, monthName);
             });
 
@@ -820,14 +679,14 @@
                 container.innerHTML = `
                     <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-1">
                         <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
-                        <p class="text-xs font-bold text-slate-400">Sin reportes de gestión cargados para ${regionName} en el mes de ${monthName}.</p>
+                        <p class="text-xs font-bold text-slate-400">Sin reportes de gestión cargados para ${regionName} en ${monthName}.</p>
                     </div>`;
                 return;
             }
 
             files.forEach((f, idx) => {
                 const dateStr = f.fecha ? (f.fecha.includes('-') ? f.fecha : new Date(f.fecha).toLocaleDateString()) : '2026';
-                const fileUrl = f.url || 'https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws';
+                const fileUrl = f.url || '#';
                 
                 container.innerHTML += `
                     <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between gap-2.5 hover:border-slate-300 transition-all">
@@ -858,16 +717,16 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 7);
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || new Date().getMonth());
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || {};
             const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
-            const items = monthData[keyReg] || monthData.Global || [];
+            const items = monthData[keyReg] || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
 
             if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin tickets registrados para este filtro en el mes seleccionado.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos de Odoo para el mes y filtro seleccionado.</p>`;
                 return;
             }
 
@@ -912,14 +771,25 @@
             if (charts.growth) charts.growth.destroy();
 
             const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
 
-            const FIXED_VOL = [305, 251, 408, 262, 365, 547, 545, 367];
-            const FIXED_SLA = [55.1, 48.3, 63.8, 62.5, 67.4, 61.6, 62.6, 47.7];
+            let dynamicVol = [];
+            let dynamicSla = [];
 
-            const volData = FIXED_VOL.slice(startIdx, endIdx + 1);
-            const slaDataReal = FIXED_SLA.slice(startIdx, endIdx + 1);
+            for (let m = startIdx; m <= endIdx; m++) {
+                let totalSol = 0;
+                let totalAt = 0;
+                REGIONES.forEach(r => {
+                    if (appData[r] && appData[r][m]) {
+                        totalSol += appData[r][m].sol;
+                        totalAt += (appData[r][m].at + appData[r][m].canc);
+                    }
+                });
+                dynamicVol.push(totalSol);
+                let sla = totalSol > 0 ? parseFloat(((totalAt / totalSol) * 100).toFixed(1)) : 0;
+                dynamicSla.push(sla);
+            }
 
             charts.growth = new Chart(ctxGrowth, {
                 type: 'bar',
@@ -927,11 +797,11 @@
                     labels: filteredLabels,
                     datasets: [
                         {
-                            label: 'Volumen Mensual', data: volData, type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 6, pointBackgroundColor: '#0284c7',
+                            label: 'Volumen Mensual', data: dynamicVol, type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 6, pointBackgroundColor: '#0284c7',
                             datalabels: { anchor: 'end', align: 'top', offset: 6, color: '#0284c7', font: { weight: '900', size: 11 }, formatter: v => v ? v : '' }
                         },
                         {
-                            label: 'Tendencia SLA', data: slaDataReal, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
+                            label: 'Tendencia SLA', data: dynamicSla, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
                             datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
                         }
                     ]
@@ -982,7 +852,6 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             const totalMes = mesVals.reduce((a, b) => a + b, 0);
-
             const histVals = [2314, 548, 260];
 
             keys.forEach((k, i) => {
@@ -997,14 +866,14 @@
             });
         }
 
-        function renderStatusDoughnut(mIdx = 7) {
+        function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || { resuelto: 170, asignado: 147, progreso: 31, procura: 14, cancelada: 5 };
+            const mData = monthStatusData[mIdx] || { resuelto: 0, asignado: 0, progreso: 0, procura: 0, cancelada: 0 };
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 170, mData.asignado || 147, mData.progreso || 31, mData.procura || 14, mData.cancelada || 5];
+            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
@@ -1052,7 +921,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1076,8 +945,8 @@
                 container.innerHTML += `
                     <div class="card-pro flex flex-col justify-between bg-white">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Actualizado)</h4>
-                            <span class="text-[10px] text-slate-400 font-bold">Consolidado 3D</span>
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (En Vivo)</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado Odoo</span>
                         </div>
                         <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
                         
@@ -1142,7 +1011,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1167,7 +1036,7 @@
                     <div class="card-pro flex flex-col justify-between bg-slate-50/50">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-200">
                             <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
-                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial</span>
                         </div>
                         <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
                         
@@ -1261,9 +1130,6 @@
                         </div>
                     </div>`;
             });
-
-            document.getElementById('kpi-pend').innerText = 54;
-            document.getElementById('kpi-pend-sub').innerText = "42 + 0 + 12";
         }
 
         function ejecutarConsultaAI() {
@@ -1294,17 +1160,8 @@
 
             setTimeout(() => {
                 const targetKey = farmaciaLimpia.toLowerCase();
-
-                // 1. Buscar Ficha de Directorio
-                const sedeMatch = directorioSedesGlobalData.find(s => 
-                    (s.Farmacia || "").toLowerCase().includes(targetKey)
-                );
-
-                // 2. Filtrar Solicitudes de Pedido
-                const solpedSede = casosPendientesGlobalData.filter(p => {
-                    const txt = (p.Farmacia || "").toLowerCase();
-                    return txt.includes(targetKey);
-                });
+                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
+                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
 
                 let dir = sedeMatch?.Direccion || "No registrada en directorio principal";
                 let ref = sedeMatch?.Referencia || "No registrada";
@@ -1431,7 +1288,7 @@
 
         function renderAll() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
             const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
@@ -1457,14 +1314,13 @@
             let prevIdx = Math.max(0, selectedMonthIdx - 1);
             let solPrevVal = 0;
             REGIONES.forEach(r => {
-                let itemPrev = appData[r][prevIdx];
+                let itemPrev = (appData[r] && appData[r][prevIdx]) ? appData[r][prevIdx] : { sol: 0 };
                 if (itemPrev) solPrevVal += itemPrev.sol;
             });
 
             const totalAtendidosConCanc = atVal + cancVal;
             const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
 
-            // Se fuerza la alineación estricta con el porcentaje de atención mensual (47.7%)
             document.getElementById('kpi-sla').innerText = `${slaGlobalCalc}%`;
             document.getElementById('kpi-sol').innerText = solVal;
             document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
