@@ -556,7 +556,16 @@
 
             try {
                 const cacheBuster = new Date().getTime();
-                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`, { method: 'GET', mode: 'cors' });
+                const requestUrl = `${APPSCRIPT_URL}?action=odooTickets&_nocache=${cacheBuster}`;
+                
+                const response = await fetch(requestUrl, {
+                    method: 'GET',
+                    redirect: 'follow',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    }
+                });
+
                 if (response.ok) {
                     const odooRes = await response.json();
                     if (odooRes && odooRes.success) {
@@ -583,7 +592,7 @@
 
         async function cargarDirectorioSedes() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=directorioSedes&_nocache=" + new Date().getTime(), { mode: 'cors' });
+                const response = await fetch(APPSCRIPT_URL + "?action=directorioSedes&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
                 if (response.ok) {
                     const res = await response.json();
                     if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
@@ -595,7 +604,7 @@
 
         async function cargarCasosPendientes() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime(), { mode: 'cors' });
+                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
                 if (response.ok) {
                     const res = await response.json();
                     if (Array.isArray(res) && res.length > 0) casosPendientesGlobalData = res;
@@ -641,7 +650,7 @@
 
         async function cargarReportesDrive() {
             try {
-                const response = await fetch(APPSCRIPT_URL + "?action=reportesDrive&_nocache=" + new Date().getTime(), { mode: 'cors' });
+                const response = await fetch(APPSCRIPT_URL + "?action=reportesDrive&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
                 if (response.ok) {
                     const res = await response.json();
                     if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
