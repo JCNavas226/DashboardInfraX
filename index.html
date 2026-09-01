@@ -480,7 +480,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2tXuGnqepyZVYIBQznJR8t5ZGxMXsXMv1BgiGm0Fs3b5SvqP5c3hMWN833KyxObyo/exec";
+        // URL activa obtenida directamente de tus capturas de Google Apps Script
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmuxoYey3m7BhnOTvl7P9JjdD6bQUmHDlyerFNwPkDxNXcB80A_RPwOscJfoPMA0X1/exec";
 
         let appData = {
             Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 })),
@@ -548,7 +549,6 @@
             if (cierreEndSel) cierreEndSel.value = mesActualIdx;
         }
 
-        // Función JSONP para transporte seguro sin CORS
         function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -570,7 +570,7 @@
                         if (odooRes.tickets) rawTicketsGlobal = odooRes.tickets;
                     }
                 } catch (e) {
-                    console.warn("Error procesando Odoo callback:", e);
+                    console.warn("Error en callback Odoo:", e);
                 } finally {
                     if (loader) loader.style.display = 'none';
                     if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -582,7 +582,6 @@
             const cacheBuster = new Date().getTime();
             script.src = `${APPSCRIPT_URL}?action=odooTickets&callback=odooCallback&_nocache=${cacheBuster}`;
             script.onerror = function() {
-                console.warn("Fallo el JSONP, ejecutando respaldo fetch...");
                 fetchFallbackOdoo(loader, syncIcon);
             };
             document.body.appendChild(script);
@@ -594,14 +593,13 @@
                 if (response.ok) {
                     const odooRes = await response.json();
                     if (odooRes && odooRes.success) {
-                        const curMonth = new Date().getMonth();
                         if (odooRes.regionalData) appData = odooRes.regionalData;
                         if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                         if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
                     }
                 }
             } catch (err) {
-                console.error("Error definitivo de sincronización Odoo:", err);
+                console.error("Error conexión Odoo:", err);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -617,7 +615,7 @@
                     if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
                 }
             } catch (e) {
-                console.warn("Directorio Sedes error:", e);
+                console.warn("Directorio error:", e);
             }
         }
 
@@ -675,7 +673,7 @@
                     if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
                 }
             } catch (e) {
-                console.warn("Reportes Drive error:", e);
+                console.warn("Drive reportes error:", e);
             }
             renderDriveTab();
         }
