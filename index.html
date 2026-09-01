@@ -480,8 +480,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL activa obtenida directamente de tus capturas de Google Apps Script
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmuxoYey3m7BhnOTvl7P9JjdD6bQUmHDlyerFNwPkDxNXcB80A_RPwOscJfoPMA0X1/exec";
+        // URL activa obtenida directamente de tu Apps Script
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2CGzlqD72XlP4fr9cHIgetWKkPPY3cjPppY7WfKGfjon1QEDYv8TPZdVYqFuGN6Lk/exec";
 
         let appData = {
             Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 })),
@@ -549,11 +549,15 @@
             if (cierreEndSel) cierreEndSel.value = mesActualIdx;
         }
 
+        // Transporte seguro mediante JSONP (Elimina los errores de CORS)
         function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
             if (loader) loader.style.display = 'flex';
             if (syncIcon) syncIcon.classList.add('animate-spin');
+
+            const oldScript = document.getElementById('odoo-jsonp-script');
+            if (oldScript) oldScript.remove();
 
             window.odooCallback = function(odooRes) {
                 try {
@@ -579,32 +583,16 @@
             };
 
             const script = document.createElement('script');
+            script.id = 'odoo-jsonp-script';
             const cacheBuster = new Date().getTime();
             script.src = `${APPSCRIPT_URL}?action=odooTickets&callback=odooCallback&_nocache=${cacheBuster}`;
             script.onerror = function() {
-                fetchFallbackOdoo(loader, syncIcon);
-            };
-            document.body.appendChild(script);
-        }
-
-        async function fetchFallbackOdoo(loader, syncIcon) {
-            try {
-                const response = await fetch(`${APPSCRIPT_URL}?action=odooTickets&_nocache=${new Date().getTime()}`, { method: 'GET', redirect: 'follow' });
-                if (response.ok) {
-                    const odooRes = await response.json();
-                    if (odooRes && odooRes.success) {
-                        if (odooRes.regionalData) appData = odooRes.regionalData;
-                        if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
-                        if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
-                    }
-                }
-            } catch (err) {
-                console.error("Error conexión Odoo:", err);
-            } finally {
+                console.error("Fallo la carga del script JSONP. Verifica la autorización pública en Apps Script.");
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
-            }
+            };
+            document.body.appendChild(script);
         }
 
         async function cargarDirectorioSedes() {
