@@ -480,7 +480,7 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL activa obtenida directamente de tu Apps Script
+        // URL activa obtenida de tu implementacion
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
 
         let appData = {
@@ -523,6 +523,8 @@
 
             if (!selector) return;
 
+            // Fija por defecto el ultimo mes acumulado completo (Agosto = 7)
+            const defaultMonth = 7;
             const mesActualIdx = new Date().getMonth();
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
@@ -540,16 +542,15 @@
                 });
             }
 
-            if (selector) selector.value = mesActualIdx;
+            if (selector) selector.value = defaultMonth;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
+            if (endGrowthSel) endGrowthSel.value = defaultMonth;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = mesActualIdx;
+            if (regEndSel) regEndSel.value = defaultMonth;
             if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
+            if (cierreEndSel) cierreEndSel.value = defaultMonth;
         }
 
-        // Transporte seguro mediante JSONP (Elimina los errores de CORS)
         function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -562,12 +563,13 @@
             window.odooCallback = function(odooRes) {
                 try {
                     if (odooRes && odooRes.success) {
-                        const curMonth = new Date().getMonth();
                         if (odooRes.regionalData) {
                             appData = odooRes.regionalData;
-                            cierreData.Capital[curMonth] = appData.Capital[curMonth];
-                            cierreData.Occidente[curMonth] = appData.Occidente[curMonth];
-                            cierreData.Oriente[curMonth] = appData.Oriente[curMonth];
+                            for (let m = 0; m < 12; m++) {
+                                cierreData.Capital[m] = appData.Capital[m];
+                                cierreData.Occidente[m] = appData.Occidente[m];
+                                cierreData.Oriente[m] = appData.Oriente[m];
+                            }
                         }
                         if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                         if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
@@ -587,7 +589,6 @@
             const cacheBuster = new Date().getTime();
             script.src = `${APPSCRIPT_URL}?action=odooTickets&callback=odooCallback&_nocache=${cacheBuster}`;
             script.onerror = function() {
-                console.error("Fallo la carga del script JSONP. Verifica la autorización pública en Apps Script.");
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
@@ -667,7 +668,8 @@
         }
 
         function renderDriveTab() {
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || new Date().getMonth());
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
@@ -731,7 +733,8 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || new Date().getMonth());
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
             const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || {};
@@ -740,7 +743,7 @@
             const maxVal = items.length > 0 ? items[0].count : 1;
 
             if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos de Odoo para el mes y filtro seleccionado.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos registrados para el mes y filtro seleccionado.</p>`;
                 return;
             }
 
@@ -833,7 +836,7 @@
             });
         }
 
-        function renderWorkTypeSection(mIdx = 7) {
+        function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
             if (charts.workType) charts.workType.destroy();
@@ -1302,7 +1305,7 @@
 
         function renderAll() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
             const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
