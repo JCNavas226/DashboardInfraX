@@ -480,8 +480,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL activa obtenida de tu implementacion
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzd6tHHsjl3gDVbdFG_Aqztl4t5VaRkdWbZXcVNXyS6RmfWRywRS1ABYoaCt2DkTv9Q/exec";
+        // URL exacta obtenida de tu panel de Apps Script
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
 
         let appData = {
             Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0, prevSolv: 0 })),
@@ -523,7 +523,7 @@
 
             if (!selector) return;
 
-            // Fija por defecto el ultimo mes acumulado completo (Agosto = 7)
+            // Fija por defecto el último mes acumulado completo (Agosto = 7)
             const defaultMonth = 7;
             const mesActualIdx = new Date().getMonth();
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
@@ -551,6 +551,7 @@
             if (cierreEndSel) cierreEndSel.value = defaultMonth;
         }
 
+        // Conexión segura usando inyección de Script JSONP para evitar bloqueos CORS
         function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -596,29 +597,23 @@
             document.body.appendChild(script);
         }
 
-        async function cargarDirectorioSedes() {
-            try {
-                const response = await fetch(APPSCRIPT_URL + "?action=directorioSedes&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
-                if (response.ok) {
-                    const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
-                }
-            } catch (e) {
-                console.warn("Directorio error:", e);
-            }
+        function cargarDirectorioSedes() {
+            window.dirCallback = function(res) {
+                if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
+            };
+            const s = document.createElement('script');
+            s.src = `${APPSCRIPT_URL}?action=directorioSedes&callback=dirCallback&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(s);
         }
 
-        async function cargarCasosPendientes() {
-            try {
-                const response = await fetch(APPSCRIPT_URL + "?action=casosPendientes&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
-                if (response.ok) {
-                    const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) casosPendientesGlobalData = res;
-                }
-            } catch (err) {
-                console.warn("Solped error:", err);
-            }
-            renderPendientesTableRows(casosPendientesGlobalData);
+        function cargarCasosPendientes() {
+            window.solpedCallback = function(res) {
+                if (Array.isArray(res) && res.length > 0) casosPendientesGlobalData = res;
+                renderPendientesTableRows(casosPendientesGlobalData);
+            };
+            const s = document.createElement('script');
+            s.src = `${APPSCRIPT_URL}?action=casosPendientes&callback=solpedCallback&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(s);
         }
 
         function renderPendientesTableRows(rows) {
@@ -654,17 +649,14 @@
             lucide.createIcons();
         }
 
-        async function cargarReportesDrive() {
-            try {
-                const response = await fetch(APPSCRIPT_URL + "?action=reportesDrive&_nocache=" + new Date().getTime(), { method: 'GET', redirect: 'follow' });
-                if (response.ok) {
-                    const res = await response.json();
-                    if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
-                }
-            } catch (e) {
-                console.warn("Drive reportes error:", e);
-            }
-            renderDriveTab();
+        function cargarReportesDrive() {
+            window.driveCallback = function(res) {
+                if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
+                renderDriveTab();
+            };
+            const s = document.createElement('script');
+            s.src = `${APPSCRIPT_URL}?action=reportesDrive&callback=driveCallback&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(s);
         }
 
         function renderDriveTab() {
