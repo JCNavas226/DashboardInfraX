@@ -481,9 +481,9 @@
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
         // URL activa obtenida de tu panel de Apps Script
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbygad34QKOphIYOagWeGk8Ld3aWM_VQ46PBSujaZ_tuyUG5bPGffvj-3C1TRTxHI_Wm/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
 
-        // Objeto de resguardo automático (Para que NUNCA se quede en blanco si falla la red)
+        // Objeto de resguardo en vivo para prevenir pantallas vacías en 0
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -529,19 +529,109 @@
             ]
         };
 
+        // Punto 5: Cierre de Mes (Gráfica Fija Estática para Enero-Julio)
         let cierreData = {
-            Capital: Array(12).fill(null).map((_, i) => ({ sol: appData.Capital[i].sol, at: appData.Capital[i].at, canc: appData.Capital[i].canc })),
-            Occidente: Array(12).fill(null).map((_, i) => ({ sol: appData.Occidente[i].sol, at: appData.Occidente[i].at, canc: appData.Occidente[i].canc })),
-            Oriente: Array(12).fill(null).map((_, i) => ({ sol: appData.Oriente[i].sol, at: appData.Oriente[i].at, canc: appData.Oriente[i].canc }))
+            Capital: [
+                { sol: 206, at: 69,  canc: 0 },
+                { sol: 199, at: 37,  canc: 0 },
+                { sol: 203, at: 77,  canc: 0 },
+                { sol: 186, at: 114, canc: 0 },
+                { sol: 303, at: 204, canc: 0 },
+                { sol: 382, at: 272, canc: 0 },
+                { sol: 308, at: 179, canc: 0 },
+                { sol: 301, at: 86,  canc: 8 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }
+            ],
+            Occidente: [
+                { sol: 99,  at: 79,  canc: 0 },
+                { sol: 57,  at: 33,  canc: 0 },
+                { sol: 192, at: 142, canc: 0 },
+                { sol: 75,  at: 50,  canc: 0 },
+                { sol: 62,  at: 43,  canc: 0 },
+                { sol: 168, at: 123, canc: 0 },
+                { sol: 180, at: 102, canc: 0 },
+                { sol: 170, at: 138, canc: 1 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }
+            ],
+            Oriente: [
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 55, at: 40, canc: 0 },
+                { sol: 27, at: 17, canc: 2 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 }
+            ]
         };
 
-        let topStoresByMonthAndRegion = {};
+        // Punto 1: Ranking pre-cargado de Top 10 Tiendas para Agosto
+        let topStoresByMonthAndRegion = {
+            7: {
+                Global: [
+                    { name: "Farmacia Coporo", count: 27 },
+                    { name: "Farmacia La manga", count: 26 },
+                    { name: "Farmacia Apamate", count: 26 },
+                    { name: "Farmacia Escorpión", count: 20 },
+                    { name: "Farmacia Mangle", count: 16 },
+                    { name: "Farmacia Betania", count: 16 },
+                    { name: "Farmacia LAS ROSAS", count: 16 },
+                    { name: "Farmacia ANACONDA", count: 16 },
+                    { name: "Farmacia NIRGLIA", count: 15 },
+                    { name: "Farmacia Uvilla", count: 14 }
+                ],
+                Capital: [
+                    { name: "Farmacia Escorpión", count: 20 },
+                    { name: "Farmacia Mangle", count: 16 },
+                    { name: "Farmacia ANACONDA", count: 16 },
+                    { name: "Farmacia LAS ROSAS", count: 16 },
+                    { name: "Farmacia Uvilla", count: 14 },
+                    { name: "Farmacia oriana carlucci", count: 13 },
+                    { name: "Farmacia orquidea", count: 13 },
+                    { name: "Farmacia RAFAEL CARAGULICHE", count: 13 },
+                    { name: "Farmacia Araguaney", count: 12 },
+                    { name: "Farmacia Modelo", count: 12 }
+                ],
+                Occidente: [
+                    { name: "Farmacia Coporo", count: 27 },
+                    { name: "Farmacia La manga", count: 26 },
+                    { name: "Farmacia Betania", count: 16 },
+                    { name: "Farmacia NIRGLIA", count: 15 },
+                    { name: "Farmacia Medi-salud", count: 13 },
+                    { name: "Farmacia Estudiante", count: 12 },
+                    { name: "Farmacia Edinson villa", count: 10 },
+                    { name: "Farmacia YANNERYS RODRIGUEZ", count: 10 },
+                    { name: "Farmacia Nuevo Barrio", count: 9 },
+                    { name: "Farmacia El Ujano", count: 8 }
+                ],
+                Oriente: [
+                    { name: "Farmacia Guacharo", count: 11 },
+                    { name: "Farmacia Apamate", count: 6 },
+                    { name: "Farmacia PAYARA", count: 6 },
+                    { name: "Farmacia CIGARRA", count: 1 },
+                    { name: "Farmacia CORAL", count: 3 }
+                ]
+            }
+        };
+
         let driveReportesGlobalData = [];
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
         let rawTicketsGlobal = [];
+        
+        // Puntos 2, 3 y 4: Distribución acumulada exacta de los 498 tickets de Agosto
         let monthStatusData = {
-            7: { resuelto: 241, asignado: 182, progreso: 44, procura: 22, cancelada: 11 }
+            7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 }
         };
         let charts = {};
 
@@ -607,11 +697,11 @@
                     if (odooRes && odooRes.success) {
                         if (odooRes.regionalData) {
                             appData = odooRes.regionalData;
-                            for (let m = 0; m < 12; m++) {
-                                cierreData.Capital[m] = appData.Capital[m];
-                                cierreData.Occidente[m] = appData.Occidente[m];
-                                cierreData.Oriente[m] = appData.Oriente[m];
-                            }
+                            // Punto 5: Mantiene fija la gráfica de Cierre para meses previos (0 a 6) y actualiza solo el mes activo (7=Agosto)
+                            const curM = new Date().getMonth();
+                            cierreData.Capital[curM] = appData.Capital[curM];
+                            cierreData.Occidente[curM] = appData.Occidente[curM];
+                            cierreData.Oriente[curM] = appData.Oriente[curM];
                         }
                         if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
                         if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
@@ -761,6 +851,7 @@
             });
         }
 
+        // Punto 1: Renderizado dinámico Top 10 Tiendas
         function renderTopStores() {
             const container = document.getElementById('top-stores-list');
             if (!container) return;
@@ -770,7 +861,7 @@
             const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || {};
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
             const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
             const items = monthData[keyReg] || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
@@ -794,12 +885,13 @@
             });
         }
 
+        // Punto 2: Proporción sobre 498 tickets
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const stats = { 'Electricidad': 135, 'Aire Acondicionado': 105, 'Civil': 62, 'Plomería': 38, 'Mobiliario': 27 };
+            const stats = { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -869,13 +961,14 @@
             });
         }
 
+        // Punto 3: Tipo de Trabajo sobre 498 tickets
         function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const mesVals = [250, 85, 32];
+            const mesVals = [338, 115, 45];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -916,14 +1009,15 @@
             });
         }
 
+        // Punto 4: Distribución sobre los 498 tickets exactos
         function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || { resuelto: 241, asignado: 182, progreso: 44, procura: 22, cancelada: 11 };
+            const mData = monthStatusData[mIdx] || { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 };
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
+            const vals = [mData.resuelto || 241, mData.asignado || 180, mData.progreso || 44, mData.procura || 22, mData.cancelada || 11];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
@@ -1055,6 +1149,7 @@
             }, 50);
         }
 
+        // Punto 5: Gráfica Estática de Cierre de Mes (Mantiene histórico oficial Enero-Julio)
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1086,7 +1181,7 @@
                     <div class="card-pro flex flex-col justify-between bg-slate-50/50">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-200">
                             <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
-                            <span class="text-[10px] text-emerald-600 font-bold">Oficial</span>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
                         </div>
                         <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
                         
