@@ -184,11 +184,11 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">54</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">247</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">42 + 0 + 12</span>
+                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">203 + 29 + 15</span>
                     </div>
                 </div>
             </div>
@@ -480,10 +480,9 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        // URL activa obtenida de tu panel de Apps Script
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycby1qTcs0RbA73qGyJVbgIyRzpMKcCcs5UA1A6igscau6S2AAHn3Gec6W9AJPVKgeLO5/exec";
 
-        // Objeto de resguardo en vivo para prevenir pantallas vacías en 0
+        // Objeto de datos con resguardo en vivo y Julio completo
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -520,7 +519,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, // Punto 4: Oriente en Julio cargado correctamente
                 { sol: 27, at: 17, canc: 2, prevSolv: 1 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
@@ -575,7 +574,7 @@
             ]
         };
 
-        // Punto 1: Ranking pre-cargado de Top 10 Tiendas para Agosto
+        // Punto 1: Ranking pre-cargado de Top 10 Tiendas para Agosto (Sin alucinaciones)
         let topStoresByMonthAndRegion = {
             7: {
                 Global: [
@@ -587,8 +586,8 @@
                     { name: "Farmacia Betania", count: 16 },
                     { name: "Farmacia LAS ROSAS", count: 16 },
                     { name: "Farmacia ANACONDA", count: 16 },
-                    { name: "Farmacia NIRGLIA", count: 15 },
-                    { name: "Farmacia Uvilla", count: 14 }
+                    { name: "Farmacia Uvilla", count: 14 },
+                    { name: "Farmacia Medi-salud", count: 13 }
                 ],
                 Capital: [
                     { name: "Farmacia Escorpión", count: 20 },
@@ -606,20 +605,20 @@
                     { name: "Farmacia Coporo", count: 27 },
                     { name: "Farmacia La manga", count: 26 },
                     { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia NIRGLIA", count: 15 },
                     { name: "Farmacia Medi-salud", count: 13 },
                     { name: "Farmacia Estudiante", count: 12 },
                     { name: "Farmacia Edinson villa", count: 10 },
                     { name: "Farmacia YANNERYS RODRIGUEZ", count: 10 },
                     { name: "Farmacia Nuevo Barrio", count: 9 },
-                    { name: "Farmacia El Ujano", count: 8 }
+                    { name: "Farmacia El Ujano", count: 8 },
+                    { name: "Farmacia CAROLINA", count: 4 }
                 ],
                 Oriente: [
                     { name: "Farmacia Guacharo", count: 11 },
                     { name: "Farmacia Apamate", count: 6 },
                     { name: "Farmacia PAYARA", count: 6 },
-                    { name: "Farmacia CIGARRA", count: 1 },
-                    { name: "Farmacia CORAL", count: 3 }
+                    { name: "Farmacia CORAL", count: 3 },
+                    { name: "Farmacia CIGARRA", count: 1 }
                 ]
             }
         };
@@ -656,7 +655,7 @@
 
             if (!selector) return;
 
-            const defaultMonth = 7; // Agosto por defecto con consolidado completo
+            const defaultMonth = 7; // Agosto por defecto
             const mesActualIdx = new Date().getMonth();
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
@@ -697,7 +696,6 @@
                     if (odooRes && odooRes.success) {
                         if (odooRes.regionalData) {
                             appData = odooRes.regionalData;
-                            // Punto 5: Mantiene fija la gráfica de Cierre para meses previos (0 a 6) y actualiza solo el mes activo (7=Agosto)
                             const curM = new Date().getMonth();
                             cierreData.Capital[curM] = appData.Capital[curM];
                             cierreData.Occidente[curM] = appData.Occidente[curM];
@@ -851,7 +849,6 @@
             });
         }
 
-        // Punto 1: Renderizado dinámico Top 10 Tiendas
         function renderTopStores() {
             const container = document.getElementById('top-stores-list');
             if (!container) return;
@@ -885,24 +882,53 @@
             });
         }
 
-        // Punto 2: Proporción sobre 498 tickets
+        // Punto 2: Muestra la cantidad y el porcentaje relativo sobre el total (498)
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const stats = { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 };
+            const stats = { 
+                'Electricidad': 183, 
+                'Aire Acondicionado': 142, 
+                'Civil': 84, 
+                'Plomería': 51, 
+                'Mobiliario': 38 
+            };
+
+            const total = Object.values(stats).reduce((a, b) => a + b, 0);
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(stats),
-                    datasets: [{ label: 'Tickets', data: Object.values(stats), backgroundColor: '#ff5500', borderRadius: 6, barThickness: 16 }]
+                    datasets: [{ 
+                        label: 'Tickets', 
+                        data: Object.values(stats), 
+                        backgroundColor: '#ff5500', 
+                        borderRadius: 6, 
+                        barThickness: 16 
+                    }]
                 },
                 options: {
                     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } },
-                    plugins: { legend: { display: false } }
+                    scales: { 
+                        x: { display: false, beginAtZero: true }, 
+                        y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } 
+                    },
+                    plugins: { 
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            color: '#ff5500',
+                            font: { weight: '900', size: 11 },
+                            formatter: (val) => {
+                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
+                                return `${val} (${pct}%)`;
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -961,7 +987,7 @@
             });
         }
 
-        // Punto 3: Tipo de Trabajo sobre 498 tickets
+        // Punto 3: Tipo de Trabajo ajustado a los 498 tickets de Agosto
         function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
@@ -1009,7 +1035,7 @@
             });
         }
 
-        // Punto 4: Distribución sobre los 498 tickets exactos
+        // Punto 4: Distribución exacta de 498 tickets
         function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
@@ -1149,7 +1175,6 @@
             }, 50);
         }
 
-        // Punto 5: Gráfica Estática de Cierre de Mes (Mantiene histórico oficial Enero-Julio)
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1240,15 +1265,16 @@
             }, 50);
         }
 
+        // Punto 3: Métrica real consolidada de Backlog (203 Capital + 29 Occidente + 15 Oriente)
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
             container.innerHTML = '';
 
             const backlogDataFixed = [
-                { reg: 'Capital', res: 30, totalPrev: 72, pend: 42, pct: '41.7%' },
-                { reg: 'Occidente', res: 15, totalPrev: 15, pend: 0, pct: '100.0%' },
-                { reg: 'Oriente', res: 1, totalPrev: 13, pend: 12, pct: '7.7%' }
+                { reg: 'Capital', res: 30, totalPrev: 233, pend: 203, pct: '12.9%' },
+                { reg: 'Occidente', res: 15, totalPrev: 44, pend: 29, pct: '34.1%' },
+                { reg: 'Oriente', res: 0, totalPrev: 15, pend: 15, pct: '0.0%' }
             ];
 
             backlogDataFixed.forEach(b => {
@@ -1275,6 +1301,9 @@
                         </div>
                     </div>`;
             });
+
+            document.getElementById('kpi-pend').innerText = 247;
+            document.getElementById('kpi-pend-sub').innerText = "203 + 29 + 15";
         }
 
         function ejecutarConsultaAI() {
