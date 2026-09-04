@@ -246,7 +246,7 @@
                                     <option value="Occidente">Región Occidente</option>
                                     <option value="Oriente">Región Oriente</option>
                                 </select>
-                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">AGOSTO 2026</span>
+                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">SEPTIEMBRE 2026</span>
                             </div>
                         </div>
                         <div class="h-[380px] relative">
@@ -265,7 +265,7 @@
                         </h3>
                         <p class="text-xs text-slate-400 font-medium">Correctivo, Preventivo, Mejora</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">AGOSTO 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">SEPTIEMBRE 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -301,7 +301,7 @@
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
                         <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">AGOSTO 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">SEPTIEMBRE 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -386,7 +386,7 @@
                         </h3>
                         <p class="text-xs text-slate-500 font-semibold mt-0.5">Informes Técnicos de Gestión Cargados por Región y Mes</p>
                     </div>
-                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">AGOSTO 2026</span>
+                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -480,8 +480,9 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
 
+        // Objeto de datos con resguardo en vivo e inclusión de Septiembre (63 solicitudes totales)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -492,7 +493,7 @@
                 { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 363, at: 271, canc: 15, prevSolv: 40 },
                 { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 5,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 33,  at: 2,   canc: 0,  prevSolv: 0  }, // Capital Septiembre
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
@@ -506,7 +507,7 @@
                 { sol: 165, at: 153, canc: 4, prevSolv: 15 },
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 },
                 { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
+                { sol: 20,  at: 0,   canc: 0, prevSolv: 0  }, // Occidente Septiembre
                 { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0, prevSolv: 0  }
@@ -520,13 +521,14 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 55, at: 40, canc: 0, prevSolv: 0 },
                 { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 10, at: 6,  canc: 0, prevSolv: 0 }, // Oriente Septiembre
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
 
+        // Cierre de Mes (Gráfica Fija Estática)
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69,  canc: 0 },
@@ -537,7 +539,7 @@
                 { sol: 382, at: 272, canc: 0 },
                 { sol: 308, at: 179, canc: 0 },
                 { sol: 301, at: 86,  canc: 8 },
-                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 33,  at: 2,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }
@@ -551,7 +553,7 @@
                 { sol: 168, at: 123, canc: 0 },
                 { sol: 180, at: 102, canc: 0 },
                 { sol: 170, at: 138, canc: 1 },
-                { sol: 0,   at: 0,   canc: 0 },
+                { sol: 20,  at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }
@@ -565,10 +567,10 @@
                 { sol: 0,  at: 0, canc: 0 },
                 { sol: 55, at: 40, canc: 0 },
                 { sol: 27, at: 17, canc: 2 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 }
+                { sol: 10, at: 6,  canc: 0 },
+                { sol: 0,  at: 0,  canc: 0 },
+                { sol: 0,  at: 0,  canc: 0 },
+                { sol: 0,  at: 0,  canc: 0 }
             ]
         };
 
@@ -617,6 +619,20 @@
                     { name: "Farmacia CORAL", count: 3 },
                     { name: "Farmacia CIGARRA", count: 1 }
                 ]
+            },
+            8: {
+                Global: [
+                    { name: "Farmacia Araguaney", count: 5 },
+                    { name: "Farmacia Coporo", count: 4 },
+                    { name: "Farmacia Guacharo", count: 4 },
+                    { name: "Farmacia Escorpión", count: 3 },
+                    { name: "Farmacia Apamate", count: 3 },
+                    { name: "Farmacia Uvilla", count: 3 },
+                    { name: "Farmacia El Ujano", count: 2 },
+                    { name: "Farmacia Mangle", count: 2 },
+                    { name: "Farmacia Modelo", count: 2 },
+                    { name: "Farmacia Betania", count: 2 }
+                ]
             }
         };
 
@@ -626,7 +642,8 @@
         let rawTicketsGlobal = [];
         
         let monthStatusData = {
-            7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 }
+            7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 },
+            8: { resuelto: 8, asignado: 48, progreso: 5, procura: 2, cancelada: 0 }
         };
         let charts = {};
 
@@ -640,7 +657,7 @@
             renderAll();
         };
 
-        // Función corregida: Genera opciones desplegables dinámicamente hasta Septiembre (índice 8)
+        // Función con límite dinámico hasta Septiembre (8)
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
             const startGrowthSel = document.getElementById('growthStartMonth');
@@ -652,11 +669,10 @@
 
             if (!selector) return;
 
-            const mesActualIdx = new Date().getMonth(); // Obtiene Septiembre (8) en tiempo real
+            const mesActualIdx = new Date().getMonth(); // Septiembre = 8
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
-            // Genera la lista de meses desde Enero (0) hasta Septiembre (8) inclusive
             for (let i = 0; i <= mesActualIdx; i++) {
                 const text = `${MESES_LARGOS[i]} 2026`;
                 const shortText = MESES[i];
@@ -670,16 +686,16 @@
                 });
             }
 
-            // Agosto (7) como vista inicial por datos acumulados, pero Septiembre (8) disponible en las listas
-            const defaultSelection = 7;
+            // Selecciona Septiembre (8) como mes activo predeterminado
+            const defaultSelection = mesActualIdx;
 
             if (selector) selector.value = defaultSelection;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
+            if (endGrowthSel) endGrowthSel.value = defaultSelection;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = mesActualIdx;
+            if (regEndSel) regEndSel.value = defaultSelection;
             if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
+            if (cierreEndSel) cierreEndSel.value = defaultSelection;
         }
 
         function syncWithOdoo() {
@@ -790,13 +806,13 @@
 
         function renderDriveTab() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
             const badgeMonth = document.getElementById('badge-drive-month');
 
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'AGOSTO';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'SEPTIEMBRE';
             if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
 
             REGIONES.forEach(reg => {
@@ -855,7 +871,7 @@
             container.innerHTML = '';
 
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
             const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
@@ -887,13 +903,13 @@
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const stats = { 
-                'Electricidad': 183, 
-                'Aire Acondicionado': 142, 
-                'Civil': 84, 
-                'Plomería': 51, 
-                'Mobiliario': 38 
-            };
+            const selector = document.getElementById('mesSelector');
+            const mIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+
+            let stats = { 'Electricidad': 22, 'Aire Acondicionado': 18, 'Civil': 12, 'Plomería': 7, 'Mobiliario': 4 };
+            if (mIdx === 7) {
+                stats = { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 };
+            }
 
             const total = Object.values(stats).reduce((a, b) => a + b, 0);
 
@@ -992,7 +1008,9 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const mesVals = [338, 115, 45];
+            let mesVals = [42, 15, 6];
+            if (mIdx === 7) mesVals = [338, 115, 45];
+
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -1038,9 +1056,9 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 };
+            const mData = monthStatusData[mIdx] || { resuelto: 8, asignado: 48, progreso: 5, procura: 2, cancelada: 0 };
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 241, mData.asignado || 180, mData.progreso || 44, mData.procura || 22, mData.cancelada || 11];
+            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
@@ -1458,8 +1476,8 @@
 
         function renderAll() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 7;
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Agosto';
+            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Septiembre';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
             const catBadge = document.getElementById('badge-cat-month');
