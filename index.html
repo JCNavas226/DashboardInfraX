@@ -193,12 +193,12 @@
                 </div>
             </div>
 
-            <!-- DEMANDA DE CRECIMIENTO -->
+            <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
             <div class="card-pro">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                     <div>
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="trending-up" class="w-4 h-4 text-sky-500"></i> Demanda de Crecimiento
+                            <i data-lucide="trending-up" class="w-4 h-4 text-sky-500"></i> Demanda de Crecimiento Dinámica
                         </h3>
                         <p class="text-xs text-slate-400 font-medium">Evolución del volumen total de solicitudes vs % Tendencia SLA</p>
                     </div>
@@ -480,9 +480,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwilmkzH_dkGBvjAKBxfZSvcXOT2Rq-liDN5SZyiLIygw5_HCVg8hoclmrdDNjPdN1W/exec";
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRSlQ4bNJO8qwjQs9c7pvH8S88yzJmNrgNXtAO7p_wIvemT3s0wrKAhKGJnK6MkvZm/exec";
 
-        // Objeto de datos con resguardo en vivo y Julio completo
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -519,7 +518,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, // Punto 4: Oriente en Julio cargado correctamente
+                { sol: 55, at: 40, canc: 0, prevSolv: 0 },
                 { sol: 27, at: 17, canc: 2, prevSolv: 1 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
@@ -528,7 +527,6 @@
             ]
         };
 
-        // Punto 5: Cierre de Mes (Gráfica Fija Estática para Enero-Julio)
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69,  canc: 0 },
@@ -574,7 +572,6 @@
             ]
         };
 
-        // Punto 1: Ranking pre-cargado de Top 10 Tiendas para Agosto (Sin alucinaciones)
         let topStoresByMonthAndRegion = {
             7: {
                 Global: [
@@ -628,7 +625,6 @@
         let directorioSedesGlobalData = [];
         let rawTicketsGlobal = [];
         
-        // Puntos 2, 3 y 4: Distribución acumulada exacta de los 498 tickets de Agosto
         let monthStatusData = {
             7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 }
         };
@@ -644,6 +640,7 @@
             renderAll();
         };
 
+        // Función corregida: Genera opciones desplegables dinámicamente hasta Septiembre (índice 8)
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
             const startGrowthSel = document.getElementById('growthStartMonth');
@@ -655,11 +652,11 @@
 
             if (!selector) return;
 
-            const defaultMonth = 7; // Agosto por defecto
-            const mesActualIdx = new Date().getMonth();
+            const mesActualIdx = new Date().getMonth(); // Obtiene Septiembre (8) en tiempo real
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
+            // Genera la lista de meses desde Enero (0) hasta Septiembre (8) inclusive
             for (let i = 0; i <= mesActualIdx; i++) {
                 const text = `${MESES_LARGOS[i]} 2026`;
                 const shortText = MESES[i];
@@ -673,13 +670,16 @@
                 });
             }
 
-            if (selector) selector.value = defaultMonth;
+            // Agosto (7) como vista inicial por datos acumulados, pero Septiembre (8) disponible en las listas
+            const defaultSelection = 7;
+
+            if (selector) selector.value = defaultSelection;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = defaultMonth;
+            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = defaultMonth;
+            if (regEndSel) regEndSel.value = mesActualIdx;
             if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = defaultMonth;
+            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
         }
 
         function syncWithOdoo() {
@@ -882,7 +882,6 @@
             });
         }
 
-        // Punto 2: Muestra la cantidad y el porcentaje relativo sobre el total (498)
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
@@ -939,7 +938,7 @@
             if (charts.growth) charts.growth.destroy();
 
             const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
 
             let dynamicVol = [];
@@ -987,7 +986,6 @@
             });
         }
 
-        // Punto 3: Tipo de Trabajo ajustado a los 498 tickets de Agosto
         function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
@@ -1035,7 +1033,6 @@
             });
         }
 
-        // Punto 4: Distribución exacta de 498 tickets
         function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
@@ -1091,7 +1088,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1181,7 +1178,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 7);
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || new Date().getMonth());
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1265,7 +1262,6 @@
             }, 50);
         }
 
-        // Punto 3: Métrica real consolidada de Backlog (203 Capital + 29 Occidente + 15 Oriente)
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
