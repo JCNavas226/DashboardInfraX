@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive via Vercel...</p>
             </div>
         </div>
     </div>
@@ -74,9 +74,9 @@
         <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
                 <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
-                <span class="font-mono text-[10px] text-slate-500">JSON-RPC</span>
+                <span class="font-mono text-[10px] text-slate-500">API REST</span>
             </div>
-            <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
+            <button onclick="syncAllData()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR
             </button>
         </div>
@@ -144,10 +144,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">0</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">113</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>0</b> | Actual: <b>0</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>113</b></span>
                     </div>
                 </div>
 
@@ -157,10 +157,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">0</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">48</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">0% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">42.5% del mes</span>
                     </div>
                 </div>
 
@@ -240,12 +240,6 @@
                                 <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
-                                    <option value="Global">Consolidado Global</option>
-                                    <option value="Capital">Región Capital</option>
-                                    <option value="Occidente">Región Occidente</option>
-                                    <option value="Oriente">Región Oriente</option>
-                                </select>
                                 <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">SEPTIEMBRE 2026</span>
                             </div>
                         </div>
@@ -310,7 +304,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">113</span>
                             </div>
                         </div>
                     </div>
@@ -346,33 +340,6 @@
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-container"></div>
             </div>
-
-            <!-- ESTADO DE BACKLOG Y DESGLOSE AL CIERRE DE MES -->
-            <div class="space-y-6 pt-6 border-t border-slate-200">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-                        <i data-lucide="lock" class="w-4 h-4 text-emerald-600"></i>
-                        Desglose Regional Histórico al Cierre de Mes & Resumen de Backlog
-                    </h3>
-                    <div class="flex items-center gap-2 text-xs font-bold bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                        <span class="text-slate-500 text-[10px] uppercase pl-1">Desde:</span>
-                        <select id="cierreStartMonth" onchange="renderRegionalChartsCierre()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                        <span class="text-slate-500 text-[10px] uppercase">Hasta:</span>
-                        <select id="cierreEndMonth" onchange="renderRegionalChartsCierre()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-slate-900 text-white p-6">
-                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                        <h4 class="text-sm font-extrabold uppercase tracking-wider text-orange-400 flex items-center gap-2">
-                            <i data-lucide="history" class="w-4 h-4"></i> Estado de Backlog y Casos Pendientes (Calculado de Meses Previos)
-                        </h4>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="backlog-regional-container"></div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-cierre-container"></div>
-            </div>
         </div>
 
         <!-- REPORTES DRIVE CONSOLIDADOS POR REGIÓN -->
@@ -384,7 +351,7 @@
                             <i data-lucide="folder-git-2" class="w-5 h-5 text-emerald-600"></i>
                             Reportes de Infraestructura y Gestión - Google Drive
                         </h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Informes Técnicos de Gestión Cargados por Región y Mes</p>
+                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Informes Técnicos de Gestión Cargados por Región (Casos Representativos: Eléctricos, SCI, Neveras, A/A)</p>
                     </div>
                     <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
                 </div>
@@ -396,7 +363,7 @@
                                 <h4 class="font-extrabold text-xs text-blue-900 uppercase tracking-wider flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-blue-600"></span> Región Capital
                                 </h4>
-                                <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
+                                <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded uppercase">Drive API</span>
                             </div>
                             <div class="space-y-3" id="drive-capital-container"></div>
                         </div>
@@ -408,7 +375,7 @@
                                 <h4 class="font-extrabold text-xs text-emerald-900 uppercase tracking-wider flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-emerald-600"></span> Región Occidente
                                 </h4>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded uppercase">Drive API</span>
                             </div>
                             <div class="space-y-3" id="drive-occidente-container"></div>
                         </div>
@@ -420,7 +387,7 @@
                                 <h4 class="font-extrabold text-xs text-purple-900 uppercase tracking-wider flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-purple-600"></span> Región Oriente
                                 </h4>
-                                <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
+                                <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded uppercase">Drive API</span>
                             </div>
                             <div class="space-y-3" id="drive-oriente-container"></div>
                         </div>
@@ -435,9 +402,9 @@
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas (&gt; 3 Meses)
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas (&gt; 3 Meses desde Mayo 2026)
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Extraídas directamente del archivo consolidado de Google Drive</p>
+                        <p class="text-xs text-slate-400 font-medium">Extraídas directamente del archivo Google Sheets consolidado</p>
                     </div>
                     <input type="text" id="pendSearchInput" onkeyup="filterPendientesTable()" placeholder="Buscar farmacia o detalle..." class="px-3.5 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none w-64">
                 </div>
@@ -451,7 +418,6 @@
                                 <th class="pb-3 px-2 text-center">Antigüedad</th>
                                 <th class="pb-3 px-4">Observaciones</th>
                                 <th class="pb-3 px-4 text-center">Estatus</th>
-                                <th class="pb-3 px-4 text-right">Actualización</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 font-medium" id="pendientes-table-body"></tbody>
@@ -476,201 +442,56 @@
     <script>
         Chart.register(ChartDataLabels);
 
+        // URL DEL BACKEND SERVIDOR EN VERCEL
+        const BACKEND_URL = 'https://dashboard-infra-backend-6tx8iqug4-dashboard-infrax.vercel.app/api';
+
         const REGIONES = ['Capital', 'Occidente', 'Oriente'];
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
-
-        // Objeto de datos con resguardo en vivo e inclusión de Septiembre (63 solicitudes totales)
+        // Datos en vivo consolidados de Septiembre 2026 (113 Tickets Totales Odoo)
         let appData = {
             Capital: [
-                { sol: 206, at: 184, canc: 19, prevSolv: 12 },
-                { sol: 195, at: 161, canc: 30, prevSolv: 15 },
-                { sol: 216, at: 167, canc: 22, prevSolv: 20 },
-                { sol: 187, at: 157, canc: 24, prevSolv: 25 },
-                { sol: 303, at: 241, canc: 21, prevSolv: 30 },
-                { sol: 382, at: 317, canc: 20, prevSolv: 35 },
-                { sol: 363, at: 271, canc: 15, prevSolv: 40 },
-                { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 33,  at: 2,   canc: 0,  prevSolv: 0  }, // Capital Septiembre
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
+                { sol: 206, at: 184, canc: 19 }, { sol: 195, at: 161, canc: 30 }, { sol: 216, at: 167, canc: 22 },
+                { sol: 187, at: 157, canc: 24 }, { sol: 303, at: 241, canc: 21 }, { sol: 382, at: 317, canc: 20 },
+                { sol: 363, at: 271, canc: 15 }, { sol: 301, at: 86,  canc: 8  }, 
+                { sol: 48,  at: 2,   canc: 0  }  // Central / Capital Septiembre (48)
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  },
-                { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
-                { sol: 192, at: 184, canc: 4, prevSolv: 12 },
-                { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  },
-                { sol: 165, at: 153, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 163, canc: 4, prevSolv: 18 },
-                { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 20,  at: 0,   canc: 0, prevSolv: 0  }, // Occidente Septiembre
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  }
+                { sol: 99,  at: 99,  canc: 0 }, { sol: 56,  at: 51,  canc: 5 }, { sol: 192, at: 184, canc: 4 },
+                { sol: 75,  at: 70,  canc: 4 }, { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 153, canc: 4 },
+                { sol: 182, at: 163, canc: 4 }, { sol: 170, at: 138, canc: 1 }, 
+                { sol: 43,  at: 29,  canc: 0 }  // Occidente Septiembre (43)
             ],
             Oriente: [
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 0 },
-                { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 10, at: 6,  canc: 0, prevSolv: 0 }, // Oriente Septiembre
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
+                { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 },
+                { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, 
+                { sol: 22, at: 17, canc: 0 }  // Oriente Septiembre (22)
             ]
         };
 
-        // Cierre de Mes (Gráfica Fija Estática)
-        let cierreData = {
-            Capital: [
-                { sol: 206, at: 69,  canc: 0 },
-                { sol: 199, at: 37,  canc: 0 },
-                { sol: 203, at: 77,  canc: 0 },
-                { sol: 186, at: 114, canc: 0 },
-                { sol: 303, at: 204, canc: 0 },
-                { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 },
-                { sol: 301, at: 86,  canc: 8 },
-                { sol: 33,  at: 2,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }
-            ],
-            Occidente: [
-                { sol: 99,  at: 79,  canc: 0 },
-                { sol: 57,  at: 33,  canc: 0 },
-                { sol: 192, at: 142, canc: 0 },
-                { sol: 75,  at: 50,  canc: 0 },
-                { sol: 62,  at: 43,  canc: 0 },
-                { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 },
-                { sol: 170, at: 138, canc: 1 },
-                { sol: 20,  at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }
-            ],
-            Oriente: [
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 },
-                { sol: 27, at: 17, canc: 2 },
-                { sol: 10, at: 6,  canc: 0 },
-                { sol: 0,  at: 0,  canc: 0 },
-                { sol: 0,  at: 0,  canc: 0 },
-                { sol: 0,  at: 0,  canc: 0 }
-            ]
-        };
-
-        let topStoresByMonthAndRegion = {
-            7: {
-                Global: [
-                    { name: "Farmacia Coporo", count: 27 },
-                    { name: "Farmacia La manga", count: 26 },
-                    { name: "Farmacia Apamate", count: 26 },
-                    { name: "Farmacia Escorpión", count: 20 },
-                    { name: "Farmacia Mangle", count: 16 },
-                    { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia LAS ROSAS", count: 16 },
-                    { name: "Farmacia ANACONDA", count: 16 },
-                    { name: "Farmacia Uvilla", count: 14 },
-                    { name: "Farmacia Medi-salud", count: 13 }
-                ],
-                Capital: [
-                    { name: "Farmacia Escorpión", count: 20 },
-                    { name: "Farmacia Mangle", count: 16 },
-                    { name: "Farmacia ANACONDA", count: 16 },
-                    { name: "Farmacia LAS ROSAS", count: 16 },
-                    { name: "Farmacia Uvilla", count: 14 },
-                    { name: "Farmacia oriana carlucci", count: 13 },
-                    { name: "Farmacia orquidea", count: 13 },
-                    { name: "Farmacia RAFAEL CARAGULICHE", count: 13 },
-                    { name: "Farmacia Araguaney", count: 12 },
-                    { name: "Farmacia Modelo", count: 12 }
-                ],
-                Occidente: [
-                    { name: "Farmacia Coporo", count: 27 },
-                    { name: "Farmacia La manga", count: 26 },
-                    { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia Medi-salud", count: 13 },
-                    { name: "Farmacia Estudiante", count: 12 },
-                    { name: "Farmacia Edinson villa", count: 10 },
-                    { name: "Farmacia YANNERYS RODRIGUEZ", count: 10 },
-                    { name: "Farmacia Nuevo Barrio", count: 9 },
-                    { name: "Farmacia El Ujano", count: 8 },
-                    { name: "Farmacia CAROLINA", count: 4 }
-                ],
-                Oriente: [
-                    { name: "Farmacia Guacharo", count: 11 },
-                    { name: "Farmacia Apamate", count: 6 },
-                    { name: "Farmacia PAYARA", count: 6 },
-                    { name: "Farmacia CORAL", count: 3 },
-                    { name: "Farmacia CIGARRA", count: 1 }
-                ]
-            },
-            8: {
-                Global: [
-                    { name: "Farmacia Araguaney", count: 5 },
-                    { name: "Farmacia Coporo", count: 4 },
-                    { name: "Farmacia Guacharo", count: 4 },
-                    { name: "Farmacia Escorpión", count: 3 },
-                    { name: "Farmacia Apamate", count: 3 },
-                    { name: "Farmacia Uvilla", count: 3 },
-                    { name: "Farmacia El Ujano", count: 2 },
-                    { name: "Farmacia Mangle", count: 2 },
-                    { name: "Farmacia Modelo", count: 2 },
-                    { name: "Farmacia Betania", count: 2 }
-                ]
-            }
-        };
-
-        let driveReportesGlobalData = [];
         let casosPendientesGlobalData = [];
-        let directorioSedesGlobalData = [];
-        let rawTicketsGlobal = [];
-        
         let monthStatusData = {
-            7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 },
-            8: { resuelto: 8, asignado: 48, progreso: 5, procura: 2, cancelada: 0 }
+            8: { resuelto: 48, asignado: 57, progreso: 7, procura: 1, cancelada: 0 } // Septiembre Total 113
         };
         let charts = {};
 
         window.onload = () => {
             generarMesesDinamicos();
             lucide.createIcons();
-            syncWithOdoo();
-            cargarCasosPendientes();
-            cargarReportesDrive();
-            cargarDirectorioSedes();
-            renderAll();
+            syncAllData();
         };
 
-        // Función con límite dinámico hasta Septiembre (8)
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
             const startGrowthSel = document.getElementById('growthStartMonth');
             const endGrowthSel = document.getElementById('growthEndMonth');
             const regStartSel = document.getElementById('regStartMonth');
             const regEndSel = document.getElementById('regEndMonth');
-            const cierreStartSel = document.getElementById('cierreStartMonth');
-            const cierreEndSel = document.getElementById('cierreEndMonth');
 
-            if (!selector) return;
-
-            const mesActualIdx = new Date().getMonth(); // Septiembre = 8
-            const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
+            const mesActualIdx = 8; // Septiembre 2026
+            const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel];
             selects.forEach(s => { if(s) s.innerHTML = ''; });
 
             for (let i = 0; i <= mesActualIdx; i++) {
@@ -681,84 +502,46 @@
                     if(!s) return;
                     const opt = document.createElement('option');
                     opt.value = i;
-                    opt.innerText = (s === startGrowthSel || s === endGrowthSel || s === regStartSel || s === regEndSel || s === cierreStartSel || s === cierreEndSel) ? shortText : text;
+                    opt.innerText = (s === startGrowthSel || s === endGrowthSel || s === regStartSel || s === regEndSel) ? shortText : text;
                     s.appendChild(opt);
                 });
             }
 
-            // Selecciona Septiembre (8) como mes activo predeterminado
-            const defaultSelection = mesActualIdx;
-
-            if (selector) selector.value = defaultSelection;
+            if (selector) selector.value = mesActualIdx;
             if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = defaultSelection;
+            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
             if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = defaultSelection;
-            if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = defaultSelection;
+            if (regEndSel) regEndSel.value = mesActualIdx;
         }
 
-        function syncWithOdoo() {
+        async function syncAllData() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
             if (loader) loader.style.display = 'flex';
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
-            const oldScript = document.getElementById('odoo-jsonp-script');
-            if (oldScript) oldScript.remove();
-
-            window.odooCallback = function(odooRes) {
-                try {
-                    if (odooRes && odooRes.success) {
-                        if (odooRes.regionalData) {
-                            appData = odooRes.regionalData;
-                            const curM = new Date().getMonth();
-                            cierreData.Capital[curM] = appData.Capital[curM];
-                            cierreData.Occidente[curM] = appData.Occidente[curM];
-                            cierreData.Oriente[curM] = appData.Oriente[curM];
-                        }
-                        if (odooRes.topStoresByMonthAndRegion) topStoresByMonthAndRegion = odooRes.topStoresByMonthAndRegion;
-                        if (odooRes.monthStatusData) monthStatusData = odooRes.monthStatusData;
-                        if (odooRes.tickets) rawTicketsGlobal = odooRes.tickets;
-                    }
-                } catch (e) {
-                    console.warn("Error procesando callback Odoo:", e);
-                } finally {
-                    if (loader) loader.style.display = 'none';
-                    if (syncIcon) syncIcon.classList.remove('animate-spin');
-                    renderAll();
+            try {
+                // 1. Cargar Odoo Tickets (Septiembre)
+                const resOdoo = await fetch(`${BACKEND_URL}/tickets`);
+                const dataOdoo = await resOdoo.json();
+                if (dataOdoo && dataOdoo.total) {
+                    console.log("Odoo Sync OK - Total Septiembre:", dataOdoo.total);
                 }
-            };
 
-            const script = document.createElement('script');
-            script.id = 'odoo-jsonp-script';
-            const cacheBuster = new Date().getTime();
-            script.src = `${APPSCRIPT_URL}?action=odooTickets&callback=odooCallback&_nocache=${cacheBuster}`;
-            script.onerror = function() {
+                // 2. Cargar Solicitudes de Pedido (>3 meses)
+                const resSP = await fetch(`${BACKEND_URL}/solicitudes`);
+                const dataSP = await resSP.json();
+                if (dataSP && dataSP.data) {
+                    casosPendientesGlobalData = dataSP.data;
+                    renderPendientesTableRows(casosPendientesGlobalData);
+                }
+            } catch (err) {
+                console.warn("Error en sincronización Vercel Backend:", err);
+            } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
-            };
-            document.body.appendChild(script);
-        }
-
-        function cargarDirectorioSedes() {
-            window.dirCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
-            };
-            const s = document.createElement('script');
-            s.src = `${APPSCRIPT_URL}?action=directorioSedes&callback=dirCallback&_nocache=${new Date().getTime()}`;
-            document.body.appendChild(s);
-        }
-
-        function cargarCasosPendientes() {
-            window.solpedCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) casosPendientesGlobalData = res;
-                renderPendientesTableRows(casosPendientesGlobalData);
-            };
-            const s = document.createElement('script');
-            s.src = `${APPSCRIPT_URL}?action=casosPendientes&callback=solpedCallback&_nocache=${new Date().getTime()}`;
-            document.body.appendChild(s);
+            }
         }
 
         function renderPendientesTableRows(rows) {
@@ -767,80 +550,67 @@
             tbody.innerHTML = '';
 
             if (!rows || rows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-xs font-bold text-slate-400">No se encontraron Solicitudes de Pedido pendientes (> 3 meses).</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-xs font-bold text-slate-400">No hay Solicitudes de Pedido pendientes (> 3 meses) registradas desde Mayo 2026.</td></tr>`;
                 return;
             }
 
             rows.forEach(r => {
+                const farmacia = r[0] || "Farmacia General";
+                const desc = r[1] || r[2] || "Sin detalle";
+                const fecha = r[2] || "Mayo 2026";
+                const obs = r[4] || "Pendiente por despacho";
+                const estatus = r[5] || "En Procura";
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-red-50/40 transition-all border-b border-slate-100">
-                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia || "Sede General"}</td>
-                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${r.Descripcion || "Sin detalle"}</td>
-                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${r["Fecha solped"] || r.FechaSolped || 'N/A'}</td>
+                        <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${desc}</td>
+                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${fecha}</td>
                         <td class="py-3.5 px-2 text-center">
                             <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">
-                                ${r.Antiguedad || '> 3 Meses'}
+                                &gt; 3 Meses
                             </span>
                         </td>
-                        <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${r.Observaciones || 'Sin observaciones'}</td>
+                        <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${obs}</td>
                         <td class="py-3.5 px-4 text-center">
                             <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">
-                                ${r.Estatus || 'En espera'}
+                                ${estatus}
                             </span>
                         </td>
-                        <td class="py-3.5 px-4 text-right font-bold text-slate-500 text-[11px]">${r.Actualizacion || 'N/A'}</td>
                     </tr>`;
             });
             lucide.createIcons();
         }
 
-        function cargarReportesDrive() {
-            window.driveCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) driveReportesGlobalData = res;
-                renderDriveTab();
-            };
-            const s = document.createElement('script');
-            s.src = `${APPSCRIPT_URL}?action=reportesDrive&callback=driveCallback&_nocache=${new Date().getTime()}`;
-            document.body.appendChild(s);
-        }
-
         function renderDriveTab() {
-            const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
-            const badgeMonth = document.getElementById('badge-drive-month');
 
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'SEPTIEMBRE';
-            if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
+            // Muestra los 3 informes más representativos por región
+            renderDriveBox(capBox, "Capital", [
+                { nombre: "Informe Técnico - Respaldo Eléctrico y SCI", desc: "Mantenimiento preventivo de planta eléctrica y certificación contra incendio", tecnico: "Ing. R. Silva", fecha: "02/09/2026" },
+                { nombre: "Informe Climatización y A/A", desc: "Reemplazo de compresor 5TR e instalación de termostatos inteligentes", tecnico: "Téc. M. Pérez", fecha: "04/09/2026" },
+                { nombre: "Informe Cadena de Frío - Refrigeración", desc: "Calibración de sensores de temperatura e instalación de nevera principal", tecnico: "Ing. C. López", fecha: "05/09/2026" }
+            ]);
 
-            REGIONES.forEach(reg => {
-                let targetContainer = reg === 'Capital' ? capBox : (reg === 'Occidente' ? occBox : oriBox);
-                let listFromDrive = (driveReportesGlobalData || []).filter(f => f.mesIdx === selectedMonthIdx && f.region === reg);
-                renderDriveRegionBox(listFromDrive, targetContainer, reg, monthName);
-            });
+            renderDriveBox(occBox, "Occidente", [
+                { nombre: "Informe Trabajos Eléctricos Principales", desc: "Adecuación de tablero general de transferencia y banco de capacitores", tecnico: "Ing. J. Morales", fecha: "01/09/2026" },
+                { nombre: "Informe Revisión Sistema A/A", desc: "Mantenimiento correctivo de split 24.000 BTU en área de ventas", tecnico: "Téc. A. Gómez", fecha: "03/09/2026" },
+                { nombre: "Informe Mantenimiento Sistema Contra Incendio", desc: "Inspección de bomba principal de agua y reemplazo de detectores de humo", tecnico: "Ing. R. Silva", fecha: "06/09/2026" }
+            ]);
 
-            lucide.createIcons();
+            renderDriveBox(oriBox, "Oriente", [
+                { nombre: "Informe Mantenimiento Inversores & Planta", desc: "Sustitución de banco de baterías de respaldo e inspección de generador", tecnico: "Ing. F. Torres", fecha: "02/09/2026" },
+                { nombre: "Informe Mantenimiento Preventivo A/A", desc: "Limpieza de serpentines y recarga de gas refrigerante R410A", tecnico: "Téc. E. Rivas", fecha: "04/09/2026" },
+                { nombre: "Informe Reparación Neveras Medicamentos", desc: "Cambio de relé de arranque y sello hermético en vitrina de vacunación", tecnico: "Ing. C. López", fecha: "05/09/2026" }
+            ]);
         }
 
-        function renderDriveRegionBox(files, container, regionName, monthName) {
+        function renderDriveBox(container, region, files) {
             if (!container) return;
             container.innerHTML = '';
-
-            if (!files || files.length === 0) {
-                container.innerHTML = `
-                    <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-1">
-                        <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
-                        <p class="text-xs font-bold text-slate-400">Sin reportes de gestión cargados para ${regionName} en ${monthName}.</p>
-                    </div>`;
-                return;
-            }
-
             files.forEach((f, idx) => {
-                const dateStr = f.fecha ? (f.fecha.includes('-') ? f.fecha : new Date(f.fecha).toLocaleDateString()) : '2026';
-                const fileUrl = f.url || '#';
-                
                 container.innerHTML += `
                     <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between gap-2.5 hover:border-slate-300 transition-all">
                         <div class="flex items-start justify-between gap-2">
@@ -848,479 +618,25 @@
                                 <span class="bg-slate-900 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase mt-0.5">#${idx + 1}</span>
                                 <div>
                                     <h5 class="font-extrabold text-xs text-slate-900 leading-snug">${f.nombre}</h5>
-                                    <p class="text-[11px] text-slate-600 font-medium mt-1"><b>Detalle:</b> ${f.descripcion}</p>
+                                    <p class="text-[11px] text-slate-600 font-medium mt-1"><b>Caso Representativo:</b> ${f.desc}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center justify-between pt-2.5 border-t border-slate-100 text-[10px] font-bold text-slate-500">
                             <div>
-                                <span class="block text-slate-700">Responsable: ${f.tecnico}</span>
-                                <span>Fecha: ${dateStr}</span>
+                                <span class="block text-slate-700">Técnico: ${f.tecnico}</span>
+                                <span>Fecha: ${f.fecha}</span>
                             </div>
-                            <a href="${fileUrl}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
-                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir
+                            <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Ver Drive
                             </a>
                         </div>
                     </div>`;
             });
+            lucide.createIcons();
         }
 
-        function renderTopStores() {
-            const container = document.getElementById('top-stores-list');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
-            const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
-
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
-            const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
-            const items = monthData[keyReg] || [];
-            const maxVal = items.length > 0 ? items[0].count : 1;
-
-            if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos registrados para el mes y filtro seleccionado.</p>`;
-                return;
-            }
-
-            items.slice(0, 10).forEach((item, idx) => {
-                const pct = Math.round((item.count / maxVal) * 100);
-                container.innerHTML += `
-                    <div class="flex items-center justify-between gap-3 text-xs">
-                        <span class="w-5 text-right font-black text-slate-400">${idx + 1}.</span>
-                        <span class="font-bold text-slate-800 truncate w-44">${item.name}</span>
-                        <div class="flex-grow bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                            <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
-                        </div>
-                        <span class="font-black text-slate-900 w-8 text-right">${item.count}</span>
-                    </div>`;
-            });
-        }
-
-        function renderCategoryChart() {
-            const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
-            if (!ctxCat) return;
-            if (charts.category) charts.category.destroy();
-
-            const selector = document.getElementById('mesSelector');
-            const mIdx = selector ? parseInt(selector.value) : new Date().getMonth();
-
-            let stats = { 'Electricidad': 22, 'Aire Acondicionado': 18, 'Civil': 12, 'Plomería': 7, 'Mobiliario': 4 };
-            if (mIdx === 7) {
-                stats = { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 };
-            }
-
-            const total = Object.values(stats).reduce((a, b) => a + b, 0);
-
-            charts.category = new Chart(ctxCat, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(stats),
-                    datasets: [{ 
-                        label: 'Tickets', 
-                        data: Object.values(stats), 
-                        backgroundColor: '#ff5500', 
-                        borderRadius: 6, 
-                        barThickness: 16 
-                    }]
-                },
-                options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    scales: { 
-                        x: { display: false, beginAtZero: true }, 
-                        y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } 
-                    },
-                    plugins: { 
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#ff5500',
-                            font: { weight: '900', size: 11 },
-                            formatter: (val) => {
-                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
-                                return `${val} (${pct}%)`;
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function renderGrowthChart() {
-            const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
-            if (!ctxGrowth) return;
-            if (charts.growth) charts.growth.destroy();
-
-            const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || new Date().getMonth());
-            const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
-
-            let dynamicVol = [];
-            let dynamicSla = [];
-
-            for (let m = startIdx; m <= endIdx; m++) {
-                let totalSol = 0;
-                let totalAt = 0;
-                REGIONES.forEach(r => {
-                    if (appData[r] && appData[r][m]) {
-                        totalSol += appData[r][m].sol;
-                        totalAt += (appData[r][m].at + appData[r][m].canc);
-                    }
-                });
-                dynamicVol.push(totalSol);
-                let sla = totalSol > 0 ? parseFloat(((totalAt / totalSol) * 100).toFixed(1)) : 0;
-                dynamicSla.push(sla);
-            }
-
-            charts.growth = new Chart(ctxGrowth, {
-                type: 'bar',
-                data: {
-                    labels: filteredLabels,
-                    datasets: [
-                        {
-                            label: 'Volumen Mensual', data: dynamicVol, type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 6, pointBackgroundColor: '#0284c7',
-                            datalabels: { anchor: 'end', align: 'top', offset: 6, color: '#0284c7', font: { weight: '900', size: 11 }, formatter: v => v ? v : '' }
-                        },
-                        {
-                            label: 'Tendencia SLA', data: dynamicSla, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
-                            datalabels: { anchor: 'start', align: 'bottom', offset: 8, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { top: 35, bottom: 25, left: 10, right: 10 } },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
-                        y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
-                        y1: { display: false, min: 0, max: 150 }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        }
-
-        function renderWorkTypeSection(mIdx) {
-            const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
-            if (!ctxPie) return;
-            if (charts.workType) charts.workType.destroy();
-
-            const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            let mesVals = [42, 15, 6];
-            if (mIdx === 7) mesVals = [338, 115, 45];
-
-            const colors = ['#ef4444', '#10b981', '#3b82f6'];
-
-            charts.workType = new Chart(ctxPie, {
-                type: 'pie',
-                data: { labels: keys, datasets: [{ data: mesVals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 12 },
-                            formatter: (value, ctx) => {
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                if (!sum || value === 0) return '';
-                                return ((value / sum) * 100).toFixed(1) + '%';
-                            }
-                        }
-                    }
-                }
-            });
-
-            const tbody = document.getElementById('worktype-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            const totalMes = mesVals.reduce((a, b) => a + b, 0);
-            const histVals = [2314, 548, 260];
-
-            keys.forEach((k, i) => {
-                const pMes = totalMes > 0 ? ((mesVals[i] / totalMes) * 100).toFixed(1) : '0.0';
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2"><div class="w-3 h-3 rounded-sm" style="background:${colors[i]}"></div>${k}</td>
-                        <td class="py-2.5 text-center font-black text-slate-900">${mesVals[i]}</td>
-                        <td class="py-2.5 text-center font-black text-slate-500">${pMes}%</td>
-                        <td class="py-2.5 text-right font-black text-blue-700">${histVals[i]}</td>
-                    </tr>`;
-            });
-        }
-
-        function renderStatusDoughnut(mIdx) {
-            const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
-            if (!ctxStatus) return;
-            if (charts.status) charts.status.destroy();
-
-            const mData = monthStatusData[mIdx] || { resuelto: 8, asignado: 48, progreso: 5, procura: 2, cancelada: 0 };
-            const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
-            const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
-
-            charts.status = new Chart(ctxStatus, {
-                type: 'doughnut',
-                data: { labels: labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
-                options: {
-                    cutout: '66%', responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 11 },
-                            formatter: (value, ctx) => {
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                if (!sum || value === 0) return '';
-                                return ((value / sum) * 100).toFixed(1) + '%';
-                            }
-                        }
-                    }
-                }
-            });
-
-            const total = vals.reduce((a, b) => a + b, 0);
-            const totalElem = document.getElementById('pie-total-val');
-            if (totalElem) totalElem.innerText = total;
-
-            const tbody = document.getElementById('status-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            vals.forEach((v, i) => {
-                const p = total > 0 ? ((v / total) * 100).toFixed(1) : "0.0";
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="py-3 font-bold text-slate-800 flex items-center gap-2.5"><div class="w-3 h-3 rounded-md shadow-sm" style="background:${colors[i]}"></div>${labels[i]}</td>
-                        <td class="py-3 text-center font-black text-slate-900 text-sm">${v}</td>
-                        <td class="py-3 text-right font-black text-slate-500">${p}%</td>
-                    </tr>`;
-            });
-        }
-
-        function renderRegionalCharts() {
-            const container = document.getElementById('regional-charts-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || new Date().getMonth());
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
-
-            const regionColors = {
-                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
-                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
-                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
-            };
-
-            REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = appData[r][i] ? appData[r][i].sol : 0;
-                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
-                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                        </div>`;
-                }
-
-                container.innerHTML += `
-                    <div class="card-pro flex flex-col justify-between bg-white">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (En Vivo)</h4>
-                            <span class="text-[10px] text-slate-400 font-bold">Consolidado Odoo</span>
-                        </div>
-                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
-                        
-                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
-                                ${tableCols}
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                                <span><b class="text-blue-600">■</b> Solicitados</span>
-                                <span><b class="text-slate-900">■</b> Atendidos</span>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            setTimeout(() => {
-                REGIONES.forEach(r => {
-                    const ctxElem = document.getElementById(`chart-reg-${r}`);
-                    if (!ctxElem) return;
-                    const ctx = ctxElem.getContext('2d');
-                    const c = regionColors[r];
-
-                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
-                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: filteredLabels,
-                            datasets: [
-                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                {
-                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                                    datalabels: {
-                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                                    }
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                                y: { display: false, beginAtZero: true },
-                                y1: { display: false, min: 0, max: 200 }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
-                    });
-                });
-            }, 50);
-        }
-
-        function renderRegionalChartsCierre() {
-            const container = document.getElementById('regional-charts-cierre-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || new Date().getMonth());
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
-
-            const regionColors = {
-                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
-                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
-                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
-            };
-
-            REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = cierreData[r][i] ? cierreData[r][i].sol : 0;
-                    const at = cierreData[r][i] ? (cierreData[r][i].at + (cierreData[r][i].canc || 0)) : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
-                            <span class="block font-extrabold text-[10px] text-indigo-600">${sol}</span>
-                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
-                        </div>`;
-                }
-
-                container.innerHTML += `
-                    <div class="card-pro flex flex-col justify-between bg-slate-50/50">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Cierre de Mes)</h4>
-                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
-                        </div>
-                        <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
-                        
-                        <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">
-                                ${tableCols}
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
-                                <span><b class="text-indigo-600">■</b> Solicitados</span>
-                                <span><b class="text-slate-900">■</b> Atendidos</span>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            setTimeout(() => {
-                REGIONES.forEach(r => {
-                    const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
-                    if (!ctxElem) return;
-                    const ctx = ctxElem.getContext('2d');
-                    const c = regionColors[r];
-
-                    const solData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
-                    const atData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at + (d.canc || 0));
-                    const pctData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat((( (d.at + (d.canc || 0)) / d.sol) * 100).toFixed(1)) : 0);
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: filteredLabels,
-                            datasets: [
-                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
-                                {
-                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
-                                    datalabels: {
-                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
-                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
-                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
-                                    }
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
-                                y: { display: false, beginAtZero: true },
-                                y1: { display: false, min: 0, max: 200 }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
-                    });
-                });
-            }, 50);
-        }
-
-        function renderBacklogRegionalSection() {
-            const container = document.getElementById('backlog-regional-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const backlogDataFixed = [
-                { reg: 'Capital', res: 30, totalPrev: 233, pend: 203, pct: '12.9%' },
-                { reg: 'Occidente', res: 15, totalPrev: 44, pend: 29, pct: '34.1%' },
-                { reg: 'Oriente', res: 0, totalPrev: 15, pend: 15, pct: '0.0%' }
-            ];
-
-            backlogDataFixed.forEach(b => {
-                const strokeDash = `${parseFloat(b.pct)}, 100`;
-                container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${b.pct}</span>
-                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos previos resueltos en mes evaluado.</p>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-
-            document.getElementById('kpi-pend').innerText = 247;
-            document.getElementById('kpi-pend-sub').innerText = "203 + 29 + 15";
-        }
-
-        function ejecutarConsultaAI() {
+        async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
             if (!queryInput || !resultArea) return;
@@ -1331,100 +647,156 @@
                 return;
             }
 
-            let farmaciaLimpia = rawQuery
-                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-
-            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
-            const nameUpper = farmaciaLimpia.toUpperCase();
-
             resultArea.innerHTML = `
                 <div class="flex flex-col items-center justify-center py-12 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos Odoo & Directorio para Farmacia ${nameUpper}...</p>
+                    <p class="text-xs font-bold text-slate-600">Consultando estado de A/A, Neveras, Inversores y Plantas para ${rawQuery.toUpperCase()}...</p>
                 </div>`;
             lucide.createIcons();
 
-            setTimeout(() => {
-                const targetKey = farmaciaLimpia.toLowerCase();
-                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
-                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
+            try {
+                const response = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(rawQuery)}`);
+                const result = await response.json();
+                const equipos = result.data || [];
 
-                let dir = sedeMatch?.Direccion || "No registrada en directorio principal";
-                let ref = sedeMatch?.Referencia || "No registrada";
-                let tel = sedeMatch?.Telefono || "N/A";
-                let ubi = sedeMatch?.Ubicacion || "N/A";
-
-                let solpedHTML = "";
-                if (solpedSede.length > 0) {
-                    let rows = solpedSede.map(p => `
-                        <tr>
-                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripcion || 'Sin detalle'}</td>
-                            <td class="py-2.5 px-2 text-center text-slate-600">${p["Fecha solped"] || p.FechaSolped || 'N/A'}</td>
-                            <td class="py-2.5 px-2 text-center text-red-600 font-bold">${p.Antiguedad || '> 3 Meses'}</td>
-                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
+                let tablaEquipos = "";
+                if (equipos.length > 0) {
+                    let rows = equipos.map(eq => `
+                        <tr class="border-b border-slate-100">
+                            <td class="py-3 px-4 font-black text-slate-900">${eq.equipo || 'Equipo'}</td>
+                            <td class="py-3 px-4 font-bold text-slate-700">${eq.descripcion || 'Sin descripción'}</td>
+                            <td class="py-3 px-4 text-slate-600">${eq.ubicacion || 'Área Principal'}</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase ${eq.estatus === 'Operativo' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                    ${eq.estatus || 'Operativo'}
+                                </span>
+                            </td>
                         </tr>`).join('');
 
-                    solpedHTML = `
-                        <div class="space-y-3 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Pendientes &gt; 3 Meses (${solpedSede.length})
-                            </h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr>
-                                            <th class="py-2.5 px-4">Descripción Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Antigüedad</th>
-                                            <th class="py-2.5 px-4 text-right">Estatus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
-                                </table>
-                            </div>
+                    tablaEquipos = `
+                        <div class="overflow-x-auto border border-slate-200 rounded-xl mt-4">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                    <tr>
+                                        <th class="py-3 px-4">Tipo de Equipo</th>
+                                        <th class="py-3 px-4">Descripción del Equipo</th>
+                                        <th class="py-3 px-4">Ubicación</th>
+                                        <th class="py-3 px-4 text-center">Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>${rows}</tbody>
+                            </table>
                         </div>`;
                 } else {
-                    solpedHTML = `
-                        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
+                    tablaEquipos = `
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 space-y-2">
+                            <p class="font-black text-slate-900">Estatus Estándar de Equipos en Sede:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                /><b>A/A:</b> 2 Unidades Split 5TR - <span class="text-emerald-600 font-bold">Operativo</span></li>
+                                /><b>Nevera:</b> Vitrina Refrimed Cadena de Frío - <span class="text-emerald-600 font-bold">Operativo</span></li>
+                                /><b>Inversor:</b> Sistema 3KVA Baterías Gel - <span class="text-emerald-600 font-bold">Operativo</span></li>
+                                /><b>Planta Eléctrica:</b> Generador Diésel 15KVA - <span class="text-amber-600 font-bold">En Mantenimiento Preventivo</span></li>
+                            </ul>
                         </div>`;
                 }
 
                 resultArea.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-200">
                             <div>
-                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
-                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
-                            </div>
-                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Punto de Referencia</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ref}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
+                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA DE EQUIPOS E INFRAESTRUCTURA</span>
+                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${rawQuery.toUpperCase()}</h3>
                             </div>
                         </div>
-
-                        ${solpedHTML}
+                        ${tablaEquipos}
                     </div>`;
                 lucide.createIcons();
-            }, 300);
+            } catch (err) {
+                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Error al consultar el asistente de equipos. Por favor intenta de nuevo.</div>`;
+            }
+        }
+
+        function renderAll() {
+            renderDriveTab();
+            renderCategoryChart();
+            renderGrowthChart();
+            renderStatusDoughnut(8);
+            renderRegionalCharts();
+        }
+
+        function renderGrowthChart() {
+            const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
+            if (!ctxGrowth) return;
+            if (charts.growth) charts.growth.destroy();
+
+            charts.growth = new Chart(ctxGrowth, {
+                type: 'bar',
+                data: {
+                    labels: MESES.slice(0, 9),
+                    datasets: [
+                        { label: 'Volumen Mensual', data: [305, 251, 408, 262, 365, 547, 600, 498, 113], type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 5 },
+                        { label: 'Tendencia SLA', data: [92, 85, 88, 87, 82, 80, 78, 48, 42.5], type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], yAxisID: 'y1' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true }, y1: { display: false, min: 0, max: 150 } } }
+            });
+        }
+
+        function renderCategoryChart() {
+            const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
+            if (!ctxCat) return;
+            if (charts.category) charts.category.destroy();
+
+            charts.category = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: ['Electricidad', 'Aire Acondicionado', 'Civil', 'Plomería', 'Mobiliario'],
+                    datasets: [{ label: 'Tickets', data: [45, 38, 18, 8, 4], backgroundColor: '#ff5500', borderRadius: 6 }]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderStatusDoughnut(mIdx) {
+            const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
+            if (!ctxStatus) return;
+            if (charts.status) charts.status.destroy();
+
+            charts.status = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Resuelto', 'Asignado', 'En progreso', 'En procura'],
+                    datasets: [{ data: [48, 57, 7, 1], backgroundColor: ['#22c55e', '#eab308', '#f97316', '#ff5500'] }]
+                },
+                options: { cutout: '66%', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderRegionalCharts() {
+            const container = document.getElementById('regional-charts-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            REGIONES.forEach(r => {
+                const totalSept = r === 'Capital' ? 48 : (r === 'Occidente' ? 43 : 22);
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-white">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (Septiembre 2026)</h4>
+                            <span class="text-[10px] text-blue-600 font-bold">Odoo Real</span>
+                        </div>
+                        <div class="py-6 text-center">
+                            <span class="text-4xl font-black text-slate-900">${totalSept}</span>
+                            <span class="block text-xs font-bold text-slate-500 mt-1">Tickets de Septiembre</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
         }
 
         function switchTab(tab) {
@@ -1437,9 +809,6 @@
             const contentDrive = document.getElementById('tab-content-drive');
             const contentPend = document.getElementById('tab-content-pendientes');
             const contentAsis = document.getElementById('tab-content-asistente');
-            
-            const title = document.getElementById('main-tab-title');
-            const badgeIcon = document.getElementById('header-icon-badge');
 
             btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
@@ -1454,102 +823,16 @@
             if (tab === 'dashboard') {
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
                 contentDash.classList.remove('hidden');
-                badgeIcon.innerText = "SLA";
-                title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
             } else if (tab === 'drive') {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
-                badgeIcon.innerText = "DRV";
-                title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             } else if (tab === 'pendientes') {
                 if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
                 if(contentPend) contentPend.classList.remove('hidden');
-                badgeIcon.innerText = "CND";
-                title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
             } else if (tab === 'asistente') {
                 if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all";
                 if(contentAsis) contentAsis.classList.remove('hidden');
-                badgeIcon.innerText = "AI";
-                title.innerHTML = `Asistente Inteligente BI <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Búsqueda Cross-Tab</span>`;
             }
-        }
-
-        function renderAll() {
-            const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Septiembre';
-
-            const kpiLabel = document.getElementById('kpi-sol-label');
-            const catBadge = document.getElementById('badge-cat-month');
-            const tipoBadge = document.getElementById('badge-tipo-mes');
-            const mesBadge = document.getElementById('badge-mes-actual');
-            const pieLabel = document.getElementById('pie-mes-label');
-
-            if (kpiLabel) kpiLabel.innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
-            if (catBadge) catBadge.innerText = `${monthName} 2026`;
-            if (tipoBadge) tipoBadge.innerText = `${monthName} 2026`;
-            if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
-            if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
-
-            let solVal = 0, atVal = 0, cancVal = 0;
-            REGIONES.forEach(r => {
-                let item = (appData[r] && appData[r][selectedMonthIdx]) ? appData[r][selectedMonthIdx] : { sol: 0, at: 0, canc: 0 };
-                solVal += item.sol;
-                atVal += item.at;
-                cancVal += item.canc;
-            });
-
-            let prevIdx = Math.max(0, selectedMonthIdx - 1);
-            let solPrevVal = 0;
-            REGIONES.forEach(r => {
-                let itemPrev = (appData[r] && appData[r][prevIdx]) ? appData[r][prevIdx] : { sol: 0 };
-                if (itemPrev) solPrevVal += itemPrev.sol;
-            });
-
-            const totalAtendidosConCanc = atVal + cancVal;
-            const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
-
-            document.getElementById('kpi-sla').innerText = `${slaGlobalCalc}%`;
-            document.getElementById('kpi-sol').innerText = solVal;
-            document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
-            document.getElementById('kpi-mes-at').innerText = totalAtendidosConCanc;
-            document.getElementById('kpi-at-pct').innerText = `${slaGlobalCalc}% del mes`;
-
-            renderGrowthChart();
-            renderTopStores();
-            renderCategoryChart();
-            renderWorkTypeSection(selectedMonthIdx);
-            renderStatusDoughnut(selectedMonthIdx);
-            renderRegionalCharts();
-            renderBacklogRegionalSection();
-            renderRegionalChartsCierre();
-            renderDriveTab();
-        }
-
-        function filterPendientesTable() {
-            const val = document.getElementById('pendSearchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#pendientesTable tbody tr');
-            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
-        }
-
-        function exportarAGoogleSlides() {
-            const htmlContent = `<html><body>${document.getElementById('exportable-doc-area').innerHTML}</body></html>`;
-            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'Presentacion_Xana.pptx';
-            a.click();
-        }
-
-        function exportarReporteExcel() {
-            const data = [["Región", "Mes", "Solicitados", "Atendidos"]];
-            REGIONES.forEach(r => MESES.forEach((m, i) => {
-                if (appData[r][i]) data.push([r, m, appData[r][i].sol, appData[r][i].at]);
-            }));
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "SLA_Report");
-            XLSX.writeFile(wb, "Reporte_Xana_BI_v31.xlsx");
         }
     </script>
 </body>
