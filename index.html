@@ -483,7 +483,7 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
         const BACKEND_URL = "https://dashboard-infra-backend-6tx8iqug4-dashboard-infrax.vercel.app/api";
 
-        // RESTAURADO: Datos Históricos Originales exactos (Julio: 545, Agosto: 498, Septiembre: 113)
+        // RESTAURADO: Datos Históricos Originales (Julio: 545, Agosto: 498, Septiembre: 113)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -509,9 +509,9 @@
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 }, // Julio Occidente (182)
                 { sol: 170, at: 138, canc: 1, prevSolv: 15 },
                 { sol: 43,  at: 29,  canc: 0, prevSolv: 0  }, // Septiembre Occidente (43)
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0  }
+                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
@@ -529,7 +529,7 @@
             ]
         };
 
-        // Cierre de Mes (Gráfica Fija Estática)
+        // Cierre de Mes
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
@@ -591,6 +591,7 @@
             renderAll();
         };
 
+        // CORREGIDO: Asignación limpia y explícita del mes de Septiembre
         function generarMesesDinamicos() {
             const selector = document.getElementById('mesSelector');
             const startGrowthSel = document.getElementById('growthStartMonth');
@@ -604,28 +605,29 @@
 
             const mesActualIdx = 8; // Septiembre 2026
             const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
-            selects.forEach(s => { if(s) s.innerHTML = ''; });
+            
+            selects.forEach(s => { if (s) s.innerHTML = ''; });
 
             for (let i = 0; i <= mesActualIdx; i++) {
                 const text = `${MESES_LARGOS[i]} 2026`;
                 const shortText = MESES[i];
 
                 selects.forEach((s) => {
-                    if(!s) return;
+                    if (!s) return;
                     const opt = document.createElement('option');
-                    opt.value = i;
+                    opt.value = i.toString();
                     opt.innerText = (s === startGrowthSel || s === endGrowthSel || s === regStartSel || s === regEndSel || s === cierreStartSel || s === cierreEndSel) ? shortText : text;
                     s.appendChild(opt);
                 });
             }
 
-            if (selector) selector.value = mesActualIdx;
-            if (startGrowthSel) startGrowthSel.value = 0;
-            if (endGrowthSel) endGrowthSel.value = mesActualIdx;
-            if (regStartSel) regStartSel.value = 0;
-            if (regEndSel) regEndSel.value = mesActualIdx;
-            if (cierreStartSel) cierreStartSel.value = 0;
-            if (cierreEndSel) cierreEndSel.value = mesActualIdx;
+            selector.value = "8";
+            if (startGrowthSel) startGrowthSel.value = "0";
+            if (endGrowthSel) endGrowthSel.value = "8";
+            if (regStartSel) regStartSel.value = "0";
+            if (regEndSel) regEndSel.value = "8";
+            if (cierreStartSel) cierreStartSel.value = "0";
+            if (cierreEndSel) cierreEndSel.value = "8";
         }
 
         function syncWithOdoo() {
@@ -732,7 +734,7 @@
 
         function renderDriveTab() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
@@ -797,10 +799,10 @@
             container.innerHTML = '';
 
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[7] || {};
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[8] || topStoresByMonthAndRegion[7] || {};
             const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
             const items = monthData[keyReg] || monthData['Global'] || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
@@ -830,7 +832,7 @@
             if (charts.category) charts.category.destroy();
 
             const selector = document.getElementById('mesSelector');
-            const mIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const mIdx = selector ? parseInt(selector.value) : 8;
 
             let stats = { 'Electricidad': 45, 'Aire Acondicionado': 38, 'Civil': 18, 'Plomería': 8, 'Mobiliario': 4 };
             if (mIdx === 7) {
@@ -880,7 +882,7 @@
             if (charts.growth) charts.growth.destroy();
 
             const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || new Date().getMonth());
+            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 8);
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
 
             let dynamicVol = [];
@@ -1032,7 +1034,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || new Date().getMonth());
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 8);
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1122,7 +1124,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || new Date().getMonth());
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 8);
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -1273,7 +1275,6 @@
             lucide.createIcons();
 
             try {
-                // Intenta consultar la API de equipos en Vercel
                 let equiposData = [];
                 try {
                     const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
@@ -1441,7 +1442,7 @@
 
         function renderAll() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : new Date().getMonth();
+            const selectedMonthIdx = selector && selector.value !== "" ? parseInt(selector.value) : 8;
             const monthName = MESES_LARGOS[selectedMonthIdx] || 'Septiembre';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
