@@ -483,7 +483,6 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
         const BACKEND_URL = "https://dashboard-infra-backend-6tx8iqug4-dashboard-infrax.vercel.app/api";
 
-        // RESTAURADO: Datos Históricos Originales (Julio: 545, Agosto: 498, Septiembre: 113)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -492,9 +491,9 @@
                 { sol: 187, at: 157, canc: 24, prevSolv: 25 },
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 },
                 { sol: 382, at: 317, canc: 20, prevSolv: 35 },
-                { sol: 308, at: 271, canc: 15, prevSolv: 40 }, // Julio (308 + 182 + 55 = 545 total)
+                { sol: 308, at: 271, canc: 15, prevSolv: 40 },
                 { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 48,  at: 2,   canc: 0,  prevSolv: 0  }, // Septiembre Capital (48)
+                { sol: 48,  at: 2,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
@@ -506,9 +505,9 @@
                 { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
                 { sol: 62,  at: 53,  canc: 8, prevSolv: 8  },
                 { sol: 165, at: 153, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 163, canc: 4, prevSolv: 18 }, // Julio Occidente (182)
+                { sol: 182, at: 163, canc: 4, prevSolv: 18 },
                 { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 43,  at: 29,  canc: 0, prevSolv: 0  }, // Septiembre Occidente (43)
+                { sol: 43,  at: 29,  canc: 0, prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
@@ -520,16 +519,15 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, // Julio Oriente (55)
+                { sol: 55, at: 40, canc: 0, prevSolv: 0 },
                 { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 22, at: 17, canc: 0, prevSolv: 0 }, // Septiembre Oriente (22)
+                { sol: 22, at: 17, canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
 
-        // Cierre de Mes
         let cierreData = {
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
@@ -573,11 +571,10 @@
         let driveReportesGlobalData = [];
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
-        let rawTicketsGlobal = [];
         
         let monthStatusData = {
             7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 },
-            8: { resuelto: 48, asignado: 57, progreso: 7, procura: 1, cancelada: 0 } // Septiembre 2026
+            8: { resuelto: 48, asignado: 57, progreso: 7, procura: 1, cancelada: 0 }
         };
         let charts = {};
 
@@ -592,41 +589,21 @@
         };
 
         function generarMesesDinamicos() {
-            const selector = document.getElementById('mesSelector');
-            const startGrowthSel = document.getElementById('growthStartMonth');
-            const endGrowthSel = document.getElementById('growthEndMonth');
-            const regStartSel = document.getElementById('regStartMonth');
-            const regEndSel = document.getElementById('regEndMonth');
-            const cierreStartSel = document.getElementById('cierreStartMonth');
-            const cierreEndSel = document.getElementById('cierreEndMonth');
-
-            if (!selector) return;
-
-            const mesActualIdx = 8; // Septiembre 2026
-            const selects = [selector, startGrowthSel, endGrowthSel, regStartSel, regEndSel, cierreStartSel, cierreEndSel];
+            const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
             
-            selects.forEach(s => { if (s) s.innerHTML = ''; });
-
-            for (let i = 0; i <= mesActualIdx; i++) {
-                const text = `${MESES_LARGOS[i]} 2026`;
-                const shortText = MESES[i];
-
-                selects.forEach((s) => {
-                    if (!s) return;
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.innerHTML = '';
+                for (let i = 0; i <= 8; i++) {
                     const opt = document.createElement('option');
                     opt.value = i.toString();
-                    opt.innerText = (s === startGrowthSel || s === endGrowthSel || s === regStartSel || s === regEndSel || s === cierreStartSel || s === cierreEndSel) ? shortText : text;
-                    s.appendChild(opt);
-                });
-            }
-
-            selector.value = "8";
-            if (startGrowthSel) startGrowthSel.value = "0";
-            if (endGrowthSel) endGrowthSel.value = "8";
-            if (regStartSel) regStartSel.value = "0";
-            if (regEndSel) regEndSel.value = "8";
-            if (cierreStartSel) cierreStartSel.value = "0";
-            if (cierreEndSel) cierreEndSel.value = "8";
+                    opt.innerText = (id.includes('Start') || id.includes('End')) ? MESES[i] : `${MESES_LARGOS[i]} 2026`;
+                    el.appendChild(opt);
+                }
+                if (id.includes('Start')) el.value = "0";
+                else el.value = "8";
+            });
         }
 
         async function syncWithOdoo() {
@@ -638,15 +615,13 @@
             try {
                 const res = await fetch(`${BACKEND_URL}/tickets`);
                 const result = await res.json();
-
                 if (result && result.total) {
-                    console.log("Sincronización Odoo Vercel OK:", result.total);
                     appData.Capital[8] = { sol: 48, at: 2, canc: 0, prevSolv: 0 };
                     appData.Occidente[8] = { sol: 43, at: 29, canc: 0, prevSolv: 0 };
                     appData.Oriente[8] = { sol: 22, at: 17, canc: 0, prevSolv: 0 };
                 }
-            } catch (err) {
-                console.warn("Error en sync Odoo vía Vercel:", err);
+            } catch (e) {
+                console.warn("Lógica de respaldo activa:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -1245,8 +1220,10 @@
                     </div>`;
             });
 
-            document.getElementById('kpi-pend').innerText = 247;
-            document.getElementById('kpi-pend-sub').innerText = "203 + 29 + 15";
+            const pendElem = document.getElementById('kpi-pend');
+            const pendSub = document.getElementById('kpi-pend-sub');
+            if (pendElem) pendElem.innerText = 247;
+            if (pendSub) pendSub.innerText = "203 + 29 + 15";
         }
 
         async function ejecutarConsultaAI() {
@@ -1391,7 +1368,9 @@
                         ${solpedHTML}
                     </div>`;
                 lucide.createIcons();
-            }, 300);
+            } catch(e) {
+                console.error("Error consultando asistente:", e);
+            }
         }
 
         function switchTab(tab) {
@@ -1421,23 +1400,23 @@
             if (tab === 'dashboard') {
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
                 contentDash.classList.remove('hidden');
-                badgeIcon.innerText = "SLA";
-                title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
+                if(badgeIcon) badgeIcon.innerText = "SLA";
+                if(title) title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
             } else if (tab === 'drive') {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
-                badgeIcon.innerText = "DRV";
-                title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+                if(badgeIcon) badgeIcon.innerText = "DRV";
+                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             } else if (tab === 'pendientes') {
                 if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
                 if(contentPend) contentPend.classList.remove('hidden');
-                badgeIcon.innerText = "CND";
-                title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
+                if(badgeIcon) badgeIcon.innerText = "CND";
+                if(title) title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
             } else if (tab === 'asistente') {
                 if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all";
                 if(contentAsis) contentAsis.classList.remove('hidden');
-                badgeIcon.innerText = "AI";
-                title.innerHTML = `Asistente Inteligente BI <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Búsqueda Cross-Tab</span>`;
+                if(badgeIcon) badgeIcon.innerText = "AI";
+                if(title) title.innerHTML = `Asistente Inteligente BI <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Búsqueda Cross-Tab</span>`;
             }
         }
 
@@ -1476,11 +1455,17 @@
             const totalAtendidosConCanc = atVal + cancVal;
             const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
 
-            document.getElementById('kpi-sla').innerText = `${slaGlobalCalc}%`;
-            document.getElementById('kpi-sol').innerText = solVal;
-            document.getElementById('kpi-sol-sub').innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
-            document.getElementById('kpi-mes-at').innerText = totalAtendidosConCanc;
-            document.getElementById('kpi-at-pct').innerText = `${slaGlobalCalc}% del mes`;
+            const slaElem = document.getElementById('kpi-sla');
+            const solElem = document.getElementById('kpi-sol');
+            const solSub = document.getElementById('kpi-sol-sub');
+            const mesAtElem = document.getElementById('kpi-mes-at');
+            const atPct = document.getElementById('kpi-at-pct');
+
+            if(slaElem) slaElem.innerText = `${slaGlobalCalc}%`;
+            if(solElem) solElem.innerText = solVal;
+            if(solSub) solSub.innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
+            if(mesAtElem) mesAtElem.innerText = totalAtendidosConCanc;
+            if(atPct) atPct.innerText = `${slaGlobalCalc}% del mes`;
 
             renderGrowthChart();
             renderTopStores();
