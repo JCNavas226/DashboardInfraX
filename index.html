@@ -655,7 +655,7 @@
             document.body.appendChild(s);
         }
 
-        // CARGA DIRECTA DESDE GOOGLE APPS SCRIPT PARA SOLICITUDES DE PEDIDO (> 3 MESES)
+        // CARGA DIRECTA DE SOLICITUDES DE PEDIDO (SP > 3 MESES) DESDE GOOGLE APPS SCRIPT
         function cargarCasosPendientes() {
             window.solpedCallback = function(res) {
                 if (Array.isArray(res) && res.length > 0) {
@@ -713,7 +713,7 @@
             lucide.createIcons();
         }
 
-        // CARGA DIRECTA DESDE GOOGLE APPS SCRIPT PARA REPORTES DRIVE
+        // CARGA DIRECTA DE REPORTES DRIVE DESDE GOOGLE APPS SCRIPT
         function cargarReportesDrive() {
             window.driveCallback = function(res) {
                 if (Array.isArray(res) && res.length > 0) {
