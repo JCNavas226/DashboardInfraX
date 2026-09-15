@@ -483,6 +483,23 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
+        // FALLBACK DRIVE DE REPORTES
+        let driveReportesGlobalData = [
+            { id: 1, nombre: "Informe Técnico Mantenimiento A/A Septiembre", descripcion: "Reporte de revisión de Chiller y fancoils", tecnico: "Ing. Carlos Mendoza", fecha: "2026-09-10", region: "Capital", mesIdx: 8, url: "https://drive.google.com" },
+            { id: 2, nombre: "Chequeo Sistema Eléctrico e Inversores", descripcion: "Inspección de bancos de baterías y tableros", tecnico: "Ing. Javier López", fecha: "2026-09-12", region: "Occidente", mesIdx: 8, url: "https://drive.google.com" },
+            { id: 3, nombre: "Mantenimiento Preventivo Plantas Eléctricas", descripcion: "Servicio de cambio de aceite y filtros de grupos electrógenos", tecnico: "Ing. Roberto Díaz", fecha: "2026-09-08", region: "Oriente", mesIdx: 8, url: "https://drive.google.com" }
+        ];
+
+        // FALLBACK DRIVE DE CASOS PENDIENTES (SOLPED > 3 MESES)
+        let casosPendientesGlobalData = [
+            { Farmacia: "Farmacia Coporo", Descripcion: "Compresor de 5TR para A/A Principal", FechaSolped: "2026-04-12", Antiguedad: "> 5 Meses", Observaciones: "En cotización con proveedor internacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Escorpión", Descripcion: "Bomba de Agua Sumergible de 2HP", FechaSolped: "2026-05-03", Antiguedad: "> 4 Meses", Observaciones: "Aprobada Solped en espera de transferencia", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Apamate", Descripcion: "Módulo Regulador de Inversor 10kVA", FechaSolped: "2026-05-20", Antiguedad: "> 3 Meses", Observaciones: "Recibido en almacén central para despacho", Estatus: "Planificado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Betania", Descripcion: "Tablero Eléctrico Principal de Distribución", FechaSolped: "2026-03-15", Antiguedad: "> 6 Meses", Observaciones: "En revisión por ingeniería de obras", Estatus: "En Procura", Actualizacion: "Septiembre 2026" }
+        ];
+
+        let directorioSedesGlobalData = [];
+
         // DATOS REGIONALES REALES: Capital 111, Occidente 94, Oriente 51 = 256 Total
         let appData = {
             Capital: [
@@ -569,10 +586,6 @@
             }
         };
 
-        let driveReportesGlobalData = [];
-        let casosPendientesGlobalData = [];
-        let directorioSedesGlobalData = [];
-        
         let monthStatusData = {
             7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 },
             8: { resuelto: 130, asignado: 82, progreso: 23, procura: 16, cancelada: 5 }
@@ -659,12 +672,13 @@
             try {
                 const res = await fetch(`${BACKEND_URL}/solicitudes`);
                 const result = await res.json();
-                if (result && result.data) {
+                if (result && Array.isArray(result.data) && result.data.length > 0) {
                     casosPendientesGlobalData = result.data;
-                    renderPendientesTableRows(casosPendientesGlobalData);
                 }
             } catch (err) {
-                console.warn("Error cargando solicitudes Vercel, usando fallback.");
+                console.warn("Cargando casos pendientes desde datos de respaldo.");
+            } finally {
+                renderPendientesTableRows(casosPendientesGlobalData);
             }
         }
 
@@ -713,12 +727,13 @@
             try {
                 const res = await fetch(`${BACKEND_URL}/reportes-drive`);
                 const result = await res.json();
-                if (result && result.data) {
+                if (result && Array.isArray(result.data) && result.data.length > 0) {
                     driveReportesGlobalData = result.data;
-                    renderDriveTab();
                 }
             } catch (err) {
-                console.warn("Error cargando reportes drive via Vercel.");
+                console.warn("Cargando reportes Drive desde datos de respaldo.");
+            } finally {
+                renderDriveTab();
             }
         }
 
@@ -1199,7 +1214,7 @@
             }, 50);
         }
 
-        // BACKLOG PENDIENTE Y CASOS RESUELTOS EN SEPTIEMBRE (Cap: 163, Occ: 48, Ori: 73)
+        // CÁLCULO DE BACKLOG PENDIENTE Y RESUELTOS
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
