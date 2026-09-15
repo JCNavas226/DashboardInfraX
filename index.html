@@ -480,7 +480,8 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
+        // URL ACTUALIZADA DEL DESPLIEGUE PÚBLICO DE GOOGLE APPS SCRIPT
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
         let driveReportesGlobalData = [];
@@ -655,14 +656,20 @@
             document.body.appendChild(s);
         }
 
-        // CARGA DIRECTA DE SOLICITUDES DE PEDIDO (SP > 3 MESES) DESDE GOOGLE APPS SCRIPT
+        // FUNCIÓN MEJORADA: PROCESA RESPUESTAS JSONP DIRECTAS Y ENCADENADAS DE SOLPED
         function cargarCasosPendientes() {
             window.solpedCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) {
-                    casosPendientesGlobalData = res;
+                let items = [];
+                if (Array.isArray(res)) items = res;
+                else if (res && Array.isArray(res.data)) items = res.data;
+                else if (res && Array.isArray(res.casos)) items = res.casos;
+
+                if (items.length > 0) {
+                    casosPendientesGlobalData = items;
                     renderPendientesTableRows(casosPendientesGlobalData);
                 }
             };
+
             const oldScript = document.getElementById('script-solped');
             if (oldScript) oldScript.remove();
 
@@ -713,14 +720,20 @@
             lucide.createIcons();
         }
 
-        // CARGA DIRECTA DE REPORTES DRIVE DESDE GOOGLE APPS SCRIPT
+        // FUNCIÓN MEJORADA: PROCESA RESPUESTAS JSONP DIRECTAS Y ENCADENADAS DE DRIVE
         function cargarReportesDrive() {
             window.driveCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) {
-                    driveReportesGlobalData = res;
+                let items = [];
+                if (Array.isArray(res)) items = res;
+                else if (res && Array.isArray(res.data)) items = res.data;
+                else if (res && Array.isArray(res.files)) items = res.files;
+
+                if (items.length > 0) {
+                    driveReportesGlobalData = items;
                     renderDriveTab();
                 }
             };
+
             const oldScript = document.getElementById('script-drive');
             if (oldScript) oldScript.remove();
 
