@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive via Vercel...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
         <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
                 <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
-                <span class="font-mono text-[10px] text-slate-500">API REST</span>
+                <span class="font-mono text-[10px] text-slate-500">JSON-RPC / REST</span>
             </div>
             <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR
@@ -483,7 +483,6 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzorhziA6QdpFRvk-C-DkQVhnBSDV96hUWmUYArTUY3fDfu4gkYQ8udAI3aA5EH0yLs/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        // LIMPIO: Arreglo de Drive sin nombres ni datos ficticios predefinidos
         let driveReportesGlobalData = [];
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
@@ -656,18 +655,21 @@
             document.body.appendChild(s);
         }
 
-        async function cargarCasosPendientes() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/solicitudes`);
-                const result = await res.json();
-                if (result && Array.isArray(result.data)) {
-                    casosPendientesGlobalData = result.data;
+        // CARGA DIRECTA DESDE GOOGLE APPS SCRIPT PARA SOLICITUDES DE PEDIDO (> 3 MESES)
+        function cargarCasosPendientes() {
+            window.solpedCallback = function(res) {
+                if (Array.isArray(res) && res.length > 0) {
+                    casosPendientesGlobalData = res;
+                    renderPendientesTableRows(casosPendientesGlobalData);
                 }
-            } catch (err) {
-                console.warn("No se cargaron Solicitudes de Pedido desde la API.");
-            } finally {
-                renderPendientesTableRows(casosPendientesGlobalData);
-            }
+            };
+            const oldScript = document.getElementById('script-solped');
+            if (oldScript) oldScript.remove();
+
+            const s = document.createElement('script');
+            s.id = 'script-solped';
+            s.src = `${APPSCRIPT_URL}?action=casosPendientes&callback=solpedCallback&_nocache=${Date.now()}`;
+            document.body.appendChild(s);
         }
 
         function renderPendientesTableRows(rows) {
@@ -711,22 +713,21 @@
             lucide.createIcons();
         }
 
-        // FUNCIÓN DE CÁRGA LIMPIA DRIVE SIN NOMBRES FICTICIOS
-        async function cargarReportesDrive() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/reportes-drive`);
-                const result = await res.json();
-                if (result && Array.isArray(result.data)) {
-                    driveReportesGlobalData = result.data;
-                } else {
-                    driveReportesGlobalData = [];
+        // CARGA DIRECTA DESDE GOOGLE APPS SCRIPT PARA REPORTES DRIVE
+        function cargarReportesDrive() {
+            window.driveCallback = function(res) {
+                if (Array.isArray(res) && res.length > 0) {
+                    driveReportesGlobalData = res;
+                    renderDriveTab();
                 }
-            } catch (err) {
-                console.warn("No se encontraron reportes subidos en la carpeta de Drive.");
-                driveReportesGlobalData = [];
-            } finally {
-                renderDriveTab();
-            }
+            };
+            const oldScript = document.getElementById('script-drive');
+            if (oldScript) oldScript.remove();
+
+            const s = document.createElement('script');
+            s.id = 'script-drive';
+            s.src = `${APPSCRIPT_URL}?action=reportesDrive&callback=driveCallback&_nocache=${Date.now()}`;
+            document.body.appendChild(s);
         }
 
         function renderDriveTab() {
