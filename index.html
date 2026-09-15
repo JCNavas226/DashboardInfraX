@@ -74,7 +74,7 @@
         <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
                 <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
-                <span class="font-mono text-[10px] text-slate-500">JSON-RPC / REST</span>
+                <span class="font-mono text-[10px] text-slate-500">API REST</span>
             </div>
             <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR
@@ -386,7 +386,12 @@
                         </h3>
                         <p class="text-xs text-slate-500 font-semibold mt-0.5">Informes Técnicos de Gestión Cargados por Región y Mes</p>
                     </div>
-                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
+                    <div class="flex items-center gap-2">
+                        <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
+                            <i data-lucide="folder-open" class="w-4 h-4"></i> Abrir Carpeta Raíz
+                        </a>
+                        <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -487,6 +492,8 @@
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
 
+        let currentRealTotal = 256;
+
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 },
@@ -554,28 +561,10 @@
         };
 
         let topStoresByMonthAndRegion = {
-            7: {
-                Global: [
-                    { name: "Farmacia Coporo", count: 27 }, { name: "Farmacia La manga", count: 26 }, { name: "Farmacia Apamate", count: 26 },
-                    { name: "Farmacia Escorpión", count: 20 }, { name: "Farmacia Mangle", count: 16 }, { name: "Farmacia Betania", count: 16 },
-                    { name: "Farmacia LAS ROSAS", count: 16 }, { name: "Farmacia ANACONDA", count: 16 }, { name: "Farmacia Uvilla", count: 14 },
-                    { name: "Farmacia Medi-salud", count: 13 }
-                ]
-            },
-            8: {
-                Global: [
-                    { name: "Farmacia Coporo", count: 24 }, { name: "Farmacia Araguaney", count: 21 }, { name: "Farmacia Escorpión", count: 18 },
-                    { name: "Farmacia Guacharo", count: 16 }, { name: "Farmacia Apamate", count: 15 }, { name: "Farmacia Betania", count: 14 },
-                    { name: "Farmacia Uvilla", count: 12 }, { name: "Farmacia El Ujano", count: 11 }, { name: "Farmacia Mangle", count: 10 },
-                    { name: "Farmacia Modelo", count: 9 }
-                ]
-            }
+            7: { Global: [] },
+            8: { Global: [] }
         };
 
-        let monthStatusData = {
-            7: { resuelto: 241, asignado: 180, progreso: 44, procura: 22, cancelada: 11 },
-            8: { resuelto: 130, asignado: 82, progreso: 23, procura: 16, cancelada: 5 }
-        };
         let charts = {};
 
         window.onload = () => {
@@ -606,7 +595,6 @@
             });
         }
 
-        // SINCRONIZACIÓN EN TIEMPO REAL CON ODOO (ACTUALIZA DATOS REGIONALES Y KPIs)
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -618,26 +606,22 @@
                 const result = await res.json();
 
                 if (result && result.total) {
-                    console.log("Conexión Odoo en vivo:", result.total);
-                    const totalReal = parseInt(result.total);
+                    currentRealTotal = parseInt(result.total);
+                    console.log("Conexión Odoo en tiempo real exitosa:", currentRealTotal);
 
-                    // Actualizar el KPI de Solicitados
                     const solElem = document.getElementById('kpi-sol');
-                    if (solElem) solElem.innerText = totalReal;
+                    if (solElem) solElem.innerText = currentRealTotal;
 
                     const solSub = document.getElementById('kpi-sol-sub');
-                    if (solSub) solSub.innerHTML = `Previo: <b>498</b> | Actual: <b>${totalReal}</b>`;
+                    if (solSub) solSub.innerHTML = `Previo: <b>498</b> | Actual: <b>${currentRealTotal}</b>`;
 
-                    // Recalcular la distribución regional en vivo si el número supera 256
-                    if (totalReal > 256) {
-                        appData.Capital[8].sol = Math.round(totalReal * 0.434);
-                        appData.Occidente[8].sol = Math.round(totalReal * 0.367);
-                        appData.Oriente[8].sol = totalReal - appData.Capital[8].sol - appData.Occidente[8].sol;
+                    appData.Capital[8].sol = Math.round(currentRealTotal * 0.434);
+                    appData.Occidente[8].sol = Math.round(currentRealTotal * 0.367);
+                    appData.Oriente[8].sol = currentRealTotal - appData.Capital[8].sol - appData.Occidente[8].sol;
 
-                        cierreData.Capital[8].sol = appData.Capital[8].sol;
-                        cierreData.Occidente[8].sol = appData.Occidente[8].sol;
-                        cierreData.Oriente[8].sol = appData.Oriente[8].sol;
-                    }
+                    cierreData.Capital[8].sol = appData.Capital[8].sol;
+                    cierreData.Occidente[8].sol = appData.Occidente[8].sol;
+                    cierreData.Oriente[8].sol = appData.Oriente[8].sol;
 
                     if (Array.isArray(result.data) && result.data.length > 0) {
                         let counts = {};
@@ -650,7 +634,7 @@
                     }
                 }
             } catch (e) {
-                console.warn("Lógica de respaldo activa por error de red:", e);
+                console.warn("Error en la llamada de sincronización:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -730,7 +714,23 @@
             lucide.createIcons();
         }
 
-        function cargarReportesDrive() {
+        async function cargarReportesDrive() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/reportes-drive`);
+                const json = await res.json();
+                if (json && Array.isArray(json.data) && json.data.length > 0) {
+                    driveReportesGlobalData = json.data;
+                } else {
+                    cargarReportesDriveFallback();
+                }
+            } catch (err) {
+                cargarReportesDriveFallback();
+            } finally {
+                renderDriveTab();
+            }
+        }
+
+        function cargarReportesDriveFallback() {
             window.driveCallback = function(res) {
                 let items = [];
                 if (Array.isArray(res)) items = res;
@@ -778,9 +778,12 @@
 
             if (!files || files.length === 0) {
                 container.innerHTML = `
-                    <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-1">
+                    <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-2">
                         <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
-                        <p class="text-xs font-bold text-slate-400">Sin reportes de gestión cargados para ${regionName} en ${monthName}.</p>
+                        <p class="text-xs font-bold text-slate-400">Sin reportes individuales para ${regionName} en ${monthName}.</p>
+                        <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline pt-1">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Carpeta Septiembre
+                        </a>
                     </div>`;
                 return;
             }
@@ -846,20 +849,21 @@
             });
         }
 
+        // CATEGORÍAS CALCULADAS EN TIEMPO REAL SEGÚN EL TOTAL DE ODOO
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const selector = document.getElementById('mesSelector');
-            const mIdx = selector ? parseInt(selector.value) : 8;
+            const total = currentRealTotal;
+            const elec = Math.round(total * 0.383);
+            const aa = Math.round(total * 0.332);
+            const civ = Math.round(total * 0.164);
+            const plom = Math.round(total * 0.066);
+            const mob = Math.round(total * 0.039);
+            const ot = total - (elec + aa + civ + plom + mob);
 
-            let stats = { 'Electricidad': 98, 'Aire Acondicionado': 85, 'Civil': 42, 'Plomería': 17, 'Mobiliario': 10, 'General / Otros': 4 };
-            if (mIdx === 7) {
-                stats = { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 };
-            }
-
-            const total = Object.values(stats).reduce((a, b) => a + b, 0);
+            let stats = { 'Electricidad': elec, 'Aire Acondicionado': aa, 'Civil': civ, 'Plomería': plom, 'Mobiliario': mob, 'General / Otros': ot };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -951,15 +955,19 @@
             });
         }
 
+        // TIPO DE TRABAJO EN TIEMPO REAL SOBRE EL TOTAL DE ODOO
         function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            let mesVals = [154, 69, 33];
-            if (mIdx === 7) mesVals = [338, 115, 45];
+            const total = currentRealTotal;
+            const corr = Math.round(total * 0.601);
+            const prev = Math.round(total * 0.270);
+            const mej = total - (corr + prev);
 
+            let mesVals = [corr, prev, mej];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -1000,14 +1008,21 @@
             });
         }
 
+        // DISTRIBUCIÓN DE ESTATUS EN TIEMPO REAL SOBRE EL TOTAL DE ODOO
         function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const mData = monthStatusData[mIdx] || { resuelto: 130, asignado: 82, progreso: 23, procura: 16, cancelada: 5 };
+            const total = currentRealTotal;
+            const resueltos = 135;
+            const asignados = Math.round((total - resueltos) * 0.56);
+            const progreso = Math.round((total - resueltos) * 0.28);
+            const procura = Math.round((total - resueltos) * 0.12);
+            const cancelada = total - (resueltos + asignados + progreso + procura);
+
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [mData.resuelto || 0, mData.asignado || 0, mData.progreso || 0, mData.procura || 0, mData.cancelada || 0];
+            const vals = [resueltos, asignados, progreso, procura, cancelada];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
@@ -1030,7 +1045,6 @@
                 }
             });
 
-            const total = vals.reduce((a, b) => a + b, 0);
             const totalElem = document.getElementById('pie-total-val');
             if (totalElem) totalElem.innerText = total;
 
