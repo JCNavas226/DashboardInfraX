@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo API en vivo...</p>
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">52.7%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">0.0%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -192,7 +192,6 @@
                     </div>
                 </div>
 
-                <!-- NUEVO KPI: PROMEDIO DE GASTOS POR TIENDA (GOOGLE SHEETS) -->
                 <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-purple-600 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -229,7 +228,7 @@
                 <div class="h-[340px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- TOP 10 TIENDAS Y CATEGORÍAS CON ATENDIDOS -->
+            <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
                     <div>
@@ -507,51 +506,36 @@
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
 
-        let currentRealTotal = 280;
-        let currentRealAtendidos = 135;
+        let currentRealTotal = 283;
+        let currentRealAtendidos = 183;
+
+        let dynamicStatusCounts = { resuelto: 183, asignado: 60, progreso: 25, procura: 10, cancelada: 5 };
+        let dynamicCategoryCounts = { 'Electricidad': 108, 'Aire Acondicionado': 94, 'Civil': 46, 'Plomería': 18, 'Mobiliario': 11, 'General / Otros': 6 };
 
         let appData = {
             Capital: [
-                { sol: 206, at: 184, canc: 19, prevSolv: 12 },
-                { sol: 195, at: 161, canc: 30, prevSolv: 15 },
-                { sol: 216, at: 167, canc: 22, prevSolv: 20 },
-                { sol: 187, at: 157, canc: 24, prevSolv: 25 },
-                { sol: 303, at: 241, canc: 21, prevSolv: 30 },
-                { sol: 382, at: 317, canc: 20, prevSolv: 35 },
-                { sol: 308, at: 271, canc: 15, prevSolv: 40 },
-                { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 122, at: 45,  canc: 4,  prevSolv: 30 },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
+                { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
+                { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
+                { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
+                { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
+                { sol: 134, at: 74,  canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  },
-                { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
-                { sol: 192, at: 184, canc: 4, prevSolv: 12 },
-                { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  },
-                { sol: 165, at: 153, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 163, canc: 4, prevSolv: 18 },
-                { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 103, at: 51,  canc: 0, prevSolv: 15 },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
+                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  }, { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
+                { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
+                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
+                { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
+                { sol: 95,  at: 66,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 0 },
-                { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 55, at: 34, canc: 1, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
+                { sol: 54, at: 38, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
 
@@ -559,28 +543,25 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 122, at: 45,  canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 134, at: 74,  canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 103, at: 51,  canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 95,  at: 66,  canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 55, at: 34, canc: 1 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 54, at: 38, canc: 1 },
                 { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
 
-        let topStoresByMonthAndRegion = {
-            7: { Global: [] },
-            8: { Global: [] }
-        };
-
+        let topStoresByMonthAndRegion = { 7: { Global: [] }, 8: { Global: [] } };
+        let monthStatusData = { 7: {}, 8: {} };
         let charts = {};
 
         window.onload = () => {
@@ -596,7 +577,6 @@
 
         function generarMesesDinamicos() {
             const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
-            
             ids.forEach(id => {
                 const el = document.getElementById(id);
                 if (!el) return;
@@ -612,6 +592,7 @@
             });
         }
 
+        // PROCESAMIENTO EN TIEMPO REAL SIN CACHÉ DE LA API REST DE ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -624,7 +605,7 @@
 
                 if (result && result.total) {
                     currentRealTotal = parseInt(result.total);
-                    console.log("Conexión Odoo en tiempo real sin caché:", currentRealTotal);
+                    console.log("Datos Odoo procesados en tiempo real:", currentRealTotal);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -632,32 +613,62 @@
                     const solSub = document.getElementById('kpi-sol-sub');
                     if (solSub) solSub.innerHTML = `Previo: <b>498</b> | Actual: <b>${currentRealTotal}</b>`;
 
-                    appData.Capital[8].sol = Math.round(currentRealTotal * 0.434);
-                    appData.Occidente[8].sol = Math.round(currentRealTotal * 0.367);
-                    appData.Oriente[8].sol = currentRealTotal - appData.Capital[8].sol - appData.Occidente[8].sol;
-
-                    cierreData.Capital[8].sol = appData.Capital[8].sol;
-                    cierreData.Occidente[8].sol = appData.Occidente[8].sol;
-                    cierreData.Oriente[8].sol = appData.Oriente[8].sol;
-
                     if (Array.isArray(result.data) && result.data.length > 0) {
-                        let counts = {};
-                        let atendidosCount = 0;
+                        let counts = {}, regSol = { Capital: 0, Occidente: 0, Oriente: 0 }, regAt = { Capital: 0, Occidente: 0, Oriente: 0 };
+                        let stCounts = { resuelto: 0, asignado: 0, progreso: 0, procura: 0, cancelada: 0 };
+                        let catCounts = { 'Electricidad': 0, 'Aire Acondicionado': 0, 'Civil': 0, 'Plomería': 0, 'Mobiliario': 0, 'General / Otros': 0 };
+
                         result.data.forEach(t => {
                             let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                             counts[storeName] = (counts[storeName] || 0) + 1;
-                            
+
+                            let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                            let reg = "Capital";
+                            if (team.includes("occidente")) reg = "Occidente";
+                            else if (team.includes("oriente")) reg = "Oriente";
+                            regSol[reg]++;
+
                             let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                            if (stage.includes("resuelto") || stage.includes("cancelad")) atendidosCount++;
+                            if (stage.includes("resuelto")) { stCounts.resuelto++; regAt[reg]++; }
+                            else if (stage.includes("cancelad")) { stCounts.cancelada++; regAt[reg]++; }
+                            else if (stage.includes("progreso")) stCounts.progreso++;
+                            else if (stage.includes("procura")) stCounts.procura++;
+                            else stCounts.asignado++;
+
+                            let catName = "General / Otros";
+                            if (t.category_id) {
+                                let cStr = (Array.isArray(t.category_id) ? t.category_id[1] : t.category_id).toLowerCase();
+                                if (cStr.includes("electr")) catName = "Electricidad";
+                                else if (cStr.includes("aire")) catName = "Aire Acondicionado";
+                                else if (cStr.includes("civil")) catName = "Civil";
+                                else if (cStr.includes("plomer")) catName = "Plomería";
+                                else if (cStr.includes("mobil")) catName = "Mobiliario";
+                            }
+                            catCounts[catName]++;
                         });
-                        
-                        if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
+
+                        if (regSol.Capital > 0) appData.Capital[8].sol = regSol.Capital;
+                        if (regSol.Occidente > 0) appData.Occidente[8].sol = regSol.Occidente;
+                        if (regSol.Oriente > 0) appData.Oriente[8].sol = regSol.Oriente;
+
+                        if (regAt.Capital > 0) appData.Capital[8].at = regAt.Capital;
+                        if (regAt.Occidente > 0) appData.Occidente[8].at = regAt.Occidente;
+                        if (regAt.Oriente > 0) appData.Oriente[8].at = regAt.Oriente;
+
+                        cierreData.Capital[8].sol = appData.Capital[8].sol;
+                        cierreData.Occidente[8].sol = appData.Occidente[8].sol;
+                        cierreData.Oriente[8].sol = appData.Oriente[8].sol;
+
+                        currentRealAtendidos = stCounts.resuelto + stCounts.cancelada;
+                        dynamicStatusCounts = stCounts;
+                        dynamicCategoryCounts = catCounts;
+
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
                         topStoresByMonthAndRegion[8].Global = sorted;
                     }
                 }
             } catch (e) {
-                console.warn("Error en la llamada de sincronización:", e);
+                console.warn("Error leyendo API REST:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -665,7 +676,6 @@
             }
         }
 
-        // CARGA DE GASTOS MENSUALES Y PROMEDIO POR TIENDA DE GOOGLE SHEETS
         function cargarGastosMensualesDrive() {
             window.gastosCallback = function(res) {
                 if (res && res.promedioPorTienda) {
@@ -887,23 +897,14 @@
             });
         }
 
-        // CATEGORÍAS EN TIEMPO REAL INCLUYENDO CONTEO DE TICKETS ATENDIDOS
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const elec = Math.round(total * 0.382);
-            const aa = Math.round(total * 0.332);
-            const civ = Math.round(total * 0.164);
-            const plom = Math.round(total * 0.064);
-            const mob = Math.round(total * 0.039);
-            const ot = total - (elec + aa + civ + plom + mob);
+            const stats = dynamicCategoryCounts;
 
-            let stats = { 'Electricidad': elec, 'Aire Acondicionado': aa, 'Civil': civ, 'Plomería': plom, 'Mobiliario': mob, 'General / Otros': ot };
-
-            // Proporción de Atendidos
             const atTotal = currentRealAtendidos;
             const atStats = {
                 'Electricidad': Math.round(atTotal * 0.38),
@@ -1064,11 +1065,11 @@
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = currentRealAtendidos;
-            const asignados = Math.round((total - resueltos) * 0.56);
-            const progreso = Math.round((total - resueltos) * 0.28);
-            const procura = Math.round((total - resueltos) * 0.12);
-            const cancelada = total - (resueltos + asignados + progreso + procura);
+            const resueltos = dynamicStatusCounts.resuelto || currentRealAtendidos;
+            const asignados = dynamicStatusCounts.asignado || Math.round((total - resueltos) * 0.56);
+            const progreso = dynamicStatusCounts.progreso || Math.round((total - resueltos) * 0.28);
+            const procura = dynamicStatusCounts.procura || Math.round((total - resueltos) * 0.12);
+            const cancelada = dynamicStatusCounts.cancelada || (total - (resueltos + asignados + progreso + procura));
 
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
             const vals = [resueltos, asignados, progreso, procura, cancelada];
