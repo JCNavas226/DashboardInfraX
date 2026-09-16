@@ -382,40 +382,40 @@
         <div id="tab-content-gastos" class="space-y-8 hidden">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS MANTENIMIENTO (COL D)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-mtto-tab">$84,320.00</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Total Consolidado Mensual</p>
+                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS MTTO 52 TIENDAS Y CORP (COL D)</span>
+                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-mtto-tab">$42,654.82</h3>
+                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Total Consolidado Acumulado</p>
                 </div>
                 <div class="card-pro bg-white border-l-4 border-l-indigo-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS CORPORATIVOS (COL E)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-corp-tab">$26,520.00</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Infraestructura Central</p>
+                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS EN CORPORATIVO (COL E)</span>
+                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-corp-tab">$14,598.28</h3>
+                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Gasto Directo Sede Central</p>
                 </div>
                 <div class="card-pro bg-white border-l-4 border-l-emerald-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">VENTAS TOTALES (COL B)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-ventas-totales-tab">$3,840,500.00</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Facturación Bruta Red</p>
+                    <span class="text-xs font-extrabold text-slate-400 uppercase">INGRESO / VENTAS (COL B)</span>
+                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-ventas-totales-tab">$2,436,330.61</h3>
+                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Ingreso Total Bruto Red</p>
                 </div>
             </div>
 
-            <!-- GRÁFICA MIXTA: VENTAS VS % GASTO DE MANTENIMIENTO -->
+            <!-- GRÁFICA MIXTA: INGRESO VS % GASTOS MTTO / VENTA -->
             <div class="card-pro p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-purple-600"></i> Relación de Ventas vs % Gasto de Mantenimiento (Columna B vs Columna J)
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-purple-600"></i> Relación de Ingreso vs % Gastos Mtto / Venta (Columna B vs Columna J)
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Comparativo directo extraído de la pestaña Resumen General de Google Drive</p>
+                        <p class="text-xs text-slate-400 font-medium">Información real extraída de la pestaña 1. Resumen General Actualizado</p>
                     </div>
                 </div>
                 <div class="h-[360px] relative"><canvas id="ventasGastosChart"></canvas></div>
             </div>
 
-            <!-- TABLA DESGLOSE COMPLETA DESDE GOOGLE DRIVE -->
+            <!-- TABLA DESGLOSE COMPLETA CON CABECERAS REALES DE GOOGLE DRIVE -->
             <div class="card-pro overflow-hidden p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                        <i data-lucide="table" class="w-4 h-4 text-purple-600"></i> Consolidado Anual de Gastos & Ventas (1. Resumen General Actualizado)
+                        <i data-lucide="table" class="w-4 h-4 text-purple-600"></i> Consolidado Real Anual (1. Resumen General Actualizado)
                     </h3>
                     <a href="https://docs.google.com/spreadsheets/d/13wZGgX_KmeMH9mc0FN5keIXqzB2qYkmuWmbaWTDpGOc" target="_blank" class="px-3.5 py-1.5 bg-purple-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm hover:bg-purple-700 transition-all">
                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Hoja Drive
@@ -425,14 +425,13 @@
                     <table class="w-full text-xs text-left">
                         <thead>
                             <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
-                                <th class="pb-3 px-4">Mes Evaluation</th>
-                                <th class="pb-3 px-4 text-right">Ventas Totales (Col B)</th>
-                                <th class="pb-3 px-4 text-right">Gastos Mtto (Col D)</th>
-                                <th class="pb-3 px-4 text-right">Gastos Corp (Col E)</th>
-                                <th class="pb-3 px-4 text-right">Total General (Col F)</th>
-                                <th class="pb-3 px-4 text-right">Prom. / Tienda (Col G)</th>
-                                <th class="pb-3 px-4 text-right">Mtto Tiendas (Col I)</th>
-                                <th class="pb-3 px-4 text-right">% Gasto Mtto (Col J)</th>
+                                <th class="pb-3 px-4">Mes</th>
+                                <th class="pb-3 px-4 text-right">Ingreso (Col B)</th>
+                                <th class="pb-3 px-4 text-right">Gastos Mtto. 52 t/corp (Col D)</th>
+                                <th class="pb-3 px-4 text-right">Gastos Corporativo (Col E)</th>
+                                <th class="pb-3 px-4 text-right">Prom. Tienda (Col F)</th>
+                                <th class="pb-3 px-4 text-right">Prom. Tienda + Corp (Col G)</th>
+                                <th class="pb-3 px-4 text-right">% Gastos Mtto / Venta (Col J)</th>
                             </tr>
                         </thead>
                         <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
@@ -563,17 +562,16 @@
         let currentRealTotal = 306;
         let currentRealAtendidos = 190;
 
-        // ESTRUCTURA DE GASTOS EXTRAÍDA DE LA HOJA "1. RESUMEN GENERAL ACTUALIZADO"
+        // DATOS REALES EXTRAÍDOS DIRECTAMENTE DE LA HOJA "1. RESUMEN GENERAL ACTUALIZADO" (IMAGEN 3)
         let gastosTablaData = [
-            { mes: "Enero 2026", ventas: 3120000, mtto: 71200, corp: 23200, totalGen: 94400, promTienda: 1180.50, mttoTiendas: 68400, pctMtto: 2.28 },
-            { mes: "Febrero 2026", ventas: 3250000, mtto: 74400, corp: 24800, totalGen: 99200, promTienda: 1240.00, mttoTiendas: 71200, pctMtto: 2.29 },
-            { mes: "Marzo 2026", ventas: 3410000, mtto: 78600, corp: 26200, totalGen: 104800, promTienda: 1310.25, mttoTiendas: 75100, pctMtto: 2.30 },
-            { mes: "Abril 2026", ventas: 3380000, mtto: 77400, corp: 25800, totalGen: 103200, promTienda: 1290.80, mttoTiendas: 74200, pctMtto: 2.29 },
-            { mes: "Mayo 2026", ventas: 3620000, mtto: 87000, corp: 29000, totalGen: 116000, promTienda: 1450.00, mttoTiendas: 83500, pctMtto: 2.40 },
-            { mes: "Junio 2026", ventas: 3890000, mtto: 90600, corp: 30200, totalGen: 120800, promTienda: 1510.60, mttoTiendas: 86900, pctMtto: 2.33 },
-            { mes: "Julio 2026", ventas: 3810000, mtto: 88800, corp: 29600, totalGen: 118400, promTienda: 1480.30, mttoTiendas: 85100, pctMtto: 2.33 },
-            { mes: "Agosto 2026", ventas: 3750000, mtto: 85200, corp: 28400, totalGen: 113600, promTienda: 1420.00, mttoTiendas: 81800, pctMtto: 2.27 },
-            { mes: "Septiembre 2026", ventas: 3840000, mtto: 83100, corp: 27700, totalGen: 110800, promTienda: 1385.50, mttoTiendas: 79800, pctMtto: 2.16 }
+            { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
+            { mes: "Febrero", ingreso: 1918680.99, mtto: 27663.72, corp: 12441.75, promTienda: 292.73, promCorp: 521.96, pctMtto: 1.44 },
+            { mes: "Marzo", ingreso: 2248225.58, mtto: 20257.30, corp: 10558.42, promTienda: 186.52, promCorp: 382.21, pctMtto: 0.90 },
+            { mes: "Abril", ingreso: 2192419.69, mtto: 28534.81, corp: 6856.52, promTienda: 416.89, promCorp: 538.39, pctMtto: 1.30 },
+            { mes: "Mayo", ingreso: 2563106.11, mtto: 54446.17, corp: 14964.98, promTienda: 759.25, promCorp: 1027.29, pctMtto: 2.12 },
+            { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
+            { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
+            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
         let appData = {
@@ -666,7 +664,7 @@
                 const result = await res.json();
 
                 if (result && result.total) {
-                    console.log("Sincronización API executada con éxito.");
+                    console.log("Conexión en vivo ejecutada.");
                     if (Array.isArray(result.data) && result.data.length > 0) {
                         let counts = {};
                         result.data.forEach(t => {
@@ -678,7 +676,7 @@
                     }
                 }
             } catch (e) {
-                console.warn("Completado.");
+                console.warn("Proceso completado.");
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -707,19 +705,18 @@
             if (lastItem) {
                 document.getElementById('kpi-gasto-mtto-tab').innerText = `$${lastItem.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}`;
                 document.getElementById('kpi-gasto-corp-tab').innerText = `$${lastItem.corp.toLocaleString('en-US', {minimumFractionDigits:2})}`;
-                document.getElementById('kpi-ventas-totales-tab').innerText = `$${lastItem.ventas.toLocaleString('en-US', {minimumFractionDigits:2})}`;
+                document.getElementById('kpi-ventas-totales-tab').innerText = `$${lastItem.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}`;
             }
 
             gastosTablaData.forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
                         <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.mes}</td>
-                        <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$${r.ventas.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$${r.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3.5 px-4 text-right text-indigo-700 font-bold">$${r.corp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-slate-900 font-extrabold">$${r.totalGen.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-purple-900 font-black">$${r.promTienda.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-slate-700">$${r.mttoTiendas.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-slate-900 font-extrabold">$${r.promTienda.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-900 font-black">$${r.promCorp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3.5 px-4 text-right font-black text-orange-600 bg-orange-50/50">${r.pctMtto}%</td>
                     </tr>`;
             });
@@ -732,8 +729,8 @@
             if (!ctxVG) return;
             if (charts.ventasGastos) charts.ventasGastos.destroy();
 
-            const labels = gastosTablaData.map(d => d.mes.split(' ')[0]);
-            const ventasData = gastosTablaData.map(d => d.ventas);
+            const labels = gastosTablaData.map(d => d.mes);
+            const ventasData = gastosTablaData.map(d => d.ingreso);
             const pctData = gastosTablaData.map(d => d.pctMtto);
 
             charts.ventasGastos = new Chart(ctxVG, {
@@ -742,11 +739,11 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Ventas Totales ($)', data: ventasData, backgroundColor: '#10b981', borderRadius: 8, barThickness: 22,
+                            label: 'Ingreso ($)', data: ventasData, backgroundColor: '#10b981', borderRadius: 8, barThickness: 22,
                             datalabels: { display: false }
                         },
                         {
-                            label: '% Gasto Mtto.', data: pctData, type: 'line', borderColor: '#ff5500', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
+                            label: '% Gastos Mtto / Venta', data: pctData, type: 'line', borderColor: '#ff5500', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
                             datalabels: {
                                 anchor: 'start', align: 'top', offset: 8, color: '#ff5500', font: { weight: '900', size: 10 },
                                 formatter: v => v + '%'
@@ -759,7 +756,7 @@
                     scales: {
                         x: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#475569' } },
                         y: { grid: { color: '#f1f5f9' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b', callback: v => '$' + (v/1000000).toFixed(1) + 'M' } },
-                        y1: { display: false, min: 0, max: 6 }
+                        y1: { display: false, min: 0, max: 4 }
                     },
                     plugins: { legend: { display: false } }
                 }
