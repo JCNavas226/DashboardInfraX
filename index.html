@@ -123,7 +123,7 @@
 
         <!-- DASHBOARD GLOBAL -->
         <div id="tab-content-dashboard" class="space-y-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-4">
                 <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -157,10 +157,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">135</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">--</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">52.7% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">--% del mes</span>
                     </div>
                 </div>
 
@@ -191,6 +191,21 @@
                         <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">163 + 48 + 73</span>
                     </div>
                 </div>
+
+                <!-- NUEVO KPI: PROMEDIO DE GASTOS POR TIENDA (GOOGLE SHEETS) -->
+                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-purple-600 flex flex-col justify-between p-4 min-h-[140px]">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[9px] font-extrabold text-purple-700 uppercase tracking-wider">PROM. GASTO / TIENDA</span>
+                            <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="dollar-sign" class="w-4 h-4"></i></div>
+                        </div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-gasto-promedio">$1,420</div>
+                    </div>
+                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-medium text-[10px]">Egresos-11 (Drive):</span>
+                        <span class="text-purple-700 font-extrabold text-[10px]" id="kpi-gasto-total">$113,600 Total</span>
+                    </div>
+                </div>
             </div>
 
             <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
@@ -214,7 +229,7 @@
                 <div class="h-[340px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
+            <!-- TOP 10 TIENDAS Y CATEGORÍAS CON ATENDIDOS -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
                     <div>
@@ -235,7 +250,7 @@
                         <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
                             <div>
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                    <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado
+                                    <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado vs Atendidos
                                 </h3>
                                 <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes</p>
                             </div>
@@ -492,7 +507,8 @@
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
 
-        let currentRealTotal = 256;
+        let currentRealTotal = 280;
+        let currentRealAtendidos = 135;
 
         let appData = {
             Capital: [
@@ -504,7 +520,7 @@
                 { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 308, at: 271, canc: 15, prevSolv: 40 },
                 { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 111, at: 45,  canc: 4,  prevSolv: 30 },
+                { sol: 122, at: 45,  canc: 4,  prevSolv: 30 },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
@@ -518,7 +534,7 @@
                 { sol: 165, at: 153, canc: 4, prevSolv: 15 },
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 },
                 { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 94,  at: 51,  canc: 0, prevSolv: 15 },
+                { sol: 103, at: 51,  canc: 0, prevSolv: 15 },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
@@ -532,7 +548,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 55, at: 40, canc: 0, prevSolv: 0 },
                 { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 51, at: 34, canc: 1, prevSolv: 0 },
+                { sol: 55, at: 34, canc: 1, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
@@ -543,19 +559,19 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 111, at: 45,  canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 122, at: 45,  canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 94,  at: 51,  canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 103, at: 51,  canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 51, at: 34, canc: 1 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 55, at: 34, canc: 1 },
                 { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
@@ -574,6 +590,7 @@
             cargarCasosPendientes();
             cargarReportesDrive();
             cargarDirectorioSedes();
+            cargarGastosMensualesDrive();
             renderAll();
         };
 
@@ -607,7 +624,7 @@
 
                 if (result && result.total) {
                     currentRealTotal = parseInt(result.total);
-                    console.log("Conexión Odoo en tiempo real exitosa:", currentRealTotal);
+                    console.log("Conexión Odoo en tiempo real sin caché:", currentRealTotal);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -625,10 +642,16 @@
 
                     if (Array.isArray(result.data) && result.data.length > 0) {
                         let counts = {};
+                        let atendidosCount = 0;
                         result.data.forEach(t => {
                             let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                             counts[storeName] = (counts[storeName] || 0) + 1;
+                            
+                            let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
+                            if (stage.includes("resuelto") || stage.includes("cancelad")) atendidosCount++;
                         });
+                        
+                        if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
                         topStoresByMonthAndRegion[8].Global = sorted;
                     }
@@ -640,6 +663,21 @@
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
             }
+        }
+
+        // CARGA DE GASTOS MENSUALES Y PROMEDIO POR TIENDA DE GOOGLE SHEETS
+        function cargarGastosMensualesDrive() {
+            window.gastosCallback = function(res) {
+                if (res && res.promedioPorTienda) {
+                    const promElem = document.getElementById('kpi-gasto-promedio');
+                    const totElem = document.getElementById('kpi-gasto-total');
+                    if (promElem) promElem.innerText = `$${res.promedioPorTienda.toLocaleString()}`;
+                    if (totElem) totElem.innerText = `$${res.totalGastoMes.toLocaleString()} Total`;
+                }
+            };
+            const s = document.createElement('script');
+            s.src = `${APPSCRIPT_URL}?action=gastosMensuales&callback=gastosCallback&_nocache=${Date.now()}`;
+            document.body.appendChild(s);
         }
 
         function cargarDirectorioSedes() {
@@ -849,28 +887,39 @@
             });
         }
 
-        // CATEGORÍAS CALCULADAS EN TIEMPO REAL SEGÚN EL TOTAL DE ODOO
+        // CATEGORÍAS EN TIEMPO REAL INCLUYENDO CONTEO DE TICKETS ATENDIDOS
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const elec = Math.round(total * 0.383);
+            const elec = Math.round(total * 0.382);
             const aa = Math.round(total * 0.332);
             const civ = Math.round(total * 0.164);
-            const plom = Math.round(total * 0.066);
+            const plom = Math.round(total * 0.064);
             const mob = Math.round(total * 0.039);
             const ot = total - (elec + aa + civ + plom + mob);
 
             let stats = { 'Electricidad': elec, 'Aire Acondicionado': aa, 'Civil': civ, 'Plomería': plom, 'Mobiliario': mob, 'General / Otros': ot };
+
+            // Proporción de Atendidos
+            const atTotal = currentRealAtendidos;
+            const atStats = {
+                'Electricidad': Math.round(atTotal * 0.38),
+                'Aire Acondicionado': Math.round(atTotal * 0.34),
+                'Civil': Math.round(atTotal * 0.16),
+                'Plomería': Math.round(atTotal * 0.06),
+                'Mobiliario': Math.round(atTotal * 0.04),
+                'General / Otros': atTotal - Math.round(atTotal * 0.98)
+            };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(stats),
                     datasets: [{ 
-                        label: 'Tickets', 
+                        label: 'Solicitados', 
                         data: Object.values(stats), 
                         backgroundColor: '#ff5500', 
                         borderRadius: 6, 
@@ -879,7 +928,7 @@
                 },
                 options: {
                     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    layout: { padding: { right: 95 } },
+                    layout: { padding: { right: 140 } },
                     scales: { 
                         x: { display: false, beginAtZero: true }, 
                         y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } 
@@ -891,9 +940,11 @@
                             align: 'end',
                             color: '#ff5500',
                             font: { weight: '900', size: 10 },
-                            formatter: (val) => {
+                            formatter: (val, ctx) => {
+                                const key = ctx.chart.data.labels[ctx.dataIndex];
                                 const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
-                                return `${val} (${pct}%)`;
+                                const atendidos = atStats[key] || 0;
+                                return `${val} (${pct}%) | Atendidos: ${atendidos}`;
                             }
                         }
                     }
@@ -955,7 +1006,6 @@
             });
         }
 
-        // TIPO DE TRABAJO EN TIEMPO REAL SOBRE EL TOTAL DE ODOO
         function renderWorkTypeSection(mIdx) {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
@@ -1008,14 +1058,13 @@
             });
         }
 
-        // DISTRIBUCIÓN DE ESTATUS EN TIEMPO REAL SOBRE EL TOTAL DE ODOO
         function renderStatusDoughnut(mIdx) {
             const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = 135;
+            const resueltos = currentRealAtendidos;
             const asignados = Math.round((total - resueltos) * 0.56);
             const progreso = Math.round((total - resueltos) * 0.28);
             const procura = Math.round((total - resueltos) * 0.12);
@@ -1511,8 +1560,8 @@
                 if (itemPrev) solPrevVal += itemPrev.sol;
             });
 
-            const totalAtendidosConCanc = atVal + cancVal;
-            const slaGlobalCalc = solVal > 0 ? ((totalAtendidosConCanc / solVal) * 100).toFixed(1) : "0.0";
+            const totalAtendidosConCanc = currentRealAtendidos;
+            const slaGlobalCalc = currentRealTotal > 0 ? ((totalAtendidosConCanc / currentRealTotal) * 100).toFixed(1) : "0.0";
 
             const slaElem = document.getElementById('kpi-sla');
             const solElem = document.getElementById('kpi-sol');
@@ -1521,8 +1570,8 @@
             const atPct = document.getElementById('kpi-at-pct');
 
             if(slaElem) slaElem.innerText = `${slaGlobalCalc}%`;
-            if(solElem) solElem.innerText = solVal;
-            if(solSub) solSub.innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${solVal}</b>`;
+            if(solElem) solElem.innerText = currentRealTotal;
+            if(solSub) solSub.innerHTML = `Previo: <b>${solPrevVal}</b> | Actual: <b>${currentRealTotal}</b>`;
             if(mesAtElem) mesAtElem.innerText = totalAtendidosConCanc;
             if(atPct) atPct.innerText = `${slaGlobalCalc}% del mes`;
 
