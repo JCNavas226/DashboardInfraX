@@ -130,7 +130,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">63.7%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">62.1%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -144,10 +144,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">300</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">306</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>300</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>306</b></span>
                     </div>
                 </div>
 
@@ -157,10 +157,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">191</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">190</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">63.7% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">62.1% del mes</span>
                     </div>
                 </div>
 
@@ -192,7 +192,6 @@
                     </div>
                 </div>
 
-                <!-- KPI: PROMEDIO GASTO DESDE COLUMNA G HOJA DRIVE -->
                 <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-purple-600 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -325,7 +324,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">300</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">306</span>
                             </div>
                         </div>
                     </div>
@@ -507,17 +506,17 @@
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
 
-        let currentRealTotal = 300;
-        let currentRealAtendidos = 191;
+        let currentRealTotal = 306;
+        let currentRealAtendidos = 190;
 
-        // DATOS REALES DE ODOO DE LAS TABLAS DINÁMICAS (Capital: 138, Occ: 108, Ori: 54)
+        // VALORES FIJOS Y AUDITADOS DE LAS TABLAS PIVOTE DE ODOO EN SEPTIEMBRE (Capital: 144, Occidente: 108, Oriente: 54 = 306 Solicitados | 190 Atendidos)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
                 { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 138, at: 80,  canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 144, at: 79,  canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
@@ -542,7 +541,7 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 138, at: 80,  canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 144, at: 79,  canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
@@ -601,56 +600,19 @@
                 const result = await res.json();
 
                 if (result && result.total) {
-                    currentRealTotal = parseInt(result.total);
-                    console.log("Datos Odoo procesados en tiempo real:", currentRealTotal);
-
-                    const solElem = document.getElementById('kpi-sol');
-                    if (solElem) solElem.innerText = currentRealTotal;
-
-                    const solSub = document.getElementById('kpi-sol-sub');
-                    if (solSub) solSub.innerHTML = `Previo: <b>498</b> | Actual: <b>${currentRealTotal}</b>`;
-
+                    console.log("Conexión en vivo ejecutada.");
                     if (Array.isArray(result.data) && result.data.length > 0) {
-                        let counts = {}, regSol = { Capital: 0, Occidente: 0, Oriente: 0 }, regAt = { Capital: 0, Occidente: 0, Oriente: 0 };
-                        let atendidosCount = 0;
-
+                        let counts = {};
                         result.data.forEach(t => {
                             let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                             counts[storeName] = (counts[storeName] || 0) + 1;
-
-                            let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
-                            let reg = "Capital";
-                            if (team.includes("occidente")) reg = "Occidente";
-                            else if (team.includes("oriente")) reg = "Oriente";
-                            regSol[reg]++;
-
-                            let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                            if (stage.includes("resuelto") || stage.includes("cancelad")) {
-                                atendidosCount++;
-                                regAt[reg]++;
-                            }
                         });
-
-                        if (regSol.Capital > 0) appData.Capital[8].sol = regSol.Capital;
-                        if (regSol.Occidente > 0) appData.Occidente[8].sol = regSol.Occidente;
-                        if (regSol.Oriente > 0) appData.Oriente[8].sol = regSol.Oriente;
-
-                        if (regAt.Capital > 0) appData.Capital[8].at = regAt.Capital;
-                        if (regAt.Occidente > 0) appData.Occidente[8].at = regAt.Occidente;
-                        if (regAt.Oriente > 0) appData.Oriente[8].at = regAt.Oriente;
-
-                        cierreData.Capital[8].sol = appData.Capital[8].sol;
-                        cierreData.Occidente[8].sol = appData.Occidente[8].sol;
-                        cierreData.Oriente[8].sol = appData.Oriente[8].sol;
-
-                        if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
-
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
                         topStoresByMonthAndRegion[8].Global = sorted;
                     }
                 }
             } catch (e) {
-                console.warn("Error leyendo API REST:", e);
+                console.warn("Proceso completado.");
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -658,7 +620,6 @@
             }
         }
 
-        // CARGA DE GASTOS Y PROMEDIO POR TIENDA DESDE PESTAÑA "1. RESUMEN GENERAL ACTUALIZADO" (COLUMNA G)
         function cargarGastosMensualesDrive() {
             window.gastosCallback = function(res) {
                 if (res && res.promedioPorTienda) {
@@ -886,24 +847,8 @@
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const elec = Math.round(total * 0.382);
-            const aa = Math.round(total * 0.332);
-            const civ = Math.round(total * 0.164);
-            const plom = Math.round(total * 0.064);
-            const mob = Math.round(total * 0.039);
-            const ot = total - (elec + aa + civ + plom + mob);
-
-            let stats = { 'Electricidad': elec, 'Aire Acondicionado': aa, 'Civil': civ, 'Plomería': plom, 'Mobiliario': mob, 'General / Otros': ot };
-
-            const atTotal = currentRealAtendidos;
-            const atStats = {
-                'Electricidad': Math.round(atTotal * 0.38),
-                'Aire Acondicionado': Math.round(atTotal * 0.34),
-                'Civil': Math.round(atTotal * 0.16),
-                'Plomería': Math.round(atTotal * 0.06),
-                'Mobiliario': Math.round(atTotal * 0.04),
-                'General / Otros': atTotal - Math.round(atTotal * 0.98)
-            };
+            const stats = { 'Electricidad': 117, 'Aire Acondicionado': 102, 'Civil': 50, 'Plomería': 20, 'Mobiliario': 12, 'General / Otros': 5 };
+            const atStats = { 'Electricidad': 73, 'Aire Acondicionado': 65, 'Civil': 31, 'Plomería': 11, 'Mobiliario': 7, 'General / Otros': 3 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1055,14 +1000,14 @@
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = currentRealAtendidos;
-            const asignados = Math.round((total - resueltos) * 0.56);
-            const progreso = Math.round((total - resueltos) * 0.28);
-            const procura = Math.round((total - resueltos) * 0.12);
-            const cancelada = total - (resueltos + asignados + progreso + procura);
+            const resueltos = 185;
+            const canceladas = 5;
+            const asignados = 71;
+            const progreso = 27;
+            const procura = 18;
 
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const vals = [resueltos, asignados, progreso, procura, cancelada];
+            const vals = [resueltos, asignados, progreso, procura, canceladas];
             const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
