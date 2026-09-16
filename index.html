@@ -192,17 +192,18 @@
                     </div>
                 </div>
 
+                <!-- KPI: PROMEDIO GASTO DESDE COLUMNA G HOJA DRIVE -->
                 <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-purple-600 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[9px] font-extrabold text-purple-700 uppercase tracking-wider">PROM. GASTO / TIENDA</span>
                             <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="dollar-sign" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-gasto-promedio">$1,420</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-gasto-promedio">$1,385.50</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]">Egresos-11 (Drive):</span>
-                        <span class="text-purple-700 font-extrabold text-[10px]" id="kpi-gasto-total">$113,600 Total</span>
+                        <span class="text-slate-500 font-medium text-[10px]">Columna G (Drive):</span>
+                        <span class="text-purple-700 font-extrabold text-[10px]" id="kpi-gasto-total">$110,840 Total</span>
                     </div>
                 </div>
             </div>
@@ -509,7 +510,7 @@
         let currentRealTotal = 300;
         let currentRealAtendidos = 191;
 
-        // VALORES REALES DE ODOO EN SEPTIEMBRE (Foto 2: 138, 84 at | Foto 3: 108, 67 at | Foto 4: 54, 40 at)
+        // DATOS REALES DE ODOO DE LAS TABLAS DINÁMICAS (Capital: 138, Occ: 108, Ori: 54)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
@@ -657,6 +658,7 @@
             }
         }
 
+        // CARGA DE GASTOS Y PROMEDIO POR TIENDA DESDE PESTAÑA "1. RESUMEN GENERAL ACTUALIZADO" (COLUMNA G)
         function cargarGastosMensualesDrive() {
             window.gastosCallback = function(res) {
                 if (res && res.promedioPorTienda) {
