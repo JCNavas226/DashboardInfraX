@@ -196,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- DEMANDA DE CRECIMIENTO DINÁMICA (ETIQUETAS SEPARADAS Y LEGIBLES) -->
+            <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
             <div class="card-pro">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                     <div>
@@ -214,10 +214,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-[400px] relative"><canvas id="growthLineChart"></canvas></div>
+                <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (DATOS REALES FOTO 1) -->
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -229,7 +229,7 @@
                     <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">SEPTIEMBRE 2026</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container">
-                    <!-- Se inyectan dinámicamente las tarjetas de coordinadores -->
+                    <!-- Tarjetas de coordinadores inyectadas de Odoo -->
                 </div>
             </div>
 
@@ -414,7 +414,6 @@
                 </div>
             </div>
 
-            <!-- GRÁFICA MIXTA -->
             <div class="card-pro p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -427,7 +426,6 @@
                 <div class="h-[360px] relative"><canvas id="ventasGastosChart"></canvas></div>
             </div>
 
-            <!-- TABLA DESGLOSE COMPLETA -->
             <div class="card-pro overflow-hidden p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
@@ -451,7 +449,6 @@
                             </tr>
                         </thead>
                         <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
-                            <!-- Filas dinámicas inyectadas por JS -->
                         </tbody>
                     </table>
                 </div>
@@ -578,12 +575,12 @@
         let currentRealTotal = 353;
         let currentRealAtendidos = 234;
 
-        // DATA AUDITADA DE LA FOTO 1 DE ODOO (SEPT 2026)
+        // COORDINADORES FIJOS AUDITADOS DE ODOO (SEPT 2026)
         let coordinadoresData = {
-            "Pablo Rocha": { asignados: 79, resueltos: 63 },
-            "Alejandro Villegas": { asignados: 67, resueltos: 36 },
-            "Jesus Ron": { asignados: 9, resueltos: 4 },
-            "Mario Araujo": { asignados: 1, resueltos: 1 }
+            "Pablo Rocha": { asignados: 83, resueltos: 65 },
+            "Alejandro Villegas": { asignados: 73, resueltos: 39 },
+            "Jose Medina": { asignados: 121, resueltos: 83 },
+            "Carlos Diaz": { asignados: 76, resueltos: 47 }
         };
 
         let gastosTablaData = [
@@ -597,7 +594,6 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
-        // VALORES REALES AUDITADOS DE ODOO EN SEPTIEMBRE (Capital: 156 / 104, Occidente: 121 / 83, Oriente: 76 / 47)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
@@ -689,7 +685,6 @@
 
                 if (result && result.total) {
                     currentRealTotal = parseInt(result.total);
-                    console.log("Total Odoo recibido en tiempo real:", currentRealTotal);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -706,21 +701,20 @@
                             let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                             counts[storeName] = (counts[storeName] || 0) + 1;
 
-                            let coordName = "Pablo Rocha";
-                            if (t.user_id) {
-                                coordName = Array.isArray(t.user_id) ? t.user_id[1] : t.user_id;
-                            } else if (t.assigned_to) {
-                                coordName = t.assigned_to;
-                            }
-
+                            let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
                             let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
                             
-                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
-                            coordCounts[coordName].asignados++;
+                            if (coordName && coordName !== "False") {
+                                if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
+                                coordCounts[coordName].asignados++;
+
+                                if (stage.includes("resuelto") || stage.includes("cancelad")) {
+                                    coordCounts[coordName].resueltos++;
+                                }
+                            }
 
                             if (stage.includes("resuelto") || stage.includes("cancelad")) {
                                 atendidosCount++;
-                                coordCounts[coordName].resueltos++;
                             }
                         });
 
@@ -1097,7 +1091,7 @@
             });
         }
 
-        // DEMANDA DE CRECIMIENTO CON OFFSETS SEPARADOS PARA EVITAR TRASLAPE
+        // DEMANDA DE CRECIMIENTO CON ETIQUETAS SEPARADAS (DIBUJO LIMPIO SIN SOLAPAMIENTO)
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
             if (!ctxGrowth) return;
