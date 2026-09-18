@@ -196,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- DEMANDA DE CRECIMIENTO DINÁMICA CON POSICIONAMIENTO SEPARADO DE DATALABELS -->
+            <!-- DEMANDA DE CRECIMIENTO DINÁMICA (ETIQUETAS SEPARADAS Y LEGIBLES) -->
             <div class="card-pro">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                     <div>
@@ -214,10 +214,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
+                <div class="h-[400px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (DATOS REALES FOTO 1) -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -578,10 +578,12 @@
         let currentRealTotal = 353;
         let currentRealAtendidos = 234;
 
+        // DATA AUDITADA DE LA FOTO 1 DE ODOO (SEPT 2026)
         let coordinadoresData = {
-            "Pablo Rocha": { asignados: 156, resueltos: 104 },
-            "Coordinación Occidente": { asignados: 121, resueltos: 83 },
-            "Coordinación Oriente": { asignados: 76, resueltos: 47 }
+            "Pablo Rocha": { asignados: 79, resueltos: 63 },
+            "Alejandro Villegas": { asignados: 67, resueltos: 36 },
+            "Jesus Ron": { asignados: 9, resueltos: 4 },
+            "Mario Araujo": { asignados: 1, resueltos: 1 }
         };
 
         let gastosTablaData = [
@@ -595,7 +597,7 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
-        // VALORES REALES DE ODOO EN SEPTIEMBRE: Capital (156 / 104), Occidente (121 / 83), Oriente (76 / 47)
+        // VALORES REALES AUDITADOS DE ODOO EN SEPTIEMBRE (Capital: 156 / 104, Occidente: 121 / 83, Oriente: 76 / 47)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
@@ -752,7 +754,7 @@
                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
                         <div>
                             <span class="text-xs font-black text-slate-900 block">${name}</span>
-                            <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Asignados: ${item.asignados}</span>
+                            <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados: ${item.asignados}</span>
                         </div>
                         <div class="text-right">
                             <span class="text-sm font-black text-indigo-600 block">${item.resueltos}</span>
@@ -1095,7 +1097,7 @@
             });
         }
 
-        // DEMANDA DE CRECIMIENTO VINCULADA EN TIEMPO REAL CON CURRENTREALTOTAL
+        // DEMANDA DE CRECIMIENTO CON OFFSETS SEPARADOS PARA EVITAR TRASLAPE
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
             if (!ctxGrowth) return;
@@ -1138,7 +1140,7 @@
                         },
                         {
                             label: 'Tendencia SLA', data: dynamicSla, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
-                            datalabels: { anchor: 'start', align: 'bottom', offset: 18, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
+                            datalabels: { anchor: 'start', align: 'bottom', offset: 22, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' }
                         }
                     ]
                 },
@@ -1148,7 +1150,7 @@
                     scales: {
                         x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
                         y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
-                        y1: { display: false, min: 0, max: 150 }
+                        y1: { display: false, min: 0, max: 200 }
                     },
                     plugins: { legend: { display: false } }
                 }
