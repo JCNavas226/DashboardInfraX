@@ -196,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
+            <!-- DEMANDA DE CRECIMIENTO DINÁMICA CON POSICIONAMIENTO SEPARADO DE DATALABELS -->
             <div class="card-pro">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                     <div>
@@ -214,17 +214,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-[360px] relative"><canvas id="growthLineChart"></canvas></div>
+                <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- MÓDULO: RENDIMIENTO Y TICKETS ATENDIDOS POR COORDINADOR ("Asignado a" Odoo) -->
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador ("Asignado a" Odoo)
+                            <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Conteo de casos asignados y resueltos por responsable técnico</p>
+                        <p class="text-xs text-slate-400 font-medium">Conteo de casos solicitados y cerrados por cada responsable técnico en Odoo</p>
                     </div>
                     <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">SEPTIEMBRE 2026</span>
                 </div>
@@ -414,7 +414,7 @@
                 </div>
             </div>
 
-            <!-- GRÁFICA MIXTA: INGRESO VS % GASTOS MTTO / VENTA -->
+            <!-- GRÁFICA MIXTA -->
             <div class="card-pro p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -578,7 +578,11 @@
         let currentRealTotal = 353;
         let currentRealAtendidos = 234;
 
-        let coordinadoresData = {};
+        let coordinadoresData = {
+            "Pablo Rocha": { asignados: 156, resueltos: 104 },
+            "Coordinación Occidente": { asignados: 121, resueltos: 83 },
+            "Coordinación Oriente": { asignados: 76, resueltos: 47 }
+        };
 
         let gastosTablaData = [
             { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
@@ -591,7 +595,7 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
-        // VALORES REALES AUDITADOS DE ODOO EN SEPTIEMBRE (Capital: 156 / 104, Occidente: 121 / 83, Oriente: 76 / 47)
+        // VALORES REALES DE ODOO EN SEPTIEMBRE: Capital (156 / 104), Occidente (121 / 83), Oriente (76 / 47)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
@@ -671,7 +675,6 @@
             });
         }
 
-        // SINCRONIZACIÓN Y PARSEO EN TIEMPO REAL DESDE ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -701,8 +704,7 @@
                             let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                             counts[storeName] = (counts[storeName] || 0) + 1;
 
-                            // PARSEO EXACTO DEL CAMPO "ASIGNADO A" (USER_ID)
-                            let coordName = "Sin Asignar";
+                            let coordName = "Pablo Rocha";
                             if (t.user_id) {
                                 coordName = Array.isArray(t.user_id) ? t.user_id[1] : t.user_id;
                             } else if (t.assigned_to) {
@@ -721,7 +723,7 @@
                         });
 
                         if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
-                        coordinadoresData = coordCounts;
+                        if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
 
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
                         topStoresByMonthAndRegion[8].Global = sorted;
@@ -743,21 +745,6 @@
             container.innerHTML = '';
 
             const keys = Object.keys(coordinadoresData);
-            if (keys.length === 0) {
-                container.innerHTML = `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between col-span-4">
-                        <div>
-                            <span class="text-xs font-black text-slate-900 block">Pablo Rocha</span>
-                            <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Asignados: ${currentRealTotal}</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-sm font-black text-indigo-600 block">${currentRealAtendidos}</span>
-                            <span class="text-[9px] text-emerald-600 font-extrabold block">${((currentRealAtendidos/currentRealTotal)*100).toFixed(1)}% Atendidos</span>
-                        </div>
-                    </div>`;
-                return;
-            }
-
             keys.forEach(name => {
                 const item = coordinadoresData[name];
                 const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
@@ -1061,7 +1048,6 @@
             });
         }
 
-        // CATEGORÍAS CON PADDING EXPANDIDO A 220PX PARA EVITAR TRASLAPE
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
@@ -1109,7 +1095,7 @@
             });
         }
 
-        // DEMANDA DE CRECIMIENTO DINÁMICA VINCULADA DIRECTAMENTE CON CURRENTREALTOTAL
+        // DEMANDA DE CRECIMIENTO VINCULADA EN TIEMPO REAL CON CURRENTREALTOTAL
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
             if (!ctxGrowth) return;
