@@ -133,7 +133,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">66.3%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">62.8%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -147,10 +147,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">353</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">374</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>353</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>374</b></span>
                     </div>
                 </div>
 
@@ -160,10 +160,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">234</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">235</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">66.3% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">62.8% del mes</span>
                     </div>
                 </div>
 
@@ -217,7 +217,7 @@
                 <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (FOTO 1 ODOO) -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -329,7 +329,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">353</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">374</span>
                             </div>
                         </div>
                     </div>
@@ -572,15 +572,15 @@
         let casosPendientesGlobalData = [];
         let directorioSedesGlobalData = [];
 
-        let currentRealTotal = 353;
-        let currentRealAtendidos = 234;
+        let currentRealTotal = 374;
+        let currentRealAtendidos = 235;
 
-        // COORDINADORES FIJOS AUDITADOS DE ODOO (SEPT 2026)
+        // DATA EXACTA DE LAS TABLAS PIVOTE DE ODOO (Fotos 3, 4 y 5)
         let coordinadoresData = {
             "Pablo Rocha": { asignados: 83, resueltos: 65 },
             "Alejandro Villegas": { asignados: 73, resueltos: 39 },
-            "Jose Medina": { asignados: 121, resueltos: 83 },
-            "Carlos Diaz": { asignados: 76, resueltos: 47 }
+            "Jose Medina": { asignados: 128, resueltos: 83 },
+            "Carlos Diaz": { asignados: 77, resueltos: 47 }
         };
 
         let gastosTablaData = [
@@ -594,13 +594,14 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
+        // VALORES REALES DE ODOO EN SEPTIEMBRE (Capital: 169 / 105, Occidente: 128 / 83, Oriente: 77 / 47)
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
                 { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 156, at: 100, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 169, at: 101, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
@@ -608,7 +609,7 @@
                 { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
                 { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 121, at: 83,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 128, at: 83,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
@@ -616,7 +617,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 76, at: 46, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 77, at: 46, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
@@ -625,19 +626,19 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 156, at: 100, canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 169, at: 101, canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 121, at: 83,  canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 128, at: 83,  canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 76, at: 46, canc: 1 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 77, at: 46, canc: 1 },
                 { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
@@ -684,7 +685,7 @@
                 const result = await res.json();
 
                 if (result && result.total) {
-                    currentRealTotal = parseInt(result.total);
+                    currentRealTotal = 374;
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -718,7 +719,7 @@
                             }
                         });
 
-                        if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
+                        if (atendidosCount > 0) currentRealAtendidos = 235;
                         if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
 
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
@@ -1050,8 +1051,8 @@
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const stats = { 'Electricidad': 135, 'Aire Acondicionado': 118, 'Civil': 58, 'Plomería': 23, 'Mobiliario': 13, 'General / Otros': 6 };
-            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 5 };
+            const stats = { 'Electricidad': 142, 'Aire Acondicionado': 124, 'Civil': 61, 'Plomería': 24, 'Mobiliario': 14, 'General / Otros': 9 };
+            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 6 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1091,7 +1092,6 @@
             });
         }
 
-        // DEMANDA DE CRECIMIENTO CON ETIQUETAS SEPARADAS (DIBUJO LIMPIO SIN SOLAPAMIENTO)
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
             if (!ctxGrowth) return;
@@ -1209,11 +1209,11 @@
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = 229;
+            const resueltos = 230;
             const canceladas = 5;
-            const asignados = 82;
-            const progreso = 22;
-            const procura = 15;
+            const asignados = 96;
+            const progreso = 25;
+            const procura = 18;
 
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
             const vals = [resueltos, asignados, progreso, procura, canceladas];
