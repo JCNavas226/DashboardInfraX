@@ -539,7 +539,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
+        <!-- PESTAÑA NUEVA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-slate-100 flex-wrap gap-2">
@@ -662,7 +662,7 @@
             </div>
         </div>
 
-        <!-- ASISTENTE INTELIGENTE BI CON MAPEO A NUEVAS COLUMNAS (K/J, M/N, L, H/I) -->
+        <!-- ASISTENTE INTELIGENTE BI -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
@@ -697,7 +697,7 @@
             { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
         ];
 
-        // DIRECTORIO REAL EXTRAÍDO DE HOJA DRIVE CON MAPEO A COLUMNAS (K/J, M, N, L, H, I)
+        // DIRECTORIO REAL EXTRAÍDO DE HOJA DRIVE DE SEDES (COLUMNAS K, M, N, L, H, I)
         let directorioSedesGlobalData = [
             { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
             { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
@@ -725,7 +725,7 @@
             "Carlos Diaz": { asignados: 77, resueltos: 47 }
         };
 
-        // AHORROS ESTIMADOS CON PARTIDAS ESPECIALES FIJAS (FOTO 1) Y PARÁMETROS DINÁMICOS
+        // AHORROS ESTIMADOS: SEPTIEMBRE DINÁMICO SEGÚN CASOS REALES DE ODOO (A/A 124, CIVIL 61, ELEC 142, MOB 14, PLOM 24)
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -1647,6 +1647,7 @@
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
         }
 
+        // ASISTENTE INTELIGENTE CON BÚSQUEDA REAL EN NUEVO DIRECTORIO (K/J, M/N, L, H/I)
         async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1771,19 +1772,19 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede (Col K/J)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
                                 <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente (Col M / N)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente</span>
                                 <span class="text-xs font-bold text-slate-900 mt-1 block"><b>Gerente:</b> ${gerente}<br><b>Regente:</b> ${regente}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto (Col L)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
                                 <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado (Col H / I)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
                                 <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
                             </div>
                         </div>
