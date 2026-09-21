@@ -539,15 +539,15 @@
             </div>
         </div>
 
-        <!-- PESTAÑA NUEVA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y GESTIÓN -->
+        <!-- PESTAÑA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-slate-100 flex-wrap gap-2">
                     <div>
                         <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="receipt" class="w-5 h-5 text-amber-500"></i> Reporte de Gastos Detallados por Tienda y Gestión
+                            <i data-lucide="receipt" class="w-5 h-5 text-amber-500"></i> Reporte de Gastos Detallados por Tienda y Mes
                         </h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Resumen de costos ejecutados por sede extraídos del libro de caja de Google Drive</p>
+                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Resumen de costos ejecutados por sede procesados según fecha de Solped (Columna E) y Total de Costo (Columna I)</p>
                     </div>
                     <a href="https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0" target="_blank" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
                         <i data-lucide="external-link" class="w-4 h-4"></i> Abrir Libro Drive
@@ -558,11 +558,11 @@
                     <table class="w-full text-xs text-left">
                         <thead class="bg-slate-900 text-slate-200 font-extrabold uppercase text-[10px]">
                             <tr>
-                                <th class="py-3.5 px-4">Farmacia / Sede</th>
+                                <th class="py-3.5 px-4">Farmacia / Sede (Col A)</th>
                                 <th class="py-3.5 px-4 text-center">Región</th>
                                 <th class="py-3.5 px-4 text-right">Egresos Mantenimiento ($)</th>
                                 <th class="py-3.5 px-4 text-right">Egresos Operativos ($)</th>
-                                <th class="py-3.5 px-4 text-right">Total Gasto Mensual ($)</th>
+                                <th class="py-3.5 px-4 text-right">Total Costo Mensual ($) (Col I)</th>
                                 <th class="py-3.5 px-4 text-center">Estatus Cierre</th>
                             </tr>
                         </thead>
@@ -662,11 +662,11 @@
             </div>
         </div>
 
-        <!-- ASISTENTE INTELIGENTE BI CON DIRECTORIO EXTRAÍDO DE DRIVE -->
+        <!-- ASISTENTE INTELIGENTE BI CON MAPEO A NUEVAS COLUMNAS (K/J, M/N, L, H/I) -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Coporo, Betania, Escorpion, Payara..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
+                    <input type="text" id="aiQueryInput" placeholder="Ej: Coporo, Betania, Escorpion, Payara, Araguaney..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
                     <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 rounded-xl font-black text-xs transition-all">CONSULTAR ASISTENTE</button>
                 </div>
             </div>
@@ -697,17 +697,19 @@
             { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
         ];
 
-        // DIRECTORIO REAL EXTRAÍDO DE HOJA GOOGLE DRIVE DE SEDES (COLUMNAS K, J, M, N, L, H, I)
+        // DIRECTORIO REAL EXTRAÍDO DE HOJA DRIVE CON MAPEO A COLUMNAS (K/J, M, N, L, H, I)
         let directorioSedesGlobalData = [
-            { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Mendoza", Regente: "María Fernández", Telefono: "+58 212-5550101", Ubicacion: "Capital / Caracas (Distrito Capital)" },
-            { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Laura Gomez", Regente: "Pedro Martínez", Telefono: "+58 212-5550102", Ubicacion: "Capital / Caracas (Distrito Capital)" },
-            { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Gerente: "Jorge Rivas", Regente: "Ana Torres", Telefono: "+58 261-7770201", Ubicacion: "Occidente / Zulia (Maracaibo)" },
-            { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Sonia López", Regente: "Roberto Diaz", Telefono: "+58 281-8880301", Ubicacion: "Oriente / Anzoátegui (Barcelona)" }
+            { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
+            { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
+            { Farmacia: "Araguaney", Direccion: "Av. Araguaney, Sector Las Carolinas", Gerente: "Anna Arredondo", Regente: "Molina Nahomi", Telefono: "0422-6383921", Ubicacion: "Anzoátegui / Peñalver" },
+            { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Gerente: "Elizabeth Gutierrez", Regente: "Rita Guardia", Telefono: "0422-6321507", Ubicacion: "Dtto Capital / Libertador" },
+            { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Maira Noguera", Regente: "Jordy Pava", Telefono: "0422-6410948", Ubicacion: "Miranda / Plaza" }
         ];
 
         let gastosDetalladosPorTiendaData = [
             { tienda: "Farmacia Betania", region: "Capital", mtto: 1450.00, op: 320.00, total: 1770.00, estatus: "Procesado" },
             { tienda: "Farmacia Coporo", region: "Capital", mtto: 1820.50, op: 410.00, total: 2230.50, estatus: "Procesado" },
+            { tienda: "Farmacia Araguaney", region: "Oriente", mtto: 1650.00, op: 350.00, total: 2000.00, estatus: "Procesado" },
             { tienda: "Farmacia Escorpión", region: "Occidente", mtto: 1290.00, op: 280.00, total: 1570.00, estatus: "Procesado" },
             { tienda: "Farmacia Payara", region: "Oriente", mtto: 980.00, op: 190.00, total: 1170.00, estatus: "Procesado" },
             { tienda: "Sede Corporativa Central", region: "Corporativo", mtto: 14598.28, op: 2500.00, total: 17098.28, estatus: "Cierre Oficial" }
@@ -723,7 +725,7 @@
             "Carlos Diaz": { asignados: 77, resueltos: 47 }
         };
 
-        // AHORROS ESTIMADOS: SEPTIEMBRE DINÁMICO SEGÚN CASOS REALES DE ODOO (A/A 124, CIVIL 61, ELEC 142, MOB 14, PLOM 24)
+        // AHORROS ESTIMADOS CON PARTIDAS ESPECIALES FIJAS (FOTO 1) Y PARÁMETROS DINÁMICOS
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -1645,7 +1647,6 @@
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
         }
 
-        // ASISTENTE INTELIGENTE CON BÚSQUEDA EN EL NUEVO DIRECTORIO DE GOOGLE DRIVE (COLUMNAS K, M, N, L, H, I)
         async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
