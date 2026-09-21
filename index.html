@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
                     <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-400"></i> Control de Gastos (Drive)
                 </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="folder-git-2" class="w-4 h-4 text-sky-400"></i> Reportes Drive (Gestión)
+                    <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
                 </button>
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
@@ -395,7 +395,7 @@
             </div>
         </div>
 
-        <!-- NUEVA PESTAÑA: AHORROS ESTIMADOS CON HISTÓRICO JULIO / AGOSTO / SEPTIEMBRE -->
+        <!-- PESTAÑA: AHORROS ESTIMADOS CON HISTÓRICO JULIO / AGOSTO / SEPTIEMBRE -->
         <div id="tab-content-ahorros" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
@@ -416,7 +416,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- TABLA RESUMEN AHORROS -->
                     <div class="lg:col-span-7 space-y-4">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex justify-between items-center">
                             <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. SEPTIEMBRE 2026</h4>
@@ -445,7 +444,6 @@
                         </div>
                     </div>
 
-                    <!-- BARRAS CATEGORÍA Y DATOS CLAVE DE GESTIÓN -->
                     <div class="lg:col-span-5 space-y-6">
                         <div class="card-pro bg-white border border-slate-200 space-y-4">
                             <div class="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -514,7 +512,7 @@
                     <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                         <i data-lucide="table" class="w-4 h-4 text-purple-600"></i> Consolidado Real Anual (1. Resumen General Actualizado)
                     </h3>
-                    <a href="https://docs.google.com/spreadsheets/d/13wZGgX_KmeMH9mc0FN5keIXqzB2qYkmuWmbaWTDpGOc" target="_blank" class="px-3.5 py-1.5 bg-purple-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm hover:bg-purple-700 transition-all">
+                    <a href="https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0" target="_blank" class="px-3.5 py-1.5 bg-purple-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm hover:bg-purple-700 transition-all">
                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Hoja Drive
                     </a>
                 </div>
@@ -651,14 +649,30 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        let driveReportesGlobalData = [];
-        let casosPendientesGlobalData = [];
+        let driveReportesGlobalData = [
+            { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
+        ];
+
+        let casosPendientesGlobalData = [
+            { Farmacia: "Farmacia Coporo", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 3 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Betania", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
+        ];
+
         let directorioSedesGlobalData = [];
 
         let currentRealTotal = 374;
         let currentRealAtendidos = 235;
 
-        // DATA AHORROS ESTIMADOS DESDE JULIO A SEPTIEMBRE (IMÁGENES 1, 2 Y 3)
+        let coordinadoresData = {
+            "Pablo Rocha": { asignados: 83, resueltos: 65 },
+            "Alejandro Villegas": { asignados: 73, resueltos: 39 },
+            "Jose Medina": { asignados: 128, resueltos: 83 },
+            "Carlos Diaz": { asignados: 77, resueltos: 47 }
+        };
+
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -714,13 +728,6 @@
             }
         };
 
-        let coordinadoresData = {
-            "Pablo Rocha": { asignados: 83, resueltos: 65 },
-            "Alejandro Villegas": { asignados: 73, resueltos: 39 },
-            "Jose Medina": { asignados: 128, resueltos: 83 },
-            "Carlos Diaz": { asignados: 77, resueltos: 47 }
-        };
-
         let gastosTablaData = [
             { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
             { mes: "Febrero", ingreso: 1918680.99, mtto: 27663.72, corp: 12441.75, promTienda: 292.73, promCorp: 521.96, pctMtto: 1.44 },
@@ -730,18 +737,6 @@
             { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
             { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
-        ];
-
-        let casosPendientesGlobalData = [
-            { Farmacia: "Farmacia Coporo", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 3 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "Farmacia Betania", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
-        ];
-
-        let driveReportesGlobalData = [
-            { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
-            { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
-            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
         ];
 
         let appData = {
@@ -908,7 +903,6 @@
             });
         }
 
-        // RENDER DE LA NUEVA PESTAÑA AHORROS ESTIMADOS
         function renderAhorrosTab() {
             const selector = document.getElementById('ahorroMesSelector');
             const key = selector ? selector.value : 'septiembre';
@@ -971,15 +965,7 @@
         }
 
         function cargarGastosMensualesDrive() {
-            window.gastosCallback = function(res) {
-                if (res && Array.isArray(res.filas) && res.filas.length > 0) {
-                    gastosTablaData = res.filas;
-                }
-                renderGastosTab();
-            };
-            const s = document.createElement('script');
-            s.src = `${APPSCRIPT_URL}?action=gastosMensuales&callback=gastosCallback&_nocache=${Date.now()}`;
-            document.body.appendChild(s);
+            renderGastosTab();
         }
 
         function renderGastosTab() {
@@ -1175,8 +1161,8 @@
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const stats = { 'Electricidad': 135, 'Aire Acondicionado': 118, 'Civil': 58, 'Plomería': 23, 'Mobiliario': 13, 'General / Otros': 6 };
-            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 5 };
+            const stats = { 'Electricidad': 142, 'Aire Acondicionado': 124, 'Civil': 61, 'Plomería': 24, 'Mobiliario': 14, 'General / Otros': 9 };
+            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 6 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1785,10 +1771,10 @@
                 if(badgeIcon) badgeIcon.innerText = "FIN";
                 if(title) title.innerHTML = `Control de Gastos & Ventas <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Resumen General Drive</span>`;
             } else if (tab === 'drive') {
-                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-sky-600 text-white font-bold text-xs shadow-lg shadow-sky-600/20 transition-all";
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "DRV";
-                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-sky-100 text-sky-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             } else if (tab === 'pendientes') {
                 if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
                 if(contentPend) contentPend.classList.remove('hidden');
