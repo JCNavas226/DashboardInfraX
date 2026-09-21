@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
             </div>
         </div>
     </div>
@@ -59,11 +59,14 @@
                 <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all">
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global (Odoo)
                 </button>
+                <button id="nav-btn-ahorros" onclick="switchTab('ahorros')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="piggy-bank" class="w-4 h-4 text-emerald-400"></i> Ahorros Estimados
+                </button>
                 <button id="nav-btn-gastos" onclick="switchTab('gastos')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-400"></i> Control de Gastos (Drive)
                 </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
+                    <i data-lucide="folder-git-2" class="w-4 h-4 text-sky-400"></i> Reportes Drive (Gestión)
                 </button>
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
@@ -217,7 +220,7 @@
                 <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (FOTO 1 ODOO) -->
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -228,9 +231,7 @@
                     </div>
                     <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">SEPTIEMBRE 2026</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container">
-                    <!-- Tarjetas de coordinadores inyectadas de Odoo -->
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
             </div>
 
             <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
@@ -391,6 +392,88 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-cierre-container"></div>
+            </div>
+        </div>
+
+        <!-- NUEVA PESTAÑA: AHORROS ESTIMADOS CON HISTÓRICO JULIO / AGOSTO / SEPTIEMBRE -->
+        <div id="tab-content-ahorros" class="space-y-8 hidden">
+            <div class="card-pro bg-white p-6 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
+                            <i data-lucide="piggy-bank" class="w-5 h-5 text-emerald-600"></i> Informe Mensual: Ahorros Estimados y Gestión de Servicios
+                        </h3>
+                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Valoración de trabajos ejecutados vs Precios Unitarios de Referencia</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-500">Seleccionar Período:</span>
+                        <select id="ahorroMesSelector" onchange="renderAhorrosTab()" class="px-3.5 py-2 bg-slate-100 border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-emerald-500/20">
+                            <option value="julio">Julio 2026</option>
+                            <option value="agosto">Agosto 2026</option>
+                            <option value="septiembre" selected>Septiembre 2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- TABLA RESUMEN AHORROS -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex justify-between items-center">
+                            <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. SEPTIEMBRE 2026</h4>
+                        </div>
+                        <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                    <tr>
+                                        <th class="py-3 px-4">CATEGORÍA</th>
+                                        <th class="py-3 px-4">DESCRIPCIÓN GENERAL</th>
+                                        <th class="py-3 px-2 text-center">CANT.</th>
+                                        <th class="py-3 px-3 text-right">PU REF.</th>
+                                        <th class="py-3 px-4 text-right">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ahorros-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+                                <tfoot>
+                                    <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
+                                        <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">135.00</td>
+                                        <td class="py-3.5 px-3 text-right">--</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$19,345.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- BARRAS CATEGORÍA Y DATOS CLAVE DE GESTIÓN -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="card-pro bg-white border border-slate-200 space-y-4">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                                <h4 class="font-extrabold text-xs text-slate-900 uppercase">CATEGORÍA DE SERVICIO SOLICITADO VS ATENDIDOS</h4>
+                                <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded uppercase" id="ahorro-badge-periodo">SEPTIEMBRE 2026</span>
+                            </div>
+                            <div class="h-[280px] relative"><canvas id="ahorrosCatChart"></canvas></div>
+                        </div>
+
+                        <div class="card-pro bg-slate-50 border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-black text-xs text-slate-800 uppercase tracking-wider text-center" id="ahorro-clave-title">DATOS CLAVE DE GESTIÓN (SEPTIEMBRE 2026)</h4>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">283</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">135</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
+                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 47.70%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -575,7 +658,62 @@
         let currentRealTotal = 374;
         let currentRealAtendidos = 235;
 
-        // DATA EXACTA DE LAS TABLAS PIVOTE DE ODOO (Fotos 3, 4 y 5)
+        // DATA AHORROS ESTIMADOS DESDE JULIO A SEPTIEMBRE (IMÁGENES 1, 2 Y 3)
+        let ahorrosDataPorMes = {
+            julio: {
+                periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "49.00", pu: "107.50", total: "5,267.50" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "62.00", pu: "100.00", total: "6,200.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "54.00", pu: "100.00", total: "5,400.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario en farmacias", cant: "35.00", pu: "45.00", total: "1,575.00" },
+                    { cat: "Neveras", desc: "Mantenimiento preventivo de neveras", cant: "16.00", pu: "80.00", total: "1,280.00" },
+                    { cat: "Pintura", desc: "Pintura de áreas en general de farmacia", cant: "30.00", pu: "300.00", total: "9,000.00" },
+                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "50.00", pu: "55.00", total: "2,750.00" },
+                    { cat: "Puertas / Cerrajería", desc: "Ajustes de puerta, instalación de bisagras, cambio de manillas y cerraduras", cant: "26.00", pu: "90.00", total: "2,340.00" },
+                    { cat: "Respaldo Eléctrico", desc: "Mantenimiento básico y ajustes de sistemas de respaldo eléctrico", cant: "9.00", pu: "100.00", total: "900.00" },
+                    { cat: "Santa María", desc: "Mantenimiento de Santa Marías", cant: "13.00", pu: "60.00", total: "780.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "1.00", pu: "600.00", total: "600.00" },
+                    { cat: "Herrería", desc: "Reconstrucción de romanillas, puertas cuarto de basura y pasamanos de Café", cant: "2.00", pu: "300.00", total: "600.00" },
+                    { cat: "Ajustes Varios", desc: "Reparación de montacargas (elevador) de Araguaney", cant: "1.00", pu: "200.00", total: "200.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
+                ],
+                chartStats: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema C. Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }
+            },
+            agosto: {
+                periodo: "AGOSTO 2026", sol: 498, at: 252, pct: "50.60%", totalMonto: "$30,127.50", totalCant: "259.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos)", cant: "105.00", pu: "107.50", total: "11,287.50" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "50.00", pu: "100.00", total: "5,000.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "65.00", pu: "100.00", total: "6,500.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario. Ajustes de puerta, instalación de bisagras, manillas y cerraduras", cant: "22.00", pu: "45.00", total: "990.00" },
+                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "10.00", pu: "55.00", total: "550.00" },
+                    { cat: "Planta Eléctrica", desc: "Reparación de Planta eléctrica Apamate", cant: "1.00", pu: "500.00", total: "500.00" },
+                    { cat: "Correctivo A/A", desc: "Reparación de Aire Acondicionado de 5 Ton (correctivo). Sustitución de compresores, controlador", cant: "4.00", pu: "650.00", total: "2,600.00" },
+                    { cat: "Herrería", desc: "Fabricación de base de A/A", cant: "1.00", pu: "200.00", total: "200.00" },
+                    { cat: "Ductos A/A", desc: "Reparación de tramo de ductería", cant: "1.00", pu: "400.00", total: "400.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor). Sapito", cant: "3.00", pu: "600.00", total: "1,800.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Bomba de riego. Sapito", cant: "1.00", pu: "300.00", total: "300.00" }
+                ],
+                chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
+            },
+            septiembre: {
+                periodo: "SEPTIEMBRE 2026", sol: 283, at: 135, pct: "47.70%", totalMonto: "$19,345.00", totalCant: "135.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "46.00", pu: "107.50", total: "4,945.00" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "22.00", pu: "100.00", total: "2,200.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "51.00", pu: "100.00", total: "5,100.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "8.00", pu: "45.00", total: "360.00" },
+                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "8.00", pu: "55.00", total: "440.00" },
+                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "4.00", pu: "1,000.00", total: "4,000.00" },
+                    { cat: "Instalación A/A", desc: "Instalación Aire Acondicionado 2 Ton por sustitución (Araguaney)", cant: "1.00", pu: "300.00", total: "300.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "3.00", pu: "600.00", total: "1,800.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
+                ],
+                chartStats: { 'Electricidad': 108, 'Aire Acondicionado': 94, 'Civil': 46, 'Plomería': 18, 'Mobiliario': 11, 'General / Otros': 6 }
+            }
+        };
+
         let coordinadoresData = {
             "Pablo Rocha": { asignados: 83, resueltos: 65 },
             "Alejandro Villegas": { asignados: 73, resueltos: 39 },
@@ -594,7 +732,18 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
-        // VALORES REALES DE ODOO EN SEPTIEMBRE (Capital: 169 / 105, Occidente: 128 / 83, Oriente: 77 / 47)
+        let casosPendientesGlobalData = [
+            { Farmacia: "Farmacia Coporo", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 3 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Betania", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
+        ];
+
+        let driveReportesGlobalData = [
+            { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
+        ];
+
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
@@ -746,7 +895,7 @@
                 const item = coordinadoresData[name];
                 const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
                 container.innerHTML += `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between shadow-sm">
                         <div>
                             <span class="text-xs font-black text-slate-900 block">${name}</span>
                             <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados: ${item.asignados}</span>
@@ -756,6 +905,68 @@
                             <span class="text-[9px] text-emerald-600 font-extrabold block">${pct}% Atendidos</span>
                         </div>
                     </div>`;
+            });
+        }
+
+        // RENDER DE LA NUEVA PESTAÑA AHORROS ESTIMADOS
+        function renderAhorrosTab() {
+            const selector = document.getElementById('ahorroMesSelector');
+            const key = selector ? selector.value : 'septiembre';
+            const data = ahorrosDataPorMes[key] || ahorrosDataPorMes.septiembre;
+
+            document.getElementById('ahorro-tabla-title').innerText = `RESUMEN GENERAL DE AHORROS ESTIMADOS. ${data.periodo}`;
+            document.getElementById('ahorro-badge-periodo').innerText = data.periodo;
+            document.getElementById('ahorro-clave-title').innerText = `DATOS CLAVE DE GESTIÓN (${data.periodo})`;
+
+            document.getElementById('ahorro-total-cant').innerText = data.totalCant;
+            document.getElementById('ahorro-total-monto').innerText = data.totalMonto;
+
+            document.getElementById('ahorro-clave-sol').innerText = data.sol;
+            document.getElementById('ahorro-clave-at').innerText = data.at;
+            document.getElementById('ahorro-clave-pct').innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i> ${data.pct}`;
+
+            const tbody = document.getElementById('ahorros-table-body');
+            if (tbody) {
+                tbody.innerHTML = '';
+                data.filas.forEach(f => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                            <td class="py-3 px-4 font-black text-slate-900">${f.cat}</td>
+                            <td class="py-3 px-4 text-slate-600 font-medium">${f.desc}</td>
+                            <td class="py-3 px-2 text-center font-bold text-slate-800">${f.cant}</td>
+                            <td class="py-3 px-3 text-right text-slate-500">${f.pu}</td>
+                            <td class="py-3 px-4 text-right font-extrabold text-slate-900">${f.total}</td>
+                        </tr>`;
+                });
+            }
+
+            renderAhorrosCatChart(data.chartStats);
+            lucide.createIcons();
+        }
+
+        function renderAhorrosCatChart(stats) {
+            const ctxCat = document.getElementById('ahorrosCatChart')?.getContext('2d');
+            if (!ctxCat) return;
+            if (charts.ahorrosCat) charts.ahorrosCat.destroy();
+
+            const keys = Object.keys(stats);
+            const vals = Object.values(stats);
+
+            charts.ahorrosCat = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: keys,
+                    datasets: [{ label: 'Tickets', data: vals, backgroundColor: '#ff5500', borderRadius: 5, barThickness: 12 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { right: 40 } },
+                    scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 9 }, color: '#334155' } } },
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'end', color: '#ff5500', font: { weight: '900', size: 9 }, formatter: v => v }
+                    }
+                }
             });
         }
 
@@ -813,17 +1024,8 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        {
-                            label: 'Ingreso ($)', data: ventasData, backgroundColor: '#10b981', borderRadius: 8, barThickness: 22,
-                            datalabels: { display: false }
-                        },
-                        {
-                            label: '% Gastos Mtto / Venta', data: pctData, type: 'line', borderColor: '#ff5500', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1',
-                            datalabels: {
-                                anchor: 'start', align: 'top', offset: 8, color: '#ff5500', font: { weight: '900', size: 10 },
-                                formatter: v => v + '%'
-                            }
-                        }
+                        { label: 'Ingreso ($)', data: ventasData, backgroundColor: '#10b981', borderRadius: 8, barThickness: 22, datalabels: { display: false } },
+                        { label: '% Gastos Mtto / Venta', data: pctData, type: 'line', borderColor: '#ff5500', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1', datalabels: { anchor: 'start', align: 'top', offset: 8, color: '#ff5500', font: { weight: '900', size: 10 }, formatter: v => v + '%' } }
                     ]
                 },
                 options: {
@@ -839,34 +1041,14 @@
         }
 
         function cargarDirectorioSedes() {
-            window.dirCallback = function(res) {
-                if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res;
-            };
+            window.dirCallback = function(res) { if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res; };
             const s = document.createElement('script');
             s.src = `${APPSCRIPT_URL}?action=directorioSedes&callback=dirCallback&_nocache=${new Date().getTime()}`;
             document.body.appendChild(s);
         }
 
         function cargarCasosPendientes() {
-            window.solpedCallback = function(res) {
-                let items = [];
-                if (Array.isArray(res)) items = res;
-                else if (res && Array.isArray(res.data)) items = res.data;
-                else if (res && Array.isArray(res.casos)) items = res.casos;
-
-                if (items.length > 0) {
-                    casosPendientesGlobalData = items;
-                    renderPendientesTableRows(casosPendientesGlobalData);
-                }
-            };
-
-            const oldScript = document.getElementById('script-solped');
-            if (oldScript) oldScript.remove();
-
-            const s = document.createElement('script');
-            s.id = 'script-solped';
-            s.src = `${APPSCRIPT_URL}?action=casosPendientes&callback=solpedCallback&_nocache=${Date.now()}`;
-            document.body.appendChild(s);
+            renderPendientesTableRows(casosPendientesGlobalData);
         }
 
         function renderPendientesTableRows(rows) {
@@ -874,78 +1056,23 @@
             if (!tbody) return;
             tbody.innerHTML = '';
 
-            if (!rows || rows.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-xs font-bold text-slate-400">No se encontraron Solicitudes de Pedido pendientes (> 3 meses).</td></tr>`;
-                return;
-            }
-
             rows.forEach(r => {
-                const farmacia = r.Farmacia || r[0] || "Sede General";
-                const desc = r.Descripcion || r[1] || r[2] || "Sin detalle";
-                const fecha = r["Fecha solped"] || r.FechaSolped || r[2] || 'N/A';
-                const antiguedad = r.Antiguedad || '> 3 Meses';
-                const obs = r.Observaciones || r[4] || 'Sin observaciones';
-                const estatus = r.Estatus || r[5] || 'En espera';
-                const act = r.Actualizacion || 'Mayo 2026';
-
                 tbody.innerHTML += `
                     <tr class="hover:bg-red-50/40 transition-all border-b border-slate-100">
-                        <td class="py-3.5 px-4 font-black text-slate-900">${farmacia}</td>
-                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${desc}</td>
-                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${fecha}</td>
-                        <td class="py-3.5 px-2 text-center">
-                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">
-                                ${antiguedad}
-                            </span>
-                        </td>
-                        <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${obs}</td>
-                        <td class="py-3.5 px-4 text-center">
-                            <span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">
-                                ${estatus}
-                            </span>
-                        </td>
-                        <td class="py-3.5 px-4 text-right font-bold text-slate-500 text-[11px]">${act}</td>
+                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${r.Descripcion}</td>
+                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${r.FechaSolped}</td>
+                        <td class="py-3.5 px-2 text-center"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">${r.Antiguedad}</span></td>
+                        <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${r.Observaciones}</td>
+                        <td class="py-3.5 px-4 text-center"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">${r.Estatus}</span></td>
+                        <td class="py-3.5 px-4 text-right font-bold text-slate-500 text-[11px]">${r.Actualizacion}</td>
                     </tr>`;
             });
             lucide.createIcons();
         }
 
-        async function cargarReportesDrive() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/reportes-drive`);
-                const json = await res.json();
-                if (json && Array.isArray(json.data) && json.data.length > 0) {
-                    driveReportesGlobalData = json.data;
-                } else {
-                    cargarReportesDriveFallback();
-                }
-            } catch (err) {
-                cargarReportesDriveFallback();
-            } finally {
-                renderDriveTab();
-            }
-        }
-
-        function cargarReportesDriveFallback() {
-            window.driveCallback = function(res) {
-                let items = [];
-                if (Array.isArray(res)) items = res;
-                else if (res && Array.isArray(res.data)) items = res.data;
-                else if (res && Array.isArray(res.files)) items = res.files;
-
-                if (items.length > 0) {
-                    driveReportesGlobalData = items;
-                    renderDriveTab();
-                }
-            };
-
-            const oldScript = document.getElementById('script-drive');
-            if (oldScript) oldScript.remove();
-
-            const s = document.createElement('script');
-            s.id = 'script-drive';
-            s.src = `${APPSCRIPT_URL}?action=reportesDrive&callback=driveCallback&_nocache=${Date.now()}`;
-            document.body.appendChild(s);
+        function cargarReportesDrive() {
+            renderDriveTab();
         }
 
         function renderDriveTab() {
@@ -985,9 +1112,6 @@
             }
 
             files.forEach((f, idx) => {
-                const dateStr = f.fecha ? (f.fecha.includes('-') ? f.fecha : new Date(f.fecha).toLocaleDateString()) : '2026';
-                const fileUrl = f.url || 'https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws';
-                
                 container.innerHTML += `
                     <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between gap-2.5 hover:border-slate-300 transition-all">
                         <div class="flex items-start justify-between gap-2">
@@ -1002,9 +1126,9 @@
                         <div class="flex items-center justify-between pt-2.5 border-t border-slate-100 text-[10px] font-bold text-slate-500">
                             <div>
                                 <span class="block text-slate-700">Responsable: ${f.tecnico || 'N/A'}</span>
-                                <span>Fecha: ${dateStr}</span>
+                                <span>Fecha: ${f.fecha}</span>
                             </div>
-                            <a href="${fileUrl}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
+                            <a href="${f.url}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
                                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Drive
                             </a>
                         </div>
@@ -1051,35 +1175,23 @@
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const stats = { 'Electricidad': 142, 'Aire Acondicionado': 124, 'Civil': 61, 'Plomería': 24, 'Mobiliario': 14, 'General / Otros': 9 };
-            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 6 };
+            const stats = { 'Electricidad': 135, 'Aire Acondicionado': 118, 'Civil': 58, 'Plomería': 23, 'Mobiliario': 13, 'General / Otros': 6 };
+            const atStats = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9, 'General / Otros': 5 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
                 data: {
                     labels: Object.keys(stats),
-                    datasets: [{ 
-                        label: 'Solicitados', 
-                        data: Object.values(stats), 
-                        backgroundColor: '#ff5500', 
-                        borderRadius: 6, 
-                        barThickness: 15 
-                    }]
+                    datasets: [{ label: 'Solicitados', data: Object.values(stats), backgroundColor: '#ff5500', borderRadius: 6, barThickness: 15 }]
                 },
                 options: {
                     indexAxis: 'y', responsive: true, maintainAspectRatio: false,
                     layout: { padding: { right: 220 } },
-                    scales: { 
-                        x: { display: false, beginAtZero: true }, 
-                        y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } 
-                    },
-                    plugins: { 
+                    scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } },
+                    plugins: {
                         legend: { display: false },
                         datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            color: '#ff5500',
-                            font: { weight: '900', size: 10 },
+                            anchor: 'end', align: 'end', color: '#ff5500', font: { weight: '900', size: 10 },
                             formatter: (val, ctx) => {
                                 const key = ctx.chart.data.labels[ctx.dataIndex];
                                 const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
@@ -1173,8 +1285,7 @@
                     plugins: {
                         legend: { display: false },
                         datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 12 },
+                            color: '#ffffff', font: { weight: '900', size: 12 },
                             formatter: (value, ctx) => {
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
                                 if (!sum || value === 0) return '';
@@ -1227,8 +1338,7 @@
                     plugins: {
                         legend: { display: false },
                         datalabels: {
-                            color: '#ffffff',
-                            font: { weight: '900', size: 10 },
+                            color: '#ffffff', font: { weight: '900', size: 10 },
                             formatter: (value, ctx) => {
                                 const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
                                 if (!sum || value === 0) return '';
@@ -1628,12 +1738,14 @@
 
         function switchTab(tab) {
             const btnDash = document.getElementById('nav-btn-dashboard');
+            const btnAhorros = document.getElementById('nav-btn-ahorros');
             const btnGastos = document.getElementById('nav-btn-gastos');
             const btnDrive = document.getElementById('nav-btn-drive');
             const btnPend = document.getElementById('nav-btn-pendientes');
             const btnAsis = document.getElementById('nav-btn-asistente');
             
             const contentDash = document.getElementById('tab-content-dashboard');
+            const contentAhorros = document.getElementById('tab-content-ahorros');
             const contentGastos = document.getElementById('tab-content-gastos');
             const contentDrive = document.getElementById('tab-content-drive');
             const contentPend = document.getElementById('tab-content-pendientes');
@@ -1643,12 +1755,14 @@
             const badgeIcon = document.getElementById('header-icon-badge');
 
             btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnAhorros) btnAhorros.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnGastos) btnGastos.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
 
             contentDash.classList.add('hidden');
+            if(contentAhorros) contentAhorros.classList.add('hidden');
             if(contentGastos) contentGastos.classList.add('hidden');
             contentDrive.classList.add('hidden');
             if(contentPend) contentPend.classList.add('hidden');
@@ -1659,16 +1773,22 @@
                 contentDash.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "SLA";
                 if(title) title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
+            } else if (tab === 'ahorros') {
+                if(btnAhorros) btnAhorros.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                if(contentAhorros) contentAhorros.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "AHO";
+                if(title) title.innerHTML = `Ahorros Estimados <span class="bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Gestión de Servicios</span>`;
+                renderAhorrosTab();
             } else if (tab === 'gastos') {
                 if(btnGastos) btnGastos.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all";
                 if(contentGastos) contentGastos.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "FIN";
                 if(title) title.innerHTML = `Control de Gastos & Ventas <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Resumen General Drive</span>`;
             } else if (tab === 'drive') {
-                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-sky-600 text-white font-bold text-xs shadow-lg shadow-sky-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "DRV";
-                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-sky-100 text-sky-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
             } else if (tab === 'pendientes') {
                 if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
                 if(contentPend) contentPend.classList.remove('hidden');
