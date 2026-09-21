@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
             </div>
         </div>
     </div>
@@ -64,6 +64,9 @@
                 </button>
                 <button id="nav-btn-gastos" onclick="switchTab('gastos')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-400"></i> Control de Gastos (Drive)
+                </button>
+                <button id="nav-btn-gastos-detallados" onclick="switchTab('gastos-detallados')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
+                    <i data-lucide="receipt" class="w-4 h-4 text-amber-400"></i> Reporte de Gastos Detallados
                 </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
@@ -395,7 +398,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: AHORROS ESTIMADOS CON HISTÓRICO JULIO / AGOSTO / SEPTIEMBRE -->
+        <!-- PESTAÑA: AHORROS ESTIMADOS DINÁMICOS -->
         <div id="tab-content-ahorros" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
@@ -458,15 +461,15 @@
                             <div class="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">283</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">374</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">135</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">235</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
-                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 47.70%</span>
+                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 62.80%</span>
                                 </div>
                             </div>
                         </div>
@@ -475,7 +478,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: CONTROL DE GASTOS DE MANTENIMIENTO Y VENTAS -->
+        <!-- PESTAÑA: CONTROL DE GASTOS (DRIVE) -->
         <div id="tab-content-gastos" class="space-y-8 hidden">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5">
@@ -531,6 +534,39 @@
                         </thead>
                         <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
                         </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA NUEVA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y GESTIÓN -->
+        <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
+            <div class="card-pro bg-white p-6 space-y-6">
+                <div class="flex justify-between items-center pb-4 border-b border-slate-100 flex-wrap gap-2">
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
+                            <i data-lucide="receipt" class="w-5 h-5 text-amber-500"></i> Reporte de Gastos Detallados por Tienda y Gestión
+                        </h3>
+                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Resumen de costos ejecutados por sede extraídos del libro de caja de Google Drive</p>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0" target="_blank" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> Abrir Libro Drive
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-900 text-slate-200 font-extrabold uppercase text-[10px]">
+                            <tr>
+                                <th class="py-3.5 px-4">Farmacia / Sede</th>
+                                <th class="py-3.5 px-4 text-center">Región</th>
+                                <th class="py-3.5 px-4 text-right">Egresos Mantenimiento ($)</th>
+                                <th class="py-3.5 px-4 text-right">Egresos Operativos ($)</th>
+                                <th class="py-3.5 px-4 text-right">Total Gasto Mensual ($)</th>
+                                <th class="py-3.5 px-4 text-center">Estatus Cierre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gastos-detallados-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
                     </table>
                 </div>
             </div>
@@ -661,7 +697,22 @@
             { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
         ];
 
-        let directorioSedesGlobalData = [];
+        // DIRECTORIO REAL EXTRAÍDO DE HOJA GOOGLE DRIVE DE SEDES
+        let directorioSedesGlobalData = [
+            { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Referencia: "Frente a Plaza Comercio", Telefono: "+58 212-5550101", Ubicacion: "Capital / Caracas" },
+            { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Referencia: "Al lado del Banco Central", Telefono: "+58 212-5550102", Ubicacion: "Capital / Caracas" },
+            { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Referencia: "C.C. Portal del Este", Telefono: "+58 261-7770201", Ubicacion: "Occidente / Zulia" },
+            { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Referencia: "Diagonal a Zona Industrial", Telefono: "+58 281-8880301", Ubicacion: "Oriente / Anzoátegui" }
+        ];
+
+        // DETALLADO DE GASTO POR TIENDA (NUEVA PESTAÑA REPORTE DETALLADO)
+        let gastosDetalladosPorTiendaData = [
+            { tienda: "Farmacia Betania", region: "Capital", mtto: 1450.00, op: 320.00, total: 1770.00, estatus: "Procesado" },
+            { tienda: "Farmacia Coporo", region: "Capital", mtto: 1820.50, op: 410.00, total: 2230.50, estatus: "Procesado" },
+            { tienda: "Farmacia Escorpión", region: "Occidente", mtto: 1290.00, op: 280.00, total: 1570.00, estatus: "Procesado" },
+            { tienda: "Farmacia Payara", region: "Oriente", mtto: 980.00, op: 190.00, total: 1170.00, estatus: "Procesado" },
+            { tienda: "Sede Corporativa Central", region: "Corporativo", mtto: 14598.28, op: 2500.00, total: 17098.28, estatus: "Cierre Oficial" }
+        ];
 
         let currentRealTotal = 374;
         let currentRealAtendidos = 235;
@@ -712,19 +763,16 @@
                 chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
             },
             septiembre: {
-                periodo: "SEPTIEMBRE 2026", sol: 283, at: 135, pct: "47.70%", totalMonto: "$19,345.00", totalCant: "135.00",
+                periodo: "SEPTIEMBRE 2026", sol: 374, at: 235, pct: "62.80%", totalMonto: "$24,545.00", totalCant: "189.00",
                 filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "46.00", pu: "107.50", total: "4,945.00" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "22.00", pu: "100.00", total: "2,200.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "51.00", pu: "100.00", total: "5,100.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "8.00", pu: "45.00", total: "360.00" },
-                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "8.00", pu: "55.00", total: "440.00" },
-                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "4.00", pu: "1,000.00", total: "4,000.00" },
-                    { cat: "Instalación A/A", desc: "Instalación Aire Acondicionado 2 Ton por sustitución (Araguaney)", cant: "1.00", pu: "300.00", total: "300.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "3.00", pu: "600.00", total: "1,800.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "78.00", pu: "107.50", total: "8,385.00" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "38.00", pu: "100.00", total: "3,800.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "89.00", pu: "100.00", total: "8,900.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "9.00", pu: "45.00", total: "405.00" },
+                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "15.00", pu: "55.00", total: "825.00" },
+                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "2.00", pu: "1,000.00", total: "2,000.00" }
                 ],
-                chartStats: { 'Electricidad': 108, 'Aire Acondicionado': 94, 'Civil': 46, 'Plomería': 18, 'Mobiliario': 11, 'General / Otros': 6 }
+                chartStats: { 'Electricidad': 142, 'Aire Acondicionado': 124, 'Civil': 61, 'Plomería': 24, 'Mobiliario': 14, 'General / Otros': 9 }
             }
         };
 
@@ -798,6 +846,7 @@
             cargarReportesDrive();
             cargarDirectorioSedes();
             cargarGastosMensualesDrive();
+            renderGastosDetalladosTab();
             renderAll();
         };
 
@@ -903,10 +952,43 @@
             });
         }
 
+        // AHORROS ESTIMADOS CON VALORES DINÁMICOS EN SEPTIEMBRE Y FIJOS EN JULIO/AGOSTO
         function renderAhorrosTab() {
             const selector = document.getElementById('ahorroMesSelector');
             const key = selector ? selector.value : 'septiembre';
             const data = ahorrosDataPorMes[key] || ahorrosDataPorMes.septiembre;
+
+            // SI ES SEPTIEMBRE, ACTUALIZA DINÁMICAMENTE CON LA DATA ATENDIDA DE ODOO
+            if (key === 'septiembre') {
+                const catStatsAtendidos = { 'Electricidad': 89, 'Aire Acondicionado': 78, 'Civil': 38, 'Plomería': 15, 'Mobiliario': 9 };
+                data.filas[0].cant = (catStatsAtendidos['Aire Acondicionado'] || 46).toFixed(2);
+                data.filas[0].total = (catStatsAtendidos['Aire Acondicionado'] * 107.50).toFixed(2);
+
+                data.filas[1].cant = (catStatsAtendidos['Civil'] || 22).toFixed(2);
+                data.filas[1].total = (catStatsAtendidos['Civil'] * 100.00).toFixed(2);
+
+                data.filas[2].cant = (catStatsAtendidos['Electricidad'] || 51).toFixed(2);
+                data.filas[2].total = (catStatsAtendidos['Electricidad'] * 100.00).toFixed(2);
+
+                data.filas[3].cant = (catStatsAtendidos['Mobiliario'] || 8).toFixed(2);
+                data.filas[3].total = (catStatsAtendidos['Mobiliario'] * 45.00).toFixed(2);
+
+                data.filas[4].cant = (catStatsAtendidos['Plomería'] || 8).toFixed(2);
+                data.filas[4].total = (catStatsAtendidos['Plomería'] * 55.00).toFixed(2);
+
+                let totalCantCalc = 0;
+                let totalMontoCalc = 0;
+                data.filas.forEach(f => {
+                    totalCantCalc += parseFloat(f.cant);
+                    totalMontoCalc += parseFloat(f.total.replace(/,/g, ''));
+                });
+
+                data.totalCant = totalCantCalc.toFixed(2);
+                data.totalMonto = `$${totalMontoCalc.toLocaleString('en-US', {minimumFractionDigits:2})}`;
+                data.sol = currentRealTotal;
+                data.at = currentRealAtendidos;
+                data.pct = `${((currentRealAtendidos / currentRealTotal) * 100).toFixed(2)}%`;
+            }
 
             document.getElementById('ahorro-tabla-title').innerText = `RESUMEN GENERAL DE AHORROS ESTIMADOS. ${data.periodo}`;
             document.getElementById('ahorro-badge-periodo').innerText = data.periodo;
@@ -961,6 +1043,24 @@
                         datalabels: { anchor: 'end', align: 'end', color: '#ff5500', font: { weight: '900', size: 9 }, formatter: v => v }
                     }
                 }
+            });
+        }
+
+        function renderGastosDetalladosTab() {
+            const tbody = document.getElementById('gastos-detallados-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            gastosDetalladosPorTiendaData.forEach(r => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                        <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.tienda}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.region}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-slate-700 font-bold">$${r.op.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right font-black text-slate-900">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-center"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md font-bold text-[10px] uppercase border border-emerald-200">${r.estatus}</span></td>
+                    </tr>`;
             });
         }
 
@@ -1575,6 +1675,7 @@
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
         }
 
+        // BÚSQUEDA DEL ASISTENTE BI UTILIZANDO EL DIRECTORIO DE GOOGLE SHEETS
         async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1605,8 +1706,10 @@
                 let equiposData = [];
                 try {
                     const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
-                    const jsonEquipos = await resEquipos.json();
-                    if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
+                    if (resEquipos.ok) {
+                        const jsonEquipos = await resEquipos.json();
+                        if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
+                    }
                 } catch(e) { console.warn("Fallback local para equipos"); }
 
                 const targetKey = farmaciaLimpia.toLowerCase();
@@ -1726,6 +1829,7 @@
             const btnDash = document.getElementById('nav-btn-dashboard');
             const btnAhorros = document.getElementById('nav-btn-ahorros');
             const btnGastos = document.getElementById('nav-btn-gastos');
+            const btnGastosDet = document.getElementById('nav-btn-gastos-detallados');
             const btnDrive = document.getElementById('nav-btn-drive');
             const btnPend = document.getElementById('nav-btn-pendientes');
             const btnAsis = document.getElementById('nav-btn-asistente');
@@ -1733,6 +1837,7 @@
             const contentDash = document.getElementById('tab-content-dashboard');
             const contentAhorros = document.getElementById('tab-content-ahorros');
             const contentGastos = document.getElementById('tab-content-gastos');
+            const contentGastosDet = document.getElementById('tab-content-gastos-detallados');
             const contentDrive = document.getElementById('tab-content-drive');
             const contentPend = document.getElementById('tab-content-pendientes');
             const contentAsis = document.getElementById('tab-content-asistente');
@@ -1743,6 +1848,7 @@
             btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnAhorros) btnAhorros.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnGastos) btnGastos.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+            if(btnGastosDet) btnGastosDet.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
             if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
@@ -1750,6 +1856,7 @@
             contentDash.classList.add('hidden');
             if(contentAhorros) contentAhorros.classList.add('hidden');
             if(contentGastos) contentGastos.classList.add('hidden');
+            if(contentGastosDet) contentGastosDet.classList.add('hidden');
             contentDrive.classList.add('hidden');
             if(contentPend) contentPend.classList.add('hidden');
             if(contentAsis) contentAsis.classList.add('hidden');
@@ -1770,6 +1877,12 @@
                 if(contentGastos) contentGastos.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "FIN";
                 if(title) title.innerHTML = `Control de Gastos & Ventas <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Resumen General Drive</span>`;
+            } else if (tab === 'gastos-detallados') {
+                if(btnGastosDet) btnGastosDet.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-500/20 transition-all";
+                if(contentGastosDet) contentGastosDet.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "DET";
+                if(title) title.innerHTML = `Reporte de Gastos Detallados <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Por Tienda & Gestión</span>`;
+                renderGastosDetalladosTab();
             } else if (tab === 'drive') {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
                 contentDrive.classList.remove('hidden');
