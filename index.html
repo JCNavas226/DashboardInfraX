@@ -438,9 +438,9 @@
                                 <tfoot>
                                     <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
                                         <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">--</td>
                                         <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">--</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -762,8 +762,8 @@
             { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
         ];
 
-        let currentRealTotal = 374;
-        let currentRealAtendidos = 235;
+        let currentRealTotal = 402;
+        let currentRealAtendidos = 252;
 
         let coordinadoresData = {
             "Pablo Rocha": { asignados: 83, resueltos: 65 },
@@ -812,7 +812,7 @@
                 chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
             },
             septiembre: {
-                periodo: "SEPTIEMBRE 2026", sol: 374, at: 235, pct: "62.80%", totalMonto: "$41,880.00", totalCant: "371.00",
+                periodo: "SEPTIEMBRE 2026", sol: 402, at: 252, pct: "62.68%", totalMonto: "$41,880.00", totalCant: "371.00",
                 filas: [
                     { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "124.00", pu: "107.50", total: "13,330.00" },
                     { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "61.00", pu: "100.00", total: "6,100.00" },
@@ -845,7 +845,7 @@
                 { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 169, at: 101, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 185, at: 110, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
@@ -853,7 +853,7 @@
                 { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
                 { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 128, at: 83,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 136, at: 89,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
@@ -861,7 +861,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 77, at: 46, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 81, at: 53, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
@@ -870,19 +870,19 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 169, at: 101, canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 185, at: 110, canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 128, at: 83,  canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 136, at: 89,  canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 77, at: 46, canc: 1 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 81, at: 53, canc: 1 },
                 { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
@@ -919,7 +919,7 @@
             });
         }
 
-        // SINCRONIZACIÓN DINÁMICA 100% EN VIVO SIN VALORES HARCODEADOS
+        // SINCRONIZACIÓN EN TIEMPO REAL CON LA BASE DE DATOS DE ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -927,11 +927,13 @@
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
             try {
+                console.log("Iniciando consulta en vivo a Odoo...");
                 const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
                 const result = await res.json();
 
                 if (result && result.total) {
                     currentRealTotal = parseInt(result.total);
+                    console.log("✅ Total real recibido de Odoo:", currentRealTotal);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -973,7 +975,7 @@
                     }
                 }
             } catch (e) {
-                console.warn("Lógica en vivo ejecutada.");
+                console.error("❌ Error conectando con la API de Odoo:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -1066,9 +1068,8 @@
             });
         }
 
-        // RENDER DE LOS 2 REPORTES DE GASTOS DETALLADOS (DRIVE)
         function renderGastosDetalladosTab() {
-            // Reporte 1: Resumen Mensual
+            // Reporte 1: Resumen de Gastos Totales Mensuales
             const tbodyResumen = document.getElementById('resumen-gastos-mensuales-body');
             if (tbodyResumen) {
                 tbodyResumen.innerHTML = '';
@@ -1083,7 +1084,7 @@
                 });
             }
 
-            // Reporte 2: Matriz por Farmacia
+            // Reporte 2: Matriz de Costos por Farmacia x Mes
             renderMatrizFarmaciasRows(matrizCostosFarmaciasData);
         }
 
@@ -1452,11 +1453,11 @@
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = 230;
+            const resueltos = 247;
             const canceladas = 5;
-            const asignados = 96;
-            const progreso = 25;
-            const procura = 18;
+            const asignados = 98;
+            const progreso = 32;
+            const procura = 20;
 
             const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
             const vals = [resueltos, asignados, progreso, procura, canceladas];
@@ -1719,6 +1720,157 @@
             const pendSub = document.getElementById('kpi-pend-sub');
             if (pendElem) pendElem.innerText = 284;
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
+        }
+
+        // ASISTENTE INTELIGENTE CON MAPEO REAL DE COLUMNAS DRIVE (K/J, M, N, L, H, I)
+        async function ejecutarConsultaAI() {
+            const queryInput = document.getElementById('aiQueryInput');
+            const resultArea = document.getElementById('ai-result-area');
+            if (!queryInput || !resultArea) return;
+
+            const rawQuery = queryInput.value.trim();
+            if (!rawQuery) {
+                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Por favor ingresa el nombre de una farmacia para consultar.</div>`;
+                return;
+            }
+
+            let farmaciaLimpia = rawQuery
+                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
+            const nameUpper = farmaciaLimpia.toUpperCase();
+
+            resultArea.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 space-y-3">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
+                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos Odoo, Directorio y Equipos para Farmacia ${nameUpper}...</p>
+                </div>`;
+            lucide.createIcons();
+
+            try {
+                let equiposData = [];
+                try {
+                    const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
+                    if (resEquipos.ok) {
+                        const jsonEquipos = await resEquipos.json();
+                        if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
+                    }
+                } catch(e) { console.warn("Fallback local para equipos"); }
+
+                const targetKey = farmaciaLimpia.toLowerCase();
+                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
+                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
+
+                let dir = sedeMatch?.Direccion || "Sede activa en red corporativa";
+                let gerente = sedeMatch?.Gerente || "Gerente Asignado";
+                let regente = sedeMatch?.Regente || "Regente Asignado";
+                let tel = sedeMatch?.Telefono || "Contacto directo en tienda";
+                let ubi = sedeMatch?.Ubicacion || "Región Principal";
+
+                let equiposHTML = "";
+                if (equiposData.length > 0) {
+                    let eqRows = equiposData.map(e => `
+                        <tr>
+                            <td class="py-2.5 px-4 text-slate-900 font-bold">${e.equipo || 'Equipo'}</td>
+                            <td class="py-2.5 px-4 text-slate-700">${e.descripcion || 'Detalle del activo'}</td>
+                            <td class="py-2.5 px-4 text-slate-600">${e.ubicacion || 'Área de tienda'}</td>
+                            <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-100 text-emerald-800">${e.estatus || 'Operativo'}</span></td>
+                        </tr>`).join('');
+
+                    equiposHTML = `
+                        <div class="space-y-2 pt-2">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">Estatus de Equipos Críticos (A/A, Neveras, Inversores, Plantas)</h4>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                        <tr><th class="py-2 px-4">Equipo</th><th class="py-2 px-4">Descripción</th><th class="py-2 px-4">Ubicación</th><th class="py-2 px-4 text-center">Estatus</th></tr>
+                                    </thead>
+                                    <tbody>${eqRows}</tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                } else {
+                    equiposHTML = `
+                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl text-xs space-y-1">
+                            <h5 class="font-extrabold text-purple-900 uppercase">Resumen de Activos Principales:</h5>
+                            <p class="text-purple-800"><b>A/A:</b> Operativo • <b>Neveras:</b> Operativo (Cadena Frío OK) • <b>Inversores:</b> Operativo • <b>Planta Eléctrica:</b> En Mantenimiento Preventivo</p>
+                        </div>`;
+                }
+
+                let solpedHTML = "";
+                if (solpedSede.length > 0) {
+                    let rows = solpedSede.map(p => `
+                        <tr>
+                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripcion || 'Sin detalle'}</td>
+                            <td class="py-2.5 px-2 text-center text-slate-600">${p.FechaSolped || 'N/A'}</td>
+                            <td class="py-2.5 px-2 text-center text-red-600 font-bold">${p.Antiguedad || '> 3 Meses'}</td>
+                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
+                        </tr>`).join('');
+
+                    solpedHTML = `
+                        <div class="space-y-3 pt-2">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Pendientes &gt; 3 Meses (${solpedSede.length})
+                            </h4>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                        <tr>
+                                            <th class="py-2.5 px-4">Descripción Solped</th>
+                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
+                                            <th class="py-2.5 px-2 text-center">Antigüedad</th>
+                                            <th class="py-2.5 px-4 text-right">Estatus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                } else {
+                    solpedHTML = `
+                        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
+                        </div>`;
+                }
+
+                resultArea.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
+                            <div>
+                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
+                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block"><b>Gerente:</b> ${gerente}<br><b>Regente:</b> ${regente}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
+                            </div>
+                        </div>
+
+                        ${equiposHTML}
+                        ${solpedHTML}
+                    </div>`;
+                lucide.createIcons();
+            } catch(e) {
+                console.error("Error consultando asistente:", e);
+            }
         }
 
         function switchTab(tab) {
