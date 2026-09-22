@@ -32,7 +32,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Drive...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
             </div>
         </div>
     </div>
@@ -139,7 +139,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">62.8%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">0.0%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -153,10 +153,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">374</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">--</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>374</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>--</b></span>
                     </div>
                 </div>
 
@@ -166,10 +166,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">235</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">--</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">62.8% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">--% del mes</span>
                     </div>
                 </div>
 
@@ -333,7 +333,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">374</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
                             </div>
                         </div>
                     </div>
@@ -697,7 +697,6 @@
             { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
         ];
 
-        // DIRECTORIO REAL EXTRAÍDO DE HOJA DRIVE DE SEDES (COLUMNAS K, M, N, L, H, I)
         let directorioSedesGlobalData = [
             { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
             { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
@@ -725,7 +724,6 @@
             "Carlos Diaz": { asignados: 77, resueltos: 47 }
         };
 
-        // AHORROS ESTIMADOS: SEPTIEMBRE DINÁMICO SEGÚN CASOS REALES DE ODOO (A/A 124, CIVIL 61, ELEC 142, MOB 14, PLOM 24)
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -1647,7 +1645,7 @@
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
         }
 
-        // ASISTENTE INTELIGENTE CON BÚSQUEDA REAL EN NUEVO DIRECTORIO (K/J, M/N, L, H/I)
+        // ASISTENTE INTELIGENTE CON LECTURA DE NUEVA HOJA DRIVE (K/J, M, N, L, H, I)
         async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
