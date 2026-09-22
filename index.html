@@ -933,7 +933,7 @@
 
                 if (result && result.total) {
                     currentRealTotal = parseInt(result.total);
-                    console.log("✅ Total real recibido de Odoo:", currentRealTotal);
+                    console.log("Total real recibido de Odoo:", currentRealTotal);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -975,7 +975,7 @@
                     }
                 }
             } catch (e) {
-                console.error("❌ Error conectando con la API de Odoo:", e);
+                console.error("Error conectando con la API de Odoo:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
