@@ -139,7 +139,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">0.0%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">--%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -333,7 +333,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">--</span>
                             </div>
                         </div>
                     </div>
@@ -438,9 +438,9 @@
                                 <tfoot>
                                     <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
                                         <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">--</td>
                                         <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">--</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -461,15 +461,15 @@
                             <div class="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">374</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">--</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">235</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">--</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
-                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 62.80%</span>
+                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> --%</span>
                                 </div>
                             </div>
                         </div>
@@ -539,7 +539,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA NUEVA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
+        <!-- PESTAÑA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-slate-100 flex-wrap gap-2">
@@ -1645,7 +1645,7 @@
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
         }
 
-        // ASISTENTE INTELIGENTE CON LECTURA DE NUEVA HOJA DRIVE (K/J, M, N, L, H, I)
+        // ASISTENTE INTELIGENTE CON MAPEO REAL DE COLUMNAS DRIVE (K/J, M, N, L, H, I)
         async function ejecutarConsultaAI() {
             const queryInput = document.getElementById('aiQueryInput');
             const resultArea = document.getElementById('ai-result-area');
@@ -1852,7 +1852,7 @@
                 if(btnGastosDet) btnGastosDet.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-500/20 transition-all";
                 if(contentGastosDet) contentGastosDet.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "DET";
-                if(title) title.innerHTML = `Reporte de Gastos Detallados <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Por Tienda & Gestión</span>`;
+                if(title) title.innerHTML = `Reporte de Gastos Detallados <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Por Tienda & Mes</span>`;
                 renderGastosDetalladosTab();
             } else if (tab === 'drive') {
                 btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
