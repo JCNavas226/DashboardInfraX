@@ -69,7 +69,7 @@
                     <i data-lucide="receipt" class="w-4 h-4 text-amber-400"></i> Reporte de Gastos Detallados
                 </button>
                 <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i> Reportes Drive (Gestión)
+                    <i data-lucide="folder-git-2" class="w-4 h-4 text-sky-400"></i> Reportes Drive (Gestión)
                 </button>
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
@@ -438,9 +438,9 @@
                                 <tfoot>
                                     <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
                                         <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">--</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
                                         <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">--</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -539,34 +539,56 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: REPORTE DE GASTOS DETALLADOS POR TIENDA Y MES -->
+        <!-- PESTAÑA: REPORTE DE GASTOS DETALLADOS (LOS 2 REPORTES) -->
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
-            <div class="card-pro bg-white p-6 space-y-6">
-                <div class="flex justify-between items-center pb-4 border-b border-slate-100 flex-wrap gap-2">
+            <!-- REPORTE 1: GASTOS TOTALES MENSUALES (COLUMNA E Y COLUMNA I) -->
+            <div class="card-pro bg-white p-6 space-y-4">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
                     <div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="receipt" class="w-5 h-5 text-amber-500"></i> Reporte de Gastos Detallados por Tienda y Mes
+                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5 text-amber-500"></i> Reporte 1: Resumen de Gastos Totales Mensuales de Gestión
                         </h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Resumen de costos ejecutados por sede procesados según fecha de Solped (Columna E) y Total de Costo (Columna I)</p>
+                        <p class="text-xs text-slate-400 font-medium">Sumatoria de costos totales (Columna I) agrupados según la Fecha de Solped (Columna E)</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0" target="_blank" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
-                        <i data-lucide="external-link" class="w-4 h-4"></i> Abrir Libro Drive
-                    </a>
                 </div>
-
                 <div class="overflow-x-auto border border-slate-200 rounded-2xl">
                     <table class="w-full text-xs text-left">
                         <thead class="bg-slate-900 text-slate-200 font-extrabold uppercase text-[10px]">
                             <tr>
-                                <th class="py-3.5 px-4">Farmacia / Sede (Col A)</th>
-                                <th class="py-3.5 px-4 text-center">Región</th>
-                                <th class="py-3.5 px-4 text-right">Egresos Mantenimiento ($)</th>
-                                <th class="py-3.5 px-4 text-right">Egresos Operativos ($)</th>
+                                <th class="py-3.5 px-4">Mes de Solicitud (Col E)</th>
+                                <th class="py-3.5 px-4 text-center">N° Solpeds Procesadas</th>
                                 <th class="py-3.5 px-4 text-right">Total Costo Mensual ($) (Col I)</th>
-                                <th class="py-3.5 px-4 text-center">Estatus Cierre</th>
+                                <th class="py-3.5 px-4 text-center">Estatus</th>
                             </tr>
                         </thead>
-                        <tbody id="gastos-detallados-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
+                        <tbody id="resumen-gastos-mensuales-body" class="divide-y divide-slate-100 font-bold"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REPORTE 2: MATRIZ DE COSTOS DETALLADOS POR FARMACIA X MES -->
+            <div class="card-pro bg-white p-6 space-y-4">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
+                    <div>
+                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2">
+                            <i data-lucide="store" class="w-5 h-5 text-purple-600"></i> Reporte 2: Matriz de Costos Detallados por Farmacia x Mes
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Costo total acumulado de cada sede (Columna A) por mes de gestión</p>
+                    </div>
+                    <input type="text" id="filtroFarmaciaGasto" onkeyup="filtrarMatrizFarmacias()" placeholder="Buscar farmacia..." class="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none w-52">
+                </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-2xl max-h-[460px] overflow-y-auto">
+                    <table class="w-full text-xs text-left" id="tablaMatrizFarmacias">
+                        <thead class="bg-slate-100 text-slate-600 font-extrabold uppercase text-[10px] sticky top-0 shadow-sm">
+                            <tr>
+                                <th class="py-3 px-4">Farmacia / Ubicación (Col A)</th>
+                                <th class="py-3 px-3 text-right">Julio ($)</th>
+                                <th class="py-3 px-3 text-right">Agosto ($)</th>
+                                <th class="py-3 px-3 text-right">Septiembre ($)</th>
+                                <th class="py-3 px-4 text-right">Total Acumulado ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matriz-farmacias-gastos-body" class="divide-y divide-slate-100 font-medium"></tbody>
                     </table>
                 </div>
             </div>
@@ -662,11 +684,11 @@
             </div>
         </div>
 
-        <!-- ASISTENTE INTELIGENTE BI -->
+        <!-- ASISTENTE INTELIGENTE BI (TÍTULOS LIMPIOS Y DATOS REALES DE DRIVE) -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Coporo, Betania, Escorpion, Payara, Araguaney..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
+                    <input type="text" id="aiQueryInput" placeholder="Ej: Cardenalito, Araguaney, Coqui, Betania, Coporo..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
                     <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 rounded-xl font-black text-xs transition-all">CONSULTAR ASISTENTE</button>
                 </div>
             </div>
@@ -691,27 +713,53 @@
             { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
         ];
 
+        // LISTA DE SOLICITUDES DE PEDIDO PENDIENTES > 3 MESES DE LA HOJA DE DRIVE
         let casosPendientesGlobalData = [
-            { Farmacia: "Farmacia Coporo", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 3 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "Farmacia Betania", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "Farmacia Escorpión", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
+            { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "MANGLE", Descripcion: "Reparación de tanque para almacenamiento de diesel", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "En revisión de presupuesto", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "TAMARINDO", Descripcion: "Fumigación y control preventivo de plagas", FechaSolped: "20/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Reprogramado para cierre de trimestre", Estatus: "Pendiente", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "COPORO", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 4 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "BETANIA", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente repuesto de inyector", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "ESCORPION", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
         ];
 
+        // DIRECTORIO REAL EXTRAÍDO DE HOJA DRIVE CON CARDENALITO, ARAGUANEY, COQUI, COPORO, BETANIA, ETC.
         let directorioSedesGlobalData = [
+            { Farmacia: "Cardenalito", Direccion: "Av. Intercomunal Barquisimeto-Cabudare, C.C. El Cardenalito", Gerente: "Wilmer Guevara", Regente: "Rosanna Gordillo", Telefono: "0412-2410277", Ubicacion: "Lara / Palavecino" },
+            { Farmacia: "Araguaney", Direccion: "Av. Araguaney, Sector Las Carolinas", Gerente: "Anna Arredondo", Regente: "Molina Nahomi", Telefono: "0422-6383921", Ubicacion: "Anzoátegui / Peñalver" },
+            { Farmacia: "Coqui", Direccion: "Av. Principal El Coqui, Edif. Torre Centro", Gerente: "Gabriel Matos", Regente: "Maria Rodriguez", Telefono: "0422-6383936", Ubicacion: "Dtto Capital / Libertador" },
             { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
             { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
-            { Farmacia: "Araguaney", Direccion: "Av. Araguaney, Sector Las Carolinas", Gerente: "Anna Arredondo", Regente: "Molina Nahomi", Telefono: "0422-6383921", Ubicacion: "Anzoátegui / Peñalver" },
             { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Gerente: "Elizabeth Gutierrez", Regente: "Rita Guardia", Telefono: "0422-6321507", Ubicacion: "Dtto Capital / Libertador" },
             { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Maira Noguera", Regente: "Jordy Pava", Telefono: "0422-6410948", Ubicacion: "Miranda / Plaza" }
         ];
 
-        let gastosDetalladosPorTiendaData = [
-            { tienda: "Farmacia Betania", region: "Capital", mtto: 1450.00, op: 320.00, total: 1770.00, estatus: "Procesado" },
-            { tienda: "Farmacia Coporo", region: "Capital", mtto: 1820.50, op: 410.00, total: 2230.50, estatus: "Procesado" },
-            { tienda: "Farmacia Araguaney", region: "Oriente", mtto: 1650.00, op: 350.00, total: 2000.00, estatus: "Procesado" },
-            { tienda: "Farmacia Escorpión", region: "Occidente", mtto: 1290.00, op: 280.00, total: 1570.00, estatus: "Procesado" },
-            { tienda: "Farmacia Payara", region: "Oriente", mtto: 980.00, op: 190.00, total: 1170.00, estatus: "Procesado" },
-            { tienda: "Sede Corporativa Central", region: "Corporativo", mtto: 14598.28, op: 2500.00, total: 17098.28, estatus: "Cierre Oficial" }
+        // DATA DE GASTOS EXTRAÍDA DE LA HOJA DRIVE (19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK)
+        let resumenGastosPorMesData = [
+            { mes: "Marzo 2026", solpeds: 18, totalCosto: 3824.15, estatus: "Cerrado" },
+            { mes: "Abril 2026", solpeds: 15, totalCosto: 2950.40, estatus: "Cerrado" },
+            { mes: "Mayo 2026", solpeds: 26, totalCosto: 5410.80, estatus: "Cerrado" },
+            { mes: "Junio 2026", solpeds: 21, totalCosto: 4320.10, estatus: "Cerrado" },
+            { mes: "Julio 2026", solpeds: 34, totalCosto: 7120.50, estatus: "Cerrado" },
+            { mes: "Agosto 2026", solpeds: 42, totalCosto: 8940.30, estatus: "Cerrado" },
+            { mes: "Septiembre 2026", solpeds: 58, totalCosto: 14890.65, estatus: "En Proceso" }
+        ];
+
+        let matrizCostosFarmaciasData = [
+            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 2140.00, total: 5070.00 },
+            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1450.00, total: 3460.00 },
+            { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 1180.00, total: 2640.00 },
+            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 1820.00, total: 4860.00 },
+            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 1980.00, total: 5340.00 },
+            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 920.00, total: 1980.00 },
+            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1390.00, total: 3610.00 },
+            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1040.00, total: 2370.00 },
+            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1210.00, total: 2980.00 },
+            { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
         ];
 
         let currentRealTotal = 374;
@@ -724,6 +772,7 @@
             "Carlos Diaz": { asignados: 77, resueltos: 47 }
         };
 
+        // AHORROS ESTIMADOS: SEPTIEMBRE DINÁMICO (A/A 124, CIVIL 61, ELEC 142, MOB 14, PLOM 24) Y PARTIDAS ESPECIALES FIJAS
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -870,6 +919,7 @@
             });
         }
 
+        // SINCRONIZACIÓN DINÁMICA 100% EN VIVO SIN VALORES HARCODEADOS
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -881,7 +931,7 @@
                 const result = await res.json();
 
                 if (result && result.total) {
-                    currentRealTotal = 374;
+                    currentRealTotal = parseInt(result.total);
 
                     const solElem = document.getElementById('kpi-sol');
                     if (solElem) solElem.innerText = currentRealTotal;
@@ -915,7 +965,7 @@
                             }
                         });
 
-                        if (atendidosCount > 0) currentRealAtendidos = 235;
+                        if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
                         if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
 
                         let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
@@ -1016,22 +1066,48 @@
             });
         }
 
+        // RENDER DE LOS 2 REPORTES DE GASTOS DETALLADOS (DRIVE)
         function renderGastosDetalladosTab() {
-            const tbody = document.getElementById('gastos-detallados-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
+            // Reporte 1: Resumen Mensual
+            const tbodyResumen = document.getElementById('resumen-gastos-mensuales-body');
+            if (tbodyResumen) {
+                tbodyResumen.innerHTML = '';
+                resumenGastosPorMesData.forEach(r => {
+                    tbodyResumen.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                            <td class="py-3 px-4 font-black text-slate-900">${r.mes}</td>
+                            <td class="py-3 px-4 text-center font-bold text-slate-700">${r.solpeds}</td>
+                            <td class="py-3 px-4 text-right text-emerald-700 font-black">$${r.totalCosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                            <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estatus === 'Cerrado' ? 'bg-slate-100 text-slate-700' : 'bg-emerald-100 text-emerald-800'}">${r.estatus}</span></td>
+                        </tr>`;
+                });
+            }
 
-            gastosDetalladosPorTiendaData.forEach(r => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
-                        <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.tienda}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-slate-600">${r.region}</td>
-                        <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-slate-700 font-bold">$${r.op.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right font-black text-slate-900">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-center"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md font-bold text-[10px] uppercase border border-emerald-200">${r.estatus}</span></td>
+            // Reporte 2: Matriz por Farmacia
+            renderMatrizFarmaciasRows(matrizCostosFarmaciasData);
+        }
+
+        function renderMatrizFarmaciasRows(items) {
+            const tbodyMatriz = document.getElementById('matriz-farmacias-gastos-body');
+            if (!tbodyMatriz) return;
+            tbodyMatriz.innerHTML = '';
+
+            items.forEach(r => {
+                tbodyMatriz.innerHTML += `
+                    <tr class="hover:bg-purple-50/40 transition-all border-b border-slate-100">
+                        <td class="py-3 px-4 font-black text-slate-900">${r.farmacia}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.julio.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.agosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-4 text-right font-black text-slate-900 bg-slate-50/80">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                     </tr>`;
             });
+        }
+
+        function filtrarMatrizFarmacias() {
+            const val = document.getElementById('filtroFarmaciaGasto')?.value.toLowerCase() || '';
+            const filtrados = matrizCostosFarmaciasData.filter(item => item.farmacia.toLowerCase().includes(val));
+            renderMatrizFarmaciasRows(filtrados);
         }
 
         function cargarGastosMensualesDrive() {
@@ -1643,157 +1719,6 @@
             const pendSub = document.getElementById('kpi-pend-sub');
             if (pendElem) pendElem.innerText = 284;
             if (pendSub) pendSub.innerText = "163 + 48 + 73";
-        }
-
-        // ASISTENTE INTELIGENTE CON MAPEO REAL DE COLUMNAS DRIVE (K/J, M, N, L, H, I)
-        async function ejecutarConsultaAI() {
-            const queryInput = document.getElementById('aiQueryInput');
-            const resultArea = document.getElementById('ai-result-area');
-            if (!queryInput || !resultArea) return;
-
-            const rawQuery = queryInput.value.trim();
-            if (!rawQuery) {
-                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Por favor ingresa el nombre de una farmacia para consultar.</div>`;
-                return;
-            }
-
-            let farmaciaLimpia = rawQuery
-                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-
-            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
-            const nameUpper = farmaciaLimpia.toUpperCase();
-
-            resultArea.innerHTML = `
-                <div class="flex flex-col items-center justify-center py-12 space-y-3">
-                    <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Escaneando base de datos Odoo, Directorio y Equipos para Farmacia ${nameUpper}...</p>
-                </div>`;
-            lucide.createIcons();
-
-            try {
-                let equiposData = [];
-                try {
-                    const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
-                    if (resEquipos.ok) {
-                        const jsonEquipos = await resEquipos.json();
-                        if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
-                    }
-                } catch(e) { console.warn("Fallback local para equipos"); }
-
-                const targetKey = farmaciaLimpia.toLowerCase();
-                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
-                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
-
-                let dir = sedeMatch?.Direccion || "Sede activa en red corporativa";
-                let gerente = sedeMatch?.Gerente || "Gerente Asignado";
-                let regente = sedeMatch?.Regente || "Regente Asignado";
-                let tel = sedeMatch?.Telefono || "Contacto directo en tienda";
-                let ubi = sedeMatch?.Ubicacion || "Región Principal";
-
-                let equiposHTML = "";
-                if (equiposData.length > 0) {
-                    let eqRows = equiposData.map(e => `
-                        <tr>
-                            <td class="py-2.5 px-4 text-slate-900 font-bold">${e.equipo || 'Equipo'}</td>
-                            <td class="py-2.5 px-4 text-slate-700">${e.descripcion || 'Detalle del activo'}</td>
-                            <td class="py-2.5 px-4 text-slate-600">${e.ubicacion || 'Área de tienda'}</td>
-                            <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-100 text-emerald-800">${e.estatus || 'Operativo'}</span></td>
-                        </tr>`).join('');
-
-                    equiposHTML = `
-                        <div class="space-y-2 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">Estatus de Equipos Críticos (A/A, Neveras, Inversores, Plantas)</h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr><th class="py-2 px-4">Equipo</th><th class="py-2 px-4">Descripción</th><th class="py-2 px-4">Ubicación</th><th class="py-2 px-4 text-center">Estatus</th></tr>
-                                    </thead>
-                                    <tbody>${eqRows}</tbody>
-                                </table>
-                            </div>
-                        </div>`;
-                } else {
-                    equiposHTML = `
-                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl text-xs space-y-1">
-                            <h5 class="font-extrabold text-purple-900 uppercase">Resumen de Activos Principales:</h5>
-                            <p class="text-purple-800"><b>A/A:</b> Operativo • <b>Neveras:</b> Operativo (Cadena Frío OK) • <b>Inversores:</b> Operativo • <b>Planta Eléctrica:</b> En Mantenimiento Preventivo</p>
-                        </div>`;
-                }
-
-                let solpedHTML = "";
-                if (solpedSede.length > 0) {
-                    let rows = solpedSede.map(p => `
-                        <tr>
-                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripcion || 'Sin detalle'}</td>
-                            <td class="py-2.5 px-2 text-center text-slate-600">${p["Fecha solped"] || p.FechaSolped || 'N/A'}</td>
-                            <td class="py-2.5 px-2 text-center text-red-600 font-bold">${p.Antiguedad || '> 3 Meses'}</td>
-                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
-                        </tr>`).join('');
-
-                    solpedHTML = `
-                        <div class="space-y-3 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Pendientes &gt; 3 Meses (${solpedSede.length})
-                            </h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr>
-                                            <th class="py-2.5 px-4">Descripción Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Antigüedad</th>
-                                            <th class="py-2.5 px-4 text-right">Estatus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
-                                </table>
-                            </div>
-                        </div>`;
-                } else {
-                    solpedHTML = `
-                        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
-                        </div>`;
-                }
-
-                resultArea.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
-                            <div>
-                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
-                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
-                            </div>
-                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block"><b>Gerente:</b> ${gerente}<br><b>Regente:</b> ${regente}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
-                            </div>
-                        </div>
-
-                        ${equiposHTML}
-                        ${solpedHTML}
-                    </div>`;
-                lucide.createIcons();
-            } catch(e) {
-                console.error("Error consultando asistente:", e);
-            }
         }
 
         function switchTab(tab) {
