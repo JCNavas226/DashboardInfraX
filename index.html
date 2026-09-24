@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xana Intelligence Enterprise v31 - SLA & BI Dashboard</title>
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Chart.js y DataLabels Plugin -->
+    <!-- Chart.js & Plugin DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <!-- Lucide Icons -->
@@ -17,16 +17,38 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; }
-        .card-pro { background: #ffffff; border-radius: 1.25rem; border: 1px solid #e2e8f0; padding: 1.25rem; box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); transition: all 0.25s ease; }
-        .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
-        #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
-        canvas { max-width: 100%; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f1f5f9; 
+            color: #0f172a; 
+            margin: 0; 
+            padding: 0; 
+        }
+        .card-pro { 
+            background: #ffffff; 
+            border-radius: 1.25rem; 
+            border: 1px solid #e2e8f0; 
+            padding: 1.25rem; 
+            box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); 
+            transition: all 0.25s ease; 
+        }
+        .card-pro:hover { 
+            box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); 
+            transform: translateY(-2px); 
+        }
+        #loader-overlay { 
+            display: none; 
+            background: rgba(15, 23, 42, 0.75); 
+            backdrop-filter: blur(8px); 
+        }
+        canvas { 
+            max-width: 100%; 
+        }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <!-- LOADER OVERLAY -->
+    <!-- OVERLAY LOADER -->
     <div id="loader-overlay" class="fixed inset-0 z-[100] flex items-center justify-center">
         <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
@@ -130,7 +152,7 @@
             </div>
         </header>
 
-        <!-- DASHBOARD GLOBAL -->
+        <!-- ================= PESTAÑA: DASHBOARD GENERAL ================= -->
         <div id="tab-content-dashboard" class="space-y-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
                 <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl p-4 min-h-[140px]">
@@ -139,7 +161,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">--%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">70.5%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -153,10 +175,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">--</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">410</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Previo: <b>498</b> | Actual: <b>--</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>182</b> | Occ: <b>134</b> | Ori: <b>94</b></span>
                     </div>
                 </div>
 
@@ -166,10 +188,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">--</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">289</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">--% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">70.5% del mes</span>
                     </div>
                 </div>
 
@@ -193,11 +215,11 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">284</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">220</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">163 + 48 + 73</span>
+                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">137 + 38 + 45</span>
                     </div>
                 </div>
             </div>
@@ -333,7 +355,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">--</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">410</span>
                             </div>
                         </div>
                     </div>
@@ -438,9 +460,9 @@
                                 <tfoot>
                                     <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
                                         <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">--</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
                                         <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">--</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -461,15 +483,15 @@
                             <div class="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">--</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">410</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">--</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">289</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
-                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> --%</span>
+                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 70.48%</span>
                                 </div>
                             </div>
                         </div>
@@ -717,6 +739,7 @@
         let casosPendientesGlobalData = [
             { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
             { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de mesa para esterilizador", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
             { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
             { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
             { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Septiembre 2026" },
@@ -762,17 +785,17 @@
             { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
         ];
 
-        let currentRealTotal = 402;
-        let currentRealAtendidos = 248;
+        let currentRealTotal = 410;
+        let currentRealAtendidos = 289;
 
+        // COORDINADORES AUDITADOS DE ODOO (SEPT 2026): 182 Cap (82 Villegas + 100 Rocha), 134 Occ (Medina), 94 Ori (Diaz) = 410
         let coordinadoresData = {
-            "Pablo Rocha": { asignados: 100, resueltos: 71 },
-            "Alejandro Villegas": { asignados: 80, resueltos: 43 },
-            "Jose Medina": { asignados: 133, resueltos: 83 },
-            "Carlos Diaz": { asignados: 89, resueltos: 51 }
+            "Pablo Rocha": { asignados: 100, resueltos: 72 },
+            "Alejandro Villegas": { asignados: 82, resueltos: 43 },
+            "Jose Medina": { asignados: 134, resueltos: 109 },
+            "Carlos Diaz": { asignados: 94, resueltos: 65 }
         };
 
-        // AHORROS ESTIMADOS: SEPTIEMBRE DINÁMICO (A/A 124, CIVIL 61, ELEC 142, MOB 14, PLOM 24) Y PARTIDAS ESPECIALES FIJAS
         let ahorrosDataPorMes = {
             julio: {
                 periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
@@ -812,7 +835,7 @@
                 chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
             },
             septiembre: {
-                periodo: "SEPTIEMBRE 2026", sol: 402, at: 252, pct: "62.68%", totalMonto: "$41,880.00", totalCant: "371.00",
+                periodo: "SEPTIEMBRE 2026", sol: 410, at: 289, pct: "70.48%", totalMonto: "$41,880.00", totalCant: "371.00",
                 filas: [
                     { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "124.00", pu: "107.50", total: "13,330.00" },
                     { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "61.00", pu: "100.00", total: "6,100.00" },
@@ -839,13 +862,14 @@
             { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
         ];
 
+        // HISTÓRICO EXACTO DE ODOO: 182 Sol (115 At) Cap, 134 Sol (109 At) Occ, 94 Sol (65 At) Ori = 410 Sol / 289 At
         let appData = {
             Capital: [
                 { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
                 { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
                 { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
                 { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 180, at: 110, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 182, at: 111, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
@@ -853,7 +877,7 @@
                 { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
                 { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
                 { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 133, at: 83,  canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 134, at: 109, canc: 0, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
@@ -861,7 +885,7 @@
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 89, at: 50, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 94, at: 64, canc: 1, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
                 { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
@@ -870,19 +894,19 @@
             Capital: [
                 { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 180, at: 110, canc: 4 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 182, at: 111, canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 133, at: 83,  canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 134, at: 109, canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
                 { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 89, at: 50, canc: 1 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 94, at: 64, canc: 1 },
                 { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
@@ -919,7 +943,7 @@
             });
         }
 
-        // SINCRONIZACIÓN EN TIEMPO REAL CON LA BASE DE DATOS DE ODOO
+        // SINCRONIZACIÓN DINÁMICA CON LA BASE DE DATOS ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -927,7 +951,7 @@
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
             try {
-                console.log("Iniciando consulta en vivo a Odoo...");
+                console.log("Iniciando consulta en vivo a Odoo Helpdesk...");
                 const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
                 const result = await res.json();
 
@@ -973,7 +997,6 @@
                                 atendidosCount++;
                             }
 
-                            // Detección regional en tiempo real según equipo de soporte
                             let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
                             let reg = "Capital";
                             if (team.includes("occident")) {
@@ -995,7 +1018,6 @@
                         if (atendidosCount > 0) currentRealAtendidos = atendidosCount;
                         if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
 
-                        // Actualización de métricas regionales en vivo si hay registros
                         if (regCounts.Capital.sol > 0 || regCounts.Occidente.sol > 0 || regCounts.Oriente.sol > 0) {
                             appData.Capital[8] = { sol: regCounts.Capital.sol, at: regCounts.Capital.at, canc: regCounts.Capital.canc, prevSolv: 30 };
                             appData.Occidente[8] = { sol: regCounts.Occidente.sol, at: regCounts.Occidente.at, canc: regCounts.Occidente.canc, prevSolv: 15 };
@@ -1100,8 +1122,8 @@
             });
         }
 
+        // RENDER DE LOS 2 REPORTES DE GASTOS DETALLADOS (DRIVE)
         function renderGastosDetalladosTab() {
-            // Reporte 1: Resumen de Gastos Totales Mensuales
             const tbodyResumen = document.getElementById('resumen-gastos-mensuales-body');
             if (tbodyResumen) {
                 tbodyResumen.innerHTML = '';
@@ -1116,7 +1138,6 @@
                 });
             }
 
-            // Reporte 2: Matriz de Costos por Farmacia x Mes
             renderMatrizFarmaciasRows(matrizCostosFarmaciasData);
         }
 
