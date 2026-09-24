@@ -466,21 +466,21 @@
                                 <span class="text-[10px] font-black text-purple-600 uppercase tracking-wider bg-purple-50 px-2 py-0.5 rounded">Tercer Trimestre</span>
                                 <h4 class="text-xl font-black text-slate-900 mt-1">Q3 (Jul - Sep)</h4>
                             </div>
-                            <span class="text-xs font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded">En Curso</span>
+                            <span class="text-xs font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Consolidado</span>
                         </div>
                         <div class="flex items-baseline justify-between pt-1">
                             <div>
-                                <span class="text-3xl font-black text-slate-900">1,480</span>
+                                <span class="text-3xl font-black text-slate-900">1,478</span>
                                 <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-lg font-black text-purple-700">1,048</span>
-                                <span class="text-[10px] text-emerald-600 font-bold block">Atendidos (70.8%)</span>
+                                <span class="text-lg font-black text-purple-700">873</span>
+                                <span class="text-[10px] text-emerald-600 font-bold block">Resueltos (59.06%)</span>
                             </div>
                         </div>
                         <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>493.3 / mes</b></span>
-                            <span><b>24.7</b> casos/día</span>
+                            <span>Promedio: <b>492.7 / mes</b></span>
+                            <span><b>24.6</b> casos/día</span>
                         </div>
                     </div>
 
@@ -564,8 +564,8 @@
                     </div>
                 </div>
 
-                <!-- Comparison Cards (Exactly as in Image 2) -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Comparison Cards (Q1, Q2 y Q3) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     <!-- Card PRIMER TRIMESTRE (Q1) -->
                     <div class="card-pro bg-white p-6 space-y-5 border border-slate-200">
                         <div class="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -697,16 +697,94 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Card TERCER TRIMESTRE (Q3) -->
+                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-purple-500 relative shadow-lg">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black text-[11px] px-3.5 py-1 rounded-full shadow-md flex items-center gap-1 uppercase tracking-wider">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Cierre Auditado
+                        </div>
+
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <h4 class="text-base font-black text-purple-700 uppercase">TERCER TRIMESTRE (Q3)</h4>
+                            <span class="text-[11px] font-extrabold text-purple-800 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Odoo Cierre</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-7 space-y-3">
+                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS REGISTRADOS</span>
+                                <h3 class="text-3xl font-black text-purple-700 leading-none">1,478 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
+                                
+                                <div class="space-y-2 pt-2">
+                                    <div>
+                                        <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                            <span class="flex items-center gap-1.5"><i data-lucide="folder-check" class="w-3.5 h-3.5 text-purple-600"></i> Odoo Resueltos (873)</span>
+                                            <span class="text-purple-700 font-extrabold">59.06%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-purple-600 h-full rounded-full" style="width: 59.06%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                            <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i> Backlog Pendiente (215)</span>
+                                            <span class="text-amber-700 font-extrabold">Cap 140 • Occ 37 • Ori 38</span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-amber-500 h-full rounded-full" style="width: 40.94%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Circular Gauge Q3 -->
+                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-purple-50/60 rounded-2xl border border-purple-200">
+                                <div class="w-24 h-24 relative flex items-center justify-center">
+                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
+                                        <path class="text-purple-200/60" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-purple-600" stroke-dasharray="59.06, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span class="text-base font-black text-slate-900">59.06%</span>
+                                        <span class="text-[8px] font-bold text-purple-600 uppercase">Q3 2026</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-black text-slate-600 mt-2">Q3 Resueltos: <b>873 / 1,478</b></span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-extrabold text-slate-400 uppercase block">PROMEDIO MENSUAL</span>
+                                <span class="text-xl font-black text-slate-900 mt-0.5 block">492.7</span>
+                                <span class="text-[10px] font-semibold text-slate-500">Casos / Mes</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-extrabold text-slate-400 uppercase block">PRODUCTIVIDAD</span>
+                                <span class="text-xl font-black text-purple-700 mt-0.5 block">24.6</span>
+                                <span class="text-[10px] font-semibold text-slate-500">Casos / Día</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Gráfica Comparativa de Volumen y Productividad Trimestral -->
                 <div class="card-pro bg-white p-6 space-y-4">
-                    <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 gap-3">
                         <div>
                             <h4 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                                 <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i> Evolución Trimestral: Volumen Solicitado vs Atendidos & Tasa de Efectividad
                             </h4>
-                            <p class="text-xs text-slate-400 font-medium">Comparativo integral de productividad Q1, Q2, Q3 y proyección de cierre Q4</p>
+                            <p class="text-xs text-slate-400 font-medium">Comparativo integral de productividad trimestral</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase">Trimestres a Graficar:</span>
+                            <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1" id="quarter-filter-buttons">
+                                <button id="btn-chart-all" onclick="filtrarTrimestresGrafica('ALL')" class="px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm">Todos</button>
+                                <button id="btn-chart-q1" onclick="toggleQuarterChart('Q1')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q1</button>
+                                <button id="btn-chart-q2" onclick="toggleQuarterChart('Q2')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q2</button>
+                                <button id="btn-chart-q3" onclick="toggleQuarterChart('Q3')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q3</button>
+                                <button id="btn-chart-q4" onclick="toggleQuarterChart('Q4')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q4*</button>
+                            </div>
                         </div>
                     </div>
                     <div class="h-[360px] relative">
@@ -1028,6 +1106,7 @@
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
         let currentQuarterSelected = 'Q2';
+        let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
         // DATOS TRIMESTRALES AUDITADOS (Q1, Q2, Q3, Q4)
         const trimestresData = {
@@ -1074,22 +1153,22 @@
             Q3: {
                 nombre: "Tercer Trimestre (Q3)",
                 periodo: "Julio - Septiembre 2026",
-                solicitudesTotales: 1480,
-                casosAtendidosTotal: 1048,
-                odooResueltos: 891,
-                backlogResuelto: 157,
-                pctAtencion: "70.8%",
-                promedioMensual: 493.3,
-                productividadDia: 24.7,
-                crecimientoVsPrev: "+28.5%",
+                solicitudesTotales: 1478,
+                casosAtendidosTotal: 1088,
+                odooResueltos: 873,
+                backlogResuelto: 215,
+                pctAtencion: "59.06%",
+                promedioMensual: 492.7,
+                productividadDia: 24.6,
+                crecimientoVsPrev: "+28.3%",
                 statusDistribution: [
-                    { label: "Resuelto", count: 985, pct: "66.6%", color: "#ff5500", icon: "circle-dot" },
-                    { label: "En progreso", count: 142, pct: "9.6%", color: "#eab308", icon: "settings" },
-                    { label: "Asignado (En Planificación)", count: 168, pct: "11.3%", color: "#3b82f6", icon: "user-check" },
-                    { label: "En procura", count: 125, pct: "8.4%", color: "#8b5cf6", icon: "package" },
-                    { label: "Cancelada", count: 60, pct: "4.1%", color: "#ef4444", icon: "x-circle" }
+                    { label: "Resuelto", count: 873, pct: "59.06%", color: "#ff5500", icon: "circle-dot" },
+                    { label: "Asignado (En Planificación)", count: 246, pct: "16.64%", color: "#3b82f6", icon: "user-check" },
+                    { label: "En progreso", count: 187, pct: "12.65%", color: "#eab308", icon: "settings" },
+                    { label: "En procura", count: 112, pct: "7.58%", color: "#8b5cf6", icon: "package" },
+                    { label: "Cancelada", count: 60, pct: "4.06%", color: "#ef4444", icon: "x-circle" }
                 ],
-                narrativa: "Durante el Q3 se mantuvieron altos estándares operativos con 1,048 casos atendidos en red y una tasa de atención del 70.8% con 437 solicitudes en el mes de cierre."
+                narrativa: "Durante el Q3 se cerraron satisfactoriamente <b>873 casos resueltos</b> de un total de <b>1,478 solicitudes</b> al cierre de mes, lo que representa una tasa de efectividad neta del <b>59.06%</b>."
             },
             Q4: {
                 nombre: "Cuarto Trimestre (Q4)",
@@ -1428,10 +1507,20 @@
             if (!ctxProd) return;
             if (charts.trimestralProd) charts.trimestralProd.destroy();
 
-            const qLabels = ['Q1 (Ene - Mar)', 'Q2 (Abr - Jun)', 'Q3 (Jul - Sep)', 'Q4 (Oct - Dic)*'];
-            const solData = [977, 1152, 1480, 1550];
-            const atData = [713, 1281, 1048, 1162];
-            const efData = [42.0, 78.5, 70.8, 75.0];
+            const masterQuarterData = {
+                Q1: { label: 'Q1 (Ene - Mar)', sol: 977, at: 713, ef: 42.0 },
+                Q2: { label: 'Q2 (Abr - Jun)', sol: 1152, at: 1281, ef: 78.5 },
+                Q3: { label: 'Q3 (Jul - Sep)', sol: 1478, at: 873, ef: 59.06 },
+                Q4: { label: 'Q4 (Oct - Dic)*', sol: 1550, at: 1162, ef: 75.0 }
+            };
+
+            const selectedKeys = ['Q1', 'Q2', 'Q3', 'Q4'].filter(k => activeChartQuarters.includes(k));
+            const qLabels = selectedKeys.map(k => masterQuarterData[k].label);
+            const solData = selectedKeys.map(k => masterQuarterData[k].sol);
+            const atData = selectedKeys.map(k => masterQuarterData[k].at);
+            const efData = selectedKeys.map(k => masterQuarterData[k].ef);
+
+            actualizarBotonesFiltroTrimestre();
 
             charts.trimestralProd = new Chart(ctxProd, {
                 type: 'bar',
@@ -1447,7 +1536,7 @@
                             datalabels: { anchor: 'end', align: 'top', color: '#0284c7', font: { weight: '800', size: 10 } }
                         },
                         {
-                            label: 'Casos Atendidos',
+                            label: 'Casos Atendidos / Resueltos',
                             data: atData,
                             backgroundColor: '#ff5500',
                             borderRadius: 6,
@@ -1484,6 +1573,43 @@
                         legend: { position: 'top', labels: { font: { weight: '700', size: 11 }, boxWidth: 14 } }
                     }
                 }
+            });
+        }
+
+        function filtrarTrimestresGrafica(mode) {
+            if (mode === 'ALL') {
+                activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            }
+            renderTrimestralProductividadChart();
+        }
+
+        function toggleQuarterChart(qKey) {
+            if (activeChartQuarters.includes(qKey)) {
+                if (activeChartQuarters.length > 1) {
+                    activeChartQuarters = activeChartQuarters.filter(k => k !== qKey);
+                }
+            } else {
+                activeChartQuarters.push(qKey);
+            }
+            renderTrimestralProductividadChart();
+        }
+
+        function actualizarBotonesFiltroTrimestre() {
+            const allBtn = document.getElementById('btn-chart-all');
+            const isAll = activeChartQuarters.length === 4;
+            if (allBtn) {
+                allBtn.className = isAll
+                    ? "px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm"
+                    : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-700 border border-slate-200 transition-all";
+            }
+
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(k => {
+                const btn = document.getElementById(`btn-chart-${k.toLowerCase()}`);
+                if (!btn) return;
+                const active = activeChartQuarters.includes(k);
+                btn.className = active
+                    ? "px-2.5 py-1 rounded-lg font-black text-xs bg-cyan-600 text-white shadow-sm transition-all"
+                    : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-400 border border-slate-200 transition-all";
             });
         }
 
