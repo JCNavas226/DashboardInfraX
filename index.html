@@ -520,15 +520,13 @@
                                 <th class="pb-3 px-4 text-right">% Gastos Mtto / Venta (Col J)</th>
                             </tr>
                         </thead>
-                        <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
-                        </tbody>
+                        <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
-            <!-- REPORTE 1: GASTOS TOTALES MENSUALES (COLUMNA E Y COLUMNA I) -->
             <div class="card-pro bg-white p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
                     <div>
@@ -553,7 +551,6 @@
                 </div>
             </div>
 
-            <!-- REPORTE 2: MATRIZ DE COSTOS DETALLADOS POR FARMACIA X MES -->
             <div class="card-pro bg-white p-6 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
                     <div>
@@ -838,9 +835,9 @@
             ],
             Oriente: [
                 { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
-                { sol: 18,  at: 14,  canc: 0, prevSolv: 0 }, { sol: 3,   at: 3,   canc: 0, prevSolv: 0 },
-                { sol: 26,  at: 16,  canc: 0, prevSolv: 0 }, { sol: 7,   at: 5,   canc: 0, prevSolv: 0 },
-                { sol: 9,   at: 2,   canc: 0, prevSolv: 0 }, { sol: 49,  at: 31,  canc: 3, prevSolv: 1 },
+                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
+                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
+                { sol: 55,  at: 40,  canc: 0, prevSolv: 0 }, { sol: 49,  at: 31,  canc: 3, prevSolv: 1 },
                 { sol: 104, at: 75,  canc: 1, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
                 { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }
             ]
@@ -860,8 +857,8 @@
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
-                { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 }, { sol: 18,  at: 14, canc: 0 },
-                { sol: 3,   at: 3,  canc: 0 }, { sol: 26,  at: 16, canc: 0 }, { sol: 7,   at: 5,  canc: 0 },
+                { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 },
+                { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 },
                 { sol: 9,   at: 2,  canc: 0 }, { sol: 49,  at: 31, canc: 3 }, { sol: 104, at: 75, canc: 1 },
                 { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 }, { sol: 0,   at: 0,  canc: 0 }
             ]
@@ -1537,7 +1534,7 @@
                         <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
                         
                         <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
+                            <div class="divide-x divide-slate-200 text-center" style="display: grid; grid-template-columns: repeat(${filteredLabels.length}, minmax(0, 1fr));">
                                 ${tableCols}
                             </div>
                             <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
@@ -1627,7 +1624,7 @@
                         <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
                         
                         <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
-                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">
+                            <div class="divide-x divide-slate-100 text-center" style="display: grid; grid-template-columns: repeat(${filteredLabels.length}, minmax(0, 1fr));">
                                 ${tableCols}
                             </div>
                             <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
