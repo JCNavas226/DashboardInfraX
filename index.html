@@ -738,19 +738,20 @@
             { mes: "Junio 2026", solpeds: 21, totalCosto: 4320.10, estatus: "Cerrado" },
             { mes: "Julio 2026", solpeds: 34, totalCosto: 7120.50, estatus: "Cerrado" },
             { mes: "Agosto 2026", solpeds: 42, totalCosto: 8940.30, estatus: "Cerrado" },
-            { mes: "Septiembre 2026", solpeds: 58, totalCosto: 14890.65, estatus: "En Proceso" }
+            { mes: "Septiembre 2026", solpeds: 74, totalCosto: 22026.46, estatus: "En Proceso" }
         ];
 
         let matrizCostosFarmaciasData = [
-            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 2140.00, total: 5070.00 },
-            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1450.00, total: 3460.00 },
+            { farmacia: "CANDIRUCO", julio: 0.00, agosto: 450.00, sept: 4860.00, total: 5310.00 },
+            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 3240.00, total: 6170.00 },
             { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 2091.75, total: 3551.75 },
-            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 1820.00, total: 4860.00 },
-            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 1980.00, total: 5340.00 },
-            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 920.00, total: 1980.00 },
-            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1390.00, total: 3610.00 },
-            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1040.00, total: 2370.00 },
-            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1210.00, total: 2980.00 },
+            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 2320.00, total: 5360.00 },
+            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 2180.00, total: 5540.00 },
+            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1650.00, total: 3660.00 },
+            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1490.00, total: 3710.00 },
+            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1350.00, total: 3120.00 },
+            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1160.00, total: 2490.00 },
+            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 924.71, total: 1984.71 },
             { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
         ];
 
@@ -1138,7 +1139,7 @@
                         if (typeof costoCell.v === 'number') {
                             costo = costoCell.v;
                         } else {
-                            let raw = (costoCell.f || costoCell.v || '').toString().replace(/\$/g, '').trim();
+                            let raw = (costoCell.f || costoCell.v || '').toString().replace(/[\$\s]/g, '').trim();
                             if (raw.includes('.') && raw.includes(',')) {
                                 if (raw.indexOf('.') < raw.indexOf(',')) {
                                     raw = raw.replace(/\./g, '').replace(',', '.');
@@ -1166,6 +1167,14 @@
                         let mParts = fechaStr.replace('Date(', '').replace(')', '').split(',');
                         let y = mParts[0].trim();
                         let m = parseInt(mParts[1].trim(), 10) + 1;
+                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        if (m >= 1 && m <= 12) {
+                            mesNombre = nombres[m] + ' ' + y;
+                        }
+                    } else if (!isNaN(Number(fechaStr)) && Number(fechaStr) > 40000) {
+                        let dObj = new Date((Number(fechaStr) - 25569) * 86400 * 1000);
+                        let m = dObj.getUTCMonth() + 1;
+                        let y = dObj.getUTCFullYear();
                         const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
                         if (m >= 1 && m <= 12) {
                             mesNombre = nombres[m] + ' ' + y;
