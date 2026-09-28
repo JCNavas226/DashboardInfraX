@@ -1612,7 +1612,6 @@
                     : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-400 border border-slate-200 transition-all";
             });
         }
-// 1. SINCRONIZACIÓN Y MAPEO REAL DESDE ODOO
 async function syncWithOdoo() {
     const loader = document.getElementById('loader-overlay');
     const syncIcon = document.getElementById('sync-icon');
@@ -1684,7 +1683,6 @@ async function syncWithOdoo() {
         renderCoordinadores();
     }
 }
-
             // Actualización dinámica de Septiembre (Índice 8) para gráficos regionales y cierre
             appData.Capital[8] = { sol: regCounts.Capital.sol || 219, at: regCounts.Capital.at || 149, canc: regCounts.Capital.canc || 4, prevSolv: 30 };
             appData.Occidente[8] = { sol: regCounts.Occidente.sol || 177, at: regCounts.Occidente.at || 132, canc: regCounts.Occidente.canc || 1, prevSolv: 15 };
@@ -2512,198 +2510,47 @@ function renderStatusDoughnut() {
             }, 50);
         }
 
-        function renderBacklogRegionalSection() {
-            const container = document.getElementById('backlog-regional-container');
-            if (!container) return;
-            container.innerHTML = '';
+      function renderBacklogRegionalSection() {
+    const container = document.getElementById('backlog-regional-container');
+    if (!container) return;
+    container.innerHTML = '';
 
-            const backlogDataFixed = [
-                { reg: 'Capital', res: 30, totalPrev: 170, pend: 140, pct: '17.6%' },
-                { reg: 'Occidente', res: 15, totalPrev: 52, pend: 37, pct: '28.8%' },
-                { reg: 'Oriente', res: 0, totalPrev: 38, pend: 38, pct: '0.0%' }
-            ];
+    const backlogDataFixed = [
+        { reg: 'Capital', res: 30, totalPrev: 180, pend: 150, pct: '16.7%' },
+        { reg: 'Occidente', res: 15, totalPrev: 50, pend: 35, pct: '30.0%' },
+        { reg: 'Oriente', res: 0, totalPrev: 30, pend: 30, pct: '0.0%' }
+    ];
 
-            backlogDataFixed.forEach(b => {
-                const strokeDash = `${parseFloat(b.pct)}, 100`;
-                container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-xs font-black text-white">${b.pct}</span>
-                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos de meses previos resueltos en Septiembre.</p>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
-                            </div>
-                        </div>
-                    </div>`;
-            });
+    backlogDataFixed.forEach(b => {
+        const strokeDash = `${parseFloat(b.pct)}, 100`;
+        container.innerHTML += `
+            <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-black text-white">${b.pct}</span>
+                        <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
+                    <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos de meses previos resueltos en Septiembre.</p>
+                    <div class="pt-2 flex gap-3 text-xs font-bold">
+                        <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                        <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendiente</span></div>
+                    </div>
+                </div>
+            </div>`;
+    });
 
-            const pendElem = document.getElementById('kpi-pend');
-            const pendSub = document.getElementById('kpi-pend-sub');
-            if (pendElem) pendElem.innerText = 215;
-            if (pendSub) pendSub.innerText = "140 + 37 + 38";
-        }
-
-        async function ejecutarConsultaAI() {
-            const queryInput = document.getElementById('aiQueryInput');
-            const resultArea = document.getElementById('ai-result-area');
-            if (!queryInput || !resultArea) return;
-
-            const rawQuery = queryInput.value.trim();
-            if (!rawQuery) {
-                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Por favor ingresa el nombre de una farmacia para consultar.</div>`;
-                return;
-            }
-
-            let farmaciaLimpia = rawQuery
-                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-
-            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
-            const nameUpper = farmaciaLimpia.toUpperCase();
-
-            resultArea.innerHTML = `
-                <div class="flex flex-col items-center justify-center py-12 space-y-3">
-                    <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
-                    <p class="text-xs font-bold text-slate-600">Consultando información oficial de ${nameUpper}...</p>
-                </div>`;
-            lucide.createIcons();
-
-            try {
-                let equiposData = [];
-                try {
-                    const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
-                    if (resEquipos.ok) {
-                        const jsonEquipos = await resEquipos.json();
-                        if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
-                    }
-                } catch(e) { console.warn("Fallback local para equipos"); }
-
-                const targetKey = farmaciaLimpia.toLowerCase();
-                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
-                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
-
-                let dir = sedeMatch?.Direccion || "Sede activa en red corporativa";
-                let gerente = sedeMatch?.Gerente || "Gerente Asignado";
-                let regente = sedeMatch?.Regente || "Regente Asignado";
-                let tel = sedeMatch?.Telefono || "Contacto directo en tienda";
-                let ubi = sedeMatch?.Ubicacion || "Región Principal";
-
-                let equiposHTML = "";
-                if (equiposData.length > 0) {
-                    let eqRows = equiposData.map(e => `
-                        <tr>
-                            <td class="py-2.5 px-4 text-slate-900 font-bold">${e.equipo || 'Equipo'}</td>
-                            <td class="py-2.5 px-4 text-slate-700">${e.descripcion || 'Detalle del activo'}</td>
-                            <td class="py-2.5 px-4 text-slate-600">${e.ubicacion || 'Área de tienda'}</td>
-                            <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-100 text-emerald-800">${e.estatus || 'Operativo'}</span></td>
-                        </tr>`).join('');
-
-                    equiposHTML = `
-                        <div class="space-y-2 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">Estatus de Equipos Críticos (A/A, Neveras, Inversores, Plantas)</h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr><th class="py-2 px-4">Equipo</th><th class="py-2 px-4">Descripción</th><th class="py-2 px-4">Ubicación</th><th class="py-2 px-4 text-center">Estatus</th></tr>
-                                    </thead>
-                                    <tbody>${eqRows}</tbody>
-                                </table>
-                            </div>
-                        </div>`;
-                } else {
-                    equiposHTML = `
-                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl text-xs space-y-1">
-                            <h5 class="font-extrabold text-purple-900 uppercase">Resumen de Activos Principales:</h5>
-                            <p class="text-purple-800"><b>A/A:</b> Operativo • <b>Neveras:</b> Operativo (Cadena Frío OK) • <b>Inversores:</b> Operativo • <b>Planta Eléctrica:</b> En Mantenimiento Preventivo</p>
-                        </div>`;
-                }
-
-                let solpedHTML = "";
-                if (solpedSede.length > 0) {
-                    let rows = solpedSede.map(p => `
-                        <tr>
-                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripcion || 'Sin detalle'}</td>
-                            <td class="py-2.5 px-2 text-center text-slate-600">${p["Fecha solped"] || p.FechaSolped || 'N/A'}</td>
-                            <td class="py-2.5 px-2 text-center text-red-600 font-bold">${p.Antiguedad || '> 3 Meses'}</td>
-                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
-                        </tr>`).join('');
-
-                    solpedHTML = `
-                        <div class="space-y-3 pt-2">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Pendientes &gt; 3 Meses (${solpedSede.length})
-                            </h4>
-                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-xs text-left">
-                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                        <tr>
-                                            <th class="py-2.5 px-4">Descripción Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
-                                            <th class="py-2.5 px-2 text-center">Antigüedad</th>
-                                            <th class="py-2.5 px-4 text-right">Estatus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
-                                </table>
-                            </div>
-                        </div>`;
-                } else {
-                    solpedHTML = `
-                        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
-                        </div>`;
-                }
-
-                resultArea.innerHTML = `
-                    <div class="space-y-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
-                            <div>
-                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
-                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
-                            </div>
-                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block"><b>Gerente:</b> ${gerente}<br><b>Regente:</b> ${regente}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
-                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
-                            </div>
-                        </div>
-
-                        ${equiposHTML}
-                        ${solpedHTML}
-                    </div>`;
-                lucide.createIcons();
-            } catch(e) {
-                console.error("Error consultando asistente:", e);
-            }
-        }
-
+    const pendElem = document.getElementById('kpi-pend');
+    const pendSub = document.getElementById('kpi-pend-sub');
+    if (pendElem) pendElem.innerText = 215;
+    if (pendSub) pendSub.innerText = "150 + 35 + 30";
+}
         function switchTab(tab) {
             const btnDash = document.getElementById('nav-btn-dashboard');
             const btnTrim = document.getElementById('nav-btn-trimestral');
