@@ -2133,8 +2133,7 @@ async function syncWithOdoo() {
             });
         }
 
-  // 2. CATEGORÍAS Y ESPECIALIDADES SOBRE EL TOTAL REAL (524/525)
-function renderCategoryChart() {
+ function renderCategoryChart() {
     const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
     if (!ctxCat) return;
     if (charts.category) charts.category.destroy();
