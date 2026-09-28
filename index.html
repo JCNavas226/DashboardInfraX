@@ -1613,93 +1613,100 @@
             });
         }
 
-        async function syncWithOdoo() {
-            const loader = document.getElementById('loader-overlay');
-            const syncIcon = document.getElementById('sync-icon');
-            if (loader) loader.style.display = 'flex';
-            if (syncIcon) syncIcon.classList.add('animate-spin');
+// SINCRONIZACIÓN AUTOMÁTICA EN TIEMPO REAL CON LA API DE ODOO
+async function syncWithOdoo() {
+    const loader = document.getElementById('loader-overlay');
+    const syncIcon = document.getElementById('sync-icon');
+    if (loader) loader.style.display = 'flex';
+    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-            try {
-                const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
-                const result = await res.json();
+    try {
+        console.log("Consultando Odoo API REST...");
+        const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
+        const result = await res.json();
 
-                if (result && Array.isArray(result.data) && result.data.length > 0) {
-                    let counts = {};
-                    let coordCounts = {};
-                    let regCounts = {
-                        Capital: { sol: 0, at: 0, canc: 0 },
-                        Occidente: { sol: 0, at: 0, canc: 0 },
-                        Oriente: { sol: 0, at: 0, canc: 0 }
-                    };
-                    let totalSolCount = 0;
-                    let totalAtCount = 0;
+        if (result && Array.isArray(result.data) && result.data.length > 0) {
+            let counts = {};
+            let coordCounts = {};
+            let regCounts = {
+                Capital: { sol: 0, at: 0, canc: 0 },
+                Occidente: { sol: 0, at: 0, canc: 0 },
+                Oriente: { sol: 0, at: 0, canc: 0 }
+            };
 
-                    result.data.forEach(t => {
-                        let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
-                        counts[storeName] = (counts[storeName] || 0) + 1;
+            let totalSolicitudesEnVivo = result.data.length;
+            let totalAtendidosEnVivo = 0;
 
-                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
-                        let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                        let isResolved = stage.includes("resuelto") || stage.includes("cerrad") || stage.includes("solucionad");
-                        let isCancelled = stage.includes("cancelad");
+            result.data.forEach(t => {
+                // Top Tiendas
+                let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
+                counts[storeName] = (counts[storeName] || 0) + 1;
 
-                        if (coordName && coordName !== "False") {
-                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
-                            coordCounts[coordName].asignados++;
+                // Coordinadores en vivo
+                let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
+                let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
+                
+                let isResolved = stage.includes("resuelto") || stage.includes("cerrad") || stage.includes("solucionad");
+                let isCancelled = stage.includes("cancelad");
 
-                            if (isResolved || isCancelled) {
-                                coordCounts[coordName].resueltos++;
-                            }
-                        }
+                if (coordName && coordName !== "False") {
+                    if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
+                    coordCounts[coordName].asignados++;
 
-                        totalSolCount++;
-                        if (isResolved || isCancelled) {
-                            totalAtCount++;
-                        }
-
-                        let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
-                        let reg = "Capital";
-                        if (team.includes("occident")) {
-                            reg = "Occidente";
-                        } else if (team.includes("orient")) {
-                            reg = "Oriente";
-                        } else {
-                            reg = "Capital";
-                        }
-
-                        regCounts[reg].sol++;
-                        if (isCancelled) {
-                            regCounts[reg].canc++;
-                        } else if (isResolved) {
-                            regCounts[reg].at++;
-                        }
-                    });
-
-                    if (totalSolCount >= 437) {
-                        currentRealTotal = 437;
-                        currentRealAtendidos = totalAtCount >= 300 ? totalAtCount : 300;
+                    if (isResolved || isCancelled) {
+                        coordCounts[coordName].resueltos++;
                     }
-                    if (Object.keys(coordCounts).length >= 4) {
-                        coordinadoresData = coordCounts;
-                    }
-                    if (regCounts.Capital.sol > 0 && regCounts.Occidente.sol > 0 && regCounts.Oriente.sol > 0) {
-                        appData.Capital[8] = { sol: 188, at: regCounts.Capital.at > 0 ? regCounts.Capital.at : 111, canc: 4, prevSolv: 30 };
-                        appData.Occidente[8] = { sol: 145, at: regCounts.Occidente.at > 0 ? regCounts.Occidente.at : 109, canc: 0, prevSolv: 15 };
-                        appData.Oriente[8] = { sol: 104, at: regCounts.Oriente.at > 0 ? regCounts.Oriente.at : 75, canc: 1, prevSolv: 0 };
-                    }
-
-                    let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
-                    topStoresByMonthAndRegion[8].Global = sorted;
                 }
-            } catch (e) {
-                console.warn("Utilizando datos consolidados auditados de Odoo.");
-            } finally {
-                if (loader) loader.style.display = 'none';
-                if (syncIcon) syncIcon.classList.remove('animate-spin');
-                renderAll();
-                renderCoordinadores();
+
+                if (isResolved || isCancelled) {
+                    totalAtendidosEnVivo++;
+                }
+
+                // Detección Regional en vivo por Equipo de Soporte en Odoo
+                let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                let reg = "Capital";
+                if (team.includes("occident")) {
+                    reg = "Occidente";
+                } else if (team.includes("orient")) {
+                    reg = "Oriente";
+                } else {
+                    reg = "Capital";
+                }
+
+                regCounts[reg].sol++;
+                if (isCancelled) {
+                    regCounts[reg].canc++;
+                } else if (isResolved) {
+                    regCounts[reg].at++;
+                }
+            });
+
+            // Asignación de variables globales en tiempo real según la consulta directa a Odoo
+            currentRealTotal = totalSolicitudesEnVivo;
+            currentRealAtendidos = totalAtendidosEnVivo;
+
+            if (Object.keys(coordCounts).length > 0) {
+                coordinadoresData = coordCounts;
             }
+
+            // Actualización de la posición del mes en curso (Septiembre = Índice 8)
+            appData.Capital[8] = { sol: regCounts.Capital.sol, at: regCounts.Capital.at, canc: regCounts.Capital.canc, prevSolv: 30 };
+            appData.Occidente[8] = { sol: regCounts.Occidente.sol, at: regCounts.Occidente.at, canc: regCounts.Occidente.canc, prevSolv: 15 };
+            appData.Oriente[8] = { sol: regCounts.Oriente.sol, at: regCounts.Oriente.at, canc: regCounts.Oriente.canc, prevSolv: 0 };
+
+            // Ranking de Tiendas en Vivo
+            let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
+            topStoresByMonthAndRegion[8].Global = sorted;
         }
+    } catch (e) {
+        console.error("Error al sincronizar directamente con Odoo API:", e);
+    } finally {
+        if (loader) loader.style.display = 'none';
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+        renderAll();
+        renderCoordinadores();
+    }
+}
 
         function renderCoordinadores() {
             const container = document.getElementById('coordinadores-container');
