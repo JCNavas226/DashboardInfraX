@@ -941,78 +941,77 @@
                 else el.value = "8";
             });
         }
+async function syncWithOdoo() {
+    const loader = document.getElementById('loader-overlay');
+    const syncIcon = document.getElementById('sync-icon');
+    if (loader) loader.style.display = 'flex';
+    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-        async function syncWithOdoo() {
-            const loader = document.getElementById('loader-overlay');
-            const syncIcon = document.getElementById('sync-icon');
-            if (loader) loader.style.display = 'flex';
-            if (syncIcon) syncIcon.classList.add('animate-spin');
+    try {
+        const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
+        const result = await res.json();
 
-            try {
-                const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
-                const result = await res.json();
+        if (result && Array.isArray(result.data) && result.data.length > 0) {
+            let counts = {};
+            let coordCounts = {};
+            let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
 
-                if (result && Array.isArray(result.data) && result.data.length > 0) {
-                    let counts = {};
-                    let coordCounts = {};
-                    let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
+            let totalSolicitudesEnVivo = result.data.length;
+            let totalAtendidosEnVivo = 0;
 
-                    let totalSolicitudesEnVivo = result.data.length;
-                    let totalAtendidosEnVivo = 0;
+            result.data.forEach(t => {
+                let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
+                counts[storeName] = (counts[storeName] || 0) + 1;
 
-                    result.data.forEach(t => {
-                        let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
-                        counts[storeName] = (counts[storeName] || 0) + 1;
+                let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
+                let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
+                
+                let isResolved = stage.includes("resuelt") || stage.includes("cerrad") || stage.includes("solucionad");
+                let isCancelled = stage.includes("cancelad");
 
-                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
-                        let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                        
-                        let isResolved = stage.includes("resuelt") || stage.includes("cerrad") || stage.includes("solucionad");
-                        let isCancelled = stage.includes("cancelad");
-
-                        if (coordName && coordName !== "False") {
-                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
-                            coordCounts[coordName].asignados++;
-                            if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
-                        }
-
-                        if (isResolved || isCancelled) totalAtendidosEnVivo++;
-
-                        let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
-                        let reg = "Capital";
-                        if (team.includes("occident")) reg = "Occidente";
-                        else if (team.includes("orient")) reg = "Oriente";
-
-                        regCounts[reg].sol++;
-                        if (isCancelled) regCounts[reg].canc++;
-                        else if (isResolved) regCounts[reg].at++;
-                    });
-
-                    currentRealTotal = totalSolicitudesEnVivo > 0 ? totalSolicitudesEnVivo : 543;
-                    currentRealAtendidos = totalAtendidosEnVivo > 0 ? totalAtendidosEnVivo : 375;
-
-                    if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
-
-                    appData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: regCounts.Capital.at || 149, canc: regCounts.Capital.canc || 4, prevSolv: 30 };
-                    appData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: regCounts.Occidente.at || 132, canc: regCounts.Occidente.canc || 2, prevSolv: 15 };
-                    appData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: regCounts.Oriente.at || 94, canc: regCounts.Oriente.canc || 2, prevSolv: 0 };
-
-                    cierreData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: (regCounts.Capital.at + regCounts.Capital.canc) || 153 };
-                    cierreData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: (regCounts.Occidente.at + regCounts.Occidente.canc) || 134 };
-                    cierreData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: (regCounts.Oriente.at + regCounts.Oriente.canc) || 96 };
-
-                    let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
-                    topStoresByMonthAndRegion[8].Global = sorted;
+                if (coordName && coordName !== "False") {
+                    if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
+                    coordCounts[coordName].asignados++;
+                    if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
                 }
-            } catch (e) {
-                console.error("Error sincronizando Odoo API:", e);
-            } finally {
-                if (loader) loader.style.display = 'none';
-                if (syncIcon) syncIcon.classList.remove('animate-spin');
-                renderAll();
-                renderCoordinadores();
-            }
+
+                if (isResolved || isCancelled) totalAtendidosEnVivo++;
+
+                let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                let reg = "Capital";
+                if (team.includes("occident")) reg = "Occidente";
+                else if (team.includes("orient")) reg = "Oriente";
+
+                regCounts[reg].sol++;
+                if (isCancelled) regCounts[reg].canc++;
+                else if (isResolved) regCounts[reg].at++;
+            });
+
+            currentRealTotal = totalSolicitudesEnVivo > 0 ? totalSolicitudesEnVivo : 543;
+            currentRealAtendidos = totalAtendidosEnVivo > 0 ? totalAtendidosEnVivo : 375;
+
+            if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
+
+            appData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: regCounts.Capital.at || 149, canc: regCounts.Capital.canc || 4, prevSolv: 30 };
+            appData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: regCounts.Occidente.at || 132, canc: regCounts.Occidente.canc || 2, prevSolv: 15 };
+            appData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: regCounts.Oriente.at || 94, canc: regCounts.Oriente.canc || 2, prevSolv: 0 };
+
+            cierreData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: (regCounts.Capital.at + regCounts.Capital.canc) || 153 };
+            cierreData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: (regCounts.Occidente.at + regCounts.Occidente.canc) || 134 };
+            cierreData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: (regCounts.Oriente.at + regCounts.Oriente.canc) || 96 };
+
+            let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
+            topStoresByMonthAndRegion[8].Global = sorted;
         }
+    } catch (e) {
+        console.error("Error sincronizando Odoo API:", e);
+    } finally {
+        if (loader) loader.style.display = 'none';
+        if (syncIcon) syncIcon.classList.remove('animate-spin');
+        renderAll();
+        renderCoordinadores();
+    }
+}
         function renderCoordinadores() {
             const container = document.getElementById('coordinadores-container');
             if (!container) return;
