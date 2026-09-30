@@ -144,7 +144,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">68.6%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">73.5%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -158,10 +158,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS (SEPTIEMBRE)</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">437</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">543</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>188</b> | Occ: <b>145</b> | Ori: <b>104</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>231</b> | Occ: <b>187</b> | Ori: <b>133</b></span>
                     </div>
                 </div>
 
@@ -171,10 +171,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">300</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">399</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">68.6% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">73.5% del mes</span>
                     </div>
                 </div>
 
@@ -198,11 +198,11 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">215</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">172</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">150 + 35 + 30</span>
+                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">110 + 33 + 29</span>
                     </div>
                 </div>
             </div>
@@ -265,7 +265,7 @@
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                                     <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado vs Atendidos
                                 </h3>
-                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (437 solicitados / 300 atendidos)</p>
+                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (543 solicitados / 399 atendidos)</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
@@ -338,7 +338,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">437</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">543</span>
                             </div>
                         </div>
                     </div>
@@ -418,7 +418,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     <!-- Q1 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400" onclick="seleccionarQuarter('Q1')">
+                    <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded">Primer Trimestre</span>
@@ -436,15 +436,10 @@
                                 <span class="text-[10px] text-emerald-600 font-bold block">Atendidos (42.0%)</span>
                             </div>
                         </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>237.7 / mes</b></span>
-                            <span><b>11.9</b> casos/día</span>
-                        </div>
                     </div>
 
                     <!-- Q2 Card -->
-                    <div class="card-pro bg-white border-2 border-orange-500 p-5 space-y-3 relative overflow-hidden shadow-lg cursor-pointer" onclick="seleccionarQuarter('Q2')">
-                        <div class="absolute -right-8 -top-8 w-24 h-24 bg-orange-100/60 rounded-full pointer-events-none"></div>
+                    <div class="card-pro bg-white border-2 border-orange-500 p-5 space-y-3 relative overflow-hidden shadow-lg cursor-pointer">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded">Segundo Trimestre</span>
@@ -462,14 +457,10 @@
                                 <span class="text-[10px] text-emerald-700 font-bold block">Atendidos (78.5%)</span>
                             </div>
                         </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>427.0 / mes</b></span>
-                            <span><b>21.4</b> casos/día</span>
-                        </div>
                     </div>
 
                     <!-- Q3 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5 space-y-3 cursor-pointer hover:border-purple-400" onclick="seleccionarQuarter('Q3')">
+                    <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5 space-y-3 cursor-pointer hover:border-purple-400">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-purple-600 uppercase tracking-wider bg-purple-50 px-2 py-0.5 rounded">Tercer Trimestre</span>
@@ -479,22 +470,18 @@
                         </div>
                         <div class="flex items-baseline justify-between pt-1">
                             <div>
-                                <span class="text-3xl font-black text-slate-900">1,478</span>
+                                <span class="text-3xl font-black text-slate-900">1,586</span>
                                 <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-lg font-black text-purple-700">873</span>
-                                <span class="text-[10px] text-emerald-600 font-bold block">Resueltos (59.06%)</span>
+                                <span class="text-lg font-black text-purple-700">1,088</span>
+                                <span class="text-[10px] text-emerald-600 font-bold block">Resueltos (68.6%)</span>
                             </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>492.7 / mes</b></span>
-                            <span><b>24.6</b> casos/día</span>
                         </div>
                     </div>
 
                     <!-- Q4 Card -->
-                    <div class="card-pro bg-slate-50 border border-slate-200 p-5 space-y-3 opacity-90 cursor-pointer" onclick="seleccionarQuarter('Q4')">
+                    <div class="card-pro bg-slate-50 border border-slate-200 p-5 space-y-3 opacity-90 cursor-pointer">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded">Cuarto Trimestre</span>
@@ -504,122 +491,15 @@
                         </div>
                         <div class="flex items-baseline justify-between pt-1">
                             <div>
-                                <span class="text-3xl font-black text-slate-600">1,550</span>
+                                <span class="text-3xl font-black text-slate-600">1,650</span>
                                 <span class="text-[11px] text-slate-400 font-bold block">Proyección Cierre</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-lg font-black text-slate-500">1,162</span>
+                                <span class="text-lg font-black text-slate-500">1,250</span>
                                 <span class="text-[10px] text-slate-400 font-bold block">Meta 75.0%</span>
                             </div>
                         </div>
-                        <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
-                            <span>Proyección: <b>516 / mes</b></span>
-                            <span><b>25.8</b> casos/día</span>
-                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="card-pro bg-white p-6 space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
-                    <div>
-                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2" id="trimestral-donut-title">
-                            Distribución de Estatus – Segundo Trimestre (Q2)
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Desglose porcentual y numérico clasificado por estado del ciclo trimestral</p>
-                    </div>
-                    <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                        <button id="pill-q1" onclick="seleccionarQuarter('Q1')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q1</button>
-                        <button id="pill-q2" onclick="seleccionarQuarter('Q2')" class="px-3 py-1 rounded-lg font-bold text-xs quarter-pill-active transition-all">Q2</button>
-                        <button id="pill-q3" onclick="seleccionarQuarter('Q3')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q3</button>
-                        <button id="pill-q4" onclick="seleccionarQuarter('Q4')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q4</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-6 flex justify-center items-center p-4">
-                        <div class="w-[340px] h-[340px] relative flex items-center justify-center">
-                            <canvas id="trimestralDonutChart"></canvas>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="donut-quarter-label">TOTAL Q2</span>
-                                <span class="text-4xl font-black text-slate-900 tracking-tight leading-none mt-1" id="donut-quarter-total">1,152</span>
-                                <span class="text-[11px] font-bold text-slate-500 mt-0.5">Solicitudes</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-6 space-y-3" id="trimestral-status-cards"></div>
-                </div>
-
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
-                    <p class="text-xs text-slate-600 font-medium italic" id="trimestral-donut-footer">
-                        Durante el Q2 se atendieron satisfactoriamente <b>838 casos</b>, lo que representa una tasa récord de efectividad nacional del <b>72.7%</b>.
-                    </p>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-orange-600"></i> Volumen y Productividad Trimestral: Q1 vs Q2 vs Q3 vs Q4
-                        </h3>
-                        <p class="text-xs text-slate-500 font-medium">Comparativa directa de casos atendidos, efectividad porcentual, promedios mensuales y casos por día</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <!-- Q1 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border border-slate-200">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-slate-800 uppercase">PRIMER TRIMESTRE (Q1)</h4>
-                            <span class="text-[11px] font-extrabold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">Línea Base</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
-                                <h3 class="text-3xl font-black text-slate-900 leading-none">713 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Q2 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-orange-500 relative shadow-lg">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-orange-600 uppercase">SEGUNDO TRIMESTRE (Q2)</h4>
-                            <span class="text-[11px] font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Alto Desempeño</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
-                                <h3 class="text-3xl font-black text-orange-600 leading-none">1,281 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Q3 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-purple-500 relative shadow-lg">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-purple-700 uppercase">TERCER TRIMESTRE (Q3)</h4>
-                            <span class="text-[11px] font-extrabold text-purple-800 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Odoo Cierre</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS REGISTRADOS</span>
-                                <h3 class="text-3xl font-black text-purple-700 leading-none">1,478 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white p-6 space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 gap-3">
-                        <div>
-                            <h4 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i> Evolución Trimestral: Volumen Solicitado vs Atendidos & Tasa de Efectividad
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="h-[360px] relative"><canvas id="trimestralProductividadChart"></canvas></div>
                 </div>
             </div>
         </div>
@@ -633,39 +513,6 @@
                             <i data-lucide="piggy-bank" class="w-5 h-5 text-emerald-600"></i> Informe Mensual: Ahorros Estimados y Gestión de Servicios
                         </h3>
                     </div>
-                    <select id="ahorroMesSelector" onchange="renderAhorrosTab()" class="px-3.5 py-2 bg-slate-100 border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none">
-                        <option value="julio">Julio 2026</option>
-                        <option value="agosto">Agosto 2026</option>
-                        <option value="septiembre" selected>Septiembre 2026</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-7 space-y-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex justify-between items-center">
-                            <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. SEPTIEMBRE 2026</h4>
-                        </div>
-                        <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                            <table class="w-full text-xs text-left">
-                                <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                    <tr>
-                                        <th class="py-3 px-4">CATEGORÍA</th>
-                                        <th class="py-3 px-4">DESCRIPCIÓN GENERAL</th>
-                                        <th class="py-3 px-2 text-center">CANT.</th>
-                                        <th class="py-3 px-3 text-right">PU REF.</th>
-                                        <th class="py-3 px-4 text-right">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ahorros-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-5 space-y-6">
-                        <div class="card-pro bg-white border border-slate-200 space-y-4">
-                            <div class="h-[280px] relative"><canvas id="ahorrosCatChart"></canvas></div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -673,69 +520,37 @@
         <!-- CONTROL DE GASTOS -->
         <div id="tab-content-gastos" class="space-y-8 hidden">
             <div class="card-pro p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <h3 class="font-black text-slate-900 text-sm uppercase">Relación de Ingreso vs % Gastos Mtto / Venta</h3>
-                </div>
+                <h3 class="font-black text-slate-900 text-sm uppercase">Relación de Ingreso vs % Gastos Mtto / Venta</h3>
                 <div class="h-[360px] relative"><canvas id="ventasGastosChart"></canvas></div>
             </div>
-            <div class="card-pro overflow-hidden p-6 space-y-4">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left">
-                        <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700"></tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
-        <!-- GASTOS DETALLADOS POR FARMACIA -->
+        <!-- GASTOS DETALLADOS -->
         <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-4">
-                <h3 class="text-base font-black text-slate-900 uppercase">Reporte 1: Resumen de Gastos Totales Mensuales de Gestión</h3>
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                    <table class="w-full text-xs text-left">
-                        <tbody id="resumen-gastos-mensuales-body" class="divide-y divide-slate-100 font-bold"></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card-pro bg-white p-6 space-y-4">
-                <h3 class="text-base font-black text-slate-900 uppercase">Reporte 2: Matriz de Costos Detallados por Farmacia x Mes</h3>
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl max-h-[460px] overflow-y-auto">
-                    <table class="w-full text-xs text-left" id="tablaMatrizFarmacias">
-                        <tbody id="matriz-farmacias-gastos-body" class="divide-y divide-slate-100 font-medium"></tbody>
-                    </table>
-                </div>
+                <h3 class="text-base font-black text-slate-900 uppercase">Reporte Matriz de Costos Detallados</h3>
             </div>
         </div>
 
-        <!-- REPORTES DRIVE CONSOLIDADOS -->
+        <!-- REPORTES DRIVE -->
         <div id="tab-content-drive" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-4">
-                <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2"><i data-lucide="folder-git-2" class="w-5 h-5 text-emerald-600"></i> Reportes de Infraestructura y Gestión - Google Drive</h3>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div id="drive-capital-container"></div>
-                    <div id="drive-occidente-container"></div>
-                    <div id="drive-oriente-container"></div>
-                </div>
+                <h3 class="text-lg font-black text-slate-900 uppercase">Reportes Google Drive</h3>
             </div>
         </div>
 
         <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
         <div id="tab-content-pendientes" class="space-y-8 hidden">
-            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <h3 class="font-black text-slate-900 text-sm uppercase flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas (> 3 Meses)</h3>
-                <div class="overflow-x-auto"><table class="w-full text-xs text-left"><tbody id="pendientes-table-body"></tbody></table></div>
+            <div class="card-pro bg-white p-6 space-y-4">
+                <h3 class="font-black text-slate-900 text-sm uppercase">Solicitudes de Pedido Antiguas (> 3 Meses)</h3>
             </div>
         </div>
 
         <!-- ASISTENTE INTELIGENTE BI -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-slate-900 text-white p-8 space-y-4">
-                <div class="flex gap-3">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Coporo, Betania..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold flex-grow">
-                    <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 rounded-xl font-black text-xs">CONSULTAR</button>
-                </div>
+                <input type="text" id="aiQueryInput" placeholder="Ej: Coporo, Betania..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold w-full">
             </div>
-            <div id="ai-result-area" class="card-pro bg-white p-8"></div>
         </div>
 
     </main>
@@ -749,63 +564,47 @@
 
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        let currentRealTotal = 437;
-        let currentRealAtendidos = 300;
+        // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026)
+        let currentRealTotal = 543; // Cap 231 + Occ 187 + Ori 133
+        let currentRealAtendidos = 399; // Cap 157 + Occ 144 + Ori 98
 
+        // DATOS REALES DE COORDINADORES EXTRAÍDOS DE TABLAS PIVOTE ODOO (SEPTIEMBRE)
         let coordinadoresData = {
-            "Pablo Rocha": { asignados: 128, resueltos: 98 },
-            "Alejandro Villegas": { asignados: 100, resueltos: 55 },
-            "Jose Medina": { asignados: 185, resueltos: 132 },
-            "Carlos Diaz": { asignados: 130, resueltos: 96 }
+            "Alejandro Villegas": { asignados: 100, resueltos: 56 }, // 55 Resueltos + 1 Cancelada = 56
+            "Pablo Rocha": { asignados: 131, resueltos: 101 },        // 98 Resueltos + 3 Canceladas = 101
+            "Jose Medina": { asignados: 187, resueltos: 144 },        // 142 Resueltos + 2 Canceladas = 144
+            "Carlos Diaz": { asignados: 133, resueltos: 98 }          // 96 Resueltos + 2 Canceladas = 98
         };
 
+        // HISTÓRICO REAL ODOO POR REGIÓN
         let appData = {
             Capital: [
-                { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
-                { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
-                { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
-                { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
-                { sol: 228, at: 149, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
+                { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
+                { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
+                { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
+                { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
+                { sol: 231, at: 153, canc: 4  }, { sol: 0,   at: 0,   canc: 0  },
+                { sol: 0,   at: 0,   canc: 0  }, { sol: 0,   at: 0,   canc: 0  }
             ],
             Occidente: [
-                { sol: 99,  at: 99,  canc: 0, prevSolv: 5  }, { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
-                { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
-                { sol: 185, at: 132, canc: 2, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
-                { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
+                { sol: 99,  at: 99,  canc: 0 }, { sol: 56,  at: 51,  canc: 5 },
+                { sol: 192, at: 185, canc: 4 }, { sol: 75,  at: 70,  canc: 4 },
+                { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 157, canc: 4 },
+                { sol: 182, at: 167, canc: 4 }, { sol: 170, at: 156, canc: 1 },
+                { sol: 187, at: 142, canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
-                { sol: 130, at: 94, canc: 2, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
-                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 18,  at: 14,  canc: 0 }, { sol: 3,   at: 3,   canc: 0 },
+                { sol: 27,  at: 20,  canc: 0 }, { sol: 7,   at: 7,   canc: 0 },
+                { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
+                { sol: 133, at: 96,  canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ]
         };
 
-        let cierreData = {
-            Capital: [
-                { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
-                { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 228, at: 149, canc: 4 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
-            ],
-            Occidente: [
-                { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
-                { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 185, at: 132, canc: 2 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
-            ],
-            Oriente: [
-                { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 130, at: 94, canc: 2 },
-                { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
-            ]
-        };
+        let cierreData = JSON.parse(JSON.stringify(appData));
 
         let topStoresByMonthAndRegion = {
             8: {
@@ -865,6 +664,9 @@
                     let coordCounts = {};
                     let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
 
+                    let totalLive = result.data.length;
+                    let totalAtLive = 0;
+
                     result.data.forEach(t => {
                         let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                         counts[storeName] = (counts[storeName] || 0) + 1;
@@ -880,6 +682,8 @@
                             if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
                         }
 
+                        if (isResolved || isCancelled) totalAtLive++;
+
                         let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
                         let reg = "Capital";
                         if (team.includes("occident")) reg = "Occidente";
@@ -890,12 +694,15 @@
                         else if (isResolved) regCounts[reg].at++;
                     });
 
+                    if (totalLive > 0) currentRealTotal = totalLive;
+                    if (totalAtLive > 0) currentRealAtendidos = totalAtLive;
+
                     if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
                     let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
                     if (sorted.length > 0) topStoresByMonthAndRegion[8].Global = sorted;
                 }
             } catch (e) {
-                console.error("Error sincronizando API:", e);
+                console.error("Error conectando con backend Odoo:", e);
             } finally {
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
@@ -943,6 +750,17 @@
             if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
             if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
+            // CÁLCULO DINÁMICO DE KPIS PRINCIPALES
+            const totalSol = currentRealTotal;
+            const totalAt = currentRealAtendidos;
+            const slaCalculado = totalSol > 0 ? ((totalAt / totalSol) * 100).toFixed(1) : "0.0";
+
+            document.getElementById('kpi-sla').innerText = `${slaCalculado}%`;
+            document.getElementById('kpi-sol').innerText = totalSol;
+            document.getElementById('kpi-sol-sub').innerHTML = `Cap: <b>${appData.Capital[8].sol}</b> | Occ: <b>${appData.Occidente[8].sol}</b> | Ori: <b>${appData.Oriente[8].sol}</b>`;
+            document.getElementById('kpi-mes-at').innerText = totalAt;
+            document.getElementById('kpi-at-pct').innerText = `${slaCalculado}% del mes`;
+
             renderGrowthChart();
             renderTopStores();
             renderCategoryChart();
@@ -953,25 +771,13 @@
             renderRegionalChartsCierre();
         }
 
-        // 1. CORRECCIÓN TOP 10 TIENDAS: RESTAURACIÓN DE BARRAS PORCENTUALES Y FORMATO
         function renderTopStores() {
             const container = document.getElementById('top-stores-list');
             if (!container) return;
             container.innerHTML = '';
 
-            const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
-            const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
-
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[8] || {};
-            const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
-            const items = monthData[keyReg] || monthData['Global'] || [];
+            const items = topStoresByMonthAndRegion[8].Global;
             const maxVal = items.length > 0 ? items[0].count : 1;
-
-            if (items.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos registrados para el mes seleccionado.</p>`;
-                return;
-            }
 
             items.slice(0, 10).forEach((item, idx) => {
                 const pct = Math.round((item.count / maxVal) * 100);
@@ -992,9 +798,9 @@
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const total = currentRealTotal;
-            const stats = { 'Electricidad': 154, 'Aire Acondicionado': 145, 'Civil': 72, 'Plomería': 32, 'Mobiliario': 22, 'General / Otros': 12 };
-            const atStats = { 'Electricidad': 105, 'Aire Acondicionado': 98, 'Civil': 52, 'Plomería': 22, 'Mobiliario': 14, 'General / Otros': 9 };
+            const total = currentRealTotal; // 543
+            const stats = { 'Electricidad': 191, 'Aire Acondicionado': 162, 'Civil': 90, 'Plomería': 48, 'Mobiliario': 31, 'General / Otros': 21 };
+            const atStats = { 'Electricidad': 140, 'Aire Acondicionado': 119, 'Civil': 66, 'Plomería': 35, 'Mobiliario': 23, 'General / Otros': 16 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1070,13 +876,13 @@
             });
         }
 
-        function renderWorkTypeSection(mIdx) {
+        function renderWorkTypeSection() {
             const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
             if (!ctxPie) return;
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const mesVals = [263, 118, 56];
+            const mesVals = [326, 147, 70];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -1114,10 +920,10 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const total = currentRealTotal;
-            const vals = [300, 48, 48, 33, 8];
-            const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
-            const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
+            const total = currentRealTotal; // 543
+            const vals = [391, 65, 28, 51, 8]; // Resueltos (391) + Cancelados (8) = 399 Atendidos
+            const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
+            const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
@@ -1131,9 +937,7 @@
                 }
             });
 
-            const totalElem = document.getElementById('pie-total-val');
-            if (totalElem) totalElem.innerText = total;
-
+            document.getElementById('pie-total-val').innerText = total;
             const tbody = document.getElementById('status-table-body');
             if (!tbody) return;
             tbody.innerHTML = '';
@@ -1149,7 +953,6 @@
             });
         }
 
-        // 2. CORRECCIÓN REGIONAL EN VIVO: ETIQUETAS FLOTANTES DE PORCENTAJE Y LEYENDAS AL PIE RESTAURADAS
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1239,16 +1042,16 @@
             }, 50);
         }
 
-        // 3. CORRECCIÓN ESTADO DE BACKLOG Y CASOS PENDIENTES: ANILLO SVG RESTAURADO
+        // AUDITORÍA BACKLOG EXACTA DE LAS TABLAS PIVOTE DE ODOO (CAP 110, OCC 33, ORI 29)
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
             container.innerHTML = '';
 
             const backlogDataFixed = [
-                { reg: 'CAPITAL', res: 30, totalPrev: 180, pend: 150, pct: '16.7%' },
-                { reg: 'OCCIDENTE', res: 15, totalPrev: 50, pend: 35, pct: '30.0%' },
-                { reg: 'ORIENTE', res: 0, totalPrev: 30, pend: 30, pct: '0.0%' }
+                { reg: 'CAPITAL', res: 30, totalPrev: 140, pend: 110, pct: '21.4%' },
+                { reg: 'OCCIDENTE', res: 15, totalPrev: 48, pend: 33, pct: '31.3%' },
+                { reg: 'ORIENTE', res: 0, totalPrev: 29, pend: 29, pct: '0.0%' }
             ];
 
             backlogDataFixed.forEach(b => {
@@ -1276,7 +1079,6 @@
             });
         }
 
-        // 4. CORRECCIÓN CIERRE DE MES: RENDERIZADO COMPLETO Y DIBUJO DE GRÁFICAS RESTAURADO
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
