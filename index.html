@@ -24,7 +24,6 @@
         canvas { max-width: 100%; }
         .table-sticky th { position: sticky; top: 0; z-index: 10; }
         .quarter-pill-active { background-color: #ff5500; color: #ffffff; box-shadow: 0 4px 12px rgba(255, 85, 0, 0.25); }
-        .gauge-circle { transform: rotate(-90deg); transform-origin: 50% 50%; }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -35,7 +34,7 @@
             <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
             <div>
                 <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo & Google Drive...</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
             </div>
         </div>
     </div>
@@ -89,7 +88,7 @@
         <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
                 <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
-                <span class="font-mono text-[10px] text-slate-500">JSON-RPC</span>
+                <span class="font-mono text-[10px] text-slate-500">API REST</span>
             </div>
             <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR
@@ -203,11 +202,12 @@
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">140 + 37 + 38</span>
+                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">150 + 35 + 30</span>
                     </div>
                 </div>
             </div>
 
+            <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
             <div class="card-pro">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                     <div>
@@ -228,6 +228,7 @@
                 <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
+            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
@@ -241,6 +242,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
             </div>
 
+            <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
                     <div>
@@ -282,6 +284,7 @@
                 </div>
             </div>
 
+            <!-- TIPO DE TRABAJO -->
             <div class="card-pro">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
                     <div>
@@ -319,6 +322,7 @@
                 </div>
             </div>
 
+            <!-- DISTRIBUCIÓN DE ESTATUS DEL MES -->
             <div class="card-pro">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
                     <div>
@@ -354,6 +358,7 @@
                 </div>
             </div>
 
+            <!-- DESGLOSE REGIONAL HISTÓRICO ACTUALIZADO -->
             <div class="space-y-4 pt-4 border-t border-slate-200">
                 <div class="flex items-center justify-between flex-wrap gap-2">
                     <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
@@ -370,6 +375,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-container"></div>
             </div>
 
+            <!-- ESTADO DE BACKLOG Y DESGLOSE AL CIERRE DE MES -->
             <div class="space-y-6 pt-6 border-t border-slate-200">
                 <div class="flex items-center justify-between flex-wrap gap-2">
                     <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
@@ -397,6 +403,7 @@
             </div>
         </div>
 
+        <!-- RESUMEN TRIMESTRAL -->
         <div id="tab-content-trimestral" class="space-y-8 hidden">
             <div class="space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
@@ -732,6 +739,7 @@
         </div>
 
     </main>
+
     <script>
         Chart.register(ChartDataLabels);
 
@@ -739,13 +747,10 @@
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        let currentQuarterSelected = 'Q2';
-        let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-        let currentRealTotal = 543;
-        let currentRealAtendidos = 375;
+        let currentRealTotal = 437;
+        let currentRealAtendidos = 300;
 
         let coordinadoresData = {
             "Pablo Rocha": { asignados: 128, resueltos: 98 },
@@ -754,168 +759,71 @@
             "Carlos Diaz": { asignados: 130, resueltos: 96 }
         };
 
-        let trimestresData = {
-            Q1: {
-                nombre: "Primer Trimestre (Q1)", periodo: "Enero - Marzo 2026", solicitudesTotales: 977, casosAtendidosTotal: 713, odooResueltos: 410, backlogResuelto: 303, pctAtencion: "42.0%", promedioMensual: 237.7, productividadDia: 11.9, crecimientoVsPrev: "Línea Base",
-                statusDistribution: [
-                    { label: "Resuelto", count: 410, pct: "42.0%", color: "#ff5500" },
-                    { label: "En progreso", count: 185, pct: "18.9%", color: "#eab308" },
-                    { label: "Asignado", count: 172, pct: "17.6%", color: "#3b82f6" },
-                    { label: "En procura", count: 140, pct: "14.3%", color: "#8b5cf6" },
-                    { label: "Cancelada", count: 70, pct: "7.2%", color: "#ef4444" }
-                ],
-                narrativa: "Durante el Q1 se estableció la línea base operativa con 410 casos resueltos en Odoo más 303 casos de backlog resueltos."
-            },
-            Q2: {
-                nombre: "Segundo Trimestre (Q2)", periodo: "Abril - Junio 2026", solicitudesTotales: 1152, casosAtendidosTotal: 1281, odooResueltos: 904, backlogResuelto: 377, pctAtencion: "78.5%", promedioMensual: 427.0, productividadDia: 21.4, crecimientoVsPrev: "+79.7%",
-                statusDistribution: [
-                    { label: "Resuelto", count: 838, pct: "72.7%", color: "#ff5500" },
-                    { label: "En progreso", count: 88, pct: "7.6%", color: "#eab308" },
-                    { label: "Asignado", count: 81, pct: "7.0%", color: "#3b82f6" },
-                    { label: "En procura", count: 79, pct: "6.9%", color: "#8b5cf6" },
-                    { label: "Cancelada", count: 66, pct: "5.7%", color: "#ef4444" }
-                ],
-                narrativa: "Durante el Q2 se atendieron satisfactoriamente 838 casos, lo que representa una tasa récord de efectividad nacional del 72.7%."
-            },
-            Q3: {
-                nombre: "Tercer Trimestre (Q3)", periodo: "Julio - Septiembre 2026", solicitudesTotales: 1478, casosAtendidosTotal: 1088, odooResueltos: 873, backlogResuelto: 215, pctAtencion: "59.06%", promedioMensual: 492.7, productividadDia: 24.6, crecimientoVsPrev: "+28.3%",
-                statusDistribution: [
-                    { label: "Resuelto", count: 873, pct: "59.06%", color: "#ff5500" },
-                    { label: "Asignado", count: 246, pct: "16.64%", color: "#3b82f6" },
-                    { label: "En progreso", count: 187, pct: "12.65%", color: "#eab308" },
-                    { label: "En procura", count: 112, pct: "7.58%", color: "#8b5cf6" },
-                    { label: "Cancelada", count: 60, pct: "4.06%", color: "#ef4444" }
-                ],
-                narrativa: "Durante el Q3 se cerraron satisfactoriamente <b>873 casos resueltos</b> de un total de <b>1,478 solicitudes</b>."
-            },
-            Q4: {
-                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 1550, casosAtendidosTotal: 1162, odooResueltos: 1005, backlogResuelto: 157, pctAtencion: "75.0%", promedioMensual: 516.7, productividadDia: 25.8, crecimientoVsPrev: "+4.7%",
-                statusDistribution: [
-                    { label: "Resuelto (Proyectado)", count: 1085, pct: "70.0%", color: "#ff5500" },
-                    { label: "En progreso", count: 155, pct: "10.0%", color: "#eab308" },
-                    { label: "Asignado", count: 140, pct: "9.0%", color: "#3b82f6" },
-                    { label: "En procura", count: 110, pct: "7.1%", color: "#8b5cf6" },
-                    { label: "Cancelada", count: 60, pct: "3.9%", color: "#ef4444" }
-                ],
-                narrativa: "Para el Q4 se proyecta una meta sostenida de 1,162 casos resueltos."
-            }
-        };
-
-        let ahorrosDataPorMes = {
-            julio: {
-                periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "49.00", pu: "107.50", total: "5,267.50" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "62.00", pu: "100.00", total: "6,200.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "54.00", pu: "100.00", total: "5,400.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario en farmacias", cant: "35.00", pu: "45.00", total: "1,575.00" },
-                    { cat: "Neveras", desc: "Mantenimiento preventivo de neveras", cant: "16.00", pu: "80.00", total: "1,280.00" },
-                    { cat: "Pintura", desc: "Pintura de áreas en general de farmacia", cant: "30.00", pu: "300.00", total: "9,000.00" },
-                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "50.00", pu: "55.00", total: "2,750.00" },
-                    { cat: "Puertas / Cerrajería", desc: "Ajustes de puerta, instalación de bisagras, cambio de manillas y cerraduras", cant: "26.00", pu: "90.00", total: "2,340.00" },
-                    { cat: "Respaldo Eléctrico", desc: "Mantenimiento básico y ajustes de sistemas de respaldo eléctrico", cant: "9.00", pu: "100.00", total: "900.00" },
-                    { cat: "Santa María", desc: "Mantenimiento de Santa Marías", cant: "13.00", pu: "60.00", total: "780.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "1.00", pu: "600.00", total: "600.00" },
-                    { cat: "Herrería", desc: "Reconstrucción de romanillas, puertas cuarto de basura y pasamanos de Café", cant: "2.00", pu: "300.00", total: "600.00" },
-                    { cat: "Ajustes Varios", desc: "Reparación de montacargas (elevador) de Araguaney", cant: "1.00", pu: "200.00", total: "200.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
-                ],
-                chartStats: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema C. Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }
-            },
-            agosto: {
-                periodo: "AGOSTO 2026", sol: 498, at: 252, pct: "50.60%", totalMonto: "$30,127.50", totalCant: "259.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos)", cant: "105.00", pu: "107.50", total: "11,287.50" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "50.00", pu: "100.00", total: "5,000.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "65.00", pu: "100.00", total: "6,500.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario. Ajustes de puerta, instalación de bisagras, manillas y cerraduras", cant: "22.00", pu: "45.00", total: "990.00" },
-                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "10.00", pu: "55.00", total: "550.00" },
-                    { cat: "Planta Eléctrica", desc: "Reparación de Planta eléctrica Apamate", cant: "1.00", pu: "500.00", total: "500.00" },
-                    { cat: "Correctivo A/A", desc: "Reparación de Aire Acondicionado de 5 Ton (correctivo). Sustitución de compresores, controlador", cant: "4.00", pu: "650.00", total: "2,600.00" },
-                    { cat: "Herrería", desc: "Fabricación de base de A/A", cant: "1.00", pu: "200.00", total: "200.00" },
-                    { cat: "Ductos A/A", desc: "Reparación de tramo de ductería", cant: "1.00", pu: "400.00", total: "400.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor). Sapito", cant: "3.00", pu: "600.00", total: "1,800.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Bomba de riego. Sapito", cant: "1.00", pu: "300.00", total: "300.00" }
-                ],
-                chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
-            },
-            septiembre: {
-                periodo: "SEPTIEMBRE 2026", sol: 437, at: 300, pct: "68.65%", totalMonto: "$41,880.00", totalCant: "371.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "124.00", pu: "107.50", total: "13,330.00" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "61.00", pu: "100.00", total: "6,100.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "142.00", pu: "100.00", total: "14,200.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "14.00", pu: "45.00", total: "630.00" },
-                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "24.00", pu: "55.00", total: "1,320.00" },
-                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "4.00", pu: "1,000.00", total: "4,000.00" },
-                    { cat: "Instalación A/A", desc: "Instalación Aire Acondicionado 2 Ton por sustitución (Araguaney)", cant: "1.00", pu: "300.00", total: "300.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "3.00", pu: "600.00", total: "1,800.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
-                ],
-                chartStats: { 'Electricidad': 154, 'Aire Acondicionado': 145, 'Civil': 72, 'Plomería': 32, 'Mobiliario': 22, 'General / Otros': 12 }
-            }
-        };
-
-        let gastosTablaData = [
-            { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
-            { mes: "Febrero", ingreso: 1918680.99, mtto: 27663.72, corp: 12441.75, promTienda: 292.73, promCorp: 521.96, pctMtto: 1.44 },
-            { mes: "Marzo", ingreso: 2248225.58, mtto: 20257.30, corp: 10558.42, promTienda: 186.52, promCorp: 382.21, pctMtto: 0.90 },
-            { mes: "Abril", ingreso: 2192419.69, mtto: 28534.81, corp: 6856.52, promTienda: 416.89, promCorp: 538.39, pctMtto: 1.30 },
-            { mes: "Mayo", ingreso: 2563106.11, mtto: 54446.17, corp: 14964.98, promTienda: 759.25, promCorp: 1027.29, pctMtto: 2.12 },
-            { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
-            { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
-            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
-        ];
-
         let appData = {
             Capital: [
-                { sol: 206, at: 193, canc: 13, prevSolv: 12 }, { sol: 195, at: 166, canc: 29, prevSolv: 15 },
-                { sol: 198, at: 171, canc: 23, prevSolv: 20 }, { sol: 184, at: 157, canc: 24, prevSolv: 25 },
-                { sol: 277, at: 251, canc: 20, prevSolv: 30 }, { sol: 375, at: 334, canc: 21, prevSolv: 35 },
-                { sol: 354, at: 308, canc: 23, prevSolv: 40 }, { sol: 279, at: 188, canc: 17, prevSolv: 30 },
-                { sol: 228, at: 153, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
+                { sol: 206, at: 184, canc: 19, prevSolv: 12 }, { sol: 195, at: 161, canc: 30, prevSolv: 15 },
+                { sol: 216, at: 167, canc: 22, prevSolv: 20 }, { sol: 187, at: 157, canc: 24, prevSolv: 25 },
+                { sol: 303, at: 241, canc: 21, prevSolv: 30 }, { sol: 382, at: 317, canc: 20, prevSolv: 35 },
+                { sol: 308, at: 271, canc: 15, prevSolv: 40 }, { sol: 301, at: 86,  canc: 8,  prevSolv: 30 },
+                { sol: 228, at: 149, canc: 4,  prevSolv: 30 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Occidente: [
                 { sol: 99,  at: 99,  canc: 0, prevSolv: 5  }, { sol: 56,  at: 51,  canc: 5, prevSolv: 8  },
-                { sol: 192, at: 185, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
-                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 157, canc: 4, prevSolv: 15 },
-                { sol: 182, at: 166, canc: 4, prevSolv: 18 }, { sol: 170, at: 153, canc: 1, prevSolv: 15 },
+                { sol: 192, at: 184, canc: 4, prevSolv: 12 }, { sol: 75,  at: 70,  canc: 4, prevSolv: 10 },
+                { sol: 62,  at: 53,  canc: 8, prevSolv: 8  }, { sol: 165, at: 153, canc: 4, prevSolv: 15 },
+                { sol: 182, at: 163, canc: 4, prevSolv: 18 }, { sol: 170, at: 138, canc: 1, prevSolv: 15 },
                 { sol: 185, at: 132, canc: 2, prevSolv: 15 }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  },
                 { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }, { sol: 0,   at: 0,   canc: 0,  prevSolv: 0  }
             ],
             Oriente: [
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
-                { sol: 55,  at: 40,  canc: 0, prevSolv: 0 }, { sol: 49,  at: 31,  canc: 3, prevSolv: 1 },
-                { sol: 130, at: 96,  canc: 2, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 },
-                { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }, { sol: 0,   at: 0,   canc: 0, prevSolv: 0 }
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 55, at: 40, canc: 0, prevSolv: 0 }, { sol: 27, at: 17, canc: 2, prevSolv: 1 },
+                { sol: 130, at: 94, canc: 2, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 },
+                { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }, { sol: 0,  at: 0,  canc: 0, prevSolv: 0 }
             ]
         };
 
         let cierreData = {
             Capital: [
-                { sol: 206, at: 69 }, { sol: 199, at: 37 }, { sol: 203, at: 77 },
-                { sol: 186, at: 114 }, { sol: 303, at: 204 }, { sol: 382, at: 272 },
-                { sol: 308, at: 179 }, { sol: 301, at: 94 }, { sol: 228, at: 153 },
-                { sol: 0,   at: 0   }, { sol: 0,   at: 0   }, { sol: 0,   at: 0   }
+                { sol: 206, at: 69,  canc: 0 }, { sol: 199, at: 37,  canc: 0 }, { sol: 203, at: 77,  canc: 0 },
+                { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 86,  canc: 8 }, { sol: 228, at: 149, canc: 4 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
-                { sol: 99,  at: 79 }, { sol: 57,  at: 33 }, { sol: 192, at: 142 },
-                { sol: 75,  at: 50 }, { sol: 62,  at: 43 }, { sol: 168, at: 123 },
-                { sol: 180, at: 102 }, { sol: 170, at: 139 }, { sol: 185, at: 134 },
-                { sol: 0,   at: 0   }, { sol: 0,   at: 0   }, { sol: 0,   at: 0   }
+                { sol: 99,  at: 79,  canc: 0 }, { sol: 57,  at: 33,  canc: 0 }, { sol: 192, at: 142, canc: 0 },
+                { sol: 75,  at: 50,  canc: 0 }, { sol: 62,  at: 43,  canc: 0 }, { sol: 168, at: 123, canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 138, canc: 1 }, { sol: 185, at: 132, canc: 2 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
-                { sol: 0,   at: 0 }, { sol: 0,   at: 0 }, { sol: 0,   at: 0 },
-                { sol: 0,   at: 0 }, { sol: 0,   at: 0 }, { sol: 0,   at: 0 },
-                { sol: 55,  at: 40 }, { sol: 27,  at: 19 }, { sol: 130, at: 98 },
-                { sol: 0,   at: 0 }, { sol: 0,   at: 0 }, { sol: 0,   at: 0 }
+                { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
+                { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 }, { sol: 0,  at: 0, canc: 0 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 17, canc: 2 }, { sol: 130, at: 94, canc: 2 },
+                { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }, { sol: 0,  at: 0,  canc: 0 }
             ]
         };
 
-        let topStoresByMonthAndRegion = { 7: { Global: [] }, 8: { Global: [] } };
+        let topStoresByMonthAndRegion = {
+            8: {
+                Global: [
+                    { name: "Farmacia Guacharo", count: 41 },
+                    { name: "Apamate", count: 34 },
+                    { name: "YANNERYS RODRIGUEZ", count: 29 },
+                    { name: "CAROLINA", count: 26 },
+                    { name: "Damelys Marquez", count: 24 },
+                    { name: "CEIBA", count: 18 },
+                    { name: "MOIRA CORREA", count: 18 },
+                    { name: "XANA MAMON", count: 16 },
+                    { name: "Cafe", count: 16 },
+                    { name: "Cutira", count: 15 }
+                ]
+            }
+        };
+
         let charts = {};
 
         window.onload = () => {
@@ -941,77 +849,61 @@
                 else el.value = "8";
             });
         }
-async function syncWithOdoo() {
-    const loader = document.getElementById('loader-overlay');
-    const syncIcon = document.getElementById('sync-icon');
-    if (loader) loader.style.display = 'flex';
-    if (syncIcon) syncIcon.classList.add('animate-spin');
 
-    try {
-        const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
-        const result = await res.json();
+        async function syncWithOdoo() {
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            if (loader) loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
 
-        if (result && Array.isArray(result.data) && result.data.length > 0) {
-            let counts = {};
-            let coordCounts = {};
-            let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
+            try {
+                const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
+                const result = await res.json();
 
-            let totalSolicitudesEnVivo = result.data.length;
-            let totalAtendidosEnVivo = 0;
+                if (result && Array.isArray(result.data) && result.data.length > 0) {
+                    let counts = {};
+                    let coordCounts = {};
+                    let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
 
-            result.data.forEach(t => {
-                let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
-                counts[storeName] = (counts[storeName] || 0) + 1;
+                    result.data.forEach(t => {
+                        let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
+                        counts[storeName] = (counts[storeName] || 0) + 1;
 
-                let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
-                let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                
-                let isResolved = stage.includes("resuelt") || stage.includes("cerrad") || stage.includes("solucionad");
-                let isCancelled = stage.includes("cancelad");
+                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
+                        let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
+                        let isResolved = stage.includes("resuelto") || stage.includes("cerrado");
+                        let isCancelled = stage.includes("cancelad");
 
-                if (coordName && coordName !== "False") {
-                    if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
-                    coordCounts[coordName].asignados++;
-                    if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
+                        if (coordName && coordName !== "False") {
+                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
+                            coordCounts[coordName].asignados++;
+                            if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
+                        }
+
+                        let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                        let reg = "Capital";
+                        if (team.includes("occident")) reg = "Occidente";
+                        else if (team.includes("orient")) reg = "Oriente";
+
+                        regCounts[reg].sol++;
+                        if (isCancelled) regCounts[reg].canc++;
+                        else if (isResolved) regCounts[reg].at++;
+                    });
+
+                    if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
+                    let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
+                    if (sorted.length > 0) topStoresByMonthAndRegion[8].Global = sorted;
                 }
-
-                if (isResolved || isCancelled) totalAtendidosEnVivo++;
-
-                let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
-                let reg = "Capital";
-                if (team.includes("occident")) reg = "Occidente";
-                else if (team.includes("orient")) reg = "Oriente";
-
-                regCounts[reg].sol++;
-                if (isCancelled) regCounts[reg].canc++;
-                else if (isResolved) regCounts[reg].at++;
-            });
-
-            currentRealTotal = totalSolicitudesEnVivo > 0 ? totalSolicitudesEnVivo : 543;
-            currentRealAtendidos = totalAtendidosEnVivo > 0 ? totalAtendidosEnVivo : 375;
-
-            if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
-
-            appData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: regCounts.Capital.at || 149, canc: regCounts.Capital.canc || 4, prevSolv: 30 };
-            appData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: regCounts.Occidente.at || 132, canc: regCounts.Occidente.canc || 2, prevSolv: 15 };
-            appData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: regCounts.Oriente.at || 94, canc: regCounts.Oriente.canc || 2, prevSolv: 0 };
-
-            cierreData.Capital[8] = { sol: regCounts.Capital.sol || 228, at: (regCounts.Capital.at + regCounts.Capital.canc) || 153 };
-            cierreData.Occidente[8] = { sol: regCounts.Occidente.sol || 185, at: (regCounts.Occidente.at + regCounts.Occidente.canc) || 134 };
-            cierreData.Oriente[8] = { sol: regCounts.Oriente.sol || 130, at: (regCounts.Oriente.at + regCounts.Oriente.canc) || 96 };
-
-            let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
-            topStoresByMonthAndRegion[8].Global = sorted;
+            } catch (e) {
+                console.error("Error sincronizando API:", e);
+            } finally {
+                if (loader) loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+                renderAll();
+                renderCoordinadores();
+            }
         }
-    } catch (e) {
-        console.error("Error sincronizando Odoo API:", e);
-    } finally {
-        if (loader) loader.style.display = 'none';
-        if (syncIcon) syncIcon.classList.remove('animate-spin');
-        renderAll();
-        renderCoordinadores();
-    }
-}
+
         function renderCoordinadores() {
             const container = document.getElementById('coordinadores-container');
             if (!container) return;
@@ -1051,22 +943,6 @@ async function syncWithOdoo() {
             if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
             if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
-            const totalSolMes = currentRealTotal; 
-            const totalAtendidosConCanc = currentRealAtendidos; 
-            const slaGlobalCalc = totalSolMes > 0 ? ((totalAtendidosConCanc / totalSolMes) * 100).toFixed(1) : "0.0"; 
-
-            const slaElem = document.getElementById('kpi-sla');
-            const solElem = document.getElementById('kpi-sol');
-            const solSub = document.getElementById('kpi-sol-sub');
-            const mesAtElem = document.getElementById('kpi-mes-at');
-            const atPct = document.getElementById('kpi-at-pct');
-
-            if(slaElem) slaElem.innerText = `${slaGlobalCalc}%`;
-            if(solElem) solElem.innerText = totalSolMes;
-            if(solSub) solSub.innerHTML = `Cap: <b>${appData.Capital[8].sol}</b> | Occ: <b>${appData.Occidente[8].sol}</b> | Ori: <b>${appData.Oriente[8].sol}</b>`;
-            if(mesAtElem) mesAtElem.innerText = totalAtendidosConCanc;
-            if(atPct) atPct.innerText = `${slaGlobalCalc}% del mes`;
-
             renderGrowthChart();
             renderTopStores();
             renderCategoryChart();
@@ -1077,14 +953,48 @@ async function syncWithOdoo() {
             renderRegionalChartsCierre();
         }
 
+        // 1. CORRECCIÓN TOP 10 TIENDAS: RESTAURACIÓN DE BARRAS PORCENTUALES Y FORMATO
+        function renderTopStores() {
+            const container = document.getElementById('top-stores-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
+            const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
+
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[8] || {};
+            const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
+            const items = monthData[keyReg] || monthData['Global'] || [];
+            const maxVal = items.length > 0 ? items[0].count : 1;
+
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos registrados para el mes seleccionado.</p>`;
+                return;
+            }
+
+            items.slice(0, 10).forEach((item, idx) => {
+                const pct = Math.round((item.count / maxVal) * 100);
+                container.innerHTML += `
+                    <div class="flex items-center justify-between gap-3 text-xs py-0.5">
+                        <span class="w-5 text-right font-black text-slate-400">${idx + 1}.</span>
+                        <span class="font-bold text-slate-800 truncate w-44">${item.name}</span>
+                        <div class="flex-grow bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="font-black text-slate-900 w-8 text-right">${item.count}</span>
+                    </div>`;
+            });
+        }
+
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
             const total = currentRealTotal;
-            const stats = { 'Electricidad': Math.round(total * 0.352), 'Aire Acondicionado': Math.round(total * 0.298), 'Civil': Math.round(total * 0.165), 'Plomería': Math.round(total * 0.088), 'Mobiliario': Math.round(total * 0.057), 'General / Otros': total - Math.round(total * 0.96) };
-            const atStats = { 'Electricidad': Math.round(currentRealAtendidos * 0.36), 'Aire Acondicionado': Math.round(currentRealAtendidos * 0.30), 'Civil': Math.round(currentRealAtendidos * 0.16), 'Plomería': Math.round(currentRealAtendidos * 0.09), 'Mobiliario': Math.round(currentRealAtendidos * 0.05), 'General / Otros': Math.round(currentRealAtendidos * 0.04) };
+            const stats = { 'Electricidad': 154, 'Aire Acondicionado': 145, 'Civil': 72, 'Plomería': 32, 'Mobiliario': 22, 'General / Otros': 12 };
+            const atStats = { 'Electricidad': 105, 'Aire Acondicionado': 98, 'Civil': 52, 'Plomería': 22, 'Mobiliario': 14, 'General / Otros': 9 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1127,17 +1037,12 @@ async function syncWithOdoo() {
             for (let m = startIdx; m <= endIdx; m++) {
                 let totalSol = 0;
                 let totalAt = 0;
-                if (m === 8) {
-                    totalSol = currentRealTotal;
-                    totalAt = currentRealAtendidos;
-                } else {
-                    REGIONES.forEach(r => {
-                        if (appData[r] && appData[r][m]) {
-                            totalSol += appData[r][m].sol;
-                            totalAt += (appData[r][m].at + appData[r][m].canc);
-                        }
-                    });
-                }
+                REGIONES.forEach(r => {
+                    if (appData[r] && appData[r][m]) {
+                        totalSol += appData[r][m].sol;
+                        totalAt += (appData[r][m].at + appData[r][m].canc);
+                    }
+                });
                 dynamicVol.push(totalSol);
                 let sla = totalSol > 0 ? parseFloat(((totalAt / totalSol) * 100).toFixed(1)) : 0;
                 dynamicSla.push(sla);
@@ -1171,12 +1076,7 @@ async function syncWithOdoo() {
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const total = currentRealTotal;
-            const corr = Math.round(total * 0.601);
-            const prev = Math.round(total * 0.270);
-            const mej = total - (corr + prev);
-
-            let mesVals = [corr, prev, mej];
+            const mesVals = [263, 118, 56];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -1186,14 +1086,7 @@ async function syncWithOdoo() {
                     responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff', font: { weight: '900', size: 12 },
-                            formatter: (value, ctx) => {
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                if (!sum || value === 0) return '';
-                                return ((value / sum) * 100).toFixed(1) + '%';
-                            }
-                        }
+                        datalabels: { color: '#ffffff', font: { weight: '900', size: 12 }, formatter: (value, ctx) => { const sum = ctx.dataset.data.reduce((a, b) => a + b, 0); return ((value / sum) * 100).toFixed(1) + '%'; } }
                     }
                 }
             });
@@ -1222,15 +1115,9 @@ async function syncWithOdoo() {
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal;
-            const resueltos = Math.round(total * 0.69);
-            const canceladas = 7;
-            const asignados = Math.round(total * 0.11);
-            const progreso = Math.round(total * 0.11);
-            const procura = total - (resueltos + canceladas + asignados + progreso);
-
-            const labels = ['Resuelto', 'En progreso', 'Asignado / Planif.', 'En procura', 'Cancelada'];
-            const vals = [resueltos, progreso, asignados, procura, canceladas];
-            const colors = ['#22c55e', '#f97316', '#eab308', '#ff5500', '#ef4444'];
+            const vals = [300, 48, 48, 33, 8];
+            const labels = ['Resuelto', 'Asignado / Planif.', 'En progreso', 'En procura', 'Cancelada'];
+            const colors = ['#22c55e', '#eab308', '#f97316', '#ff5500', '#ef4444'];
 
             charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
@@ -1239,13 +1126,7 @@ async function syncWithOdoo() {
                     cutout: '66%', responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        datalabels: {
-                            color: '#ffffff', font: { weight: '900', size: 10 },
-                            formatter: (value) => {
-                                if (!total || value === 0) return '';
-                                return ((value / total) * 100).toFixed(1) + '%';
-                            }
-                        }
+                        datalabels: { color: '#ffffff', font: { weight: '900', size: 10 }, formatter: (value) => ((value / total) * 100).toFixed(1) + '%' }
                     }
                 }
             });
@@ -1268,6 +1149,7 @@ async function syncWithOdoo() {
             });
         }
 
+        // 2. CORRECCIÓN REGIONAL EN VIVO: ETIQUETAS FLOTANTES DE PORCENTAJE Y LEYENDAS AL PIE RESTAURADAS
         function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
@@ -1298,12 +1180,16 @@ async function syncWithOdoo() {
                 container.innerHTML += `
                     <div class="card-pro flex flex-col justify-between bg-white">
                         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r} (En Vivo)</h4>
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r.toUpperCase()} (EN VIVO)</h4>
                             <span class="text-[10px] text-slate-400 font-bold">Consolidado Odoo</span>
                         </div>
                         <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
                         <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
                             <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">${tableCols}</div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-blue-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
                         </div>
                     </div>`;
             });
@@ -1319,22 +1205,78 @@ async function syncWithOdoo() {
                     const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
                     const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
 
-                    new Chart(ctx, {
+                    if (charts[`reg_${r}`]) charts[`reg_${r}`].destroy();
+
+                    charts[`reg_${r}`] = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: filteredLabels,
                             datasets: [
-                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5 },
-                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5 },
-                                { label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, yAxisID: 'y1' }
+                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
                             ]
                         },
-                        options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: true }, y: { display: false }, y1: { display: false, min: 0, max: 200 } } }
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
                     });
                 });
             }, 50);
         }
 
+        // 3. CORRECCIÓN ESTADO DE BACKLOG Y CASOS PENDIENTES: ANILLO SVG RESTAURADO
+        function renderBacklogRegionalSection() {
+            const container = document.getElementById('backlog-regional-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const backlogDataFixed = [
+                { reg: 'CAPITAL', res: 30, totalPrev: 180, pend: 150, pct: '16.7%' },
+                { reg: 'OCCIDENTE', res: 15, totalPrev: 50, pend: 35, pct: '30.0%' },
+                { reg: 'ORIENTE', res: 0, totalPrev: 30, pend: 30, pct: '0.0%' }
+            ];
+
+            backlogDataFixed.forEach(b => {
+                const strokeDash = `${parseFloat(b.pct)}, 100`;
+                container.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-xs font-black text-white">${b.pct}</span>
+                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <h5 class="font-extrabold text-xs text-white uppercase">REGIÓN ${b.reg}</h5>
+                            <div class="pt-2 flex gap-3 text-xs font-bold">
+                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendientes</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // 4. CORRECCIÓN CIERRE DE MES: RENDERIZADO COMPLETO Y DIBUJO DE GRÁFICAS RESTAURADO
         function renderRegionalChartsCierre() {
             const container = document.getElementById('regional-charts-cierre-container');
             if (!container) return;
@@ -1344,65 +1286,84 @@ async function syncWithOdoo() {
             const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 8);
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
+            const regionColors = {
+                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
+                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
+                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
+            };
+
             REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = cierreData[r][i] ? cierreData[r][i].sol : 0;
+                    const at = cierreData[r][i] ? (cierreData[r][i].at + (cierreData[r][i].canc || 0)) : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-indigo-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
                 container.innerHTML += `
-                    <div class="card-pro bg-slate-50/50">
-                        <h4 class="font-extrabold text-xs text-slate-900 uppercase">${r} (Cierre de Mes)</h4>
+                    <div class="card-pro flex flex-col justify-between bg-slate-50/50">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r.toUpperCase()} (CIERRE DE MES)</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                        </div>
                         <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
-                    </div>`;
-            });
-        }
-
-        function renderBacklogRegionalSection() {
-            const container = document.getElementById('backlog-regional-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const backlogDataFixed = [
-                { reg: 'Capital', res: 30, totalPrev: 180, pend: 150, pct: '16.7%' },
-                { reg: 'Occidente', res: 15, totalPrev: 50, pend: 35, pct: '30.0%' },
-                { reg: 'Oriente', res: 0, totalPrev: 30, pend: 30, pct: '0.0%' }
-            ];
-
-            backlogDataFixed.forEach(b => {
-                container.innerHTML += `
-                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
-                        <div class="space-y-1">
-                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
-                            <div class="pt-2 flex gap-3 text-xs font-bold">
-                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
-                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendientes</span></div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">${tableCols}</div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-indigo-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
                             </div>
                         </div>
                     </div>`;
             });
 
-            const pendElem = document.getElementById('kpi-pend');
-            const pendSub = document.getElementById('kpi-pend-sub');
-            if (pendElem) pendElem.innerText = 215;
-            if (pendSub) pendSub.innerText = "121 + 64 + 50";
-        }
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
 
-        function renderTopStores() {
-            const container = document.getElementById('top-stores-list');
-            if (!container) return;
-            container.innerHTML = '';
+                    const solData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at + (d.canc || 0));
+                    const pctData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat((( (d.at + (d.canc || 0)) / d.sol) * 100).toFixed(1)) : 0);
 
-            const monthData = topStoresByMonthAndRegion[8] || {};
-            const items = monthData['Global'] || [
-                { name: "Farmacia Araguaney", count: 32 }, { name: "Farmacia Coporo", count: 28 },
-                { name: "Farmacia Guacharo", count: 25 }, { name: "Farmacia Escorpión", count: 23 },
-                { name: "Farmacia Apamate", count: 22 }
-            ];
+                    if (charts[`cierre_${r}`]) charts[`cierre_${r}`].destroy();
 
-            items.slice(0, 10).forEach((item, idx) => {
-                container.innerHTML += `
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="font-black text-slate-400">${idx + 1}.</span>
-                        <span class="font-bold text-slate-800 truncate w-44">${item.name}</span>
-                        <span class="font-black text-slate-900">${item.count}</span>
-                    </div>`;
-            });
+                    charts[`cierre_${r}`] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
         }
 
         function switchTab(tab) {
