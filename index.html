@@ -22,7 +22,9 @@
         .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
         #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
         canvas { max-width: 100%; }
+        .table-sticky th { position: sticky; top: 0; z-index: 10; }
         .quarter-pill-active { background-color: #ff5500; color: #ffffff; box-shadow: 0 4px 12px rgba(255, 85, 0, 0.25); }
+        .gauge-circle { transform: rotate(-90deg); transform-origin: 50% 50%; }
     </style>
 </head>
 <body class="flex min-h-screen">
@@ -402,7 +404,7 @@
             </div>
         </div>
 
-        <!-- RESUMEN TRIMESTRAL -->
+        <!-- RESUMEN TRIMESTRAL RESTABLECIDO -->
         <div id="tab-content-trimestral" class="space-y-8 hidden">
             <div class="space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
@@ -417,7 +419,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     <!-- Q1 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400">
+                    <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400" onclick="seleccionarQuarter('Q1')">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded">Primer Trimestre</span>
@@ -435,10 +437,15 @@
                                 <span class="text-[10px] text-emerald-600 font-bold block">Atendidos (42.0%)</span>
                             </div>
                         </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
+                            <span>Promedio: <b>237.7 / mes</b></span>
+                            <span><b>11.9</b> casos/día</span>
+                        </div>
                     </div>
 
                     <!-- Q2 Card -->
-                    <div class="card-pro bg-white border-2 border-orange-500 p-5 space-y-3 relative overflow-hidden shadow-lg cursor-pointer">
+                    <div class="card-pro bg-white border-2 border-orange-500 p-5 space-y-3 relative overflow-hidden shadow-lg cursor-pointer" onclick="seleccionarQuarter('Q2')">
+                        <div class="absolute -right-8 -top-8 w-24 h-24 bg-orange-100/60 rounded-full pointer-events-none"></div>
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded">Segundo Trimestre</span>
@@ -456,10 +463,14 @@
                                 <span class="text-[10px] text-emerald-700 font-bold block">Atendidos (78.5%)</span>
                             </div>
                         </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
+                            <span>Promedio: <b>427.0 / mes</b></span>
+                            <span><b>21.4</b> casos/día</span>
+                        </div>
                     </div>
 
                     <!-- Q3 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5 space-y-3 cursor-pointer hover:border-purple-400">
+                    <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5 space-y-3 cursor-pointer hover:border-purple-400" onclick="seleccionarQuarter('Q3')">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-purple-600 uppercase tracking-wider bg-purple-50 px-2 py-0.5 rounded">Tercer Trimestre</span>
@@ -477,10 +488,14 @@
                                 <span class="text-[10px] text-emerald-600 font-bold block">Resueltos (68.6%)</span>
                             </div>
                         </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
+                            <span>Promedio: <b>528.6 / mes</b></span>
+                            <span><b>26.4</b> casos/día</span>
+                        </div>
                     </div>
 
                     <!-- Q4 Card -->
-                    <div class="card-pro bg-slate-50 border border-slate-200 p-5 space-y-3 opacity-90 cursor-pointer">
+                    <div class="card-pro bg-slate-50 border border-slate-200 p-5 space-y-3 opacity-90 cursor-pointer" onclick="seleccionarQuarter('Q4')">
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded">Cuarto Trimestre</span>
@@ -498,7 +513,161 @@
                                 <span class="text-[10px] text-slate-400 font-bold block">Meta 75.0%</span>
                             </div>
                         </div>
+                        <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
+                            <span>Proyección: <b>550 / mes</b></span>
+                            <span><b>27.5</b> casos/día</span>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE DE ESTATUS TRIMESTRAL Y BARRAS -->
+            <div class="card-pro bg-white p-6 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
+                    <div>
+                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2" id="trimestral-donut-title">
+                            Distribución de Estatus – Segundo Trimestre (Q2)
+                        </h3>
+                        <p class="text-xs text-slate-400 font-medium">Desglose porcentual y numérico clasificado por estado del ciclo trimestral</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                        <button id="pill-q1" onclick="seleccionarQuarter('Q1')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q1</button>
+                        <button id="pill-q2" onclick="seleccionarQuarter('Q2')" class="px-3 py-1 rounded-lg font-bold text-xs quarter-pill-active transition-all">Q2</button>
+                        <button id="pill-q3" onclick="seleccionarQuarter('Q3')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q3</button>
+                        <button id="pill-q4" onclick="seleccionarQuarter('Q4')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q4</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-6 flex justify-center items-center p-4">
+                        <div class="w-[340px] h-[340px] relative flex items-center justify-center">
+                            <canvas id="trimestralDonutChart"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="donut-quarter-label">TOTAL Q2</span>
+                                <span class="text-4xl font-black text-slate-900 tracking-tight leading-none mt-1" id="donut-quarter-total">1,152</span>
+                                <span class="text-[11px] font-bold text-slate-500 mt-0.5">Solicitudes</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-6 space-y-3" id="trimestral-status-cards"></div>
+                </div>
+
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
+                    <p class="text-xs text-slate-600 font-medium italic" id="trimestral-donut-footer">
+                        Durante el Q2 se atendieron satisfactoriamente <b>838 casos</b>, lo que representa una tasa récord de efectividad nacional del <b>72.7%</b>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-orange-600"></i> Volumen y Productividad Trimestral: Q1 vs Q2 vs Q3 vs Q4
+                        </h3>
+                        <p class="text-xs text-slate-500 font-medium">Comparativa directa de casos atendidos, efectividad porcentual, promedios mensuales y casos por día</p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase">Trimestres a Graficar:</span>
+                        <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1" id="quarter-filter-buttons">
+                            <button id="btn-chart-all" onclick="filtrarTrimestresGrafica('ALL')" class="px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm">Todos</button>
+                            <button id="btn-chart-q1" onclick="toggleQuarterChart('Q1')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q1</button>
+                            <button id="btn-chart-q2" onclick="toggleQuarterChart('Q2')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q2</button>
+                            <button id="btn-chart-q3" onclick="toggleQuarterChart('Q3')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q3</button>
+                            <button id="btn-chart-q4" onclick="toggleQuarterChart('Q4')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q4*</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Q1 -->
+                    <div class="card-pro bg-white p-6 space-y-5 border border-slate-200">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <h4 class="text-base font-black text-slate-800 uppercase">PRIMER TRIMESTRE (Q1)</h4>
+                            <span class="text-[11px] font-extrabold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">Línea Base</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-7 space-y-3">
+                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
+                                <h3 class="text-3xl font-black text-slate-900 leading-none">713 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
+                            </div>
+                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-slate-50/60 rounded-2xl border border-slate-200">
+                                <div class="w-24 h-24 relative flex items-center justify-center">
+                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
+                                        <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-blue-600" stroke-dasharray="42.0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span class="text-base font-black text-slate-900">42.0%</span>
+                                        <span class="text-[8px] font-bold text-slate-400 uppercase">Q1 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-orange-500 relative shadow-lg">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <h4 class="text-base font-black text-orange-600 uppercase">SEGUNDO TRIMESTRE (Q2)</h4>
+                            <span class="text-[11px] font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Alto Desempeño</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-7 space-y-3">
+                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
+                                <h3 class="text-3xl font-black text-orange-600 leading-none">1,281 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
+                            </div>
+                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-orange-50/50 rounded-2xl border border-orange-200">
+                                <div class="w-24 h-24 relative flex items-center justify-center">
+                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
+                                        <path class="text-orange-200/60" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-[#ff5500]" stroke-dasharray="78.5, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span class="text-base font-black text-slate-900">78.5%</span>
+                                        <span class="text-[8px] font-bold text-orange-600 uppercase">Q2 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-purple-500 relative shadow-lg">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <h4 class="text-base font-black text-purple-700 uppercase">TERCER TRIMESTRE (Q3)</h4>
+                            <span class="text-[11px] font-extrabold text-purple-800 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Odoo Cierre</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-7 space-y-3">
+                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS REGISTRADOS</span>
+                                <h3 class="text-3xl font-black text-purple-700 leading-none">1,586 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
+                            </div>
+                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-purple-50/60 rounded-2xl border border-purple-200">
+                                <div class="w-24 h-24 relative flex items-center justify-center">
+                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
+                                        <path class="text-purple-200/60" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-purple-600" stroke-dasharray="68.6, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span class="text-base font-black text-slate-900">68.6%</span>
+                                        <span class="text-[8px] font-bold text-purple-600 uppercase">Q3 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-pro bg-white p-6 space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 gap-3">
+                        <div>
+                            <h4 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i> Evolución Trimestral: Volumen Solicitado vs Atendidos & Tasa de Efectividad
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="h-[360px] relative"><canvas id="trimestralProductividadChart"></canvas></div>
                 </div>
             </div>
         </div>
@@ -563,9 +732,60 @@
 
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026)
+        let currentQuarterSelected = 'Q2';
+        let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+        // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026: 562 TICKETS)
         let currentRealTotal = 562; // Cap 242 + Occ 187 + Ori 133
         let currentRealAtendidos = 406; // Cap 164 + Occ 144 + Ori 98
+
+        // ESTRUCTURA DE DATOS TRIMESTRAL RESTABLECIDA CON ESTILOS E ICONOS
+        let trimestresData = {
+            Q1: {
+                nombre: "Primer Trimestre (Q1)", periodo: "Enero - Marzo 2026", solicitudesTotales: 977, casosAtendidosTotal: 713, pctAtencion: "42.0%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 410, pct: "42.0%", color: "#ff5500" },
+                    { label: "En progreso", count: 185, pct: "18.9%", color: "#eab308" },
+                    { label: "Asignado", count: 172, pct: "17.6%", color: "#3b82f6" },
+                    { label: "En procura", count: 140, pct: "14.3%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 70, pct: "7.2%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q1 se estableció la línea base operativa con 410 casos resueltos en Odoo más 303 casos de backlog resueltos."
+            },
+            Q2: {
+                nombre: "Segundo Trimestre (Q2)", periodo: "Abril - Junio 2026", solicitudesTotales: 1152, casosAtendidosTotal: 1281, pctAtencion: "78.5%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 838, pct: "72.7%", color: "#ff5500" },
+                    { label: "En progreso", count: 88, pct: "7.6%", color: "#eab308" },
+                    { label: "Asignado", count: 81, pct: "7.0%", color: "#3b82f6" },
+                    { label: "En procura", count: 79, pct: "6.9%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 66, pct: "5.7%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q2 se atendieron satisfactoriamente 838 casos, lo que representa una tasa récord de efectividad nacional del 72.7%."
+            },
+            Q3: {
+                nombre: "Tercer Trimestre (Q3)", periodo: "Julio - Septiembre 2026", solicitudesTotales: 1586, casosAtendidosTotal: 1088, pctAtencion: "68.6%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 1088, pct: "68.6%", color: "#ff5500" },
+                    { label: "Asignado", count: 246, pct: "15.5%", color: "#3b82f6" },
+                    { label: "En progreso", count: 140, pct: "8.8%", color: "#eab308" },
+                    { label: "En procura", count: 72, pct: "4.5%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 40, pct: "2.6%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q3 se cerraron satisfactoriamente <b>1,088 casos resueltos</b> de un total de <b>1,586 solicitudes</b>."
+            },
+            Q4: {
+                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 1650, casosAtendidosTotal: 1250, pctAtencion: "75.0%",
+                statusDistribution: [
+                    { label: "Resuelto (Proyectado)", count: 1150, pct: "69.7%", color: "#ff5500" },
+                    { label: "En progreso", count: 200, pct: "12.1%", color: "#eab308" },
+                    { label: "Asignado", count: 150, pct: "9.1%", color: "#3b82f6" },
+                    { label: "En procura", count: 100, pct: "6.1%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 50, pct: "3.0%", color: "#ef4444" }
+                ],
+                narrativa: "Para el Q4 se proyecta una meta sostenida de 1,250 casos resueltos."
+            }
+        };
 
         // DATOS REALES DE COORDINADORES EXTRAÍDOS DE TABLAS PIVOTE ODOO (SEPTIEMBRE)
         let coordinadoresData = {
@@ -749,9 +969,9 @@
             if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
             if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
-            // CÁLCULO DINÁMICO DE KPIS PRINCIPALES (562 TICKETS)
-            const totalSol = currentRealTotal;
-            const totalAt = currentRealAtendidos;
+            // CÁLCULO UNIFICADO DINÁMICO DE KPIS PRINCIPALES (EXACTAMENTE 562 TICKETS)
+            const totalSol = currentRealTotal; // 562
+            const totalAt = currentRealAtendidos; // 406
             const slaCalculado = totalSol > 0 ? ((totalAt / totalSol) * 100).toFixed(1) : "0.0";
 
             document.getElementById('kpi-sla').innerText = `${slaCalculado}%`;
@@ -768,6 +988,7 @@
             renderRegionalCharts();
             renderBacklogRegionalSection();
             renderRegionalChartsCierre();
+            renderTrimestralTab();
         }
 
         function renderTopStores() {
@@ -827,6 +1048,7 @@
             });
         }
 
+        // UNIFICACIÓN DEL GRÁFICO DE DEMANDA A 562 TICKETS
         function renderGrowthChart() {
             const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
             if (!ctxGrowth) return;
@@ -920,7 +1142,7 @@
             if (charts.status) charts.status.destroy();
 
             const total = currentRealTotal; // 562
-            const vals = [398, 62, 29, 65, 8]; // Resueltos (398) + Cancelados (8) = 406 Atendidos
+            const vals = [398, 62, 29, 65, 8];
             const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
             const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
 
@@ -1041,7 +1263,6 @@
             }, 50);
         }
 
-        // AUDITORÍA BACKLOG EXACTA DE LAS TABLAS PIVOTE DE ODOO (CAP 110, OCC 33, ORI 29)
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
@@ -1167,6 +1388,172 @@
             }, 50);
         }
 
+        // FUNCIONES DE INTERACCIÓN DE RESUMEN TRIMESTRAL RESTABLECIDAS
+        function seleccionarQuarter(q) {
+            currentQuarterSelected = q;
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(quarter => {
+                const btn = document.getElementById(`pill-${quarter.toLowerCase()}`);
+                if (btn) {
+                    if (quarter === q) {
+                        btn.className = "px-3 py-1 rounded-lg font-bold text-xs quarter-pill-active transition-all";
+                    } else {
+                        btn.className = "px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all";
+                    }
+                }
+            });
+            renderTrimestralTab();
+        }
+
+        function renderTrimestralTab() {
+            const data = trimestresData[currentQuarterSelected] || trimestresData['Q2'];
+            const titleElem = document.getElementById('trimestral-donut-title');
+            const labelElem = document.getElementById('donut-quarter-label');
+            const totalElem = document.getElementById('donut-quarter-total');
+            const footerElem = document.getElementById('trimestral-donut-footer');
+
+            if (titleElem) titleElem.innerText = `Distribución de Estatus – ${data.nombre}`;
+            if (labelElem) labelElem.innerText = `TOTAL ${currentQuarterSelected}`;
+            if (totalElem) totalElem.innerText = data.solicitudesTotales.toLocaleString('en-US');
+            if (footerElem) footerElem.innerHTML = data.narrativa;
+
+            renderTrimestralDonut(data);
+            renderTrimestralStatusCards(data);
+            renderTrimestralProductividadChart();
+        }
+
+        function renderTrimestralDonut(data) {
+            const ctx = document.getElementById('trimestralDonutChart')?.getContext('2d');
+            if (!ctx) return;
+            if (charts.trimestralDonut) charts.trimestralDonut.destroy();
+
+            const labels = data.statusDistribution.map(s => s.label);
+            const vals = data.statusDistribution.map(s => s.count);
+            const colors = data.statusDistribution.map(s => s.color);
+
+            charts.trimestralDonut = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{ data: vals, backgroundColor: colors, borderWidth: 3, borderColor: '#ffffff' }]
+                },
+                options: {
+                    cutout: '68%', responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#ffffff', font: { weight: '900', size: 10 },
+                            formatter: (value) => {
+                                const sum = data.solicitudesTotales;
+                                if (!sum || value === 0) return '';
+                                return ((value / sum) * 100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTrimestralStatusCards(data) {
+            const container = document.getElementById('trimestral-status-cards');
+            if (!container) return;
+            container.innerHTML = '';
+
+            data.statusDistribution.forEach(item => {
+                container.innerHTML += `
+                    <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3.5 h-3.5 rounded-md flex-shrink-0 shadow-sm" style="background-color: ${item.color}"></div>
+                            <span class="text-xs font-extrabold text-slate-800">${item.label}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-black text-slate-900 block leading-none">${item.count}</span>
+                            <span class="text-[10px] font-bold text-slate-400 mt-0.5 block">${item.pct}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderTrimestralProductividadChart() {
+            const ctx = document.getElementById('trimestralProductividadChart')?.getContext('2d');
+            if (!ctx) return;
+            if (charts.trimestralProductividad) charts.trimestralProductividad.destroy();
+
+            const masterQuarterData = {
+                Q1: { label: 'Q1 (Ene - Mar)', sol: 977, at: 713, ef: 42.0 },
+                Q2: { label: 'Q2 (Abr - Jun)', sol: 1152, at: 1281, ef: 78.5 },
+                Q3: { label: 'Q3 (Jul - Sep)', sol: 1586, at: 1088, ef: 68.6 },
+                Q4: { label: 'Q4 (Oct - Dic)*', sol: 1650, at: 1250, ef: 75.0 }
+            };
+
+            const selectedKeys = ['Q1', 'Q2', 'Q3', 'Q4'].filter(k => activeChartQuarters.includes(k));
+            const qLabels = selectedKeys.map(k => masterQuarterData[k].label);
+            const solData = selectedKeys.map(k => masterQuarterData[k].sol);
+            const atData = selectedKeys.map(k => masterQuarterData[k].at);
+            const efData = selectedKeys.map(k => masterQuarterData[k].ef);
+
+            actualizarBotonesFiltroTrimestre();
+
+            charts.trimestralProductividad = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: qLabels,
+                    datasets: [
+                        { label: 'Solicitudes Totales', data: solData, backgroundColor: '#38bdf8', borderRadius: 6, barThickness: 24, datalabels: { anchor: 'end', align: 'top', color: '#0284c7', font: { weight: '800', size: 10 } } },
+                        { label: 'Atendidos / Resueltos', data: atData, backgroundColor: '#ff5500', borderRadius: 6, barThickness: 24, datalabels: { anchor: 'end', align: 'top', color: '#ea580c', font: { weight: '800', size: 10 } } },
+                        { label: 'Efectividad (%)', data: efData, type: 'line', borderColor: '#10b981', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#10b981', yAxisID: 'y1', datalabels: { anchor: 'start', align: 'bottom', offset: 12, color: '#059669', font: { weight: '900', size: 11 }, formatter: v => v + '%' } }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
+                        y: { grid: { color: '#f1f5f9' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
+                        y1: { display: false, min: 0, max: 130 }
+                    },
+                    plugins: {
+                        legend: { display: true, position: 'top', labels: { font: { weight: '700', size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        function filtrarTrimestresGrafica(mode) {
+            if (mode === 'ALL') {
+                activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            }
+            renderTrimestralProductividadChart();
+        }
+
+        function toggleQuarterChart(qKey) {
+            if (activeChartQuarters.includes(qKey)) {
+                if (activeChartQuarters.length > 1) {
+                    activeChartQuarters = activeChartQuarters.filter(k => k !== qKey);
+                }
+            } else {
+                activeChartQuarters.push(qKey);
+            }
+            renderTrimestralProductividadChart();
+        }
+
+        function actualizarBotonesFiltroTrimestre() {
+            const allBtn = document.getElementById('btn-chart-all');
+            const isAll = activeChartQuarters.length === 4;
+            if (allBtn) {
+                allBtn.className = isAll
+                    ? "px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm"
+                    : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-700 border border-slate-200 transition-all";
+            }
+
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(k => {
+                const btn = document.getElementById(`btn-chart-${k.toLowerCase()}`);
+                if (!btn) return;
+                const active = activeChartQuarters.includes(k);
+                btn.className = active
+                    ? "px-2.5 py-1 rounded-lg font-black text-xs bg-cyan-600 text-white shadow-sm transition-all"
+                    : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-400 border border-slate-200 transition-all";
+            });
+        }
+
         function switchTab(tab) {
             const tabs = ['dashboard', 'trimestral', 'ahorros', 'gastos', 'gastos-detallados', 'drive', 'pendientes', 'asistente'];
             tabs.forEach(t => {
@@ -1180,6 +1567,10 @@
             const activeContent = document.getElementById(`tab-content-${tab}`);
             if (activeBtn) activeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
             if (activeContent) activeContent.classList.remove('hidden');
+
+            if (tab === 'trimestral') {
+                renderTrimestralTab();
+            }
         }
 
         function exportarAGoogleSlides() { alert("Generando presentación PPTX de Xana..."); }
