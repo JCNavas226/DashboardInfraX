@@ -22,7 +22,6 @@
         .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
         #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
         canvas { max-width: 100%; }
-        .table-sticky th { position: sticky; top: 0; z-index: 10; }
         .quarter-pill-active { background-color: #ff5500; color: #ffffff; box-shadow: 0 4px 12px rgba(255, 85, 0, 0.25); }
     </style>
 </head>
@@ -144,7 +143,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">73.5%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">72.2%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -158,10 +157,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS (SEPTIEMBRE)</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">543</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">562</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>231</b> | Occ: <b>187</b> | Ori: <b>133</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>242</b> | Occ: <b>187</b> | Ori: <b>133</b></span>
                     </div>
                 </div>
 
@@ -171,10 +170,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">399</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">406</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">73.5% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">72.2% del mes</span>
                     </div>
                 </div>
 
@@ -265,7 +264,7 @@
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                                     <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado vs Atendidos
                                 </h3>
-                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (543 solicitados / 399 atendidos)</p>
+                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (562 solicitados / 406 atendidos)</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
@@ -338,7 +337,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">543</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">562</span>
                             </div>
                         </div>
                     </div>
@@ -565,25 +564,25 @@
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
         // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026)
-        let currentRealTotal = 543; // Cap 231 + Occ 187 + Ori 133
-        let currentRealAtendidos = 399; // Cap 157 + Occ 144 + Ori 98
+        let currentRealTotal = 562; // Cap 242 + Occ 187 + Ori 133
+        let currentRealAtendidos = 406; // Cap 164 + Occ 144 + Ori 98
 
         // DATOS REALES DE COORDINADORES EXTRAÍDOS DE TABLAS PIVOTE ODOO (SEPTIEMBRE)
         let coordinadoresData = {
             "Alejandro Villegas": { asignados: 100, resueltos: 56 }, // 55 Resueltos + 1 Cancelada = 56
-            "Pablo Rocha": { asignados: 131, resueltos: 101 },        // 98 Resueltos + 3 Canceladas = 101
+            "Pablo Rocha": { asignados: 142, resueltos: 108 },        // 105 Resueltos + 3 Canceladas = 108
             "Jose Medina": { asignados: 187, resueltos: 144 },        // 142 Resueltos + 2 Canceladas = 144
             "Carlos Diaz": { asignados: 133, resueltos: 98 }          // 96 Resueltos + 2 Canceladas = 98
         };
 
-        // HISTÓRICO REAL ODOO POR REGIÓN
+        // HISTÓRICO REAL ODOO POR REGIÓN (ORIENTE DESDE JULIO)
         let appData = {
             Capital: [
                 { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
                 { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
                 { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
                 { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
-                { sol: 231, at: 153, canc: 4  }, { sol: 0,   at: 0,   canc: 0  },
+                { sol: 242, at: 160, canc: 4  }, { sol: 0,   at: 0,   canc: 0  },
                 { sol: 0,   at: 0,   canc: 0  }, { sol: 0,   at: 0,   canc: 0  }
             ],
             Occidente: [
@@ -596,8 +595,8 @@
             ],
             Oriente: [
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 18,  at: 14,  canc: 0 }, { sol: 3,   at: 3,   canc: 0 },
-                { sol: 27,  at: 20,  canc: 0 }, { sol: 7,   at: 7,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
                 { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
                 { sol: 133, at: 96,  canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
@@ -750,7 +749,7 @@
             if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
             if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
-            // CÁLCULO DINÁMICO DE KPIS PRINCIPALES
+            // CÁLCULO DINÁMICO DE KPIS PRINCIPALES (562 TICKETS)
             const totalSol = currentRealTotal;
             const totalAt = currentRealAtendidos;
             const slaCalculado = totalSol > 0 ? ((totalAt / totalSol) * 100).toFixed(1) : "0.0";
@@ -798,9 +797,9 @@
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const total = currentRealTotal; // 543
-            const stats = { 'Electricidad': 191, 'Aire Acondicionado': 162, 'Civil': 90, 'Plomería': 48, 'Mobiliario': 31, 'General / Otros': 21 };
-            const atStats = { 'Electricidad': 140, 'Aire Acondicionado': 119, 'Civil': 66, 'Plomería': 35, 'Mobiliario': 23, 'General / Otros': 16 };
+            const total = currentRealTotal; // 562
+            const stats = { 'Electricidad': 198, 'Aire Acondicionado': 168, 'Civil': 93, 'Plomería': 49, 'Mobiliario': 32, 'General / Otros': 22 };
+            const atStats = { 'Electricidad': 143, 'Aire Acondicionado': 121, 'Civil': 67, 'Plomería': 36, 'Mobiliario': 23, 'General / Otros': 16 };
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -882,7 +881,7 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const mesVals = [326, 147, 70];
+            const mesVals = [337, 152, 73];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -920,8 +919,8 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const total = currentRealTotal; // 543
-            const vals = [391, 65, 28, 51, 8]; // Resueltos (391) + Cancelados (8) = 399 Atendidos
+            const total = currentRealTotal; // 562
+            const vals = [398, 62, 29, 65, 8]; // Resueltos (398) + Cancelados (8) = 406 Atendidos
             const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
             const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
 
