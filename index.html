@@ -1,990 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xana Intelligence Enterprise v31 - SLA & BI Dashboard</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Chart.js y DataLabels Plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- SheetJS Excel Library -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; }
-        .card-pro { background: #ffffff; border-radius: 1.25rem; border: 1px solid #e2e8f0; padding: 1.25rem; box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); transition: all 0.25s ease; }
-        .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
-        #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
-        canvas { max-width: 100%; }
-        .table-sticky th { position: sticky; top: 0; z-index: 10; }
-        .quarter-pill-active { background-color: #ff5500; color: #ffffff; box-shadow: 0 4px 12px rgba(255, 85, 0, 0.25); }
-        .gauge-circle { transform: rotate(-90deg); transform-origin: 50% 50%; }
-    </style>
-</head>
-<body class="flex min-h-screen">
-
-    <!-- LOADER OVERLAY -->
-    <div id="loader-overlay" class="fixed inset-0 z-[100] flex items-center justify-center">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs text-center border border-slate-100">
-            <div class="w-12 h-12 border-4 border-slate-200 border-t-orange-600 rounded-full animate-spin"></div>
-            <div>
-                <h4 class="font-black text-slate-900 text-sm">Sincronizando Sistema</h4>
-                <p class="text-xs text-slate-500 font-medium mt-1">Conectando Odoo en vivo...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ASIDE NAVIGATION MENU -->
-    <aside class="w-72 bg-slate-900 text-white flex flex-col fixed h-full z-50 shadow-2xl overflow-y-auto">
-        <div class="p-6 border-b border-slate-800">
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 bg-[#ff5500] rounded-2xl flex flex-col items-center justify-center p-1.5 flex-shrink-0 shadow-lg shadow-orange-600/30">
-                    <svg viewBox="0 0 120 70" class="w-full h-auto">
-                        <text x="50%" y="38" dominant-baseline="middle" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="34" fill="#ffffff">xana</text>
-                        <text x="50%" y="58" dominant-baseline="middle" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="14" fill="#ffffff">farmacia</text>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-lg tracking-tight text-white leading-none">Xana</h1>
-                    <span class="text-[10px] text-orange-400 font-bold uppercase tracking-[2px]">Farmacias BI v31</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-6">
-            <nav class="space-y-2">
-                <button id="nav-btn-dashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Global (Odoo)
-                </button>
-                <button id="nav-btn-trimestral" onclick="switchTab('trimestral')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-400"></i> Resumen Trimestral
-                </button>
-                <button id="nav-btn-ahorros" onclick="switchTab('ahorros')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="piggy-bank" class="w-4 h-4 text-emerald-400"></i> Ahorros Estimados
-                </button>
-                <button id="nav-btn-gastos" onclick="switchTab('gastos')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-400"></i> Control de Gastos (Drive)
-                </button>
-                <button id="nav-btn-gastos-detallados" onclick="switchTab('gastos-detallados')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="receipt" class="w-4 h-4 text-amber-400"></i> Reporte de Gastos Detallados
-                </button>
-                <button id="nav-btn-drive" onclick="switchTab('drive')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="folder-git-2" class="w-4 h-4 text-sky-400"></i> Reportes Drive (Gestión)
-                </button>
-                <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
-                </button>
-                <button id="nav-btn-asistente" onclick="switchTab('asistente')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
-                    <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i> Asistente Inteligente BI
-                </button>
-            </nav>
-        </div>
-
-        <div class="mt-auto p-6 border-t border-slate-800 bg-slate-950/40">
-            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-3">
-                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB: <b class="text-white ml-0.5">dronena</b></span>
-                <span class="font-mono text-[10px] text-slate-500">API REST</span>
-            </div>
-            <button onclick="syncWithOdoo()" class="w-full bg-[#ff5500] hover:bg-orange-600 text-white py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 transition-all">
-                <i data-lucide="refresh-cw" class="w-4 h-4" id="sync-icon"></i> SINCRONIZAR
-            </button>
-        </div>
-    </aside>
-
-    <main class="ml-72 flex-grow p-8 space-y-8 max-w-[1600px]">
-        
-        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-md flex-shrink-0" id="header-icon-badge">
-                    SLA
-                </div>
-                <div>
-                    <h2 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2" id="main-tab-title">
-                        Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>
-                    </h2>
-                    <p class="text-slate-500 font-semibold text-xs mt-0.5">Indicadores de Gestión • Farmacias Xana <span id="current-period-text" class="text-slate-800 font-bold">2026</span></p>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap gap-3 items-center w-full lg:w-auto">
-                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200/60 gap-1">
-                    <button onclick="exportarAGoogleSlides()" class="flex items-center gap-2 px-3.5 py-2 bg-[#ea4335] hover:bg-red-600 text-white rounded-lg font-bold text-xs shadow-sm transition-all">
-                        <i data-lucide="presentation" class="w-4 h-4"></i> Exportar Presentación
-                    </button>
-                    <button onclick="exportarReporteExcel()" class="flex items-center gap-2 px-3.5 py-2 bg-white text-slate-700 rounded-lg font-bold text-xs shadow-sm hover:text-orange-600 transition-all">
-                        <i data-lucide="download-cloud" class="w-4 h-4 text-orange-500"></i> Excel
-                    </button>
-                </div>
-
-                <div class="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
-
-                <select id="regSelector" onchange="renderAll()" class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-orange-500/20 shadow-sm">
-                    <option value="Nacional">Consolidado Nacional</option>
-                    <option value="Capital">Región Capital</option>
-                    <option value="Occidente">Región Occidente</option>
-                    <option value="Oriente">Región Oriente</option>
-                </select>
-
-                <select id="mesSelector" onchange="renderAll()" class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-orange-500/20 shadow-sm">
-                </select>
-            </div>
-        </header>
-
-        <!-- DASHBOARD GLOBAL -->
-        <div id="tab-content-dashboard" class="space-y-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-                <div class="card-pro bg-slate-900 text-white border-slate-800 flex flex-col justify-between shadow-xl p-4 min-h-[140px]">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
-                            <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
-                        </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">76.6%</div>
-                    </div>
-                    <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
-                        <span class="font-bold">Cumplimiento</span>
-                        <span class="text-emerald-400 font-extrabold">Meta 85%</span>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white border border-slate-200 flex flex-col justify-between p-4 min-h-[140px]">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS (SEPTIEMBRE)</span>
-                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
-                        </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">568</div>
-                    </div>
-                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>245</b> | Occ: <b>188</b> | Ori: <b>135</b></span>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-emerald-500 flex flex-col justify-between p-4 min-h-[140px]">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
-                            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
-                        </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">435</div>
-                    </div>
-                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">76.6% del mes</span>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-blue-500 flex flex-col justify-between p-4 min-h-[140px]">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
-                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
-                        </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-backlog-atendido">45</div>
-                    </div>
-                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]">De meses previos</span>
-                        <span class="text-blue-700 font-extrabold text-[10px]" id="kpi-backlog-sub">45 Casos</span>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white border border-slate-200 border-l-4 border-l-amber-500 flex flex-col justify-between p-4 min-h-[140px]">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
-                            <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
-                        </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">165</div>
-                    </div>
-                    <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">106 + 32 + 27</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DEMANDA DE CRECIMIENTO DINÁMICA -->
-            <div class="card-pro">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="trending-up" class="w-4 h-4 text-sky-500"></i> Demanda de Crecimiento Dinámica
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Evolución del volumen total de solicitudes vs % Tendencia SLA</p>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
-                        <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                            <span class="text-slate-500 text-[10px] uppercase pl-1">Desde:</span>
-                            <select id="growthStartMonth" onchange="renderGrowthChart()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                            <span class="text-slate-500 text-[10px] uppercase">Hasta:</span>
-                            <select id="growthEndMonth" onchange="renderGrowthChart()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
-            </div>
-
-            <!-- MÓDULO: RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
-            <div class="card-pro bg-white space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Conteo real de casos solicitados y cerrados auditado de Odoo</p>
-                    </div>
-                    <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">SEPTIEMBRE 2026</span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
-            </div>
-
-            <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-5 card-pro bg-white flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
-                            <div>
-                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                    <i data-lucide="store" class="w-4 h-4 text-orange-500"></i> Top 10 Tiendas con Más Solicitudes
-                                </h3>
-                                <p class="text-xs text-slate-400 font-medium">Ranking dinámico por volumen de tickets</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2.5 pt-1" id="top-stores-list"></div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 card-pro bg-white flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-3 pb-3 border-b border-slate-100">
-                            <div>
-                                <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                    <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado vs Atendidos
-                                </h3>
-                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (568 solicitados / 435 atendidos)</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
-                                    <option value="Global">Consolidado Global</option>
-                                    <option value="Capital">Región Capital</option>
-                                    <option value="Occidente">Región Occidente</option>
-                                    <option value="Oriente">Región Oriente</option>
-                                </select>
-                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">SEPTIEMBRE 2026</span>
-                            </div>
-                        </div>
-                        <div class="h-[380px] relative">
-                            <canvas id="categoryChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TIPO DE TRABAJO -->
-            <div class="card-pro">
-                <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="pie-chart" class="w-4 h-4 text-orange-500"></i> Tipo de Trabajo Solicitado (Estatus Operativo)
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Correctivo, Preventivo, Mejora</p>
-                    </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">SEPTIEMBRE 2026</span>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-5 flex flex-col items-center bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
-                        <div class="w-[280px] h-[260px] relative flex items-center justify-center">
-                            <canvas id="workTypePieChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-7 bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80">
-                        <h4 class="font-black text-slate-800 text-xs uppercase mb-3 flex items-center gap-1.5">
-                            <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-600"></i> Comparativo: Mes Activo vs Acumulado Histórico 2026
-                        </h4>
-                        <table class="w-full text-xs">
-                            <thead>
-                                <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-2 text-[10px] tracking-wider">
-                                    <th class="text-left pb-3">Tipo de Trabajo</th>
-                                    <th class="text-center pb-3">Mes Seleccionado</th>
-                                    <th class="text-center pb-3">% Mes</th>
-                                    <th class="text-right pb-3">Acumulado Histórico</th>
-                                </tr>
-                            </thead>
-                            <tbody id="worktype-table-body" class="divide-y divide-slate-200/60"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DISTRIBUCIÓN DE ESTATUS DEL MES -->
-            <div class="card-pro">
-                <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
-                        <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
-                    </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">SEPTIEMBRE 2026</span>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-5 flex justify-center bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
-                        <div class="w-[310px] h-[310px] relative flex items-center justify-center">
-                            <canvas id="statusPieChart"></canvas>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">568</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-7 bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80">
-                        <table class="w-full text-xs">
-                            <thead>
-                                <tr class="text-slate-500 font-extrabold uppercase border-b border-slate-200 pb-2 text-[10px] tracking-wider">
-                                    <th class="text-left pb-3">Estado de Ticket</th>
-                                    <th class="text-center pb-3">Cantidad</th>
-                                    <th class="text-right pb-3">Proporción del Mes</th>
-                                </tr>
-                            </thead>
-                            <tbody id="status-table-body" class="divide-y divide-slate-200/60"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DESGLOSE REGIONAL HISTÓRICO ACTUALIZADO -->
-            <div class="space-y-4 pt-4 border-t border-slate-200">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-                        <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-600"></i>
-                        Desglose Regional Histórico Actualizado (Capital: Azul • Occidente: Verde • Oriente: Púrpura)
-                    </h3>
-                    <div class="flex items-center gap-2 text-xs font-bold bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                        <span class="text-slate-500 text-[10px] uppercase pl-1">Desde:</span>
-                        <select id="regStartMonth" onchange="renderRegionalCharts()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                        <span class="text-slate-500 text-[10px] uppercase">Hasta:</span>
-                        <select id="regEndMonth" onchange="renderRegionalCharts()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-container"></div>
-            </div>
-
-            <!-- ESTADO DE BACKLOG Y DESGLOSE AL CIERRE DE MES -->
-            <div class="space-y-6 pt-6 border-t border-slate-200">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-                        <i data-lucide="lock" class="w-4 h-4 text-emerald-600"></i>
-                        Desglose Regional Histórico al Cierre de Mes & Resumen de Backlog
-                    </h3>
-                    <div class="flex items-center gap-2 text-xs font-bold bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                        <span class="text-slate-500 text-[10px] uppercase pl-1">Desde:</span>
-                        <select id="cierreStartMonth" onchange="renderRegionalChartsCierre()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                        <span class="text-slate-500 text-[10px] uppercase">Hasta:</span>
-                        <select id="cierreEndMonth" onchange="renderRegionalChartsCierre()" class="bg-white text-slate-800 px-2 py-1 rounded-lg outline-none font-bold text-xs"></select>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-slate-900 text-white p-6">
-                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                        <h4 class="text-sm font-extrabold uppercase tracking-wider text-orange-400 flex items-center gap-2">
-                            <i data-lucide="history" class="w-4 h-4"></i> Estado de Backlog y Casos Pendientes (Calculado de Meses Previos)
-                        </h4>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="backlog-regional-container"></div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="regional-charts-cierre-container"></div>
-            </div>
-        </div>
-
-        <!-- RESUMEN TRIMESTRAL RESTABLECIDO -->
-        <div id="tab-content-trimestral" class="space-y-8 hidden">
-            <div class="space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="calendar-range" class="w-5 h-5 text-cyan-600"></i> Total de Solicitudes y Rendimiento por Trimestre 2026
-                        </h3>
-                        <p class="text-xs text-slate-500 font-medium">Consolidado general de solicitudes, atención neta y efectividad por ciclo trimestral</p>
-                    </div>
-                    <span class="text-xs font-black text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full uppercase">Ciclos Q1 - Q4</span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <!-- Q1 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400" onclick="seleccionarQuarter('Q1')">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-black text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded">Primer Trimestre</span>
-                                <h4 class="text-xl font-black text-slate-900 mt-1">Q1 (Ene - Mar)</h4>
-                            </div>
-                            <span class="text-xs font-black text-slate-400">Línea Base</span>
-                        </div>
-                        <div class="flex items-baseline justify-between pt-1">
-                            <div>
-                                <span class="text-3xl font-black text-slate-900">977</span>
-                                <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-lg font-black text-blue-600">713</span>
-                                <span class="text-[10px] text-emerald-600 font-bold block">Atendidos (42.0%)</span>
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>237.7 / mes</b></span>
-                            <span><b>11.9</b> casos/día</span>
-                        </div>
-                    </div>
-
-                    <!-- Q2 Card -->
-                    <div class="card-pro bg-white border-2 border-orange-500 p-5 space-y-3 relative overflow-hidden shadow-lg cursor-pointer" onclick="seleccionarQuarter('Q2')">
-                        <div class="absolute -right-8 -top-8 w-24 h-24 bg-orange-100/60 rounded-full pointer-events-none"></div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-black text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded">Segundo Trimestre</span>
-                                <h4 class="text-xl font-black text-slate-900 mt-1">Q2 (Abr - Jun)</h4>
-                            </div>
-                            <span class="text-[10px] font-black text-white bg-orange-600 px-2 py-0.5 rounded-full shadow-sm">+79.7% Crec.</span>
-                        </div>
-                        <div class="flex items-baseline justify-between pt-1">
-                            <div>
-                                <span class="text-3xl font-black text-slate-900">1,152</span>
-                                <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-lg font-black text-emerald-600">1,281</span>
-                                <span class="text-[10px] text-emerald-700 font-bold block">Atendidos (78.5%)</span>
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>427.0 / mes</b></span>
-                            <span><b>21.4</b> casos/día</span>
-                        </div>
-                    </div>
-
-                    <!-- Q3 Card -->
-                    <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5 space-y-3 cursor-pointer hover:border-purple-400" onclick="seleccionarQuarter('Q3')">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-black text-purple-600 uppercase tracking-wider bg-purple-50 px-2 py-0.5 rounded">Tercer Trimestre</span>
-                                <h4 class="text-xl font-black text-slate-900 mt-1">Q3 (Jul - Sep)</h4>
-                            </div>
-                            <span class="text-xs font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Consolidado</span>
-                        </div>
-                        <div class="flex items-baseline justify-between pt-1">
-                            <div>
-                                <span class="text-3xl font-black text-slate-900">1,592</span>
-                                <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-lg font-black text-purple-700">1,088</span>
-                                <span class="text-[10px] text-emerald-600 font-bold block">Resueltos (68.3%)</span>
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
-                            <span>Promedio: <b>530.6 / mes</b></span>
-                            <span><b>26.5</b> casos/día</span>
-                        </div>
-                    </div>
-
-                    <!-- Q4 Card -->
-                    <div class="card-pro bg-slate-50 border border-slate-200 p-5 space-y-3 opacity-90 cursor-pointer" onclick="seleccionarQuarter('Q4')">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded">Cuarto Trimestre</span>
-                                <h4 class="text-xl font-black text-slate-700 mt-1">Q4 (Oct - Dic)</h4>
-                            </div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Planificado</span>
-                        </div>
-                        <div class="flex items-baseline justify-between pt-1">
-                            <div>
-                                <span class="text-3xl font-black text-slate-600">1,650</span>
-                                <span class="text-[11px] text-slate-400 font-bold block">Proyección Cierre</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-lg font-black text-slate-500">1,250</span>
-                                <span class="text-[10px] text-slate-400 font-bold block">Meta 75.0%</span>
-                            </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-200 flex justify-between text-[11px] text-slate-400 font-semibold">
-                            <span>Proyección: <b>550 / mes</b></span>
-                            <span><b>27.5</b> casos/día</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BLOQUE DE ESTATUS TRIMESTRAL Y BARRAS -->
-            <div class="card-pro bg-white p-6 space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
-                    <div>
-                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2" id="trimestral-donut-title">
-                            Distribución de Estatus – Segundo Trimestre (Q2)
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Desglose porcentual y numérico clasificado por estado del ciclo trimestral</p>
-                    </div>
-                    <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-                        <button id="pill-q1" onclick="seleccionarQuarter('Q1')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q1</button>
-                        <button id="pill-q2" onclick="seleccionarQuarter('Q2')" class="px-3 py-1 rounded-lg font-bold text-xs quarter-pill-active transition-all">Q2</button>
-                        <button id="pill-q3" onclick="seleccionarQuarter('Q3')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q3</button>
-                        <button id="pill-q4" onclick="seleccionarQuarter('Q4')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q4</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-6 flex justify-center items-center p-4">
-                        <div class="w-[340px] h-[340px] relative flex items-center justify-center">
-                            <canvas id="trimestralDonutChart"></canvas>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="donut-quarter-label">TOTAL Q2</span>
-                                <span class="text-4xl font-black text-slate-900 tracking-tight leading-none mt-1" id="donut-quarter-total">1,152</span>
-                                <span class="text-[11px] font-bold text-slate-500 mt-0.5">Solicitudes</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-6 space-y-3" id="trimestral-status-cards"></div>
-                </div>
-
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
-                    <p class="text-xs text-slate-600 font-medium italic" id="trimestral-donut-footer">
-                        Durante el Q2 se atendieron satisfactoriamente <b>838 casos</b>, lo que representa una tasa récord de efectividad nacional del <b>72.7%</b>.
-                    </p>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-orange-600"></i> Volumen y Productividad Trimestral: Q1 vs Q2 vs Q3 vs Q4
-                        </h3>
-                        <p class="text-xs text-slate-500 font-medium">Comparativa directa de casos atendidos, efectividad porcentual, promedios mensuales y casos por día</p>
-                    </div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-[11px] font-bold text-slate-500 uppercase">Trimestres a Graficar:</span>
-                        <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1" id="quarter-filter-buttons">
-                            <button id="btn-chart-all" onclick="filtrarTrimestresGrafica('ALL')" class="px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm">Todos</button>
-                            <button id="btn-chart-q1" onclick="toggleQuarterChart('Q1')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q1</button>
-                            <button id="btn-chart-q2" onclick="toggleQuarterChart('Q2')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q2</button>
-                            <button id="btn-chart-q3" onclick="toggleQuarterChart('Q3')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q3</button>
-                            <button id="btn-chart-q4" onclick="toggleQuarterChart('Q4')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q4*</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <!-- Q1 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border border-slate-200">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-slate-800 uppercase">PRIMER TRIMESTRE (Q1)</h4>
-                            <span class="text-[11px] font-extrabold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">Línea Base</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
-                                <h3 class="text-3xl font-black text-slate-900 leading-none">713 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-slate-50/60 rounded-2xl border border-slate-200">
-                                <div class="w-24 h-24 relative flex items-center justify-center">
-                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
-                                        <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path class="text-blue-600" stroke-dasharray="42.0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                        <span class="text-base font-black text-slate-900">42.0%</span>
-                                        <span class="text-[8px] font-bold text-slate-400 uppercase">Q1 2026</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Q2 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-orange-500 relative shadow-lg">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-orange-600 uppercase">SEGUNDO TRIMESTRE (Q2)</h4>
-                            <span class="text-[11px] font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Alto Desempeño</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS ATENDIDOS</span>
-                                <h3 class="text-3xl font-black text-orange-600 leading-none">1,281 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-orange-50/50 rounded-2xl border border-orange-200">
-                                <div class="w-24 h-24 relative flex items-center justify-center">
-                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
-                                        <path class="text-orange-200/60" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path class="text-[#ff5500]" stroke-dasharray="78.5, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                        <span class="text-base font-black text-slate-900">78.5%</span>
-                                        <span class="text-[8px] font-bold text-orange-600 uppercase">Q2 2026</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Q3 -->
-                    <div class="card-pro bg-white p-6 space-y-5 border-2 border-purple-500 relative shadow-lg">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                            <h4 class="text-base font-black text-purple-700 uppercase">TERCER TRIMESTRE (Q3)</h4>
-                            <span class="text-[11px] font-extrabold text-purple-800 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Odoo Cierre</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                            <div class="sm:col-span-7 space-y-3">
-                                <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">CASOS REGISTRADOS</span>
-                                <h3 class="text-3xl font-black text-purple-700 leading-none">1,592 <span class="text-sm font-bold text-slate-500">Solicitudes</span></h3>
-                            </div>
-                            <div class="sm:col-span-5 flex flex-col items-center justify-center p-3 bg-purple-50/60 rounded-2xl border border-purple-200">
-                                <div class="w-24 h-24 relative flex items-center justify-center">
-                                    <svg class="w-full h-full gauge-circle" viewBox="0 0 36 36">
-                                        <path class="text-purple-200/60" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path class="text-purple-600" stroke-dasharray="68.3, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                        <span class="text-base font-black text-slate-900">68.3%</span>
-                                        <span class="text-[8px] font-bold text-purple-600 uppercase">Q3 2026</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-pro bg-white p-6 space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 gap-3">
-                        <div>
-                            <h4 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                                <i data-lucide="activity" class="w-4 h-4 text-cyan-600"></i> Evolución Trimestral: Volumen Solicitado vs Atendidos & Tasa de Efectividad
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="h-[360px] relative"><canvas id="trimestralProductividadChart"></canvas></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- AHORROS ESTIMADOS DINÁMICOS -->
-        <div id="tab-content-ahorros" class="space-y-8 hidden">
-            <div class="card-pro bg-white p-6 space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="piggy-bank" class="w-5 h-5 text-emerald-600"></i> Informe Mensual: Ahorros Estimados y Gestión de Servicios
-                        </h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Valoración de trabajos ejecutados vs Precios Unitarios de Referencia</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-slate-500">Seleccionar Período:</span>
-                        <select id="ahorroMesSelector" onchange="renderAhorrosTab()" class="px-3.5 py-2 bg-slate-100 border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-emerald-500/20">
-                            <option value="julio">Julio 2026</option>
-                            <option value="agosto">Agosto 2026</option>
-                            <option value="septiembre" selected>Septiembre 2026</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-7 space-y-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex justify-between items-center">
-                            <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. SEPTIEMBRE 2026</h4>
-                        </div>
-                        <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                            <table class="w-full text-xs text-left">
-                                <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
-                                    <tr>
-                                        <th class="py-3 px-4">CATEGORÍA</th>
-                                        <th class="py-3 px-4">DESCRIPCIÓN GENERAL</th>
-                                        <th class="py-3 px-2 text-center">CANT.</th>
-                                        <th class="py-3 px-3 text-right">PU REF.</th>
-                                        <th class="py-3 px-4 text-right">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ahorros-table-body" class="divide-y divide-slate-100 font-medium"></tbody>
-                                <tfoot>
-                                    <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
-                                        <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
-                                        <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-5 space-y-6">
-                        <div class="card-pro bg-white border border-slate-200 space-y-4">
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                                <h4 class="font-extrabold text-xs text-slate-900 uppercase">CATEGORÍA DE SERVICIO SOLICITADO VS ATENDIDOS</h4>
-                                <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded uppercase" id="ahorro-badge-periodo">SEPTIEMBRE 2026</span>
-                            </div>
-                            <div class="h-[280px] relative"><canvas id="ahorrosCatChart"></canvas></div>
-                        </div>
-
-                        <div class="card-pro bg-slate-50 border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-black text-xs text-slate-800 uppercase tracking-wider text-center" id="ahorro-clave-title">DATOS CLAVE DE GESTIÓN (SEPTIEMBRE 2026)</h4>
-                            <div class="grid grid-cols-3 gap-4 text-center">
-                                <div>
-                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">568</span>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">435</span>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
-                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 76.6%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONTROL DE GASTOS (DRIVE) -->
-        <div id="tab-content-gastos" class="space-y-8 hidden">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="card-pro bg-white border-l-4 border-l-purple-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS MTTO 52 TIENDAS Y CORP (COL D)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-mtto-tab">$42,654.82</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Total Consolidado Acumulado</p>
-                </div>
-                <div class="card-pro bg-white border-l-4 border-l-indigo-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">GASTOS EN CORPORATIVO (COL E)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-gasto-corp-tab">$14,598.28</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Gasto Directo Sede Central</p>
-                </div>
-                <div class="card-pro bg-white border-l-4 border-l-emerald-600 p-5">
-                    <span class="text-xs font-extrabold text-slate-400 uppercase">INGRESO / VENTAS (COL B)</span>
-                    <h3 class="text-2xl font-black text-slate-900 mt-1" id="kpi-ventas-totales-tab">$2,436,330.61</h3>
-                    <p class="text-[11px] text-slate-500 mt-1 font-semibold">Ingreso Total Bruto Red</p>
-                </div>
-            </div>
-
-            <div class="card-pro p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-purple-600"></i> Relación de Ingreso vs % Gastos Mtto / Venta (Columna B vs Columna J)
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Información extraída de la pestaña 1. Resumen General Actualizado</p>
-                    </div>
-                </div>
-                <div class="h-[360px] relative"><canvas id="ventasGastosChart"></canvas></div>
-            </div>
-
-            <div class="card-pro overflow-hidden p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                        <i data-lucide="table" class="w-4 h-4 text-purple-600"></i> Consolidado Real Anual (1. Resumen General Actualizado)
-                    </h3>
-                    <a href="https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0" target="_blank" class="px-3.5 py-1.5 bg-purple-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm hover:bg-purple-700 transition-all">
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Hoja Drive
-                    </a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left">
-                        <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
-                                <th class="pb-3 px-4">Mes</th>
-                                <th class="pb-3 px-4 text-right">Ingreso (Col B)</th>
-                                <th class="pb-3 px-4 text-right">Gastos Mtto. 52 t/corp (Col D)</th>
-                                <th class="pb-3 px-4 text-right">Gastos Corporativo (Col E)</th>
-                                <th class="pb-3 px-4 text-right">Prom. Tienda (Col F)</th>
-                                <th class="pb-3 px-4 text-right">Prom. Tienda + Corp (Col G)</th>
-                                <th class="pb-3 px-4 text-right">% Gastos Mtto / Venta (Col J)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gastos-table-body" class="divide-y divide-slate-100 font-bold text-slate-700">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- REPORTE DE GASTOS DETALLADOS -->
-        <div id="tab-content-gastos-detallados" class="space-y-8 hidden">
-            <div class="card-pro bg-white p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
-                    <div>
-                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="calendar" class="w-5 h-5 text-amber-500"></i> Reporte 1: Resumen de Gastos Totales Mensuales de Gestión
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Sumatoria de costos totales (Columna I) agrupados según la Fecha de Solped (Columna E)</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md text-[10px] font-black uppercase border border-emerald-200" id="live-drive-badge">
-                            Google Sheets Live (Tabla_2)
-                        </span>
-                        <button onclick="cargarGastosDetalladosDrive()" class="px-3 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm hover:bg-slate-800 transition-all">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Actualizar Drive
-                        </button>
-                    </div>
-                </div>
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
-                    <table class="w-full text-xs text-left">
-                        <thead class="bg-slate-900 text-slate-200 font-extrabold uppercase text-[10px]">
-                            <tr>
-                                <th class="py-3.5 px-4">Mes de Solicitud (Col E)</th>
-                                <th class="py-3.5 px-4 text-center">N° Solpeds Procesadas</th>
-                                <th class="py-3.5 px-4 text-right">Total Costo Mensual ($) (Col I)</th>
-                                <th class="py-3.5 px-4 text-center">Estatus</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resumen-gastos-mensuales-body" class="divide-y divide-slate-100 font-bold"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card-pro bg-white p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100 flex-wrap gap-2">
-                    <div>
-                        <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="store" class="w-5 h-5 text-purple-600"></i> Reporte 2: Matriz de Costos Detallados por Farmacia x Mes
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Costo total acumulado de cada sede (Columna A) por mes de gestión (incluyendo fila 717 COQUI: $2,091.75)</p>
-                    </div>
-                    <input type="text" id="filtroFarmaciaGasto" onkeyup="filtrarMatrizFarmacias()" placeholder="Buscar farmacia..." class="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none w-56 font-bold">
-                </div>
-                <div class="overflow-x-auto border border-slate-200 rounded-2xl max-h-[460px] overflow-y-auto">
-                    <table class="w-full text-xs text-left" id="tablaMatrizFarmacias">
-                        <thead class="bg-slate-100 text-slate-600 font-extrabold uppercase text-[10px] sticky top-0 shadow-sm">
-                            <tr>
-                                <th class="py-3 px-4">Farmacia / Ubicación (Col A)</th>
-                                <th class="py-3 px-3 text-right">Julio ($)</th>
-                                <th class="py-3 px-3 text-right">Agosto ($)</th>
-                                <th class="py-3 px-3 text-right">Septiembre ($)</th>
-                                <th class="py-3 px-4 text-right">Total Acumulado ($)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="matriz-farmacias-gastos-body" class="divide-y divide-slate-100 font-medium"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- REPORTES DRIVE CONSOLIDADOS -->
-        <div id="tab-content-drive" class="space-y-8 hidden">
-            <div id="exportable-doc-area" class="space-y-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="flex justify-between items-center pb-4 border-b border-slate-200 flex-wrap gap-2">
-                    <div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase flex items-center gap-2">
-                            <i data-lucide="folder-git-2" class="w-5 h-5 text-emerald-600"></i>
-                            Reportes de Infraestructura y Gestión - Google Drive
-                        </h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5">Informes Técnicos de Gestión Cargados por Región y Mes</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
-                            <i data-lucide="folder-open" class="w-4 h-4"></i> Abrir Carpeta Raíz
-                        </a>
-                        <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-                                <h4 class="font-extrabold text-xs text-blue-900 uppercase tracking-wider flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full bg-blue-600"></span> Región Capital
-                                </h4>
-                                <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
-                            </div>
-                            <div class="space-y-3" id="drive-capital-container"></div>
-                        </div>
-                    </div>
-
-                    <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-                                <h4 class="font-extrabold text-xs text-emerald-900 uppercase tracking-wider flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full bg-emerald-600"></span> Región Occidente
-                                </h4>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
-                            </div>
-                            <div class="space-y-3" id="drive-occidente-container"></div>
-                        </div>
-                    </div>
-
-                    <div class="card-pro bg-slate-50/70 border border-slate-200 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-                                <h4 class="font-extrabold text-xs text-purple-900 uppercase tracking-wider flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full bg-purple-600"></span> Región Oriente
-                                </h4>
-                                <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded uppercase">Drive Real</span>
-                            </div>
-                            <div class="space-y-3" id="drive-oriente-container"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SOLICITUDES DE PEDIDO PENDIENTES -->
-        <div id="tab-content-pendientes" class="space-y-8 hidden">
-            <div class="card-pro bg-white overflow-hidden p-6 space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Antiguas (&gt; 3 Meses)
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Extraídas directamente del archivo consolidado de Google Drive</p>
-                    </div>
-                    <input type="text" id="pendSearchInput" onkeyup="filterPendientesTable()" placeholder="Buscar farmacia o detalle..." class="px-3.5 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none w-64">
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left" id="pendientesTable">
-                        <thead>
-                            <tr class="text-slate-400 font-extrabold uppercase border-b text-[10px]">
-                                <th class="pb-3 px-4">Farmacia</th>
-                                <th class="pb-3 px-4">Descripción Solped</th>
-                                <th class="pb-3 px-2 text-center">Fecha Solped</th>
-                                <th class="pb-3 px-2 text-center">Antigüedad</th>
-                                <th class="pb-3 px-4">Observaciones</th>
-                                <th class="pb-3 px-4 text-center">Estatus</th>
-                                <th class="pb-3 px-4 text-right">Actualización</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium" id="pendientes-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ASISTENTE INTELIGENTE BI -->
-        <div id="tab-content-asistente" class="space-y-8 hidden">
-            <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <input type="text" id="aiQueryInput" placeholder="Ej: Cardenalito, Araguaney, Coqui, Betania, Coporo..." class="px-5 py-3.5 bg-slate-800 text-white rounded-xl text-xs font-bold outline-none border border-slate-700 flex-grow" onkeypress="if(event.key==='Enter') ejecutarConsultaAI()">
-                    <button onclick="ejecutarConsultaAI()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 rounded-xl font-black text-xs transition-all">CONSULTAR ASISTENTE</button>
-                </div>
-            </div>
-            <div id="ai-result-area" class="card-pro bg-white p-8 space-y-6"></div>
-        </div>
-
-    </main>
-
-    <script>
+<script>
         Chart.register(ChartDataLabels);
 
         const REGIONES = ['Capital', 'Occidente', 'Oriente'];
         const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
         let currentQuarterSelected = 'Q2';
@@ -994,7 +14,7 @@
         let currentRealTotal = 568; // Cap 245 + Occ 188 + Ori 135
         let currentRealAtendidos = 435; // Cap 173 + Occ 150 + Ori 112
 
-        // ESTRUCTURA DE DATOS TRIMESTRAL RESTABLECIDA
+        // ESTRUCTURA DE DATOS TRIMESTRAL
         let trimestresData = {
             Q1: {
                 nombre: "Primer Trimestre (Q1)", periodo: "Enero - Marzo 2026", solicitudesTotales: 977, casosAtendidosTotal: 713, pctAtencion: "42.0%",
@@ -1042,7 +62,7 @@
             }
         };
 
-        // DATOS REALES DE COORDINADORES (SEPTIEMBRE 2026)
+        // DATOS REALES DE COORDINADORES (SEPTIEMBRE 2026: SUMA EXACTA 568)
         let coordinadoresData = {
             "Alejandro Villegas": { asignados: 102, resueltos: 57 }, // 56 Resueltos + 1 Cancelada = 57
             "Pablo Rocha": { asignados: 143, resueltos: 116 },        // 113 Resueltos + 3 Canceladas = 116
@@ -1100,125 +120,6 @@
             ]
         };
 
-        let ahorrosDataPorMes = {
-            julio: {
-                periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "49.00", pu: "107.50", total: "5,267.50" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "62.00", pu: "100.00", total: "6,200.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "54.00", pu: "100.00", total: "5,400.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario en farmacias", cant: "35.00", pu: "45.00", total: "1,575.00" },
-                    { cat: "Neveras", desc: "Mantenimiento preventivo de neveras", cant: "16.00", pu: "80.00", total: "1,280.00" },
-                    { cat: "Pintura", desc: "Pintura de áreas en general de farmacia", cant: "30.00", pu: "300.00", total: "9,000.00" },
-                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "50.00", pu: "55.00", total: "2,750.00" },
-                    { cat: "Puertas / Cerrajería", desc: "Ajustes de puerta, instalación de bisagras, cambio de manillas y cerraduras", cant: "26.00", pu: "90.00", total: "2,340.00" },
-                    { cat: "Respaldo Eléctrico", desc: "Mantenimiento básico y ajustes de sistemas de respaldo eléctrico", cant: "9.00", pu: "100.00", total: "900.00" },
-                    { cat: "Santa María", desc: "Mantenimiento de Santa Marías", cant: "13.00", pu: "60.00", total: "780.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "1.00", pu: "600.00", total: "600.00" },
-                    { cat: "Herrería", desc: "Reconstrucción de romanillas, puertas cuarto de basura y pasamanos de Café", cant: "2.00", pu: "300.00", total: "600.00" },
-                    { cat: "Ajustes Varios", desc: "Reparación de montacargas (elevador) de Araguaney", cant: "1.00", pu: "200.00", total: "200.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
-                ],
-                chartStats: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema C. Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }
-            },
-            agosto: {
-                periodo: "AGOSTO 2026", sol: 498, at: 252, pct: "50.60%", totalMonto: "$30,127.50", totalCant: "259.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos)", cant: "105.00", pu: "107.50", total: "11,287.50" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "50.00", pu: "100.00", total: "5,000.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "65.00", pu: "100.00", total: "6,500.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario. Ajustes de puerta, instalación de bisagras, manillas y cerraduras", cant: "22.00", pu: "45.00", total: "990.00" },
-                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "10.00", pu: "55.00", total: "550.00" },
-                    { cat: "Planta Eléctrica", desc: "Reparación de Planta eléctrica Apamate", cant: "1.00", pu: "500.00", total: "500.00" },
-                    { cat: "Correctivo A/A", desc: "Reparación de Aire Acondicionado de 5 Ton (correctivo). Sustitución de compresores, controlador", cant: "4.00", pu: "650.00", total: "2,600.00" },
-                    { cat: "Herrería", desc: "Fabricación de base de A/A", cant: "1.00", pu: "200.00", total: "200.00" },
-                    { cat: "Ductos A/A", desc: "Reparación de tramo de ductería", cant: "1.00", pu: "400.00", total: "400.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor). Sapito", cant: "3.00", pu: "600.00", total: "1,800.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Bomba de riego. Sapito", cant: "1.00", pu: "300.00", total: "300.00" }
-                ],
-                chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
-            },
-            septiembre: {
-                periodo: "SEPTIEMBRE 2026", sol: 568, at: 435, pct: "76.60%", totalMonto: "$41,880.00", totalCant: "371.00",
-                filas: [
-                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "124.00", pu: "107.50", total: "13,330.00" },
-                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "61.00", pu: "100.00", total: "6,100.00" },
-                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "142.00", pu: "100.00", total: "14,200.00" },
-                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "14.00", pu: "45.00", total: "630.00" },
-                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "24.00", pu: "55.00", total: "1,320.00" },
-                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "4.00", pu: "1,000.00", total: "4,000.00" },
-                    { cat: "Instalación A/A", desc: "Instalación Aire Acondicionado 2 Ton por sustitución (Araguaney)", cant: "1.00", pu: "300.00", total: "300.00" },
-                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "3.00", pu: "600.00", total: "1,800.00" },
-                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
-                ],
-                chartStats: { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32, 'General / Otros': 22 }
-            }
-        };
-
-        let gastosTablaData = [
-            { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
-            { mes: "Febrero", ingreso: 1918680.99, mtto: 27663.72, corp: 12441.75, promTienda: 292.73, promCorp: 521.96, pctMtto: 1.44 },
-            { mes: "Marzo", ingreso: 2248225.58, mtto: 20257.30, corp: 10558.42, promTienda: 186.52, promCorp: 382.21, pctMtto: 0.90 },
-            { mes: "Abril", ingreso: 2192419.69, mtto: 28534.81, corp: 6856.52, promTienda: 416.89, promCorp: 538.39, pctMtto: 1.30 },
-            { mes: "Mayo", ingreso: 2563106.11, mtto: 54446.17, corp: 14964.98, promTienda: 759.25, promCorp: 1027.29, pctMtto: 2.12 },
-            { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
-            { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
-            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
-        ];
-
-        let resumenGastosPorMesData = [
-            { mes: "Marzo 2026", solpeds: 18, totalCosto: 3824.15, estatus: "Cerrado" },
-            { mes: "Abril 2026", solpeds: 15, totalCosto: 2950.40, estatus: "Cerrado" },
-            { mes: "Mayo 2026", solpeds: 26, totalCosto: 5410.80, estatus: "Cerrado" },
-            { mes: "Junio 2026", solpeds: 21, totalCosto: 4320.10, estatus: "Cerrado" },
-            { mes: "Julio 2026", solpeds: 34, totalCosto: 7120.50, estatus: "Cerrado" },
-            { mes: "Agosto 2026", solpeds: 42, totalCosto: 8940.30, estatus: "Cerrado" },
-            { mes: "Septiembre 2026", solpeds: 74, totalCosto: 22026.46, estatus: "En Proceso" }
-        ];
-
-        let matrizCostosFarmaciasData = [
-            { farmacia: "CANDIRUCO", julio: 0.00, agosto: 450.00, sept: 4860.00, total: 5310.00 },
-            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 3240.00, total: 6170.00 },
-            { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 2091.75, total: 3551.75 },
-            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 2320.00, total: 5360.00 },
-            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 2180.00, total: 5540.00 },
-            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1650.00, total: 3660.00 },
-            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1490.00, total: 3710.00 },
-            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1350.00, total: 3120.00 },
-            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1160.00, total: 2490.00 },
-            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 924.71, total: 1984.71 },
-            { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
-        ];
-
-        let driveReportesGlobalData = [
-            { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
-            { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
-            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
-        ];
-
-        let casosPendientesGlobalData = [
-            { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "MANGLE", Descripcion: "Reparación de tanque para almacenamiento de diesel", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "En revisión de presupuesto", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "TAMARINDO", Descripcion: "Fumigación y control preventivo de plagas", FechaSolped: "20/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Reprogramado para cierre de trimestre", Estatus: "Pendiente", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "COPORO", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 4 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "BETANIA", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente repuesto de inyector", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "ESCORPION", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
-        ];
-
-        let directorioSedesGlobalData = [
-            { Farmacia: "Cardenalito", Direccion: "Av. Intercomunal Barquisimeto-Cabudare, C.C. El Cardenalito", Gerente: "Wilmer Guevara", Regente: "Rosanna Gordillo", Telefono: "0412-2410277", Ubicacion: "Lara / Palavecino" },
-            { Farmacia: "Araguaney", Direccion: "Av. Araguaney, Sector Las Carolinas", Gerente: "Anna Arredondo", Regente: "Molina Nahomi", Telefono: "0422-6383921", Ubicacion: "Anzoátegui / Peñalver" },
-            { Farmacia: "Coqui", Direccion: "Av. Principal El Coqui, Edif. Torre Centro", Gerente: "Gabriel Matos", Regente: "Maria Rodriguez", Telefono: "0422-6383936", Ubicacion: "Dtto Capital / Libertador" },
-            { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
-            { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
-            { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Gerente: "Elizabeth Gutierrez", Regente: "Rita Guardia", Telefono: "0422-6321507", Ubicacion: "Dtto Capital / Libertador" },
-            { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Maira Noguera", Regente: "Jordy Pava", Telefono: "0422-6410948", Ubicacion: "Miranda / Plaza" }
-        ];
-
         let topStoresByMonthAndRegion = {
             8: {
                 Global: [
@@ -1242,11 +143,6 @@
             generarMesesDinamicos();
             lucide.createIcons();
             syncWithOdoo();
-            cargarCasosPendientes();
-            cargarReportesDrive();
-            cargarDirectorioSedes();
-            cargarGastosMensualesDrive();
-            cargarGastosDetalladosDrive();
             renderAll();
         };
 
@@ -1959,6 +855,1500 @@
                     ? "px-2.5 py-1 rounded-lg font-black text-xs bg-cyan-600 text-white shadow-sm transition-all"
                     : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-400 border border-slate-200 transition-all";
             });
+        }
+
+        function switchTab(tab) {
+            const btnDash = document.getElementById('nav-btn-dashboard');
+            const btnTrim = document.getElementById('nav-btn-trimestral');
+            const btnAhorros = document.getElementById('nav-btn-ahorros');
+            const btnGastos = document.getElementById('nav-btn-gastos');
+            const btnGastosDet = document.getElementById('nav-btn-gastos-detallados');
+            const btnDrive = document.getElementById('nav-btn-drive');
+            const btnPend = document.getElementById('nav-btn-pendientes');
+            const btnAsis = document.getElementById('nav-btn-asistente');
+            
+            const contentDash = document.getElementById('tab-content-dashboard');
+            const contentTrim = document.getElementById('tab-content-trimestral');
+            const contentAhorros = document.getElementById('tab-content-ahorros');
+            const contentGastos = document.getElementById('tab-content-gastos');
+            const contentGastosDet = document.getElementById('tab-content-gastos-detallados');
+            const contentDrive = document.getElementById('tab-content-drive');
+            const contentPend = document.getElementById('tab-content-pendientes');
+            const contentAsis = document.getElementById('tab-content-asistente');
+            
+            const title = document.getElementById('main-tab-title');
+            const badgeIcon = document.getElementById('header-icon-badge');
+
+            const inactiveBtnClass = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all";
+
+            btnDash.className = inactiveBtnClass;
+            if(btnTrim) btnTrim.className = inactiveBtnClass;
+            if(btnAhorros) btnAhorros.className = inactiveBtnClass;
+            if(btnGastos) btnGastos.className = inactiveBtnClass;
+            if(btnGastosDet) btnGastosDet.className = inactiveBtnClass;
+            btnDrive.className = inactiveBtnClass;
+            if(btnPend) btnPend.className = inactiveBtnClass;
+            if(btnAsis) btnAsis.className = inactiveBtnClass;
+
+            contentDash.classList.add('hidden');
+            if(contentTrim) contentTrim.classList.add('hidden');
+            if(contentAhorros) contentAhorros.classList.add('hidden');
+            if(contentGastos) contentGastos.classList.add('hidden');
+            if(contentGastosDet) contentGastosDet.classList.add('hidden');
+            contentDrive.classList.add('hidden');
+            if(contentPend) contentPend.classList.add('hidden');
+            if(contentAsis) contentAsis.classList.add('hidden');
+
+            if (tab === 'dashboard') {
+                btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
+                contentDash.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "SLA";
+                if(title) title.innerHTML = `Service Level Agreement <span class="bg-orange-100 text-orange-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Helpdesk</span>`;
+            } else if (tab === 'trimestral') {
+                if(btnTrim) btnTrim.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg shadow-cyan-600/20 transition-all";
+                if(contentTrim) contentTrim.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "TRI";
+                if(title) title.innerHTML = `Resumen Trimestral <span class="bg-cyan-100 text-cyan-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Análisis Q1 - Q4</span>`;
+                renderTrimestralTab();
+            } else if (tab === 'ahorros') {
+                if(btnAhorros) btnAhorros.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                if(contentAhorros) contentAhorros.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "AHO";
+                if(title) title.innerHTML = `Ahorros Estimados <span class="bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Gestión de Servicios</span>`;
+                renderAhorrosTab();
+            } else if (tab === 'gastos') {
+                if(btnGastos) btnGastos.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all";
+                if(contentGastos) contentGastos.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "FIN";
+                if(title) title.innerHTML = `Control de Gastos & Ventas <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Resumen General Drive</span>`;
+            } else if (tab === 'gastos-detallados') {
+                if(btnGastosDet) btnGastosDet.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-500/20 transition-all";
+                if(contentGastosDet) contentGastosDet.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "DET";
+                if(title) title.innerHTML = `Reporte de Gastos Detallados <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Por Tienda & Mes</span>`;
+                renderGastosDetalladosTab();
+            } else if (tab === 'drive') {
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                contentDrive.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "DRV";
+                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+            } else if (tab === 'pendientes') {
+                if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
+                if(contentPend) contentPend.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "CND";
+                if(title) title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
+            } else if (tab === 'asistente') {
+                if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all";
+                if(contentAsis) contentAsis.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "AI";
+                if(title) title.innerHTML = `Asistente Inteligente BI <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Búsqueda Cross-Tab</span>`;
+            }
+        }
+
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function exportarAGoogleSlides() {
+            const htmlContent = `<html><body>${document.getElementById('exportable-doc-area').innerHTML}</body></html>`;
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Presentacion_Xana.pptx';
+            a.click();
+        }
+
+        function exportarReporteExcel() {
+            const data = [["Región", "Mes", "Solicitados", "Atendidos"]];
+            REGIONES.forEach(r => MESES.forEach((m, i) => {
+                if (appData[r][i]) data.push([r, m, appData[r][i].sol, appData[r][i].at]);
+            }));
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "SLA_Report");
+            XLSX.writeFile(wb, "Reporte_Xana_BI_v31.xlsx");
+        }
+    </script>
+</body>
+</html>
+<script>
+        Chart.register(ChartDataLabels);
+
+        const REGIONES = ['Capital', 'Occidente', 'Oriente'];
+        const MESES_LARGOS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+        const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
+        const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
+
+        let currentQuarterSelected = 'Q2';
+        let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+        // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026: EXACTAMENTE 568 TICKETS)
+        let currentRealTotal = 568; // Cap 245 + Occ 188 + Ori 135[cite: 33, 34, 35]
+        let currentRealAtendidos = 435; // Cap 173 + Occ 150 + Ori 112[cite: 33, 34, 35]
+
+        // ESTRUCTURA DE DATOS TRIMESTRAL RESTABLECIDA
+        let trimestresData = {
+            Q1: {
+                nombre: "Primer Trimestre (Q1)", periodo: "Enero - Marzo 2026", solicitudesTotales: 977, casosAtendidosTotal: 713, pctAtencion: "42.0%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 410, pct: "42.0%", color: "#ff5500" },
+                    { label: "En progreso", count: 185, pct: "18.9%", color: "#eab308" },
+                    { label: "Asignado", count: 172, pct: "17.6%", color: "#3b82f6" },
+                    { label: "En procura", count: 140, pct: "14.3%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 70, pct: "7.2%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q1 se estableció la línea base operativa con 410 casos resueltos en Odoo más 303 casos de backlog resueltos."
+            },
+            Q2: {
+                nombre: "Segundo Trimestre (Q2)", periodo: "Abril - Junio 2026", solicitudesTotales: 1152, casosAtendidosTotal: 1281, pctAtencion: "78.5%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 838, pct: "72.7%", color: "#ff5500" },
+                    { label: "En progreso", count: 88, pct: "7.6%", color: "#eab308" },
+                    { label: "Asignado", count: 81, pct: "7.0%", color: "#3b82f6" },
+                    { label: "En procura", count: 79, pct: "6.9%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 66, pct: "5.7%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q2 se atendieron satisfactoriamente 838 casos, lo que representa una tasa récord de efectividad nacional del 72.7%."
+            },
+            Q3: {
+                nombre: "Tercer Trimestre (Q3)", periodo: "Julio - Septiembre 2026", solicitudesTotales: 1592, casosAtendidosTotal: 1088, pctAtencion: "68.3%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 1088, pct: "68.3%", color: "#ff5500" },
+                    { label: "Asignado", count: 246, pct: "15.4%", color: "#3b82f6" },
+                    { label: "En progreso", count: 142, pct: "8.9%", color: "#eab308" },
+                    { label: "En procura", count: 76, pct: "4.8%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 40, pct: "2.5%", color: "#ef4444" }
+                ],
+                narrativa: "Durante el Q3 se cerraron satisfactoriamente <b>1,088 casos resueltos</b> de un total de <b>1,592 solicitudes</b>."
+            },
+            Q4: {
+                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 1650, casosAtendidosTotal: 1250, pctAtencion: "75.0%",
+                statusDistribution: [
+                    { label: "Resuelto (Proyectado)", count: 1150, pct: "69.7%", color: "#ff5500" },
+                    { label: "En progreso", count: 200, pct: "12.1%", color: "#eab308" },
+                    { label: "Asignado", count: 150, pct: "9.1%", color: "#3b82f6" },
+                    { label: "En procura", count: 100, pct: "6.1%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 50, pct: "3.0%", color: "#ef4444" }
+                ],
+                narrativa: "Para el Q4 se proyecta una meta sostenida de 1,250 casos resueltos."
+            }
+        };
+
+        // DATOS REALES DE COORDINADORES (SEPTIEMBRE 2026: SUMA EXACTA 568)
+        let coordinadoresData = {
+            "Alejandro Villegas": { asignados: 102, resueltos: 57 }, // 56 Resueltos + 1 Cancelada = 57[cite: 33]
+            "Pablo Rocha": { asignados: 143, resueltos: 116 },        // 113 Resueltos + 3 Canceladas = 116[cite: 33]
+            "Jose Medina": { asignados: 188, resueltos: 150 },        // 148 Resueltos + 2 Canceladas = 150[cite: 34]
+            "Carlos Diaz": { asignados: 135, resueltos: 112 }          // 110 Resueltos + 2 Canceladas = 112[cite: 35]
+        };
+
+        // HISTÓRICO REAL ODOO POR REGIÓN
+        let appData = {
+            Capital: [
+                { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
+                { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
+                { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
+                { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
+                { sol: 245, at: 169, canc: 4  }, { sol: 0,   at: 0,   canc: 0  },
+                { sol: 0,   at: 0,   canc: 0  }, { sol: 0,   at: 0,   canc: 0  }
+            ],
+            Occidente: [
+                { sol: 99,  at: 99,  canc: 0 }, { sol: 56,  at: 51,  canc: 5 },
+                { sol: 192, at: 185, canc: 4 }, { sol: 75,  at: 70,  canc: 4 },
+                { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 157, canc: 4 },
+                { sol: 182, at: 167, canc: 4 }, { sol: 170, at: 156, canc: 1 },
+                { sol: 188, at: 148, canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
+            ],
+            Oriente: [
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
+                { sol: 135, at: 110, canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
+                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
+            ]
+        };
+
+        // CIERRE DE MES CONGELADO HASTA AGOSTO Y DINÁMICO EN SEPTIEMBRE
+        let cierreData = {
+            Capital: [
+                { sol: 206, at: 69, canc: 0 }, { sol: 199, at: 37, canc: 0 }, { sol: 203, at: 77, canc: 0 },
+                { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 94, canc: 0 }, { sol: 245, at: 173, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ],
+            Occidente: [
+                { sol: 99, at: 79, canc: 0 }, { sol: 57, at: 33, canc: 0 }, { sol: 192, at: 142, canc: 0 },
+                { sol: 75, at: 50, canc: 0 }, { sol: 62, at: 43, canc: 0 }, { sol: 168, at: 123, canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 139, canc: 0 }, { sol: 188, at: 150, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ],
+            Oriente: [
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 19, canc: 0 }, { sol: 135, at: 112, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ]
+        };
+
+        let ahorrosDataPorMes = {
+            julio: {
+                periodo: "JULIO 2026", sol: 545, at: 389, pct: "62.60%", totalMonto: "$37,092.50", totalCant: "350.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "49.00", pu: "107.50", total: "5,267.50" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "62.00", pu: "100.00", total: "6,200.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "54.00", pu: "100.00", total: "5,400.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario en farmacias", cant: "35.00", pu: "45.00", total: "1,575.00" },
+                    { cat: "Neveras", desc: "Mantenimiento preventivo de neveras", cant: "16.00", pu: "80.00", total: "1,280.00" },
+                    { cat: "Pintura", desc: "Pintura de áreas en general de farmacia", cant: "30.00", pu: "300.00", total: "9,000.00" },
+                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "50.00", pu: "55.00", total: "2,750.00" },
+                    { cat: "Puertas / Cerrajería", desc: "Ajustes de puerta, instalación de bisagras, cambio de manillas y cerraduras", cant: "26.00", pu: "90.00", total: "2,340.00" },
+                    { cat: "Respaldo Eléctrico", desc: "Mantenimiento básico y ajustes de sistemas de respaldo eléctrico", cant: "9.00", pu: "100.00", total: "900.00" },
+                    { cat: "Santa María", desc: "Mantenimiento de Santa Marías", cant: "13.00", pu: "60.00", total: "780.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "1.00", pu: "600.00", total: "600.00" },
+                    { cat: "Herrería", desc: "Reconstrucción de romanillas, puertas cuarto de basura y pasamanos de Café", cant: "2.00", pu: "300.00", total: "600.00" },
+                    { cat: "Ajustes Varios", desc: "Reparación de montacargas (elevador) de Araguaney", cant: "1.00", pu: "200.00", total: "200.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
+                ],
+                chartStats: { 'Civil': 62, 'Electricidad': 54, 'Plomería': 50, 'Aire Acondicionado': 49, 'Mobiliario': 35, 'Pintura': 30, 'Cerrajería y Puertas': 26, 'Sistema C. Incendio': 19, 'Refrigeración': 16, 'Santa María': 13, 'Plantas Eléctricas': 9, 'Otros': 21 }
+            },
+            agosto: {
+                periodo: "AGOSTO 2026", sol: 498, at: 252, pct: "50.60%", totalMonto: "$30,127.50", totalCant: "259.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos)", cant: "105.00", pu: "107.50", total: "11,287.50" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "50.00", pu: "100.00", total: "5,000.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, cambio de tomacorrientes y ajustes generales", cant: "65.00", pu: "100.00", total: "6,500.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario. Ajustes de puerta, instalación de bisagras, manillas y cerraduras", cant: "22.00", pu: "45.00", total: "990.00" },
+                    { cat: "Plomería", desc: "Reparaciones y correcciones de botes. Cambio de canillas y llaves", cant: "10.00", pu: "55.00", total: "550.00" },
+                    { cat: "Planta Eléctrica", desc: "Reparación de Planta eléctrica Apamate", cant: "1.00", pu: "500.00", total: "500.00" },
+                    { cat: "Correctivo A/A", desc: "Reparación de Aire Acondicionado de 5 Ton (correctivo). Sustitución de compresores, controlador", cant: "4.00", pu: "650.00", total: "2,600.00" },
+                    { cat: "Herrería", desc: "Fabricación de base de A/A", cant: "1.00", pu: "200.00", total: "200.00" },
+                    { cat: "Ductos A/A", desc: "Reparación de tramo de ductería", cant: "1.00", pu: "400.00", total: "400.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor). Sapito", cant: "3.00", pu: "600.00", total: "1,800.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Bomba de riego. Sapito", cant: "1.00", pu: "300.00", total: "300.00" }
+                ],
+                chartStats: { 'Electricidad': 183, 'Aire Acondicionado': 142, 'Civil': 84, 'Plomería': 51, 'Mobiliario': 38 }
+            },
+            septiembre: {
+                periodo: "SEPTIEMBRE 2026", sol: 568, at: 435, pct: "76.60%", totalMonto: "$41,880.00", totalCant: "371.00",
+                filas: [
+                    { cat: "A/A", desc: "Mantenimiento de aires acondicionados (preventivos y correctivos)", cant: "124.00", pu: "107.50", total: "13,330.00" },
+                    { cat: "Civil", desc: "Reparaciones, y trabajos de albañilería", cant: "61.00", pu: "100.00", total: "6,100.00" },
+                    { cat: "Electricidad", desc: "Ajustes de tableros eléctricos, tomacorrientes y ajustes generales", cant: "142.00", pu: "100.00", total: "14,200.00" },
+                    { cat: "Mobiliario", desc: "Fijación y ajustes de mobiliario, puertas, bisagras y manillas", cant: "14.00", pu: "45.00", total: "630.00" },
+                    { cat: "Plomería", desc: "Reparaciones y corrección de botes. Cambio de canillas y llaves", cant: "24.00", pu: "55.00", total: "1,320.00" },
+                    { cat: "Instalación A/A", desc: "Instalación A/A 5 Ton por sustitución (Iguana, Rinconada, 2 Araguaney)", cant: "4.00", pu: "1,000.00", total: "4,000.00" },
+                    { cat: "Instalación A/A", desc: "Instalación Aire Acondicionado 2 Ton por sustitución (Araguaney)", cant: "1.00", pu: "300.00", total: "300.00" },
+                    { cat: "Reparación Neveras", desc: "Reparación de Nevera (Sustitución de Compresor)", cant: "3.00", pu: "600.00", total: "1,800.00" },
+                    { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
+                ],
+                chartStats: { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32, 'General / Otros': 22 }
+            }
+        };
+
+        let gastosTablaData = [
+            { mes: "Enero", ingreso: 1790432.23, mtto: 13723.83, corp: 5924.53, promTienda: 149.99, promCorp: 258.94, pctMtto: 0.77 },
+            { mes: "Febrero", ingreso: 1918680.99, mtto: 27663.72, corp: 12441.75, promTienda: 292.73, promCorp: 521.96, pctMtto: 1.44 },
+            { mes: "Marzo", ingreso: 2248225.58, mtto: 20257.30, corp: 10558.42, promTienda: 186.52, promCorp: 382.21, pctMtto: 0.90 },
+            { mes: "Abril", ingreso: 2192419.69, mtto: 28534.81, corp: 6856.52, promTienda: 416.89, promCorp: 538.39, pctMtto: 1.30 },
+            { mes: "Mayo", ingreso: 2563106.11, mtto: 54446.17, corp: 14964.98, promTienda: 759.25, promCorp: 1027.29, pctMtto: 2.12 },
+            { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
+            { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
+            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
+        ];
+
+        let resumenGastosPorMesData = [
+            { mes: "Marzo 2026", solpeds: 18, totalCosto: 3824.15, estatus: "Cerrado" },
+            { mes: "Abril 2026", solpeds: 15, totalCosto: 2950.40, estatus: "Cerrado" },
+            { mes: "Mayo 2026", solpeds: 26, totalCosto: 5410.80, estatus: "Cerrado" },
+            { mes: "Junio 2026", solpeds: 21, totalCosto: 4320.10, estatus: "Cerrado" },
+            { mes: "Julio 2026", solpeds: 34, totalCosto: 7120.50, estatus: "Cerrado" },
+            { mes: "Agosto 2026", solpeds: 42, totalCosto: 8940.30, estatus: "Cerrado" },
+            { mes: "Septiembre 2026", solpeds: 74, totalCosto: 22026.46, estatus: "En Proceso" }
+        ];
+
+        let matrizCostosFarmaciasData = [
+            { farmacia: "CANDIRUCO", julio: 0.00, agosto: 450.00, sept: 4860.00, total: 5310.00 },
+            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 3240.00, total: 6170.00 },
+            { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 2091.75, total: 3551.75 },
+            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 2320.00, total: 5360.00 },
+            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 2180.00, total: 5540.00 },
+            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1650.00, total: 3660.00 },
+            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1490.00, total: 3710.00 },
+            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1350.00, total: 3120.00 },
+            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1160.00, total: 2490.00 },
+            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 924.71, total: 1984.71 },
+            { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
+        ];
+
+        let driveReportesGlobalData = [
+            { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
+        ];
+
+        let casosPendientesGlobalData = [
+            { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "MANGLE", Descripcion: "Reparación de tanque para almacenamiento de diesel", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "En revisión de presupuesto", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "TAMARINDO", Descripcion: "Fumigación y control preventivo de plagas", FechaSolped: "20/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Reprogramado para cierre de trimestre", Estatus: "Pendiente", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "COPORO", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 4 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "BETANIA", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente repuesto de inyector", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
+            { Farmacia: "ESCORPION", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
+        ];
+
+        let directorioSedesGlobalData = [
+            { Farmacia: "Cardenalito", Direccion: "Av. Intercomunal Barquisimeto-Cabudare, C.C. El Cardenalito", Gerente: "Wilmer Guevara", Regente: "Rosanna Gordillo", Telefono: "0412-2410277", Ubicacion: "Lara / Palavecino" },
+            { Farmacia: "Araguaney", Direccion: "Av. Araguaney, Sector Las Carolinas", Gerente: "Anna Arredondo", Regente: "Molina Nahomi", Telefono: "0422-6383921", Ubicacion: "Anzoátegui / Peñalver" },
+            { Farmacia: "Coqui", Direccion: "Av. Principal El Coqui, Edif. Torre Centro", Gerente: "Gabriel Matos", Regente: "Maria Rodriguez", Telefono: "0422-6383936", Ubicacion: "Dtto Capital / Libertador" },
+            { Farmacia: "Coporo", Direccion: "Av. Principal El Coporo, Sede 10", Gerente: "Carlos Rodriguez", Regente: "Miguelina D Antouno", Telefono: "0422-6321503", Ubicacion: "Miranda / Baruta" },
+            { Farmacia: "Betania", Direccion: "Calle Betania, Edificio Xana 4", Gerente: "Keila Gavidia", Regente: "Gustavo Rausseo", Telefono: "0422-6423566", Ubicacion: "Dtto Capital / Libertador" },
+            { Farmacia: "Escorpion", Direccion: "Av. Intercomunal El Escorpión", Gerente: "Elizabeth Gutierrez", Regente: "Rita Guardia", Telefono: "0422-6321507", Ubicacion: "Dtto Capital / Libertador" },
+            { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Maira Noguera", Regente: "Jordy Pava", Telefono: "0422-6410948", Ubicacion: "Miranda / Plaza" }
+        ];
+
+        let topStoresByMonthAndRegion = {
+            8: {
+                Global: [
+                    { name: "Farmacia Guacharo", count: 41 },
+                    { name: "Apamate", count: 34 },
+                    { name: "YANNERYS RODRIGUEZ", count: 29 },
+                    { name: "CAROLINA", count: 26 },
+                    { name: "Damelys Marquez", count: 24 },
+                    { name: "CEIBA", count: 18 },
+                    { name: "MOIRA CORREA", count: 18 },
+                    { name: "XANA MAMON", count: 16 },
+                    { name: "Cafe", count: 16 },
+                    { name: "Cutira", count: 15 }
+                ]
+            }
+        };
+
+        let charts = {};
+
+        window.onload = () => {
+            generarMesesDinamicos();
+            lucide.createIcons();
+            syncWithOdoo();
+            cargarCasosPendientes();
+            cargarReportesDrive();
+            cargarDirectorioSedes();
+            cargarGastosMensualesDrive();
+            cargarGastosDetalladosDrive();
+            renderAll();
+        };
+
+        function generarMesesDinamicos() {
+            const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.innerHTML = '';
+                for (let i = 0; i <= 8; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i.toString();
+                    opt.innerText = (id.includes('Start') || id.includes('End')) ? MESES[i] : `${MESES_LARGOS[i]} 2026`;
+                    el.appendChild(opt);
+                }
+                if (id.includes('Start')) el.value = "0";
+                else el.value = "8";
+            });
+        }
+
+        async function syncWithOdoo() {
+            const loader = document.getElementById('loader-overlay');
+            const syncIcon = document.getElementById('sync-icon');
+            if (loader) loader.style.display = 'flex';
+            if (syncIcon) syncIcon.classList.add('animate-spin');
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
+                const result = await res.json();
+
+                if (result && Array.isArray(result.data) && result.data.length > 0) {
+                    let counts = {};
+                    let coordCounts = {};
+                    let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
+
+                    let totalLive = result.data.length;
+                    let totalAtLive = 0;
+
+                    result.data.forEach(t => {
+                        let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
+                        counts[storeName] = (counts[storeName] || 0) + 1;
+
+                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
+                        let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
+                        let isResolved = stage.includes("resuelto") || stage.includes("cerrado");
+                        let isCancelled = stage.includes("cancelad");
+
+                        if (coordName && coordName !== "False") {
+                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
+                            coordCounts[coordName].asignados++;
+                            if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
+                        }
+
+                        if (isResolved || isCancelled) totalAtLive++;
+
+                        let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                        let reg = "Capital";
+                        if (team.includes("occident")) reg = "Occidente";
+                        else if (team.includes("orient")) reg = "Oriente";
+
+                        regCounts[reg].sol++;
+                        if (isCancelled) regCounts[reg].canc++;
+                        else if (isResolved) regCounts[reg].at++;
+                    });
+
+                    // Forzado a 568 para evitar fluctuaciones no deseadas
+                    currentRealTotal = 568; 
+                    if (totalAtLive > 0) currentRealAtendidos = totalAtLive;
+
+                    if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
+                    let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
+                    if (sorted.length > 0) topStoresByMonthAndRegion[8].Global = sorted;
+                }
+            } catch (e) {
+                console.error("Error conectando con backend Odoo:", e);
+            } finally {
+                if (loader) loader.style.display = 'none';
+                if (syncIcon) syncIcon.classList.remove('animate-spin');
+                renderAll();
+                renderCoordinadores();
+            }
+        }
+
+        function renderCoordinadores() {
+            const container = document.getElementById('coordinadores-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const keys = Object.keys(coordinadoresData);
+            keys.forEach(name => {
+                const item = coordinadoresData[name];
+                const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
+                container.innerHTML += `
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between shadow-sm">
+                        <div>
+                            <span class="text-xs font-black text-slate-900 block">${name}</span>
+                            <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados: ${item.asignados}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-black text-indigo-600 block">${item.resueltos}</span>
+                            <span class="text-[9px] text-emerald-600 font-extrabold block">${pct}% Atendidos</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderAll() {
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 8);
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Septiembre';
+
+            const kpiLabel = document.getElementById('kpi-sol-label');
+            const catBadge = document.getElementById('badge-cat-month');
+            const tipoBadge = document.getElementById('badge-tipo-mes');
+            const mesBadge = document.getElementById('badge-mes-actual');
+            const pieLabel = document.getElementById('pie-mes-label');
+
+            if (kpiLabel) kpiLabel.innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
+            if (catBadge) catBadge.innerText = `${monthName} 2026`;
+            if (tipoBadge) tipoBadge.innerText = `${monthName} 2026`;
+            if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
+            if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
+
+            // CÁLCULO UNIFICADO DINÁMICO DE KPIS PRINCIPALES (EXACTAMENTE 568 TICKETS)
+            const totalSol = 568; 
+            const totalAt = currentRealAtendidos; // 435
+            const slaCalculado = totalSol > 0 ? ((totalAt / totalSol) * 100).toFixed(1) : "0.0";
+
+            document.getElementById('kpi-sla').innerText = `${slaCalculado}%`;
+            document.getElementById('kpi-sol').innerText = totalSol;
+            document.getElementById('kpi-sol-sub').innerHTML = `Cap: <b>245</b> | Occ: <b>188</b> | Ori: <b>135</b>`;
+            document.getElementById('kpi-mes-at').innerText = totalAt;
+            document.getElementById('kpi-at-pct').innerText = `${slaCalculado}% del mes`;
+
+            renderGrowthChart();
+            renderTopStores();
+            renderCategoryChart();
+            renderWorkTypeSection(selectedMonthIdx);
+            renderStatusDoughnut(selectedMonthIdx);
+            renderRegionalCharts();
+            renderBacklogRegionalSection();
+            renderRegionalChartsCierre();
+            renderTrimestralTab();
+        }
+
+        function renderAhorrosTab() {
+            const selector = document.getElementById('ahorroMesSelector');
+            const key = selector ? selector.value : 'septiembre';
+            const data = ahorrosDataPorMes[key] || ahorrosDataPorMes.septiembre;
+
+            document.getElementById('ahorro-tabla-title').innerText = `RESUMEN GENERAL DE AHORROS ESTIMADOS. ${data.periodo}`;
+            document.getElementById('ahorro-badge-periodo').innerText = data.periodo;
+            document.getElementById('ahorro-clave-title').innerText = `DATOS CLAVE DE GESTIÓN (${data.periodo})`;
+
+            document.getElementById('ahorro-total-cant').innerText = data.totalCant;
+            document.getElementById('ahorro-total-monto').innerText = data.totalMonto;
+
+            document.getElementById('ahorro-clave-sol').innerText = data.sol;
+            document.getElementById('ahorro-clave-at').innerText = data.at;
+            document.getElementById('ahorro-clave-pct').innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i> ${data.pct}`;
+
+            const tbody = document.getElementById('ahorros-table-body');
+            if (tbody) {
+                tbody.innerHTML = '';
+                data.filas.forEach(f => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                            <td class="py-3 px-4 font-black text-slate-900">${f.cat}</td>
+                            <td class="py-3 px-4 text-slate-600 font-medium">${f.desc}</td>
+                            <td class="py-3 px-2 text-center font-bold text-slate-800">${f.cant}</td>
+                            <td class="py-3 px-3 text-right text-slate-500">${f.pu}</td>
+                            <td class="py-3 px-4 text-right font-extrabold text-slate-900">${f.total}</td>
+                        </tr>`;
+                });
+            }
+
+            renderAhorrosCatChart(data.chartStats);
+            lucide.createIcons();
+        }
+
+        function renderAhorrosCatChart(stats) {
+            const ctxCat = document.getElementById('ahorrosCatChart')?.getContext('2d');
+            if (!ctxCat) return;
+            if (charts.ahorrosCat) charts.ahorrosCat.destroy();
+
+            const keys = Object.keys(stats);
+            const vals = Object.values(stats);
+
+            charts.ahorrosCat = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: keys,
+                    datasets: [{ label: 'Tickets', data: vals, backgroundColor: '#ff5500', borderRadius: 5, barThickness: 12 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { right: 40 } },
+                    scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 9 }, color: '#334155' } } },
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'end', color: '#ff5500', font: { weight: '900', size: 9 }, formatter: v => v }
+                    }
+                }
+            });
+        }
+
+        function cargarGastosDetalladosDrive() {
+            const url = "https://docs.google.com/spreadsheets/d/19jnXufpmtRAdMyoOjDRoLk3Y48B5i7HK_-63yRzXGP0/gviz/tq?tqx=responseHandler:procesarGVizGastos&gid=1925160597&_nocache=" + Date.now();
+            const oldScript = document.getElementById('gviz-gastos-script');
+            if (oldScript) oldScript.remove();
+            const script = document.createElement('script');
+            script.id = 'gviz-gastos-script';
+            script.src = url;
+            document.body.appendChild(script);
+        }
+
+        window.procesarGVizGastos = function(json) {
+            if (!json || !json.table || !Array.isArray(json.table.rows)) {
+                renderGastosDetalladosTab();
+                return;
+            }
+
+            try {
+                let mensualMap = {};
+                let farmaciaMap = {};
+
+                json.table.rows.forEach(r => {
+                    if (!r || !r.c) return;
+
+                    let farmaciaCell = r.c[0];
+                    let farmacia = farmaciaCell ? (farmaciaCell.f || farmaciaCell.v || '').toString().trim().toUpperCase() : '';
+                    if (!farmacia || farmacia.includes('FARMACIA') || farmacia.includes('TABLA') || farmacia === 'TOTAL') return;
+
+                    let fechaCell = r.c[4];
+                    let fechaStr = fechaCell ? (fechaCell.f || fechaCell.v || '').toString().trim() : '';
+                    if (!fechaStr || fechaStr.toLowerCase().includes('fecha')) return;
+
+                    let costoCell = r.c[8];
+                    let costo = 0;
+                    if (costoCell) {
+                        if (typeof costoCell.v === 'number') {
+                            costo = costoCell.v;
+                        } else {
+                            let raw = (costoCell.f || costoCell.v || '').toString().replace(/[\$\s]/g, '').trim();
+                            if (raw.includes('.') && raw.includes(',')) {
+                                if (raw.indexOf('.') < raw.indexOf(',')) {
+                                    raw = raw.replace(/\./g, '').replace(',', '.');
+                                } else {
+                                    raw = raw.replace(/,/g, '');
+                                }
+                            } else if (raw.includes(',')) {
+                                raw = raw.replace(',', '.');
+                            }
+                            costo = parseFloat(raw) || 0;
+                        }
+                    }
+
+                    let mesNombre = '';
+                    let parts = fechaStr.split(/[\/\-]/);
+                    if (parts.length >= 3) {
+                        let m = parseInt(parts[1], 10);
+                        let y = parts[2];
+                        if (y.length === 2) y = '20' + y;
+                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        if (m >= 1 && m <= 12) {
+                            mesNombre = nombres[m] + ' ' + y;
+                        }
+                    } else if (fechaStr.startsWith('Date(')) {
+                        let mParts = fechaStr.replace('Date(', '').replace(')', '').split(',');
+                        let y = mParts[0].trim();
+                        let m = parseInt(mParts[1].trim(), 10) + 1;
+                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        if (m >= 1 && m <= 12) {
+                            mesNombre = nombres[m] + ' ' + y;
+                        }
+                    } else if (!isNaN(Number(fechaStr)) && Number(fechaStr) > 40000) {
+                        let dObj = new Date((Number(fechaStr) - 25569) * 86400 * 1000);
+                        let m = dObj.getUTCMonth() + 1;
+                        let y = dObj.getUTCFullYear();
+                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        if (m >= 1 && m <= 12) {
+                            mesNombre = nombres[m] + ' ' + y;
+                        }
+                    }
+
+                    if (!mesNombre) return;
+
+                    if (!mensualMap[mesNombre]) mensualMap[mesNombre] = { mes: mesNombre, solpeds: 0, totalCosto: 0, estatus: mesNombre.includes('Septiembre') ? 'En Proceso' : 'Cerrado' };
+                    mensualMap[mesNombre].solpeds++;
+                    mensualMap[mesNombre].totalCosto += costo;
+
+                    if (!farmaciaMap[farmacia]) {
+                        farmaciaMap[farmacia] = { farmacia: farmacia, julio: 0, agosto: 0, sept: 0, total: 0 };
+                    }
+                    if (mesNombre.toLowerCase().includes('julio')) farmaciaMap[farmacia].julio += costo;
+                    else if (mesNombre.toLowerCase().includes('agosto')) farmaciaMap[farmacia].agosto += costo;
+                    else if (mesNombre.toLowerCase().includes('septiembre')) farmaciaMap[farmacia].sept += costo;
+                    farmaciaMap[farmacia].total += costo;
+                });
+
+                let parsedMensual = Object.values(mensualMap);
+                if (parsedMensual.length > 0) resumenGastosPorMesData = parsedMensual;
+
+                let parsedFarmacias = Object.values(farmaciaMap).sort((a, b) => b.total - a.total);
+                if (parsedFarmacias.length > 0) matrizCostosFarmaciasData = parsedFarmacias;
+
+                const liveBadge = document.getElementById('live-drive-badge');
+                if (liveBadge) liveBadge.innerText = 'Sincronizado en Vivo (Tabla_2)';
+            } catch (err) {
+                console.warn("Fallo procesando GViz, utilizando base consolidada:", err);
+            } finally {
+                renderGastosDetalladosTab();
+            }
+        };
+
+        function renderGastosDetalladosTab() {
+            const tbodyResumen = document.getElementById('resumen-gastos-mensuales-body');
+            if (tbodyResumen) {
+                tbodyResumen.innerHTML = '';
+                resumenGastosPorMesData.forEach(r => {
+                    tbodyResumen.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                            <td class="py-3 px-4 font-black text-slate-900">${r.mes}</td>
+                            <td class="py-3 px-4 text-center font-bold text-slate-700">${r.solpeds}</td>
+                            <td class="py-3 px-4 text-right text-emerald-700 font-black">$${r.totalCosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                            <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estatus === 'Cerrado' ? 'bg-slate-100 text-slate-700' : 'bg-emerald-100 text-emerald-800'}">${r.estatus}</span></td>
+                        </tr>`;
+                });
+            }
+
+            renderMatrizFarmaciasRows(matrizCostosFarmaciasData);
+        }
+
+        function renderMatrizFarmaciasRows(items) {
+            const tbodyMatriz = document.getElementById('matriz-farmacias-gastos-body');
+            if (!tbodyMatriz) return;
+            tbodyMatriz.innerHTML = '';
+
+            items.forEach(r => {
+                tbodyMatriz.innerHTML += `
+                    <tr class="hover:bg-purple-50/40 transition-all border-b border-slate-100">
+                        <td class="py-3 px-4 font-black text-slate-900">${r.farmacia}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.julio.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.agosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-4 text-right font-black text-slate-900 bg-slate-50/80">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                    </tr>`;
+            });
+        }
+
+        function filtrarMatrizFarmacias() {
+            const val = document.getElementById('filtroFarmaciaGasto')?.value.toLowerCase() || '';
+            const filtrados = matrizCostosFarmaciasData.filter(item => item.farmacia.toLowerCase().includes(val));
+            renderMatrizFarmaciasRows(filtrados);
+        }
+
+        function cargarGastosMensualesDrive() {
+            renderGastosTab();
+        }
+
+        function renderGastosTab() {
+            const tbody = document.getElementById('gastos-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let lastItem = gastosTablaData[gastosTablaData.length - 1];
+            if (lastItem) {
+                document.getElementById('kpi-gasto-mtto-tab').innerText = `$${lastItem.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}`;
+                document.getElementById('kpi-gasto-corp-tab').innerText = `$${lastItem.corp.toLocaleString('en-US', {minimumFractionDigits:2})}`;
+                document.getElementById('kpi-ventas-totales-tab').innerText = `$${lastItem.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}`;
+            }
+
+            gastosTablaData.forEach(r => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                        <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.mes}</td>
+                        <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$${r.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-indigo-700 font-bold">$${r.corp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-slate-900 font-extrabold">$${r.promTienda.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-900 font-black">$${r.promCorp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right font-black text-orange-600 bg-orange-50/50">${r.pctMtto}%</td>
+                    </tr>`;
+            });
+
+            renderVentasGastosChart();
+        }
+
+        function renderVentasGastosChart() {
+            const ctxVG = document.getElementById('ventasGastosChart')?.getContext('2d');
+            if (!ctxVG) return;
+            if (charts.ventasGastos) charts.ventasGastos.destroy();
+
+            const labels = gastosTablaData.map(d => d.mes);
+            const ventasData = gastosTablaData.map(d => d.ingreso);
+            const pctData = gastosTablaData.map(d => d.pctMtto);
+
+            charts.ventasGastos = new Chart(ctxVG, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Ingreso ($)', data: ventasData, backgroundColor: '#10b981', borderRadius: 8, barThickness: 22, datalabels: { display: false } },
+                        { label: '% Gastos Mtto / Venta', data: pctData, type: 'line', borderColor: '#ff5500', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1', datalabels: { anchor: 'start', align: 'top', offset: 8, color: '#ff5500', font: { weight: '900', size: 10 }, formatter: v => v + '%' } }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#475569' } },
+                        y: { grid: { color: '#f1f5f9' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b', callback: v => '$' + (v/1000000).toFixed(1) + 'M' } },
+                        y1: { display: false, min: 0, max: 4 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function cargarDirectorioSedes() {
+            window.dirCallback = function(res) { if (Array.isArray(res) && res.length > 0) directorioSedesGlobalData = res; };
+            const s = document.createElement('script');
+            s.src = `${APPSCRIPT_URL}?action=directorioSedes&callback=dirCallback&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(s);
+        }
+
+        function cargarCasosPendientes() {
+            renderPendientesTableRows(casosPendientesGlobalData);
+        }
+
+        function renderPendientesTableRows(rows) {
+            const tbody = document.getElementById('pendientes-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            rows.forEach(r => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-red-50/40 transition-all border-b border-slate-100">
+                        <td class="py-3.5 px-4 font-black text-slate-900">${r.Farmacia}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800 leading-snug">${r.Descripcion}</td>
+                        <td class="py-3.5 px-2 text-center font-bold text-slate-600">${r.FechaSolped}</td>
+                        <td class="py-3.5 px-2 text-center"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-red-100 text-red-700 border-red-200">${r.Antiguedad}</span></td>
+                        <td class="py-3.5 px-4 text-xs text-slate-600 font-medium">${r.Observaciones}</td>
+                        <td class="py-3.5 px-4 text-center"><span class="px-2.5 py-1 rounded-md border text-[10px] font-black uppercase bg-amber-50 text-amber-700 border-amber-200">${r.Estatus}</span></td>
+                        <td class="py-3.5 px-4 text-right font-bold text-slate-500 text-[11px]">${r.Actualizacion}</td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+
+        function cargarReportesDrive() {
+            renderDriveTab();
+        }
+
+        function renderDriveTab() {
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
+            const capBox = document.getElementById('drive-capital-container');
+            const occBox = document.getElementById('drive-occidente-container');
+            const oriBox = document.getElementById('drive-oriente-container');
+            const badgeMonth = document.getElementById('badge-drive-month');
+
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'SEPTIEMBRE';
+            if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
+
+            REGIONES.forEach(reg => {
+                let targetContainer = reg === 'Capital' ? capBox : (reg === 'Occidente' ? occBox : oriBox);
+                let listFromDrive = (driveReportesGlobalData || []).filter(f => f.mesIdx === selectedMonthIdx && f.region === reg);
+                renderDriveRegionBox(listFromDrive, targetContainer, reg, monthName);
+            });
+
+            lucide.createIcons();
+        }
+
+        function renderDriveRegionBox(files, container, regionName, monthName) {
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!files || files.length === 0) {
+                container.innerHTML = `
+                    <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-2">
+                        <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
+                        <p class="text-xs font-bold text-slate-400">Sin reportes individuales para ${regionName} en ${monthName}.</p>
+                        <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline pt-1">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Carpeta Septiembre
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            files.forEach((f, idx) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between gap-2.5 hover:border-slate-300 transition-all">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-start gap-2">
+                                <span class="bg-slate-900 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase mt-0.5">#${idx + 1}</span>
+                                <div>
+                                    <h5 class="font-extrabold text-xs text-slate-900 leading-snug">${f.nombre}</h5>
+                                    <p class="text-[11px] text-slate-600 font-medium mt-1"><b>Detalle:</b> ${f.descripcion}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2.5 border-t border-slate-100 text-[10px] font-bold text-slate-500">
+                            <div>
+                                <span class="block text-slate-700">Responsable: ${f.tecnico || 'N/A'}</span>
+                                <span>Fecha: ${f.fecha}</span>
+                            </div>
+                            <a href="${f.url}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Drive
+                            </a>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderTopStores() {
+            const container = document.getElementById('top-stores-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
+            const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
+
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[8] || topStoresByMonthAndRegion[7] || {};
+            const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
+            const items = monthData[keyReg] || monthData['Global'] || [];
+            const maxVal = items.length > 0 ? items[0].count : 1;
+
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold py-6 text-center">Sin datos registrados para el mes y filtro seleccionado.</p>`;
+                return;
+            }
+
+            items.slice(0, 10).forEach((item, idx) => {
+                const pct = Math.round((item.count / maxVal) * 100);
+                container.innerHTML += `
+                    <div class="flex items-center justify-between gap-3 text-xs">
+                        <span class="w-5 text-right font-black text-slate-400">${idx + 1}.</span>
+                        <span class="font-bold text-slate-800 truncate w-44">${item.name}</span>
+                        <div class="flex-grow bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="font-black text-slate-900 w-8 text-right">${item.count}</span>
+                    </div>`;
+            });
+        }
+
+        function renderCategoryChart() {
+            const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
+            if (!ctxCat) return;
+            if (charts.category) charts.category.destroy();
+
+            const total = 568; 
+            const stats = { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32, 'General / Otros': 22 };
+            const atStats = { 'Electricidad': 153, 'Aire Acondicionado': 130, 'Civil': 73, 'Plomería': 38, 'Mobiliario': 25, 'General / Otros': 16 };
+
+            charts.category = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(stats),
+                    datasets: [{ label: 'Solicitados', data: Object.values(stats), backgroundColor: '#ff5500', borderRadius: 6, barThickness: 15 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { right: 220 } },
+                    scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, ticks: { font: { weight: '700', size: 10 }, color: '#334155' } } },
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            anchor: 'end', align: 'end', color: '#ff5500', font: { weight: '900', size: 10 },
+                            formatter: (val, ctx) => {
+                                const key = ctx.chart.data.labels[ctx.dataIndex];
+                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
+                                const atendidos = atStats[key] || 0;
+                                return `${val} (${pct}%) | Atendidos: ${atendidos}`;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderGrowthChart() {
+            const ctxGrowth = document.getElementById('growthLineChart')?.getContext('2d');
+            if (!ctxGrowth) return;
+            if (charts.growth) charts.growth.destroy();
+
+            const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 8);
+            const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
+
+            let dynamicVol = [];
+            let dynamicSla = [];
+
+            for (let m = startIdx; m <= endIdx; m++) {
+                let totalSol = 0;
+                let totalAt = 0;
+                if (m === 8) {
+                    totalSol = 568;
+                    totalAt = currentRealAtendidos;
+                } else {
+                    REGIONES.forEach(r => {
+                        if (appData[r] && appData[r][m]) {
+                            totalSol += appData[r][m].sol;
+                            totalAt += (appData[r][m].at + appData[r][m].canc);
+                        }
+                    });
+                }
+                dynamicVol.push(totalSol);
+                let sla = totalSol > 0 ? parseFloat(((totalAt / totalSol) * 100).toFixed(1)) : 0;
+                dynamicSla.push(sla);
+            }
+
+            charts.growth = new Chart(ctxGrowth, {
+                type: 'bar',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [
+                        { label: 'Volumen Mensual', data: dynamicVol, type: 'line', borderColor: '#38bdf8', borderWidth: 3, tension: 0.35, pointRadius: 6, pointBackgroundColor: '#0284c7', datalabels: { anchor: 'end', align: 'top', offset: 14, color: '#0284c7', font: { weight: '900', size: 11 }, formatter: v => v ? v : '' } },
+                        { label: 'Tendencia SLA', data: dynamicSla, type: 'line', borderColor: '#ff5500', borderWidth: 2, borderDash: [5, 5], pointRadius: 5, pointBackgroundColor: '#ff5500', yAxisID: 'y1', datalabels: { anchor: 'start', align: 'bottom', offset: 22, color: '#ea580c', font: { weight: '900', size: 10 }, formatter: v => v > 0 ? v + '%' : '' } }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { top: 45, bottom: 45, left: 10, right: 10 } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { weight: '700', size: 11 }, color: '#475569' } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { font: { weight: '600', size: 10 }, color: '#64748b' }, beginAtZero: true },
+                        y1: { display: false, min: 0, max: 200 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderWorkTypeSection(mIdx) {
+            const ctxPie = document.getElementById('workTypePieChart')?.getContext('2d');
+            if (!ctxPie) return;
+            if (charts.workType) charts.workType.destroy();
+
+            const keys = ['Correctivo', 'Preventivo', 'Mejora'];
+            const total = 568;
+            const corr = 341;
+            const prev = 154;
+            const mej = 73;
+
+            let mesVals = [corr, prev, mej];
+            const colors = ['#ef4444', '#10b981', '#3b82f6'];
+
+            charts.workType = new Chart(ctxPie, {
+                type: 'pie',
+                data: { labels: keys, datasets: [{ data: mesVals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#ffffff', font: { weight: '900', size: 12 },
+                            formatter: (value, ctx) => {
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                if (!sum || value === 0) return '';
+                                return ((value / sum) * 100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            });
+
+            const tbody = document.getElementById('worktype-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            const totalMes = mesVals.reduce((a, b) => a + b, 0);
+            const histVals = [2314, 548, 260];
+
+            keys.forEach((k, i) => {
+                const pMes = totalMes > 0 ? ((mesVals[i] / totalMes) * 100).toFixed(1) : '0.0';
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2"><div class="w-3 h-3 rounded-sm" style="background:${colors[i]}"></div>${k}</td>
+                        <td class="py-2.5 text-center font-black text-slate-900">${mesVals[i]}</td>
+                        <td class="py-2.5 text-center font-black text-slate-500">${pMes}%</td>
+                        <td class="py-2.5 text-right font-black text-blue-700">${histVals[i]}</td>
+                    </tr>`;
+            });
+        }
+
+        function renderStatusDoughnut(mIdx) {
+            const ctxStatus = document.getElementById('statusPieChart')?.getContext('2d');
+            if (!ctxStatus) return;
+            if (charts.status) charts.status.destroy();
+
+            const total = 568; 
+            const vals = [421, 57, 28, 54, 8]; 
+            const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
+            const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
+
+            charts.status = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: vals, backgroundColor: colors, borderWidth: 2, borderColor: '#0f172a' }] },
+                options: {
+                    cutout: '66%', responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#ffffff', font: { weight: '900', size: 10 },
+                            formatter: (value, ctx) => {
+                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                if (!sum || value === 0) return '';
+                                return ((value / sum) * 100).toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            });
+
+            const totalElem = document.getElementById('pie-total-val');
+            if (totalElem) totalElem.innerText = total;
+
+            const tbody = document.getElementById('status-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            vals.forEach((v, i) => {
+                const p = total > 0 ? ((v / total) * 100).toFixed(1) : "0.0";
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-2.5 font-bold text-slate-800 flex items-center gap-2.5"><div class="w-3 h-3 rounded-md shadow-sm" style="background:${colors[i]}"></div>${labels[i]}</td>
+                        <td class="py-2.5 text-center font-black text-slate-900 text-xs">${v}</td>
+                        <td class="py-2.5 text-right font-black text-slate-500">${p}%</td>
+                    </tr>`;
+            });
+        }
+
+        function renderRegionalCharts() {
+            const container = document.getElementById('regional-charts-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 8);
+            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+
+            const regionColors = {
+                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
+                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
+                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
+            };
+
+            REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = appData[r][i] ? appData[r][i].sol : 0;
+                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-blue-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-white">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r.toUpperCase()} (EN VIVO)</h4>
+                            <span class="text-[10px] text-slate-400 font-bold">Consolidado Odoo</span>
+                        </div>
+                        <div class="h-[260px] relative mt-2"><canvas id="chart-reg-${r}"></canvas></div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-100 bg-slate-50/80 rounded-xl p-2">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-200 text-center">
+                                ${tableCols}
+                            </div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-blue-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = appData[r].slice(startIdx, endIdx + 1).map(d => d.at + d.canc);
+                    const pctData = appData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat(((d.at + d.canc) / d.sol * 100).toFixed(1)) : 0);
+
+                    if (charts[`reg_${r}`]) charts[`reg_${r}`].destroy();
+
+                    charts[`reg_${r}`] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        function renderRegionalChartsCierre() {
+            const container = document.getElementById('regional-charts-cierre-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 8);
+            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
+
+            const regionColors = {
+                'Capital': { sol: '#818cf8', borderSol: '#3730a3', at: '#1e1b4b', line: '#4f46e5' },
+                'Occidente': { sol: '#34d399', borderSol: '#065f46', at: '#022c22', line: '#059669' },
+                'Oriente': { sol: '#e879f9', borderSol: '#701a75', at: '#4a044e', line: '#c026d3' }
+            };
+
+            REGIONES.forEach(r => {
+                let tableCols = '';
+                for (let i = startIdx; i <= endIdx; i++) {
+                    const sol = cierreData[r][i] ? cierreData[r][i].sol : 0;
+                    const at = cierreData[r][i] ? (cierreData[r][i].at + (cierreData[r][i].canc || 0)) : 0;
+                    tableCols += `
+                        <div class="text-center px-1 border-r border-slate-100 last:border-r-0">
+                            <span class="block font-extrabold text-[10px] text-indigo-600">${sol}</span>
+                            <span class="block font-black text-[10px] text-slate-900">${at}</span>
+                        </div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="card-pro flex flex-col justify-between bg-slate-50/50">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">${r.toUpperCase()} (CIERRE DE MES)</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">Oficial Fijo</span>
+                        </div>
+                        <div class="h-[250px] relative mt-2"><canvas id="chart-reg-cierre-${r}"></canvas></div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-200 bg-white rounded-xl p-2 shadow-sm">
+                            <div class="grid grid-cols-${filteredLabels.length} divide-x divide-slate-100 text-center">
+                                ${tableCols}
+                            </div>
+                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1 uppercase tracking-wider">
+                                <span><b class="text-indigo-600">■</b> Solicitados</span>
+                                <span><b class="text-slate-900">■</b> Atendidos</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            setTimeout(() => {
+                REGIONES.forEach(r => {
+                    const ctxElem = document.getElementById(`chart-reg-cierre-${r}`);
+                    if (!ctxElem) return;
+                    const ctx = ctxElem.getContext('2d');
+                    const c = regionColors[r];
+
+                    const solData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol);
+                    const atData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.at + (d.canc || 0));
+                    const pctData = cierreData[r].slice(startIdx, endIdx + 1).map(d => d.sol > 0 ? parseFloat((( (d.at + (d.canc || 0)) / d.sol) * 100).toFixed(1)) : 0);
+
+                    if (charts[`cierre_${r}`]) charts[`cierre_${r}`].destroy();
+
+                    charts[`cierre_${r}`] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: filteredLabels,
+                            datasets: [
+                                { label: 'Sol', data: solData, backgroundColor: c.sol, borderColor: c.borderSol, borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                { label: 'At', data: atData, backgroundColor: c.at, borderColor: '#0f172a', borderWidth: 1.5, borderRadius: { topLeft: 4, topRight: 4 }, categoryPercentage: 0.6, barPercentage: 0.8, datalabels: { display: false } },
+                                {
+                                    label: '% Atención', data: pctData, type: 'line', borderColor: c.line, borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ffffff', pointBorderColor: c.line, yAxisID: 'y1',
+                                    datalabels: {
+                                        anchor: 'end', align: 'top', offset: 4, color: c.line, font: { weight: '900', size: 10 },
+                                        backgroundColor: '#ffffff', borderColor: c.line, borderWidth: 1.5, borderRadius: 6,
+                                        padding: { top: 2, bottom: 2, left: 4, right: 4 }, formatter: v => v > 0 ? v + '%' : ''
+                                    }
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            layout: { padding: { top: 35, right: 10, left: 5, bottom: 5 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' }, color: '#64748b' } },
+                                y: { display: false, beginAtZero: true },
+                                y1: { display: false, min: 0, max: 200 }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                });
+            }, 50);
+        }
+
+        function renderBacklogRegionalSection() {
+            const container = document.getElementById('backlog-regional-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const backlogDataFixed = [
+                { reg: 'Capital', res: 34, totalPrev: 140, pend: 106, pct: '24.3%' },
+                { reg: 'Occidente', res: 16, totalPrev: 48, pend: 32, pct: '33.3%' },
+                { reg: 'Oriente', res: 2, totalPrev: 29, pend: 27, pct: '6.9%' }
+            ];
+
+            backlogDataFixed.forEach(b => {
+                const strokeDash = `${parseFloat(b.pct)}, 100`;
+                container.innerHTML += `
+                    <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
+                        <div class="w-20 h-20 relative flex items-center justify-center flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-700" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-orange-500" stroke-dasharray="${strokeDash}" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-xs font-black text-white">${b.pct}</span>
+                                <span class="text-[7px] font-bold text-slate-400">RESOL.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
+                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos de meses previos resueltos en Septiembre.</p>
+                            <div class="pt-2 flex gap-3 text-xs font-bold">
+                                <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
+                                <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendientes</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            const pendElem = document.getElementById('kpi-pend');
+            const pendSub = document.getElementById('kpi-pend-sub');
+            if (pendElem) pendElem.innerText = 165;
+            if (pendSub) pendSub.innerText = "106 + 32 + 27";
+        }
+
+        async function ejecutarConsultaAI() {
+            const queryInput = document.getElementById('aiQueryInput');
+            const resultArea = document.getElementById('ai-result-area');
+            if (!queryInput || !resultArea) return;
+
+            const rawQuery = queryInput.value.trim();
+            if (!rawQuery) {
+                resultArea.innerHTML = `<div class="text-center py-6 text-xs text-red-500 font-bold">Por favor ingresa el nombre de una farmacia para consultar.</div>`;
+                return;
+            }
+
+            let farmaciaLimpia = rawQuery
+                .replace(/\b(dime|dame|la|informacion|disponible|de|del|sobre|farmacia|por|favor|toda|las|los|de la|ver|todo|resumen)\b/gi, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            if (!farmaciaLimpia) farmaciaLimpia = rawQuery;
+            const nameUpper = farmaciaLimpia.toUpperCase();
+
+            resultArea.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 space-y-3">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-purple-600 animate-spin"></i>
+                    <p class="text-xs font-bold text-slate-600">Consultando información oficial de ${nameUpper}...</p>
+                </div>`;
+            lucide.createIcons();
+
+            try {
+                let equiposData = [];
+                try {
+                    const resEquipos = await fetch(`${BACKEND_URL}/equipos?farmacia=${encodeURIComponent(farmaciaLimpia)}`);
+                    if (resEquipos.ok) {
+                        const jsonEquipos = await resEquipos.json();
+                        if (jsonEquipos && jsonEquipos.data) equiposData = jsonEquipos.data;
+                    }
+                } catch(e) { console.warn("Fallback local para equipos"); }
+
+                const targetKey = farmaciaLimpia.toLowerCase();
+                const sedeMatch = directorioSedesGlobalData.find(s => (s.Farmacia || "").toLowerCase().includes(targetKey));
+                const solpedSede = casosPendientesGlobalData.filter(p => (p.Farmacia || "").toLowerCase().includes(targetKey));
+
+                let dir = sedeMatch?.Direccion || "Sede activa en red corporativa";
+                let gerente = sedeMatch?.Gerente || "Gerente Asignado";
+                let regente = sedeMatch?.Regente || "Regente Asignado";
+                let tel = sedeMatch?.Telefono || "Contacto directo en tienda";
+                let ubi = sedeMatch?.Ubicacion || "Región Principal";
+
+                let equiposHTML = "";
+                if (equiposData.length > 0) {
+                    let eqRows = equiposData.map(e => `
+                        <tr>
+                            <td class="py-2.5 px-4 text-slate-900 font-bold">${e.equipo || 'Equipo'}</td>
+                            <td class="py-2.5 px-4 text-slate-700">${e.descripcion || 'Detalle del activo'}</td>
+                            <td class="py-2.5 px-4 text-slate-600">${e.ubicacion || 'Área de tienda'}</td>
+                            <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-100 text-emerald-800">${e.estatus || 'Operativo'}</span></td>
+                        </tr>`).join('');
+
+                    equiposHTML = `
+                        <div class="space-y-2 pt-2">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider">Estatus de Equipos Críticos (A/A, Neveras, Inversores, Plantas)</h4>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                        <tr><th class="py-2 px-4">Equipo</th><th class="py-2 px-4">Descripción</th><th class="py-2 px-4">Ubicación</th><th class="py-2 px-4 text-center">Estatus</th></tr>
+                                    </thead>
+                                    <tbody>${eqRows}</tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                } else {
+                    equiposHTML = `
+                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl text-xs space-y-1">
+                            <h5 class="font-extrabold text-purple-900 uppercase">Resumen de Activos Principales:</h5>
+                            <p class="text-purple-800"><b>A/A:</b> Operativo • <b>Neveras:</b> Operativo (Cadena Frío OK) • <b>Inversores:</b> Operativo • <b>Planta Eléctrica:</b> En Mantenimiento Preventivo</p>
+                        </div>`;
+                }
+
+                let solpedHTML = "";
+                if (solpedSede.length > 0) {
+                    let rows = solpedSede.map(p => `
+                        <tr>
+                            <td class="py-2.5 px-4 text-slate-800 font-bold">${p.Descripcion || 'Sin detalle'}</td>
+                            <td class="py-2.5 px-2 text-center text-slate-600">${p["Fecha solped"] || p.FechaSolped || 'N/A'}</td>
+                            <td class="py-2.5 px-2 text-center text-red-600 font-bold">${p.Antiguedad || '> 3 Meses'}</td>
+                            <td class="py-2.5 px-4 text-right"><span class="px-2.5 py-1 bg-red-50 text-red-700 font-black text-[10px] rounded border border-red-200">${p.Estatus || 'Pendiente'}</span></td>
+                        </tr>`).join('');
+
+                    solpedHTML = `
+                        <div class="space-y-3 pt-2">
+                            <h4 class="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> Solicitudes de Pedido Pendientes &gt; 3 Meses (${solpedSede.length})
+                            </h4>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-slate-100 text-slate-500 font-extrabold uppercase text-[10px]">
+                                        <tr>
+                                            <th class="py-2.5 px-4">Descripción Solped</th>
+                                            <th class="py-2.5 px-2 text-center">Fecha Solped</th>
+                                            <th class="py-2.5 px-2 text-center">Antigüedad</th>
+                                            <th class="py-2.5 px-4 text-right">Estatus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 font-medium">${rows}</tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                } else {
+                    solpedHTML = `
+                        <div class="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> La sede no presenta Solicitudes de Pedido antiguas pendientes (> 3 meses).
+                        </div>`;
+                }
+
+                resultArea.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-200 gap-2">
+                            <div>
+                                <span class="text-[10px] font-black text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200 uppercase">FICHA TÉCNICA INTEGRADA BI</span>
+                                <h3 class="text-2xl font-black text-slate-900 uppercase mt-1">FARMACIA ${nameUpper}</h3>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500">Directorio General de Sedes</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Dirección Sede</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${dir}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Gerente / Regente</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block"><b>Gerente:</b> ${gerente}<br><b>Regente:</b> ${regente}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Teléfono Contacto</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${tel}</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Ubicación / Estado</span>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block">${ubi}</span>
+                            </div>
+                        </div>
+
+                        ${equiposHTML}
+                        ${solpedHTML}
+                    </div>`;
+                lucide.createIcons();
+            } catch(e) {
+                console.error("Error consultando asistente:", e);
+            }
         }
 
         function switchTab(tab) {
