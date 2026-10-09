@@ -1337,7 +1337,7 @@
         };
 
         function generarMesesDinamicos() {
-            const currentMonthIdx = new Date().getMonth(); // Mes actual en curso
+            const currentMonthIdx = new Date().getMonth();
             const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
             
             ids.forEach(id => {
@@ -1427,7 +1427,7 @@
 
             const keys = Object.keys(coordinadoresData);
             if (keys.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 font-bold col-span-4 text-center py-4">No hay datos de coordinadores registrador en el mes actual.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 font-bold col-span-4 text-center py-4">No hay datos de coordinadores registrados en el mes actual.</p>`;
                 return;
             }
 
@@ -1644,7 +1644,8 @@
                     tbodyResumen.innerHTML += `
                         <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
                             <td class="py-3 px-4 font-black text-slate-900">${r.mes}</td>
-                            <td class="py-3 px-4 text-center font-bold text-slate-700">${r.solpeds}</td>                             <td class="py-3 px-4 text-right text-emerald-700 font-black">$${r.totalCosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                            <td class="py-3 px-4 text-center font-bold text-slate-700">${r.solpeds}</td>
+                            <td class="py-3 px-4 text-right text-emerald-700 font-black">$${r.totalCosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                             <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estatus === 'Cerrado' ? 'bg-slate-100 text-slate-700' : 'bg-emerald-100 text-emerald-800'}">${r.estatus}</span></td>
                         </tr>`;
                 });
@@ -1662,8 +1663,10 @@
                 tbodyMatriz.innerHTML += `
                     <tr class="hover:bg-purple-50/40 transition-all border-b border-slate-100">
                         <td class="py-3 px-4 font-black text-slate-900">${r.farmacia}</td>
-                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.julio.toLocaleString('en-US', {minimumFractionDigits:2})}</td>                         <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.agosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>                         <td class="py-3 px-4 text-right font-black text-slate-900 bg-slate-50/80">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.julio.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.agosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-4 text-right font-black text-slate-900 bg-slate-50/80">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                     </tr>`;
             });
         }
@@ -1693,9 +1696,12 @@
             gastosTablaData.forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
-                        <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.mes}</td>                         <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$${r.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>                         <td class="py-3.5 px-4 text-right text-indigo-700 font-bold">$${r.corp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3.5 px-4 text-right text-slate-900 font-extrabold">$${r.promTienda.toLocaleString('en-US', {minimumFractionDigits:2})}</td>                         <td class="py-3.5 px-4 text-right text-purple-900 font-black">$${r.promCorp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 font-extrabold text-slate-900">${r.mes}</td>
+                        <td class="py-3.5 px-4 text-right text-emerald-700 font-bold">$${r.ingreso.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-700 font-bold">$${r.mtto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-indigo-700 font-bold">$${r.corp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-slate-900 font-extrabold">$${r.promTienda.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3.5 px-4 text-right text-purple-900 font-black">$${r.promCorp.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3.5 px-4 text-right font-black text-orange-600 bg-orange-50/50">${r.pctMtto}%</td>
                     </tr>`;
             });
@@ -1796,7 +1802,7 @@
                 container.innerHTML = `
                     <div class="p-5 bg-white border border-slate-200/80 rounded-2xl text-center shadow-sm space-y-2">
                         <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
-                        <p class="text-xs font-bold text-slate-400">Sin reportes individuales para ${regionName} en${monthName}.</p>
+                        <p class="text-xs font-bold text-slate-400">Sin reportes individuales para ${regionName} en ${monthName}.</p>
                         <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline pt-1">
                             <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Carpeta Drive
                         </a>
@@ -2036,28 +2042,6 @@
         }
 
         function renderRegionalCharts() {
-            const container = document.getElementById('regional-charts-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || new Date().getMonth());
-            const filteredLabels = MESES.slice(startIdx, endIdx + 1);
-
-            const regionColors = {
-                'Capital': { sol: '#93c5fd', borderSol: '#2563eb', at: '#1e3a8a', line: '#2563eb' },
-                'Occidente': { sol: '#a7f3d0', borderSol: '#059669', at: '#064e3b', line: '#059669' },
-                'Oriente': { sol: '#ddd6fe', borderSol: '#7c3aed', at: '#4c1d95', line: '#7c3aed' }
-            };
-
-            REGIONES.forEach(r => {
-                let tableCols = '';
-                for (let i = startIdx; i <= endIdx; i++) {
-                    const sol = appData[r][i] ? appData[r][i].sol : 0;
-                    const at = appData[r][i] ? (appData[r][i].at + appData[r][i].canc) : 0;
-                    tableCols += `
-                        <div class="text-center px-1 border-r border-slate-100 last:border-r-
-                        function renderRegionalCharts() {
             const container = document.getElementById('regional-charts-container');
             if (!container) return;
             container.innerHTML = '';
