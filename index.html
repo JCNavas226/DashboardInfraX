@@ -145,7 +145,7 @@
                             <span class="text-[9px] font-extrabold uppercase tracking-widest text-orange-400 bg-orange-950/60 border border-orange-500/30 px-2 py-0.5 rounded-md">SLA GLOBAL</span>
                             <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
                         </div>
-                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">76.6%</div>
+                        <div class="text-3xl font-black text-white tracking-tight mt-1 leading-none" id="kpi-sla">0.0%</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-300">
                         <span class="font-bold">Cumplimiento</span>
@@ -156,13 +156,13 @@
                 <div class="card-pro bg-white border border-slate-200 flex flex-col justify-between p-4 min-h-[140px]">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS (SEPTIEMBRE)</span>
+                            <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider" id="kpi-sol-label">SOLICITADOS</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="inbox" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">568</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-sol">0</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>245</b> | Occ: <b>188</b> | Ori: <b>135</b></span>
+                        <span class="text-slate-500 font-medium text-[10px]" id="kpi-sol-sub">Cap: <b>0</b> | Occ: <b>0</b> | Ori: <b>0</b></span>
                     </div>
                 </div>
 
@@ -172,10 +172,10 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">TOTAL ATENDIDOS</span>
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">435</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-mes-at">0</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">76.6% del mes</span>
+                        <span class="text-emerald-700 font-extrabold text-[10px]" id="kpi-at-pct">0.0% del mes</span>
                     </div>
                 </div>
 
@@ -238,7 +238,7 @@
                         </h3>
                         <p class="text-xs text-slate-400 font-medium">Conteo real de casos solicitados y cerrados auditado de Odoo</p>
                     </div>
-                    <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">SEPTIEMBRE 2026</span>
+                    <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">OCTUBRE 2026</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
             </div>
@@ -266,7 +266,7 @@
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                                     <i data-lucide="wrench" class="w-4 h-4 text-orange-500"></i> Categoría de Servicio Solicitado vs Atendidos
                                 </h3>
-                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes (568 solicitados / 435 atendidos)</p>
+                                <p class="text-xs text-slate-400 font-medium">Especialidades clasificadas en el mes en curso</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <select id="catRegSelector" onchange="renderCategoryChart()" class="px-2.5 py-1.5 bg-slate-100 border border-slate-200 rounded-lg font-bold text-[11px] text-slate-700 outline-none">
@@ -275,7 +275,7 @@
                                     <option value="Occidente">Región Occidente</option>
                                     <option value="Oriente">Región Oriente</option>
                                 </select>
-                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">SEPTIEMBRE 2026</span>
+                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full uppercase" id="badge-cat-month">OCTUBRE 2026</span>
                             </div>
                         </div>
                         <div class="h-[380px] relative">
@@ -294,7 +294,7 @@
                         </h3>
                         <p class="text-xs text-slate-400 font-medium">Correctivo, Preventivo, Mejora</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">SEPTIEMBRE 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-tipo-mes">OCTUBRE 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -330,7 +330,7 @@
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide">Distribución de Estatus del Mes</h3>
                         <p class="text-xs text-slate-400 font-medium">Clasificación detallada por estado de atención</p>
                     </div>
-                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">SEPTIEMBRE 2026</span>
+                    <span class="text-xs font-black text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase" id="badge-mes-actual">OCTUBRE 2026</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -339,7 +339,7 @@
                             <canvas id="statusPieChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="pie-mes-label">TOTAL:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">568</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="pie-total-val">0</span>
                             </div>
                         </div>
                     </div>
@@ -414,10 +414,10 @@
                         </h3>
                         <p class="text-xs text-slate-500 font-medium">Consolidado general de solicitudes, atención neta y efectividad por ciclo trimestral</p>
                     </div>
-                    <span class="text-xs font-black text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full uppercase">Ciclos Q1 - Q3</span>
+                    <span class="text-xs font-black text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full uppercase">Ciclos Q1 - Q4</span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <!-- Q1 Card -->
                     <div class="card-pro bg-white border-l-4 border-l-blue-600 p-5 space-y-3 cursor-pointer hover:border-blue-400" onclick="seleccionarQuarter('Q1')">
                         <div class="flex justify-between items-start">
@@ -493,6 +493,30 @@
                             <span><b>26.8</b> casos/día</span>
                         </div>
                     </div>
+
+                    <!-- Q4 Card (En curso) -->
+                    <div class="card-pro bg-white border-l-4 border-l-amber-500 p-5 space-y-3 cursor-pointer hover:border-amber-400" onclick="seleccionarQuarter('Q4')">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-black text-amber-600 uppercase tracking-wider bg-amber-50 px-2 py-0.5 rounded">Cuarto Trimestre</span>
+                                <h4 class="text-xl font-black text-slate-900 mt-1">Q4 (Oct - Dic)</h4>
+                            </div>
+                            <span class="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded">En Curso</span>
+                        </div>
+                        <div class="flex items-baseline justify-between pt-1">
+                            <div>
+                                <span class="text-3xl font-black text-slate-900" id="q4-totales-card">0</span>
+                                <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-lg font-black text-amber-600" id="q4-atendidos-card">0</span>
+                                <span class="text-[10px] text-emerald-600 font-bold block" id="q4-pct-card">Atendidos (0.0%)</span>
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
+                            <span>En tiempo real (Odoo)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -509,6 +533,7 @@
                         <button id="pill-q1" onclick="seleccionarQuarter('Q1')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q1</button>
                         <button id="pill-q2" onclick="seleccionarQuarter('Q2')" class="px-3 py-1 rounded-lg font-bold text-xs quarter-pill-active transition-all">Q2</button>
                         <button id="pill-q3" onclick="seleccionarQuarter('Q3')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q3</button>
+                        <button id="pill-q4" onclick="seleccionarQuarter('Q4')" class="px-3 py-1 rounded-lg font-bold text-xs text-slate-600 hover:text-slate-900 transition-all">Q4</button>
                     </div>
                 </div>
 
@@ -537,7 +562,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-slate-200">
                     <div>
                         <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-orange-600"></i> Volumen y Productividad Trimestral: Q1 vs Q2 vs Q3
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-orange-600"></i> Volumen y Productividad Trimestral: Q1 vs Q2 vs Q3 vs Q4
                         </h3>
                         <p class="text-xs text-slate-500 font-medium">Comparativa directa de casos atendidos, efectividad porcentual, promedios mensuales y casos por día</p>
                     </div>
@@ -548,6 +573,7 @@
                             <button id="btn-chart-q1" onclick="toggleQuarterChart('Q1')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q1</button>
                             <button id="btn-chart-q2" onclick="toggleQuarterChart('Q2')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q2</button>
                             <button id="btn-chart-q3" onclick="toggleQuarterChart('Q3')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q3</button>
+                            <button id="btn-chart-q4" onclick="toggleQuarterChart('Q4')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-800 border border-slate-300 transition-all">Q4</button>
                         </div>
                     </div>
                 </div>
@@ -660,7 +686,8 @@
                         <select id="ahorroMesSelector" onchange="renderAhorrosTab()" class="px-3.5 py-2 bg-slate-100 border border-slate-300 rounded-xl font-bold text-xs text-slate-800 outline-none focus:ring-2 focus:ring-emerald-500/20">
                             <option value="julio">Julio 2026</option>
                             <option value="agosto">Agosto 2026</option>
-                            <option value="septiembre" selected>Septiembre 2026</option>
+                            <option value="septiembre">Septiembre 2026</option>
+                            <option value="octubre" selected>Octubre 2026</option>
                         </select>
                     </div>
                 </div>
@@ -668,7 +695,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     <div class="lg:col-span-7 space-y-4">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 flex justify-between items-center">
-                            <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. SEPTIEMBRE 2026</h4>
+                            <h4 class="font-black text-xs text-slate-800 uppercase" id="ahorro-tabla-title">RESUMEN GENERAL DE AHORROS ESTIMADOS. OCTUBRE 2026</h4>
                         </div>
                         <div class="overflow-x-auto border border-slate-200 rounded-2xl">
                             <table class="w-full text-xs text-left">
@@ -685,9 +712,9 @@
                                 <tfoot>
                                     <tr class="bg-slate-100 font-black text-slate-900 border-t-2 border-slate-200">
                                         <td colspan="2" class="py-3.5 px-4 uppercase text-orange-600 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-orange-500"></i> TOTAL GENERAL DE AHORRO ESTIMADO</td>
-                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">371.00</td>
+                                        <td class="py-3.5 px-2 text-center text-slate-900 font-black" id="ahorro-total-cant">0.00</td>
                                         <td class="py-3.5 px-3 text-right">--</td>
-                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$41,880.00</td>
+                                        <td class="py-3.5 px-4 text-right text-blue-700 text-sm font-black" id="ahorro-total-monto">$0.00</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -698,25 +725,25 @@
                         <div class="card-pro bg-white border border-slate-200 space-y-4">
                             <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                                 <h4 class="font-extrabold text-xs text-slate-900 uppercase">CATEGORÍA DE SERVICIO SOLICITADO VS ATENDIDOS</h4>
-                                <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded uppercase" id="ahorro-badge-periodo">SEPTIEMBRE 2026</span>
+                                <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded uppercase" id="ahorro-badge-periodo">OCTUBRE 2026</span>
                             </div>
                             <div class="h-[280px] relative"><canvas id="ahorrosCatChart"></canvas></div>
                         </div>
 
                         <div class="card-pro bg-slate-50 border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-black text-xs text-slate-800 uppercase tracking-wider text-center" id="ahorro-clave-title">DATOS CLAVE DE GESTIÓN (SEPTIEMBRE 2026)</h4>
+                            <h4 class="font-black text-xs text-slate-800 uppercase tracking-wider text-center" id="ahorro-clave-title">DATOS CLAVE DE GESTIÓN (OCTUBRE 2026)</h4>
                             <div class="grid grid-cols-3 gap-4 text-center">
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Solicitados:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">568</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-sol">0</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">Casos Atendidos:</span>
-                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">435</span>
+                                    <span class="text-2xl font-black text-slate-900 mt-1 block" id="ahorro-clave-at">0</span>
                                 </div>
                                 <div>
                                     <span class="text-[10px] font-bold text-slate-400 block uppercase">% de Atención:</span>
-                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 76.6%</span>
+                                    <span class="text-xl font-black text-emerald-600 mt-1 block flex items-center justify-center gap-1" id="ahorro-clave-pct"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 0.0%</span>
                                 </div>
                             </div>
                         </div>
@@ -826,7 +853,7 @@
                         <h3 class="text-base font-black text-slate-900 uppercase flex items-center gap-2">
                             <i data-lucide="store" class="w-5 h-5 text-purple-600"></i> Reporte 2: Matriz de Costos Detallados por Farmacia x Mes
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Costo total acumulado de cada sede (Columna A) por mes de gestión (incluyendo fila 717 COQUI: $2,091.75)</p>
+                        <p class="text-xs text-slate-400 font-medium">Costo total acumulado de cada sede (Columna A) por mes de gestión</p>
                     </div>
                     <input type="text" id="filtroFarmaciaGasto" onkeyup="filtrarMatrizFarmacias()" placeholder="Buscar farmacia..." class="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 outline-none w-56 font-bold">
                 </div>
@@ -838,6 +865,7 @@
                                 <th class="py-3 px-3 text-right">Julio ($)</th>
                                 <th class="py-3 px-3 text-right">Agosto ($)</th>
                                 <th class="py-3 px-3 text-right">Septiembre ($)</th>
+                                <th class="py-3 px-3 text-right">Octubre ($)</th>
                                 <th class="py-3 px-4 text-right">Total Acumulado ($)</th>
                             </tr>
                         </thead>
@@ -862,7 +890,7 @@
                         <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
                             <i data-lucide="folder-open" class="w-4 h-4"></i> Abrir Carpeta Raíz
                         </a>
-                        <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">SEPTIEMBRE 2026</span>
+                        <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 uppercase" id="badge-drive-month">OCTUBRE 2026</span>
                     </div>
                 </div>
 
@@ -959,14 +987,67 @@
         const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuDOSQaSVaEidgymaALF83SepIEeiMf3YA-KMSGstNImXPRq5FIwfzTcFDfA-KmjNr/exec";
         const BACKEND_URL = "https://dashboard-infra-backend.vercel.app/api";
 
-        let currentQuarterSelected = 'Q2';
-        let activeChartQuarters = ['Q1', 'Q2', 'Q3']; // Únicamente trimestres transcurridos
+        let currentQuarterSelected = 'Q4';
+        let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
-        // AUDITORÍA REAL EXTRAÍDA DE ODOO (SEPTIEMBRE 2026: EXACTAMENTE 568 TICKETS)
-        let currentRealTotal = 568; // Cap 245 + Occ 188 + Ori 135[cite: 33, 34, 35]
-        let currentRealAtendidos = 435; // Cap 173 + Occ 150 + Ori 112[cite: 33, 34, 35]
+        // ESTRUCTURA DINÁMICA DE TODOS LOS MESES DEL AÑO (INCLUYENDO OCTUBRE MES 9)
+        let appData = {
+            Capital: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 })),
+            Occidente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 })),
+            Oriente: Array(12).fill(null).map(() => ({ sol: 0, at: 0, canc: 0 }))
+        };
 
-        // ESTRUCTURA DE DATOS TRIMESTRAL SIN Q4 (Q1, Q2, Q3 EXACTO EN 1,611 SOLICITUDES)
+        // HISTÓRICO HASTA SEPTIEMBRE BASE Y PERMITE DINÁMICOS EN OCTUBRE Y POSTERIORES
+        const baseCapital = [
+            { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
+            { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
+            { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
+            { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
+            { sol: 245, at: 169, canc: 4  }
+        ];
+        baseCapital.forEach((val, idx) => appData.Capital[idx] = val);
+
+        const baseOcc = [
+            { sol: 99,  at: 99,  canc: 0 }, { sol: 56,  at: 51,  canc: 5 },
+            { sol: 192, at: 185, canc: 4 }, { sol: 75,  at: 70,  canc: 4 },
+            { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 157, canc: 4 },
+            { sol: 182, at: 167, canc: 4 }, { sol: 170, at: 156, canc: 1 },
+            { sol: 188, at: 148, canc: 2 }
+        ];
+        baseOcc.forEach((val, idx) => appData.Occidente[idx] = val);
+
+        const baseOri = [
+            { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+            { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+            { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
+            { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
+            { sol: 135, at: 110, canc: 2 }
+        ];
+        baseOri.forEach((val, idx) => appData.Oriente[idx] = val);
+
+        // ESTADO AL CIERRE DE MES HASTA OCTUBRE
+        let cierreData = {
+            Capital: [
+                { sol: 206, at: 69, canc: 0 }, { sol: 199, at: 37, canc: 0 }, { sol: 203, at: 77, canc: 0 },
+                { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
+                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 94, canc: 0 }, { sol: 245, at: 173, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ],
+            Occidente: [
+                { sol: 99, at: 79, canc: 0 }, { sol: 57, at: 33, canc: 0 }, { sol: 192, at: 142, canc: 0 },
+                { sol: 75, at: 50, canc: 0 }, { sol: 62, at: 43, canc: 0 }, { sol: 168, at: 123, canc: 0 },
+                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 139, canc: 0 }, { sol: 188, at: 150, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ],
+            Oriente: [
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
+                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 19, canc: 0 }, { sol: 135, at: 112, canc: 0 },
+                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
+            ]
+        };
+
+        // ESTRUCTURA DE DATOS TRIMESTRAL CON Q4 INTEGRADO
         let trimestresData = {
             Q1: {
                 nombre: "Primer Trimestre (Q1)", periodo: "Enero - Marzo 2026", solicitudesTotales: 977, casosAtendidosTotal: 713, pctAtencion: "42.0%",
@@ -1000,66 +1081,32 @@
                     { label: "Cancelada", count: 60, pct: "3.7%", color: "#ef4444" }
                 ],
                 narrativa: "Durante el Q3 se cerraron satisfactoriamente <b>1,076 casos atendidos</b> de un total de <b>1,611 solicitudes</b> registradas."
+            },
+            Q4: {
+                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 0, casosAtendidosTotal: 0, pctAtencion: "0.0%",
+                statusDistribution: [
+                    { label: "Resuelto", count: 0, pct: "0.0%", color: "#ff5500" },
+                    { label: "Asignado", count: 0, pct: "0.0%", color: "#3b82f6" },
+                    { label: "En progreso", count: 0, pct: "0.0%", color: "#eab308" },
+                    { label: "En procura", count: 0, pct: "0.0%", color: "#8b5cf6" },
+                    { label: "Cancelada", count: 0, pct: "0.0%", color: "#ef4444" }
+                ],
+                narrativa: "El ciclo Q4 se encuentra reportando en tiempo real directamente de la base Odoo."
             }
         };
 
-        // DATOS REALES DE COORDINADORES (SEPTIEMBRE 2026: SUMA EXACTA 568)
-        let coordinadoresData = {
-            "Alejandro Villegas": { asignados: 102, resueltos: 57 }, // 56 Resueltos + 1 Cancelada = 57[cite: 33]
-            "Pablo Rocha": { asignados: 143, resueltos: 116 },        // 113 Resueltos + 3 Canceladas = 116[cite: 33]
-            "Jose Medina": { asignados: 188, resueltos: 150 },        // 148 Resueltos + 2 Canceladas = 150[cite: 34]
-            "Carlos Diaz": { asignados: 135, resueltos: 112 }          // 110 Resueltos + 2 Canceladas = 112[cite: 35]
-        };
+        let coordinadoresData = {};
+        let topStoresByMonthAndRegion = {};
+        for(let m=0; m<12; m++) topStoresByMonthAndRegion[m] = { Global: [] };
 
-        // HISTÓRICO REAL ODOO POR REGIÓN
-        let appData = {
-            Capital: [
-                { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
-                { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
-                { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
-                { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
-                { sol: 245, at: 169, canc: 4  }, { sol: 0,   at: 0,   canc: 0  },
-                { sol: 0,   at: 0,   canc: 0  }, { sol: 0,   at: 0,   canc: 0  }
-            ],
-            Occidente: [
-                { sol: 99,  at: 99,  canc: 0 }, { sol: 56,  at: 51,  canc: 5 },
-                { sol: 192, at: 185, canc: 4 }, { sol: 75,  at: 70,  canc: 4 },
-                { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 157, canc: 4 },
-                { sol: 182, at: 167, canc: 4 }, { sol: 170, at: 156, canc: 1 },
-                { sol: 188, at: 148, canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
-            ],
-            Oriente: [
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
-                { sol: 135, at: 110, canc: 2 }, { sol: 0,   at: 0,   canc: 0 },
-                { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
-            ]
-        };
+        let statusMonthDistribution = {};
+        for(let m=0; m<12; m++) statusMonthDistribution[m] = { resuelto: 0, enProgreso: 0, enProcura: 0, asignado: 0, cancelado: 0 };
 
-        // CIERRE DE MES CONGELADO HASTA AGOSTO Y DINÁMICO EN SEPTIEMBRE
-        let cierreData = {
-            Capital: [
-                { sol: 206, at: 69, canc: 0 }, { sol: 199, at: 37, canc: 0 }, { sol: 203, at: 77, canc: 0 },
-                { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
-                { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 94, canc: 0 }, { sol: 245, at: 173, canc: 0 },
-                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
-            ],
-            Occidente: [
-                { sol: 99, at: 79, canc: 0 }, { sol: 57, at: 33, canc: 0 }, { sol: 192, at: 142, canc: 0 },
-                { sol: 75, at: 50, canc: 0 }, { sol: 62, at: 43, canc: 0 }, { sol: 168, at: 123, canc: 0 },
-                { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 139, canc: 0 }, { sol: 188, at: 150, canc: 0 },
-                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
-            ],
-            Oriente: [
-                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
-                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
-                { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 19, canc: 0 }, { sol: 135, at: 112, canc: 0 },
-                { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }
-            ]
-        };
+        let workTypeMonthDistribution = {};
+        for(let m=0; m<12; m++) workTypeMonthDistribution[m] = { correctivo: 0, preventivo: 0, mejora: 0 };
+
+        let categoryMonthDistribution = {};
+        for(let m=0; m<12; m++) categoryMonthDistribution[m] = { sol: {}, at: {} };
 
         let ahorrosDataPorMes = {
             julio: {
@@ -1113,6 +1160,11 @@
                     { cat: "Instalación Equipos", desc: "Instalación de Cortina de Aire", cant: "2.00", pu: "100.00", total: "200.00" }
                 ],
                 chartStats: { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32, 'General / Otros': 22 }
+            },
+            octubre: {
+                periodo: "OCTUBRE 2026", sol: 0, at: 0, pct: "0.00%", totalMonto: "$0.00", totalCant: "0.00",
+                filas: [],
+                chartStats: { 'Electricidad': 0, 'Aire Acondicionado': 0, 'Civil': 0, 'Plomería': 0, 'Mobiliario': 0 }
             }
         };
 
@@ -1124,7 +1176,9 @@
             { mes: "Mayo", ingreso: 2563106.11, mtto: 54446.17, corp: 14964.98, promTienda: 759.25, promCorp: 1027.29, pctMtto: 2.12 },
             { mes: "Junio", ingreso: 2529486.29, mtto: 40013.37, corp: 22611.25, promTienda: 334.66, promCorp: 754.97, pctMtto: 1.58 },
             { mes: "Julio", ingreso: 2447738.63, mtto: 42540.50, corp: 19220.12, promTienda: 448.47, promCorp: 802.65, pctMtto: 1.74 },
-            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 }
+            { mes: "Agosto", ingreso: 2436330.61, mtto: 42654.82, corp: 14598.28, promTienda: 584.51, promCorp: 870.51, pctMtto: 1.75 },
+            { mes: "Septiembre", ingreso: 2510200.00, mtto: 41880.00, corp: 15200.00, promTienda: 590.10, promCorp: 880.00, pctMtto: 1.66 },
+            { mes: "Octubre", ingreso: 0, mtto: 0, corp: 0, promTienda: 0, promCorp: 0, pctMtto: 0 }
         ];
 
         let resumenGastosPorMesData = [
@@ -1134,40 +1188,42 @@
             { mes: "Junio 2026", solpeds: 21, totalCosto: 4320.10, estatus: "Cerrado" },
             { mes: "Julio 2026", solpeds: 34, totalCosto: 7120.50, estatus: "Cerrado" },
             { mes: "Agosto 2026", solpeds: 42, totalCosto: 8940.30, estatus: "Cerrado" },
-            { mes: "Septiembre 2026", solpeds: 74, totalCosto: 22026.46, estatus: "En Proceso" }
+            { mes: "Septiembre 2026", solpeds: 74, totalCosto: 22026.46, estatus: "Cerrado" },
+            { mes: "Octubre 2026", solpeds: 0, totalCosto: 0.00, estatus: "En Proceso" }
         ];
 
         let matrizCostosFarmaciasData = [
-            { farmacia: "CANDIRUCO", julio: 0.00, agosto: 450.00, sept: 4860.00, total: 5310.00 },
-            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 3240.00, total: 6170.00 },
-            { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 2091.75, total: 3551.75 },
-            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 2320.00, total: 5360.00 },
-            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 2180.00, total: 5540.00 },
-            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1650.00, total: 3660.00 },
-            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1490.00, total: 3710.00 },
-            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1350.00, total: 3120.00 },
-            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1160.00, total: 2490.00 },
-            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 924.71, total: 1984.71 },
-            { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, total: 1660.00 }
+            { farmacia: "CANDIRUCO", julio: 0.00, agosto: 450.00, sept: 4860.00, oct: 0.00, total: 5310.00 },
+            { farmacia: "ARAGUANEY", julio: 1250.00, agosto: 1680.00, sept: 3240.00, oct: 0.00, total: 6170.00 },
+            { farmacia: "COQUI", julio: 620.00, agosto: 840.00, sept: 2091.75, oct: 0.00, total: 3551.75 },
+            { farmacia: "BETANIA", julio: 1450.00, agosto: 1590.00, sept: 2320.00, oct: 0.00, total: 5360.00 },
+            { farmacia: "COPORO", julio: 1620.00, agosto: 1740.00, sept: 2180.00, oct: 0.00, total: 5540.00 },
+            { farmacia: "CARDENALITO", julio: 890.00, agosto: 1120.00, sept: 1650.00, oct: 0.00, total: 3660.00 },
+            { farmacia: "ESCORPION", julio: 980.00, agosto: 1240.00, sept: 1490.00, oct: 0.00, total: 3710.00 },
+            { farmacia: "PAYARA", julio: 820.00, agosto: 950.00, sept: 1350.00, oct: 0.00, total: 3120.00 },
+            { farmacia: "MANGLE", julio: 540.00, agosto: 790.00, sept: 1160.00, oct: 0.00, total: 2490.00 },
+            { farmacia: "CUTIRA", julio: 450.00, agosto: 610.00, sept: 924.71, oct: 0.00, total: 1984.71 },
+            { farmacia: "TURPIAL", julio: 380.00, agosto: 520.00, sept: 760.00, oct: 0.00, total: 1660.00 }
         ];
 
         let driveReportesGlobalData = [
             { mesIdx: 8, region: "Capital", nombre: "Informe Técnico Mantenimiento Preventivo A/A", descripcion: "Reporte de atención a 15 sedes Capital", tecnico: "Pablo Rocha", fecha: "2026-09-15", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
             { mesIdx: 8, region: "Occidente", nombre: "Consolidado de Reparaciones Civiles y Pintura", descripcion: "Inspección y entrega de obras", tecnico: "Jose Medina", fecha: "2026-09-18", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
-            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
+            { mesIdx: 8, region: "Oriente", nombre: "Revisión de Neveras y Cadena de Frío", descripcion: "Mantenimiento especializado", tecnico: "Carlos Diaz", fecha: "2026-09-12", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" },
+            { mesIdx: 9, region: "Capital", nombre: "Informe Técnico de Inicio Q4", descripcion: "Revisiones preventivas de Octubre", tecnico: "Pablo Rocha", fecha: "2026-10-05", url: "https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" }
         ];
 
         let casosPendientesGlobalData = [
-            { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "MANGLE", Descripcion: "Reparación de tanque para almacenamiento de diesel", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "En revisión de presupuesto", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "TAMARINDO", Descripcion: "Fumigación y control preventivo de plagas", FechaSolped: "20/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Reprogramado para cierre de trimestre", Estatus: "Pendiente", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "COPORO", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 4 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "BETANIA", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente repuesto de inyector", Estatus: "En Espera", Actualizacion: "Septiembre 2026" },
-            { Farmacia: "ESCORPION", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Septiembre 2026" }
+            { Farmacia: "TURPIAL", Descripcion: "Solicitud de breaker y fotocelda", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente de adquisición", Estatus: "No tratado", Actualizacion: "Octubre 2026" },
+            { Farmacia: "MANTENIMIENTO", Descripcion: "Evaluación y diagnóstico plantas eléctricas 12.5 kVA", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Pendiente cotización repuestos", Estatus: "En Espera", Actualizacion: "Octubre 2026" },
+            { Farmacia: "UNIDAD MOVIL", Descripcion: "Fabricación e instalación de toldo para unidad 900", FechaSolped: "24/03/2026", Antiguedad: "> 5 Meses", Observaciones: "A la espera de Dpto. Compra", Estatus: "En Procura", Actualizacion: "Octubre 2026" },
+            { Farmacia: "DRONENA - CUBO", Descripcion: "Suministro de 4 barriles de cerveza para eventos", FechaSolped: "31/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Sin aprobación de gerencia", Estatus: "No tratado", Actualizacion: "Octubre 2026" },
+            { Farmacia: "ARAGUANEY", Descripcion: "Reparación de Santamarías metálicas", FechaSolped: "27/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Esperando adjudicación técnico", Estatus: "Asignado", Actualizacion: "Octubre 2026" },
+            { Farmacia: "MANGLE", Descripcion: "Reparación de tanque para almacenamiento de diesel", FechaSolped: "23/03/2026", Antiguedad: "> 5 Meses", Observaciones: "En revisión de presupuesto", Estatus: "En Procura", Actualizacion: "Octubre 2026" },
+            { Farmacia: "TAMARINDO", Descripcion: "Fumigación y control preventivo de plagas", FechaSolped: "20/03/2026", Antiguedad: "> 5 Meses", Observaciones: "Reprogramado para cierre de trimestre", Estatus: "Pendiente", Actualizacion: "Octubre 2026" },
+            { Farmacia: "COPORO", Descripcion: "Sustitución de Compresor A/A 5 Ton", FechaSolped: "15/04/2026", Antiguedad: "> 4 Meses", Observaciones: "En proceso de procura nacional", Estatus: "En Procura", Actualizacion: "Octubre 2026" },
+            { Farmacia: "BETANIA", Descripcion: "Reparación de Planta Eléctrica Central", FechaSolped: "02/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Pendiente repuesto de inyector", Estatus: "En Espera", Actualizacion: "Octubre 2026" },
+            { Farmacia: "ESCORPION", Descripcion: "Adecuación de Tablero Eléctrico Principal", FechaSolped: "10/05/2026", Antiguedad: "> 3 Meses", Observaciones: "Revisión técnica aprobada", Estatus: "Asignado", Actualizacion: "Octubre 2026" }
         ];
 
         let directorioSedesGlobalData = [
@@ -1180,23 +1236,6 @@
             { Farmacia: "Payara", Direccion: "Av. Las Industrias, Sector Payara", Gerente: "Maira Noguera", Regente: "Jordy Pava", Telefono: "0422-6410948", Ubicacion: "Miranda / Plaza" }
         ];
 
-        let topStoresByMonthAndRegion = {
-            8: {
-                Global: [
-                    { name: "Farmacia Guacharo", count: 41 },
-                    { name: "Apamate", count: 34 },
-                    { name: "YANNERYS RODRIGUEZ", count: 29 },
-                    { name: "CAROLINA", count: 26 },
-                    { name: "Damelys Marquez", count: 24 },
-                    { name: "CEIBA", count: 18 },
-                    { name: "MOIRA CORREA", count: 18 },
-                    { name: "XANA MAMON", count: 16 },
-                    { name: "Cafe", count: 16 },
-                    { name: "Cutira", count: 15 }
-                ]
-            }
-        };
-
         let charts = {};
 
         window.onload = () => {
@@ -1208,23 +1247,23 @@
             cargarDirectorioSedes();
             cargarGastosMensualesDrive();
             cargarGastosDetalladosDrive();
-            renderAll();
         };
 
         function generarMesesDinamicos() {
+            const currentMonthIdx = 9; // Octubre (0-indexed)
             const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
             ids.forEach(id => {
                 const el = document.getElementById(id);
                 if (!el) return;
                 el.innerHTML = '';
-                for (let i = 0; i <= 8; i++) {
+                for (let i = 0; i < 12; i++) {
                     const opt = document.createElement('option');
                     opt.value = i.toString();
                     opt.innerText = (id.includes('Start') || id.includes('End')) ? MESES[i] : `${MESES_LARGOS[i]} 2026`;
                     el.appendChild(opt);
                 }
                 if (id.includes('Start')) el.value = "0";
-                else el.value = "8";
+                else el.value = currentMonthIdx.toString();
             });
         }
 
@@ -1239,47 +1278,93 @@
                 const result = await res.json();
 
                 if (result && Array.isArray(result.data) && result.data.length > 0) {
-                    let counts = {};
-                    let coordCounts = {};
-                    let regCounts = { Capital: { sol: 0, at: 0, canc: 0 }, Occidente: { sol: 0, at: 0, canc: 0 }, Oriente: { sol: 0, at: 0, canc: 0 } };
-
-                    let totalLive = result.data.length;
-                    let totalAtLive = 0;
+                    let countsByMonth = {};
+                    let coordCountsByMonth = {};
+                    
+                    for(let m=0; m<12; m++) {
+                        countsByMonth[m] = {};
+                        coordCountsByMonth[m] = {};
+                        statusMonthDistribution[m] = { resuelto: 0, enProgreso: 0, enProcura: 0, asignado: 0, cancelado: 0 };
+                        workTypeMonthDistribution[m] = { correctivo: 0, preventivo: 0, mejora: 0 };
+                        categoryMonthDistribution[m] = { sol: {}, at: {} };
+                    }
 
                     result.data.forEach(t => {
+                        let dateStr = t.create_date || t.date || "";
+                        let ticketMonth = 9; // Default Octubre si no hay fecha
+                        if (dateStr) {
+                            let d = new Date(dateStr);
+                            if (!isNaN(d.getTime())) {
+                                ticketMonth = d.getMonth();
+                            }
+                        }
+
                         let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
-                        counts[storeName] = (counts[storeName] || 0) + 1;
+                        countsByMonth[ticketMonth][storeName] = (countsByMonth[ticketMonth][storeName] || 0) + 1;
 
                         let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
                         let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
                         let isResolved = stage.includes("resuelto") || stage.includes("cerrado");
                         let isCancelled = stage.includes("cancelad");
+                        let inProgress = stage.includes("progres") || stage.includes("proceso");
+                        let inProcura = stage.includes("procura") || stage.includes("espera");
 
-                        if (coordName && coordName !== "False") {
-                            if (!coordCounts[coordName]) coordCounts[coordName] = { asignados: 0, resueltos: 0 };
-                            coordCounts[coordName].asignados++;
-                            if (isResolved || isCancelled) coordCounts[coordName].resueltos++;
+                        if (isResolved) statusMonthDistribution[ticketMonth].resuelto++;
+                        else if (isCancelled) statusMonthDistribution[ticketMonth].cancelado++;
+                        else if (inProgress) statusMonthDistribution[ticketMonth].enProgreso++;
+                        else if (inProcura) statusMonthDistribution[ticketMonth].enProcura++;
+                        else statusMonthDistribution[ticketMonth].asignado++;
+
+                        let category = t.category_id ? (Array.isArray(t.category_id) ? t.category_id[1] : t.category_id) : "General / Otros";
+                        categoryMonthDistribution[ticketMonth].sol[category] = (categoryMonthDistribution[ticketMonth].sol[category] || 0) + 1;
+                        if (isResolved || isCancelled) {
+                            categoryMonthDistribution[ticketMonth].at[category] = (categoryMonthDistribution[ticketMonth].at[category] || 0) + 1;
                         }
 
-                        if (isResolved || isCancelled) totalAtLive++;
+                        let wType = (t.ticket_type || t.type || "correctivo").toLowerCase();
+                        if (wType.includes("prevent")) workTypeMonthDistribution[ticketMonth].preventivo++;
+                        else if (wType.includes("mejora")) workTypeMonthDistribution[ticketMonth].mejora++;
+                        else workTypeMonthDistribution[ticketMonth].correctivo++;
+
+                        if (coordName && coordName !== "False") {
+                            if (!coordCountsByMonth[ticketMonth][coordName]) coordCountsByMonth[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
+                            coordCountsByMonth[ticketMonth][coordName].asignados++;
+                            if (isResolved || isCancelled) coordCountsByMonth[ticketMonth][coordName].resueltos++;
+                        }
 
                         let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
                         let reg = "Capital";
                         if (team.includes("occident")) reg = "Occidente";
                         else if (team.includes("orient")) reg = "Oriente";
 
-                        regCounts[reg].sol++;
-                        if (isCancelled) regCounts[reg].canc++;
-                        else if (isResolved) regCounts[reg].at++;
+                        if (ticketMonth >= 9) { // Octubre y posteriores
+                            if (!appData[reg][ticketMonth]) appData[reg][ticketMonth] = { sol: 0, at: 0, canc: 0 };
+                            appData[reg][ticketMonth].sol++;
+                            if (isCancelled) appData[reg][ticketMonth].canc++;
+                            else if (isResolved) appData[reg][ticketMonth].at++;
+                        }
                     });
 
-                    // Forzado a 568 para evitar fluctuaciones no deseadas
-                    currentRealTotal = 568; 
-                    if (totalAtLive > 0) currentRealAtendidos = totalAtLive;
+                    coordinadoresData = coordCountsByMonth;
 
-                    if (Object.keys(coordCounts).length > 0) coordinadoresData = coordCounts;
-                    let sorted = Object.keys(counts).map(k => ({ name: k, count: counts[k] })).sort((a, b) => b.count - a.count);
-                    if (sorted.length > 0) topStoresByMonthAndRegion[8].Global = sorted;
+                    for(let m=0; m<12; m++) {
+                        let sorted = Object.keys(countsByMonth[m]).map(k => ({ name: k, count: countsByMonth[m][k] })).sort((a, b) => b.count - a.count);
+                        topStoresByMonthAndRegion[m] = { Global: sorted };
+                    }
+
+                    // Actualizar métricas del Q4 dinámicamente
+                    let q4Sol = 0, q4At = 0;
+                    [9, 10, 11].forEach(m => {
+                        REGIONES.forEach(r => {
+                            if (appData[r][m]) {
+                                q4Sol += appData[r][m].sol;
+                                q4At += (appData[r][m].at + appData[r][m].canc);
+                            }
+                        });
+                    });
+                    trimestresData.Q4.solicitudesTotales = q4Sol;
+                    trimestresData.Q4.casosAtendidosTotal = q4At;
+                    trimestresData.Q4.pctAtencion = q4Sol > 0 ? ((q4At / q4Sol) * 100).toFixed(1) + "%" : "0.0%";
                 }
             } catch (e) {
                 console.error("Error conectando con backend Odoo:", e);
@@ -1287,18 +1372,24 @@
                 if (loader) loader.style.display = 'none';
                 if (syncIcon) syncIcon.classList.remove('animate-spin');
                 renderAll();
-                renderCoordinadores();
             }
         }
 
-        function renderCoordinadores() {
+        function renderCoordinadores(selectedMonthIdx) {
             const container = document.getElementById('coordinadores-container');
             if (!container) return;
             container.innerHTML = '';
 
-            const keys = Object.keys(coordinadoresData);
+            const currentCoords = coordinadoresData[selectedMonthIdx] || {};
+            const keys = Object.keys(currentCoords);
+
+            if (keys.length === 0) {
+                container.innerHTML = `<div class="col-span-4 text-center text-xs text-slate-400 font-bold py-4">No hay actividad registrada de coordinadores en este mes.</div>`;
+                return;
+            }
+
             keys.forEach(name => {
-                const item = coordinadoresData[name];
+                const item = currentCoords[name];
                 const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
                 container.innerHTML += `
                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between shadow-sm">
@@ -1315,32 +1406,43 @@
         }
 
         function renderAll() {
-            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value || 8);
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Septiembre';
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value ?? 9);
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'Octubre';
 
             const kpiLabel = document.getElementById('kpi-sol-label');
             const catBadge = document.getElementById('badge-cat-month');
             const tipoBadge = document.getElementById('badge-tipo-mes');
             const mesBadge = document.getElementById('badge-mes-actual');
+            const coordBadge = document.getElementById('badge-coord-month');
             const pieLabel = document.getElementById('pie-mes-label');
 
             if (kpiLabel) kpiLabel.innerText = `SOLICITADOS (${monthName.toUpperCase()})`;
             if (catBadge) catBadge.innerText = `${monthName} 2026`;
             if (tipoBadge) tipoBadge.innerText = `${monthName} 2026`;
             if (mesBadge) mesBadge.innerText = `${monthName} 2026`;
+            if (coordBadge) coordBadge.innerText = `${monthName.toUpperCase()} 2026`;
             if (pieLabel) pieLabel.innerText = `TOTAL ${monthName.toUpperCase()}:`;
 
-            // CÁLCULO UNIFICADO DINÁMICO DE KPIS PRINCIPALES (EXACTAMENTE 568 TICKETS)
-            const totalSol = 568; 
-            const totalAt = currentRealAtendidos; // 435
+            // CÁLCULO UNIFICADO DINÁMICO SEGÚN EL MES SELECCIONADO
+            let capSol = appData.Capital[selectedMonthIdx]?.sol || 0;
+            let occSol = appData.Occidente[selectedMonthIdx]?.sol || 0;
+            let oriSol = appData.Oriente[selectedMonthIdx]?.sol || 0;
+
+            let capAt = (appData.Capital[selectedMonthIdx]?.at || 0) + (appData.Capital[selectedMonthIdx]?.canc || 0);
+            let occAt = (appData.Occidente[selectedMonthIdx]?.at || 0) + (appData.Occidente[selectedMonthIdx]?.canc || 0);
+            let oriAt = (appData.Oriente[selectedMonthIdx]?.at || 0) + (appData.Oriente[selectedMonthIdx]?.canc || 0);
+
+            const totalSol = capSol + occSol + oriSol; 
+            const totalAt = capAt + occAt + oriAt; 
             const slaCalculado = totalSol > 0 ? ((totalAt / totalSol) * 100).toFixed(1) : "0.0";
 
             document.getElementById('kpi-sla').innerText = `${slaCalculado}%`;
             document.getElementById('kpi-sol').innerText = totalSol;
-            document.getElementById('kpi-sol-sub').innerHTML = `Cap: <b>245</b> | Occ: <b>188</b> | Ori: <b>135</b>`;
+            document.getElementById('kpi-sol-sub').innerHTML = `Cap: <b>${capSol}</b> | Occ: <b>${occSol}</b> | Ori: <b>${oriSol}</b>`;
             document.getElementById('kpi-mes-at').innerText = totalAt;
             document.getElementById('kpi-at-pct').innerText = `${slaCalculado}% del mes`;
 
+            renderCoordinadores(selectedMonthIdx);
             renderGrowthChart();
             renderTopStores();
             renderCategoryChart();
@@ -1354,8 +1456,8 @@
 
         function renderAhorrosTab() {
             const selector = document.getElementById('ahorroMesSelector');
-            const key = selector ? selector.value : 'septiembre';
-            const data = ahorrosDataPorMes[key] || ahorrosDataPorMes.septiembre;
+            const key = selector ? selector.value : 'octubre';
+            const data = ahorrosDataPorMes[key] || ahorrosDataPorMes.octubre;
 
             document.getElementById('ahorro-tabla-title').innerText = `RESUMEN GENERAL DE AHORROS ESTIMADOS. ${data.periodo}`;
             document.getElementById('ahorro-badge-periodo').innerText = data.periodo;
@@ -1371,16 +1473,20 @@
             const tbody = document.getElementById('ahorros-table-body');
             if (tbody) {
                 tbody.innerHTML = '';
-                data.filas.forEach(f => {
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
-                            <td class="py-3 px-4 font-black text-slate-900">${f.cat}</td>
-                            <td class="py-3 px-4 text-slate-600 font-medium">${f.desc}</td>
-                            <td class="py-3 px-2 text-center font-bold text-slate-800">${f.cant}</td>
-                            <td class="py-3 px-3 text-right text-slate-500">${f.pu}</td>
-                            <td class="py-3 px-4 text-right font-extrabold text-slate-900">${f.total}</td>
-                        </tr>`;
-                });
+                if(data.filas.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 font-bold">Sin datos de ahorro registrados para este mes.</td></tr>`;
+                } else {
+                    data.filas.forEach(f => {
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+                                <td class="py-3 px-4 font-black text-slate-900">${f.cat}</td>
+                                <td class="py-3 px-4 text-slate-600 font-medium">${f.desc}</td>
+                                <td class="py-3 px-2 text-center font-bold text-slate-800">${f.cant}</td>
+                                <td class="py-3 px-3 text-right text-slate-500">${f.pu}</td>
+                                <td class="py-3 px-4 text-right font-extrabold text-slate-900">${f.total}</td>
+                            </tr>`;
+                    });
+                }
             }
 
             renderAhorrosCatChart(data.chartStats);
@@ -1474,36 +1580,21 @@
                         if (m >= 1 && m <= 12) {
                             mesNombre = nombres[m] + ' ' + y;
                         }
-                    } else if (fechaStr.startsWith('Date(')) {
-                        let mParts = fechaStr.replace('Date(', '').replace(')', '').split(',');
-                        let y = mParts[0].trim();
-                        let m = parseInt(mParts[1].trim(), 10) + 1;
-                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                        if (m >= 1 && m <= 12) {
-                            mesNombre = nombres[m] + ' ' + y;
-                        }
-                    } else if (!isNaN(Number(fechaStr)) && Number(fechaStr) > 40000) {
-                        let dObj = new Date((Number(fechaStr) - 25569) * 86400 * 1000);
-                        let m = dObj.getUTCMonth() + 1;
-                        let y = dObj.getUTCFullYear();
-                        const nombres = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                        if (m >= 1 && m <= 12) {
-                            mesNombre = nombres[m] + ' ' + y;
-                        }
                     }
 
                     if (!mesNombre) return;
 
-                    if (!mensualMap[mesNombre]) mensualMap[mesNombre] = { mes: mesNombre, solpeds: 0, totalCosto: 0, estatus: mesNombre.includes('Septiembre') ? 'En Proceso' : 'Cerrado' };
+                    if (!mensualMap[mesNombre]) mensualMap[mesNombre] = { mes: mesNombre, solpeds: 0, totalCosto: 0, estatus: mesNombre.includes('Octubre') ? 'En Proceso' : 'Cerrado' };
                     mensualMap[mesNombre].solpeds++;
                     mensualMap[mesNombre].totalCosto += costo;
 
                     if (!farmaciaMap[farmacia]) {
-                        farmaciaMap[farmacia] = { farmacia: farmacia, julio: 0, agosto: 0, sept: 0, total: 0 };
+                        farmaciaMap[farmacia] = { farmacia: farmacia, julio: 0, agosto: 0, sept: 0, oct: 0, total: 0 };
                     }
                     if (mesNombre.toLowerCase().includes('julio')) farmaciaMap[farmacia].julio += costo;
                     else if (mesNombre.toLowerCase().includes('agosto')) farmaciaMap[farmacia].agosto += costo;
                     else if (mesNombre.toLowerCase().includes('septiembre')) farmaciaMap[farmacia].sept += costo;
+                    else if (mesNombre.toLowerCase().includes('octubre')) farmaciaMap[farmacia].oct += costo;
                     farmaciaMap[farmacia].total += costo;
                 });
 
@@ -1551,7 +1642,8 @@
                         <td class="py-3 px-4 font-black text-slate-900">${r.farmacia}</td>
                         <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.julio.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.agosto.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
-                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-slate-600">$${r.sept.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
+                        <td class="py-3 px-3 text-right font-bold text-purple-700">$${(r.oct || 0).toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                         <td class="py-3 px-4 text-right font-black text-slate-900 bg-slate-50/80">$${r.total.toLocaleString('en-US', {minimumFractionDigits:2})}</td>
                     </tr>`;
             });
@@ -1662,13 +1754,13 @@
 
         function renderDriveTab() {
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 9;
             const capBox = document.getElementById('drive-capital-container');
             const occBox = document.getElementById('drive-occidente-container');
             const oriBox = document.getElementById('drive-oriente-container');
             const badgeMonth = document.getElementById('badge-drive-month');
 
-            const monthName = MESES_LARGOS[selectedMonthIdx] || 'SEPTIEMBRE';
+            const monthName = MESES_LARGOS[selectedMonthIdx] || 'OCTUBRE';
             if (badgeMonth) badgeMonth.innerText = `${monthName.toUpperCase()} 2026`;
 
             REGIONES.forEach(reg => {
@@ -1690,7 +1782,7 @@
                         <i data-lucide="file-x-2" class="w-6 h-6 text-slate-300 mx-auto"></i>
                         <p class="text-xs font-bold text-slate-400">Sin reportes individuales para ${regionName} en ${monthName}.</p>
                         <a href="https://drive.google.com/drive/folders/1dTAaocQw2ONxivkHm6bPCsxULcv6k4Ws" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline pt-1">
-                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Carpeta Septiembre
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Abrir Carpeta ${monthName}
                         </a>
                     </div>`;
                 return;
@@ -1727,10 +1819,10 @@
             container.innerHTML = '';
 
             const selector = document.getElementById('mesSelector');
-            const selectedMonthIdx = selector ? parseInt(selector.value) : 8;
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 9;
             const selectedReg = document.getElementById('regSelector')?.value || 'Nacional';
 
-            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || topStoresByMonthAndRegion[8] || topStoresByMonthAndRegion[7] || {};
+            const monthData = topStoresByMonthAndRegion[selectedMonthIdx] || {};
             const keyReg = selectedReg === 'Nacional' ? 'Global' : selectedReg;
             const items = monthData[keyReg] || monthData['Global'] || [];
             const maxVal = items.length > 0 ? items[0].count : 1;
@@ -1759,9 +1851,13 @@
             if (!ctxCat) return;
             if (charts.category) charts.category.destroy();
 
-            const total = 568; 
-            const stats = { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32, 'General / Otros': 22 };
-            const atStats = { 'Electricidad': 151, 'Aire Acondicionado': 128, 'Civil': 72, 'Plomería': 38, 'Mobiliario': 24, 'General / Otros': 16 };
+            const selectedMonthIdx = parseInt(document.getElementById('mesSelector')?.value ?? 9);
+            const catData = categoryMonthDistribution[selectedMonthIdx] || { sol: {}, at: {} };
+
+            let stats = Object.keys(catData.sol).length > 0 ? catData.sol : { 'Electricidad': 0, 'Aire Acondicionado': 0, 'Civil': 0, 'Plomería': 0, 'Mobiliario': 0 };
+            let atStats = catData.at;
+
+            let total = Object.values(stats).reduce((a,b) => a+b, 0);
 
             charts.category = new Chart(ctxCat, {
                 type: 'bar',
@@ -1795,7 +1891,7 @@
             if (charts.growth) charts.growth.destroy();
 
             const startIdx = parseInt(document.getElementById('growthStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 8);
+            const endIdx = parseInt(document.getElementById('growthEndMonth')?.value || 9);
             const filteredLabels = MESES_LARGOS.slice(startIdx, endIdx + 1);
 
             let dynamicVol = [];
@@ -1804,17 +1900,12 @@
             for (let m = startIdx; m <= endIdx; m++) {
                 let totalSol = 0;
                 let totalAt = 0;
-                if (m === 8) {
-                    totalSol = 568;
-                    totalAt = currentRealAtendidos;
-                } else {
-                    REGIONES.forEach(r => {
-                        if (appData[r] && appData[r][m]) {
-                            totalSol += appData[r][m].sol;
-                            totalAt += (appData[r][m].at + appData[r][m].canc);
-                        }
-                    });
-                }
+                REGIONES.forEach(r => {
+                    if (appData[r] && appData[r][m]) {
+                        totalSol += appData[r][m].sol;
+                        totalAt += (appData[r][m].at + appData[r][m].canc);
+                    }
+                });
                 dynamicVol.push(totalSol);
                 let sla = totalSol > 0 ? parseFloat(((totalAt / totalSol) * 100).toFixed(1)) : 0;
                 dynamicSla.push(sla);
@@ -1848,12 +1939,8 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const total = 568;
-            const corr = 341;
-            const prev = 154;
-            const mej = 73;
-
-            let mesVals = [corr, prev, mej];
+            const currentDist = workTypeMonthDistribution[mIdx] || { correctivo: 0, preventivo: 0, mejora: 0 };
+            let mesVals = [currentDist.correctivo, currentDist.preventivo, currentDist.mejora];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
             charts.workType = new Chart(ctxPie, {
@@ -1879,7 +1966,14 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             const totalMes = mesVals.reduce((a, b) => a + b, 0);
-            const histVals = [2314, 548, 260];
+            
+            // Calculo histórico
+            let histVals = [0, 0, 0];
+            for(let m=0; m<12; m++) {
+                histVals[0] += workTypeMonthDistribution[m].correctivo;
+                histVals[1] += workTypeMonthDistribution[m].preventivo;
+                histVals[2] += workTypeMonthDistribution[m].mejora;
+            }
 
             keys.forEach((k, i) => {
                 const pMes = totalMes > 0 ? ((mesVals[i] / totalMes) * 100).toFixed(1) : '0.0';
@@ -1898,10 +1992,12 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const total = 568; 
-            const vals = [421, 57, 28, 54, 8]; 
+            const st = statusMonthDistribution[mIdx] || { resuelto: 0, enProgreso: 0, enProcura: 0, asignado: 0, cancelado: 0 };
+            const vals = [st.resuelto, st.enProgreso, st.enProcura, st.asignado, st.cancelado]; 
             const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
             const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
+
+            const total = vals.reduce((a,b) => a+b, 0);
 
             charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
@@ -1946,7 +2042,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('regStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 8);
+            const endIdx = parseInt(document.getElementById('regEndMonth')?.value || 9);
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -2038,7 +2134,7 @@
             container.innerHTML = '';
 
             const startIdx = parseInt(document.getElementById('cierreStartMonth')?.value || 0);
-            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 8);
+            const endIdx = parseInt(document.getElementById('cierreEndMonth')?.value || 9);
             const filteredLabels = MESES.slice(startIdx, endIdx + 1);
 
             const regionColors = {
@@ -2151,7 +2247,7 @@
                         </div>
                         <div class="space-y-1">
                             <h5 class="font-extrabold text-xs text-white uppercase">Región ${b.reg}</h5>
-                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos de meses previos resueltos en Septiembre.</p>
+                            <p class="text-[10px] text-slate-400 leading-tight">Mantenimientos de meses previos resueltos.</p>
                             <div class="pt-2 flex gap-3 text-xs font-bold">
                                 <div><span class="text-orange-400 block text-xs font-black">${b.res} de ${b.totalPrev}</span><span class="text-[9px] text-slate-400 uppercase">Resueltos</span></div>
                                 <div><span class="text-white block text-xs font-black">${b.pend}</span><span class="text-[9px] text-slate-400 uppercase">Pendientes</span></div>
@@ -2168,7 +2264,7 @@
 
         function seleccionarQuarter(q) {
             currentQuarterSelected = q;
-            ['Q1', 'Q2', 'Q3'].forEach(quarter => {
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(quarter => {
                 const btn = document.getElementById(`pill-${quarter.toLowerCase()}`);
                 if (btn) {
                     if (quarter === q) {
@@ -2182,7 +2278,7 @@
         }
 
         function renderTrimestralTab() {
-            const data = trimestresData[currentQuarterSelected] || trimestresData['Q2'];
+            const data = trimestresData[currentQuarterSelected] || trimestresData['Q4'];
             const titleElem = document.getElementById('trimestral-donut-title');
             const labelElem = document.getElementById('donut-quarter-label');
             const totalElem = document.getElementById('donut-quarter-total');
@@ -2192,6 +2288,14 @@
             if (labelElem) labelElem.innerText = `TOTAL ${currentQuarterSelected}`;
             if (totalElem) totalElem.innerText = data.solicitudesTotales.toLocaleString('en-US');
             if (footerElem) footerElem.innerHTML = data.narrativa;
+
+            // Actualización de tarjeta Q4 en el resumen
+            const q4Tot = document.getElementById('q4-totales-card');
+            const q4At = document.getElementById('q4-atendidos-card');
+            const q4Pct = document.getElementById('q4-pct-card');
+            if(q4Tot) q4Tot.innerText = trimestresData.Q4.solicitudesTotales;
+            if(q4At) q4At.innerText = trimestresData.Q4.casosAtendidosTotal;
+            if(q4Pct) q4Pct.innerText = `Atendidos (${trimestresData.Q4.pctAtencion})`;
 
             renderTrimestralDonut(data);
             renderTrimestralStatusCards(data);
@@ -2250,7 +2354,6 @@
             });
         }
 
-        // GRÁFICA COMPARATIVA TRIMESTRAL SOLO Q1, Q2 Y Q3 (EXACTO 1,611 SOLICITUDES Y 1,076 ATENDIDOS EN Q3)
         function renderTrimestralProductividadChart() {
             const ctx = document.getElementById('trimestralProductividadChart')?.getContext('2d');
             if (!ctx) return;
@@ -2259,10 +2362,11 @@
             const masterQuarterData = {
                 Q1: { label: 'Q1 (Ene - Mar)', sol: 977, at: 713, ef: 42.0 },
                 Q2: { label: 'Q2 (Abr - Jun)', sol: 1152, at: 1281, ef: 78.5 },
-                Q3: { label: 'Q3 (Jul - Sep)', sol: 1611, at: 1076, ef: 66.8 }
+                Q3: { label: 'Q3 (Jul - Sep)', sol: 1611, at: 1076, ef: 66.8 },
+                Q4: { label: 'Q4 (Oct - Dic)', sol: trimestresData.Q4.solicitudesTotales, at: trimestresData.Q4.casosAtendidosTotal, ef: parseFloat(trimestresData.Q4.pctAtencion) || 0 }
             };
 
-            const selectedKeys = ['Q1', 'Q2', 'Q3'].filter(k => activeChartQuarters.includes(k));
+            const selectedKeys = ['Q1', 'Q2', 'Q3', 'Q4'].filter(k => activeChartQuarters.includes(k));
             const qLabels = selectedKeys.map(k => masterQuarterData[k].label);
             const solData = selectedKeys.map(k => masterQuarterData[k].sol);
             const atData = selectedKeys.map(k => masterQuarterData[k].at);
@@ -2296,7 +2400,7 @@
 
         function filtrarTrimestresGrafica(mode) {
             if (mode === 'ALL') {
-                activeChartQuarters = ['Q1', 'Q2', 'Q3'];
+                activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
             }
             renderTrimestralProductividadChart();
         }
@@ -2314,14 +2418,14 @@
 
         function actualizarBotonesFiltroTrimestre() {
             const allBtn = document.getElementById('btn-chart-all');
-            const isAll = activeChartQuarters.length === 3;
+            const isAll = activeChartQuarters.length === 4;
             if (allBtn) {
                 allBtn.className = isAll
                     ? "px-2.5 py-1 rounded-lg font-black text-xs bg-slate-900 text-white transition-all shadow-sm"
                     : "px-2.5 py-1 rounded-lg font-bold text-xs bg-white text-slate-700 border border-slate-200 transition-all";
             }
 
-            ['Q1', 'Q2', 'Q3'].forEach(k => {
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(k => {
                 const btn = document.getElementById(`btn-chart-${k.toLowerCase()}`);
                 if (!btn) return;
                 const active = activeChartQuarters.includes(k);
@@ -2532,7 +2636,7 @@
                 if(btnTrim) btnTrim.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg shadow-cyan-600/20 transition-all";
                 if(contentTrim) contentTrim.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "TRI";
-                if(title) title.innerHTML = `Resumen Trimestral <span class="bg-cyan-100 text-cyan-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Análisis Q1 - Q3</span>`;
+                if(title) title.innerHTML = `Resumen Trimestral <span class="bg-cyan-100 text-cyan-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Análisis Q1 - Q4</span>`;
                 renderTrimestralTab();
             } else if (tab === 'ahorros') {
                 if(btnAhorros) btnAhorros.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
