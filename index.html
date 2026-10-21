@@ -2545,4 +2545,48 @@
                 if(title) title.innerHTML = `Reporte de Gastos Detallados <span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Por Tienda & Mes</span>`;
                 renderGastosDetalladosTab();
             } else if (tab === 'drive') {
-                btnDrive.className = "w-full flex items-center
+                btnDrive.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all";
+                contentDrive.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "DRV";
+                if(title) title.innerHTML = `Gestión de Infraestructura <span class="bg-emerald-100 text-emerald-600 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Google Drive</span>`;
+            } else if (tab === 'pendientes') {
+                if(btnPend) btnPend.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition-all";
+                if(contentPend) contentPend.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "CND";
+                if(title) title.innerHTML = `Solicitudes de Pedido Pendientes <span class="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">SP &gt; 3 Meses</span>`;
+            } else if (tab === 'asistente') {
+                if(btnAsis) btnAsis.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all";
+                if(contentAsis) contentAsis.classList.remove('hidden');
+                if(badgeIcon) badgeIcon.innerText = "AI";
+                if(title) title.innerHTML = `Asistente Inteligente BI <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Búsqueda Cross-Tab</span>`;
+            }
+        }
+
+        function filterPendientesTable() {
+            const val = document.getElementById('pendSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#pendientesTable tbody tr');
+            rows.forEach(row => { row.style.display = row.innerText.toLowerCase().indexOf(val) !== -1 ? '' : 'none'; });
+        }
+
+        function exportarAGoogleSlides() {
+            const htmlContent = `<html><body>${document.getElementById('exportable-doc-area').innerHTML}</body></html>`;
+            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/vnd.ms-powerpoint' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Presentacion_Xana.pptx';
+            a.click();
+        }
+
+        function exportarReporteExcel() {
+            const data = [["Región", "Mes", "Solicitados", "Atendidos"]];
+            REGIONES.forEach(r => MESES.forEach((m, i) => {
+                if (appData[r][i]) data.push([r, m, appData[r][i].sol, appData[r][i].at]);
+            }));
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "SLA_Report");
+            XLSX.writeFile(wb, "Reporte_Xana_BI_v31.xlsx");
+        }
+    </script>
+</body>
+</html>
