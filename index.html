@@ -1159,7 +1159,7 @@
             });
         }
 
-        async function syncWithOdoo() {
+                async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
             if (loader) loader.style.display = 'flex';
@@ -1167,71 +1167,98 @@
 
             try {
                 const res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
+                if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
                 const result = await res.json();
 
                 if (result && Array.isArray(result.data) && result.data.length > 0) {
+                    console.log(`[Odoo Sync] Recibidos ${result.data.length} tickets del backend.`);
+
+                    // Acumuladores temporales para verificar si hay datos reales antes de sobreescribir la base
+                    let tempAppData = {
+                        Capital: Array.from({length: 12}, () => ({ sol: 0, at: 0, canc: 0 })),
+                        Occidente: Array.from({length: 12}, () => ({ sol: 0, at: 0, canc: 0 })),
+                        Oriente: Array.from({length: 12}, () => ({ sol: 0, at: 0, canc: 0 }))
+                    };
+                    let tempStatusDist = {};
+                    let tempWorkType = {};
+                    let tempCategory = {};
+                    let tempCoordCounts = {};
                     let countsByMonth = {};
-                    let coordCountsByMonth = {};
-                    
+
                     for(let m=0; m<12; m++) {
                         countsByMonth[m] = {};
-                        coordCountsByMonth[m] = {};
-                        if (!statusMonthDistribution[m]) statusMonthDistribution[m] = { resuelto: 0, enProgreso: 0, enProcura: 0, asignado: 0, cancelado: 0 };
-                        if (!workTypeMonthDistribution[m]) workTypeMonthDistribution[m] = { correctivo: 0, preventivo: 0, mejora: 0 };
-                        if (!categoryMonthDistribution[m]) categoryMonthDistribution[m] = { sol: {}, at: {} };
+                        tempCoordCounts[m] = {};
+                        tempStatusDist[m] = { resuelto: 0, enProgreso: 0, enProcura: 0, asignado: 0, cancelado: 0 };
+                        tempWorkType[m] = { correctivo: 0, preventivo: 0, mejora: 0 };
+                        tempCategory[m] = { sol: {}, at: {} };
                     }
 
-                    // Limpiar acumuladores de meses vivos (>= 9) antes de procesar desde Odoo
-                    [9, 10, 11].forEach(m => {
-                        REGIONES.forEach(r => {
-                            if (appData[r][m]) appData[r][m] = { sol: 0, at: 0, canc: 0 };
-                        });
-                    });
+                    let ticketsInOct = 0;
 
                     result.data.forEach(t => {
-                        let dateStr = t.create_date || t.date || "";
-                        let ticketMonth = 9; // Octubre
+                        // Extracción flexible de fecha (soporta ISO, YYYY-MM-DD HH:MM:SS, etc.)
+                        let dateStr = (t.create_date || t.date || "").toString().trim();
+                        let ticketMonth = -1;
+                        let ticketYear = 2026;
+
                         if (dateStr) {
-                            let d = new Date(dateStr);
-                            if (!isNaN(d.getTime())) {
-                                ticketMonth = d.getMonth();
+                            // Intentar extraer por regex YYYY-MM-DD
+                            let match = dateStr.match(/^(\d{4})[-/](\d{1,2})/);
+                            if (match) {
+                                ticketYear = parseInt(match[1], 10);
+                                ticketMonth = parseInt(match[2], 10) - 1; // 0-indexed
+                            } else {
+                                let d = new Date(dateStr.replace(' ', 'T'));
+                                if (!isNaN(d.getTime())) {
+                                    ticketMonth = d.getMonth();
+                                    ticketYear = d.getFullYear();
+                                }
                             }
                         }
+
+                        // Si no tiene fecha válida o es de 2026 y mes 9 (Octubre)
+                        if (ticketMonth === 9 || (ticketMonth === -1 && (dateStr.includes('2026-10') || dateStr.includes('10/2026')))) {
+                            ticketMonth = 9;
+                            ticketsInOct++;
+                        }
+
+                        if (ticketMonth < 0 || ticketMonth > 11) return;
 
                         let storeName = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                         countsByMonth[ticketMonth][storeName] = (countsByMonth[ticketMonth][storeName] || 0) + 1;
 
                         let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : (t.assigned_to || "");
-                        let stage = t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id).toLowerCase() : "";
-                        let isResolved = stage.includes("resuelto") || stage.includes("cerrado");
-                        let isCancelled = stage.includes("cancelad");
-                        let inProgress = stage.includes("progres") || stage.includes("proceso");
+                        let stage = (t.stage_id ? (Array.isArray(t.stage_id) ? t.stage_id[1] : t.stage_id) : "").toLowerCase();
+                        
+                        let isResolved = stage.includes("resuel") || stage.includes("cerrad") || stage.includes("solucion");
+                        let isCancelled = stage.includes("cancel");
+                        let inProgress = stage.includes("progr") || stage.includes("proceso");
                         let inProcura = stage.includes("procura") || stage.includes("espera");
 
-                        if (isResolved) statusMonthDistribution[ticketMonth].resuelto++;
-                        else if (isCancelled) statusMonthDistribution[ticketMonth].cancelado++;
-                        else if (inProgress) statusMonthDistribution[ticketMonth].enProgreso++;
-                        else if (inProcura) statusMonthDistribution[ticketMonth].enProcura++;
-                        else statusMonthDistribution[ticketMonth].asignado++;
+                        if (isResolved) tempStatusDist[ticketMonth].resuelto++;
+                        else if (isCancelled) tempStatusDist[ticketMonth].cancelado++;
+                        else if (inProgress) tempStatusDist[ticketMonth].enProgreso++;
+                        else if (inProcura) tempStatusDist[ticketMonth].enProcura++;
+                        else tempStatusDist[ticketMonth].asignado++;
 
                         let category = t.category_id ? (Array.isArray(t.category_id) ? t.category_id[1] : t.category_id) : "General / Otros";
-                        categoryMonthDistribution[ticketMonth].sol[category] = (categoryMonthDistribution[ticketMonth].sol[category] || 0) + 1;
+                        tempCategory[ticketMonth].sol[category] = (tempCategory[ticketMonth].sol[category] || 0) + 1;
                         if (isResolved || isCancelled) {
-                            categoryMonthDistribution[ticketMonth].at[category] = (categoryMonthDistribution[ticketMonth].at[category] || 0) + 1;
+                            tempCategory[ticketMonth].at[category] = (tempCategory[ticketMonth].at[category] || 0) + 1;
                         }
 
                         let wType = (t.ticket_type || t.type || "correctivo").toLowerCase();
-                        if (wType.includes("prevent")) workTypeMonthDistribution[ticketMonth].preventivo++;
-                        else if (wType.includes("mejora")) workTypeMonthDistribution[ticketMonth].mejora++;
-                        else workTypeMonthDistribution[ticketMonth].correctivo++;
+                        if (wType.includes("prevent")) tempWorkType[ticketMonth].preventivo++;
+                        else if (wType.includes("mejora")) tempWorkType[ticketMonth].mejora++;
+                        else tempWorkType[ticketMonth].correctivo++;
 
-                        if (coordName && coordName !== "False") {
-                            if (!coordCountsByMonth[ticketMonth][coordName]) coordCountsByMonth[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
-                            coordCountsByMonth[ticketMonth][coordName].asignados++;
-                            if (isResolved || isCancelled) coordCountsByMonth[ticketMonth][coordName].resueltos++;
+                        if (coordName && coordName !== "False" && coordName.trim() !== "") {
+                            if (!tempCoordCounts[ticketMonth][coordName]) tempCoordCounts[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
+                            tempCoordCounts[ticketMonth][coordName].asignados++;
+                            if (isResolved || isCancelled) tempCoordCounts[ticketMonth][coordName].resueltos++;
                         }
 
-                        let team = t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id).toLowerCase() : "";
+                        let team = (t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id) : "").toLowerCase();
                         let teamIdNum = Array.isArray(t.team_id) ? t.team_id[0] : (t.team_id || 0);
 
                         let reg = "Capital";
@@ -1239,21 +1266,30 @@
                         else if (team.includes("orient") || teamIdNum === 77) reg = "Oriente";
                         else if (team.includes("central") || team.includes("capital") || teamIdNum === 5) reg = "Capital";
 
-                        if (ticketMonth >= 9) {
-                            if (!appData[reg][ticketMonth]) appData[reg][ticketMonth] = { sol: 0, at: 0, canc: 0 };
-                            appData[reg][ticketMonth].sol++;
-                            if (isCancelled) appData[reg][ticketMonth].canc++;
-                            else if (isResolved) appData[reg][ticketMonth].at++;
-                        }
+                        tempAppData[reg][ticketMonth].sol++;
+                        if (isCancelled) tempAppData[reg][ticketMonth].canc++;
+                        else if (isResolved) tempAppData[reg][ticketMonth].at++;
                     });
 
-                    if (Object.keys(coordCountsByMonth[9] || {}).length > 0) {
-                        coordinadoresData[9] = coordCountsByMonth[9];
-                    }
+                    console.log(`[Odoo Sync] Tickets detectados para Octubre 2026: ${ticketsInOct}`);
 
-                    for(let m=0; m<12; m++) {
-                        let sorted = Object.keys(countsByMonth[m]).map(k => ({ name: k, count: countsByMonth[m][k] })).sort((a, b) => b.count - a.count);
-                        if (sorted.length > 0) topStoresByMonthAndRegion[m] = { Global: sorted };
+                    // Si el backend trajo tickets reales para Octubre (>= 1), aplicamos los datos en vivo:
+                    if (ticketsInOct > 0) {
+                        REGIONES.forEach(r => {
+                            appData[r][9] = tempAppData[r][9];
+                        });
+                        statusMonthDistribution[9] = tempStatusDist[9];
+                        workTypeMonthDistribution[9] = tempWorkType[9];
+                        categoryMonthDistribution[9] = tempCategory[9];
+                        if (Object.keys(tempCoordCounts[9]).length > 0) {
+                            coordinadoresData[9] = tempCoordCounts[9];
+                        }
+                        for(let m=0; m<12; m++) {
+                            let sorted = Object.keys(countsByMonth[m]).map(k => ({ name: k, count: countsByMonth[m][k] })).sort((a, b) => b.count - a.count);
+                            if (sorted.length > 0) topStoresByMonthAndRegion[m] = { Global: sorted };
+                        }
+                    } else {
+                        console.warn("[Odoo Sync] El backend no devolvió tickets para Octubre 2026. Manteniendo base auditada (271).");
                     }
 
                     // Actualizar métricas Q4 dinámicamente
