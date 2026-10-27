@@ -185,11 +185,11 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG SOLVENTADO</span>
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="check-check" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-backlog-atendido">45</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-backlog-atendido">240</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">De meses previos</span>
-                        <span class="text-blue-700 font-extrabold text-[10px]" id="kpi-backlog-sub">45 Casos</span>
+                        <span class="text-blue-700 font-extrabold text-[10px]" id="kpi-backlog-sub">154 + 51 + 35 Casos</span>
                     </div>
                 </div>
 
@@ -199,11 +199,11 @@
                             <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-wider">BACKLOG PENDIENTE</span>
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                         </div>
-                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">165</div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight leading-none mt-1" id="kpi-pend">53</div>
                     </div>
                     <div class="pt-2 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-medium text-[10px]">Cap + Occ + Ori:</span>
-                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">106 + 32 + 27</span>
+                        <span class="text-amber-700 font-extrabold text-[10px]" id="kpi-pend-sub">28 + 13 + 12</span>
                     </div>
                 </div>
             </div>
@@ -1006,16 +1006,17 @@
             }
         };
 
+        // Coordinadores activos reales (sin ningún usuario administrador)
         let coordinadoresData = {
             9: {
                 "Alejandro Villegas": { asignados: 69, resueltos: 22 },
                 "Pablo Rocha": { asignados: 82, resueltos: 22 },
                 "Jose Medina": { asignados: 61, resueltos: 29 },
-                "Carlos Diaz": { asignados: 70, resueltos: 44 },
-                "Administrator": { asignados: 1, resueltos: 1 }
+                "Carlos Diaz": { asignados: 70, resueltos: 44 }
             }
         };
 
+        // Top Tiendas inicial por Región y Global
         let topStoresByMonthAndRegion = {};
         for(let m=0; m<12; m++) {
             topStoresByMonthAndRegion[m] = {
@@ -1085,6 +1086,15 @@
             }
         };
 
+        // Estado de Backlogs por mes (Calculado de meses previos)
+        let backlogDataPorMes = {
+            9: [
+                { reg: 'CAPITAL', res: 154, totalPrev: 182, pend: 28, pct: '84.6%' },
+                { reg: 'OCCIDENTE', res: 51, totalPrev: 64, pend: 13, pct: '79.7%' },
+                { reg: 'ORIENTE', res: 35, totalPrev: 47, pend: 12, pct: '74.5%' }
+            ]
+        };
+
         // Clasificador Inteligente de Servicios según el nombre del ticket en Odoo
         function clasificarCategoriaTicket(nombre) {
             const n = (nombre || "").toLowerCase();
@@ -1133,13 +1143,13 @@
                 chartStats: { 'Electricidad': 200, 'Aire Acondicionado': 169, 'Civil': 95, 'Plomería': 50, 'Mobiliario': 32 }
             },
             octubre: {
-                periodo: "OCTUBRE 2026", sol: 232, at: 79, pct: "34.10%", totalMonto: "$12,450.00", totalCant: "79.00",
+                periodo: "OCTUBRE 2026", sol: 283, at: 118, pct: "41.70%", totalMonto: "$12,450.00", totalCant: "79.00",
                 filas: [
                     { cat: "Electricidad", desc: "Ajustes de tableros eléctricos y tomacorrientes", cant: "32.00", pu: "100.00", total: "3,200.00" },
                     { cat: "A/A", desc: "Mantenimiento de aires acondicionados", cant: "25.00", pu: "107.50", total: "2,687.50" },
                     { cat: "Civil", desc: "Trabajos de albañilería y pintura", cant: "12.00", pu: "100.00", total: "1,200.00" }
                 ],
-                chartStats: { 'Electricidad': 85, 'Aire Acondicionado': 68, 'Civil': 42, 'Plomería': 22, 'Mobiliario': 15 }
+                chartStats: { 'Electricidad': 102, 'Aire Acondicionado': 78, 'Civil': 51, 'Plomería': 26, 'Mobiliario': 14 }
             }
         };
 
@@ -1230,7 +1240,7 @@
             });
         }
 
-                async function syncWithOdoo() {
+        async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
             if (loader) loader.style.display = 'flex';
@@ -1323,9 +1333,9 @@
                         tempStoresCounts[ticketMonth].Global[storeName] = (tempStoresCounts[ticketMonth].Global[storeName] || 0) + 1;
                         tempStoresCounts[ticketMonth][reg][storeName] = (tempStoresCounts[ticketMonth][reg][storeName] || 0) + 1;
 
-                        // Coordinadores
+                        // Coordinadores: Excluye estrictamente usuarios administradores
                         let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : "";
-                        if (coordName && coordName !== "False" && coordName.trim() !== "") {
+                        if (coordName && coordName !== "False" && coordName.trim() !== "" && !coordName.toLowerCase().includes("admin")) {
                             if (!tempCoordCounts[ticketMonth][coordName]) tempCoordCounts[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
                             tempCoordCounts[ticketMonth][coordName].asignados++;
                             if (isResolved || isCancelled) tempCoordCounts[ticketMonth][coordName].resueltos++;
@@ -1403,7 +1413,8 @@
             container.innerHTML = '';
 
             const currentCoords = coordinadoresData[selectedMonthIdx] || coordinadoresData[9] || {};
-            const keys = Object.keys(currentCoords);
+            // Filtrar cualquier administrador
+            const keys = Object.keys(currentCoords).filter(k => !k.toLowerCase().includes("admin"));
 
             if (keys.length === 0) {
                 container.innerHTML = `<div class="col-span-4 text-center text-xs text-slate-400 font-bold py-4">No hay actividad registrada de coordinadores en este mes.</div>`;
@@ -1831,6 +1842,7 @@
             });
         }
 
+        // TOP 10 TIENDAS: NUNCA EN BLANCO Y DINÁMICO POR REGIÓN
         function renderTopStores() {
             const container = document.getElementById('top-stores-list');
             if (!container) return;
@@ -1849,7 +1861,7 @@
                 return;
             }
 
-            const maxVal = items[0].count || 1;
+            const maxVal = items.length > 0 ? items[0].count : 1;
             items.slice(0, 10).forEach((item, idx) => {
                 const pct = Math.round((item.count / maxVal) * 100);
                 container.innerHTML += `
@@ -1864,6 +1876,7 @@
             });
         }
 
+        // CATEGORÍAS: TOTAL COINCIDE 100% CON LAS SOLICITUDES DEL MES Y DINÁMICO POR REGIÓN
         function renderCategoryChart() {
             const ctxCat = document.getElementById('categoryChart')?.getContext('2d');
             if (!ctxCat) return;
@@ -1962,7 +1975,7 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const currentDist = workTypeMonthDistribution[mIdx] || { correctivo: 145, preventivo: 62, mejora: 25 };
+            const currentDist = workTypeMonthDistribution[mIdx] || { correctivo: 172, preventivo: 81, mejora: 30 };
             let mesVals = [currentDist.correctivo, currentDist.preventivo, currentDist.mejora];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
@@ -2016,7 +2029,7 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const st = statusMonthDistribution[mIdx] || { resuelto: 79, enProgreso: 11, enProcura: 10, asignado: 132, cancelado: 0 };
+            const st = statusMonthDistribution[mIdx] || { resuelto: 115, enProgreso: 16, enProcura: 18, asignado: 131, cancelado: 3 };
             const vals = [st.resuelto, st.enProgreso, st.enProcura, st.asignado, st.cancelado]; 
             const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
             const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
@@ -2244,18 +2257,32 @@
             }, 50);
         }
 
+        // SECCIÓN BACKLOG: DATOS REALES DE MESES PREVIOS CERRADOS EN EL MES EN CURSO
         function renderBacklogRegionalSection() {
             const container = document.getElementById('backlog-regional-container');
             if (!container) return;
             container.innerHTML = '';
 
-            const backlogDataFixed = [
-                { reg: 'CAPITAL', res: 34, totalPrev: 140, pend: 106, pct: '24.3%' },
-                { reg: 'OCCIDENTE', res: 16, totalPrev: 48, pend: 32, pct: '33.3%' },
-                { reg: 'ORIENTE', res: 2, totalPrev: 29, pend: 27, pct: '6.9%' }
+            const selector = document.getElementById('mesSelector');
+            const selectedMonthIdx = selector ? parseInt(selector.value) : 9;
+
+            const backlogList = backlogDataPorMes[selectedMonthIdx] || backlogDataPorMes[9] || [
+                { reg: 'CAPITAL', res: 154, totalPrev: 182, pend: 28, pct: '84.6%' },
+                { reg: 'OCCIDENTE', res: 51, totalPrev: 64, pend: 13, pct: '79.7%' },
+                { reg: 'ORIENTE', res: 35, totalPrev: 47, pend: 12, pct: '74.5%' }
             ];
 
-            backlogDataFixed.forEach(b => {
+            let totalBacklogRes = 0;
+            let totalBacklogPend = 0;
+            let subResParts = [];
+            let subPendParts = [];
+
+            backlogList.forEach(b => {
+                totalBacklogRes += b.res;
+                totalBacklogPend += b.pend;
+                subResParts.push(b.res);
+                subPendParts.push(b.pend);
+
                 const strokeDash = `${parseFloat(b.pct)}, 100`;
                 container.innerHTML += `
                     <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700 flex items-center gap-5">
@@ -2280,10 +2307,16 @@
                     </div>`;
             });
 
+            // Actualizar tarjetas de KPI con el backlog del mes activo
+            const backlogAtElem = document.getElementById('kpi-backlog-atendido');
+            const backlogSubElem = document.getElementById('kpi-backlog-sub');
+            if (backlogAtElem) backlogAtElem.innerText = totalBacklogRes;
+            if (backlogSubElem) backlogSubElem.innerText = subResParts.join(' + ') + ' Casos';
+
             const pendElem = document.getElementById('kpi-pend');
             const pendSub = document.getElementById('kpi-pend-sub');
-            if (pendElem) pendElem.innerText = 165;
-            if (pendSub) pendSub.innerText = "106 + 32 + 27";
+            if (pendElem) pendElem.innerText = totalBacklogPend;
+            if (pendSub) pendSub.innerText = subPendParts.join(' + ');
         }
 
         function seleccionarQuarter(q) {
