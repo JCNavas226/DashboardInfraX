@@ -227,18 +227,35 @@
                 <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (EN VIVO CON BACKLOG INCLUIDO) -->
-            <div class="card-pro bg-white space-y-4">
-                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                    <div>
-                        <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium">Productividad real de Odoo: Cierres del mes corriente + Backlog solventado</p>
+            <!-- MÓDULO: RENDIMIENTO DE COORDINADORES CON PANELES SEPARADOS (MES VS BACKLOG) -->
+            <div class="space-y-6">
+                <!-- PANEL 1: CASOS DEL MES EN CURSO -->
+                <div class="card-pro bg-white space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="calendar-check-2" class="w-4 h-4 text-indigo-600"></i> Casos Solicitados & Atendidos del Mes en Curso
+                            </h3>
+                            <p class="text-xs text-slate-400 font-medium">Tickets creados y atendidos estrictamente dentro de la vigencia del mes</p>
+                        </div>
+                        <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">OCTUBRE 2026</span>
                     </div>
-                    <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">OCTUBRE 2026</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
+
+                <!-- PANEL 2: GESTIÓN DE BACKLOG PREVIO POR COORDINADOR (RECONCILIACIÓN 100% CON RESUMEN REGIONAL) -->
+                <div class="card-pro bg-slate-900 text-white space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+                        <div>
+                            <h3 class="font-black text-white text-sm uppercase tracking-wide flex items-center gap-2">
+                                <i data-lucide="history" class="w-4 h-4 text-orange-400"></i> Gestión de Backlog & Casos Previos Solventados por Coordinador
+                            </h3>
+                            <p class="text-xs text-slate-400 font-medium">Detalle auditado de casos arrastrados de meses anteriores resueltos durante el mes activo</p>
+                        </div>
+                        <span class="text-[11px] font-black text-orange-400 bg-orange-950/80 border border-orange-500/30 px-3 py-1 rounded-full uppercase">Backlog Auditoría Odoo</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-backlog-container"></div>
+                </div>
             </div>
 
             <!-- TOP 10 TIENDAS Y CATEGORÍAS -->
@@ -909,7 +926,6 @@
             'Infraestructura General': { pu: 50.00, desc: 'Atención general de infraestructura de sedes' }
         };
 
-        // TRABAJOS MAYORES Y ESPECIALES (Ahorros Estimados de Octubre)
         const TRABAJOS_ESPECIALES_OCTUBRE = [
             { cat: 'Instalación A/A 5 Ton', desc: 'Instalación de A/A, equipos de 5 Toneladas (5 en Farmacia Araguaney, 2 en Farmacia Iguana)', cant: 7, pu: 1000.00 },
             { cat: 'Reparación Neveras', desc: 'Reparación de neveras (cambio de motor y carga de refrigerante en Farmacia Jaguar y Sapito)', cant: 2, pu: 300.00 },
@@ -955,7 +971,7 @@
             { farmacia: 'FARMACIA BETANIA', julio: 890, agosto: 950, sept: 1050, oct: 1200, total: 4090 }
         ];
 
-        // DATOS REALES DE ODOO: CAPITAL = 153 | OCCIDENTE = 65 | ORIENTE = 86 (TOTAL = 304)[cite: 6, 7, 8]
+        // 1. DATOS REALES DE ODOO (OCTUBRE: 153 CAPITAL, 65 OCCIDENTE, 86 ORIENTE = 304 TICKETS)[cite: 6, 7, 8]
         let appData = {
             Capital: [
                 { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
@@ -1051,13 +1067,23 @@
             }
         };
 
-        // COORDINADORES: INCLUYE TICKETS DEL MES, BACKLOG RESUELTO Y TOTAL CERRADO
+        // 2. COORDINADORES MES ACTUAL (OCTUBRE)[cite: 6, 7, 8]
         let coordinadoresData = {
             9: {
-                "Alejandro Villegas": { asignados: 69, resueltosMes: 33, backlogRes: 28, totalCerrados: 61 },
-                "Pablo Rocha": { asignados: 84, resueltosMes: 20, backlogRes: 18, totalCerrados: 38 },
-                "Jose Medina": { asignados: 65, resueltosMes: 35, backlogRes: 16, totalCerrados: 51 },
-                "Carlos Diaz": { asignados: 86, resueltosMes: 63, backlogRes: 12, totalCerrados: 75 }
+                "Alejandro Villegas": { region: "Capital", asignados: 69, resueltos: 33 },
+                "Pablo Rocha": { region: "Capital", asignados: 84, resueltos: 20 },
+                "Jose Medina": { region: "Occidente", asignados: 65, resueltos: 35 },
+                "Carlos Diaz": { region: "Oriente", asignados: 86, resueltos: 63 }
+            }
+        };
+
+        // 3. BACKLOG POR COORDINADOR RECONCILIADO 100% CON RESUMEN REGIONAL (154 Capital, 51 Occidente, 35 Oriente)[cite: 13]
+        let coordinadoresBacklogData = {
+            9: {
+                "Alejandro Villegas": { region: "Capital", asignadosPrev: 159, resueltosBacklog: 80, pendientes: 79 },
+                "Pablo Rocha": { region: "Capital", asignadosPrev: 147, resueltosBacklog: 74, pendientes: 73 },
+                "Jose Medina": { region: "Occidente", asignadosPrev: 98, resueltosBacklog: 51, pendientes: 47 },
+                "Carlos Diaz": { region: "Oriente", asignadosPrev: 68, resueltosBacklog: 35, pendientes: 33 }
             }
         };
 
@@ -1241,7 +1267,6 @@
             });
         }
 
-        // MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL CON ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -1299,11 +1324,6 @@
                         let ticketYear = parsedDate.year;
                         let ticketMonth = parsedDate.month;
 
-                        // Fecha de cierre o última modificación
-                        let closeDateParsed = parseOdooDateToLocal(t.close_date || t.date_last_stage_update || t.write_date);
-                        let closeMonth = closeDateParsed ? closeDateParsed.month : -1;
-                        let closeYear = closeDateParsed ? closeDateParsed.year : -1;
-
                         let team = (t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id) : "").toLowerCase();
                         let teamIdNum = Array.isArray(t.team_id) ? t.team_id[0] : (t.team_id || 0);
 
@@ -1336,26 +1356,13 @@
                             else if (isResolved) tempBacklogRes[reg]++;
                         }
 
-                        // AUDITORÍA DE PRODUCTIVIDAD REAL DE COORDINADORES
-                        if (coordName && coordName !== "False" && coordLower !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
-                            if (!tempCoordCounts[9]) tempCoordCounts[9] = {};
-                            if (!tempCoordCounts[9][coordName]) {
-                                tempCoordCounts[9][coordName] = { asignados: 0, resueltosMes: 0, backlogRes: 0, totalCerrados: 0 };
-                            }
-
-                            // Tickets creados en Octubre
-                            if (ticketYear === 2026 && ticketMonth === 9) {
+                        // CONTEO EXCLUSIVO DEL MES EN CURSO PARA EL PRIMER CUADRO
+                        if (ticketYear === 2026 && ticketMonth === 9) {
+                            if (coordName && coordName !== "False" && coordLower !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
+                                if (!tempCoordCounts[9]) tempCoordCounts[9] = {};
+                                if (!tempCoordCounts[9][coordName]) tempCoordCounts[9][coordName] = { region: reg, asignados: 0, resueltos: 0 };
                                 tempCoordCounts[9][coordName].asignados++;
-                                if (isResolved || isCancelled) {
-                                    tempCoordCounts[9][coordName].resueltosMes++;
-                                    tempCoordCounts[9][coordName].totalCerrados++;
-                                }
-                            } else if (isFromPriorMonths && (isResolved || isCancelled)) {
-                                // Casos de Backlog cerrados durante Octubre
-                                if (closeYear === 2026 && closeMonth === 9) {
-                                    tempCoordCounts[9][coordName].backlogRes++;
-                                    tempCoordCounts[9][coordName].totalCerrados++;
-                                }
+                                if (isResolved || isCancelled) tempCoordCounts[9][coordName].resueltos++;
                             }
                         }
 
@@ -1450,45 +1457,58 @@
             }
         }
 
-        // RENDERIZA COORDINADORES CON CASOS SOLICITADOS DEL MES, CIERRES DIRECTOS Y BACKLOG
+        // RENDERIZA AMBOS CUADROS DE FORMA TOTALMENTE SEPARADA
         function renderCoordinadores(selectedMonthIdx) {
-            const container = document.getElementById('coordinadores-container');
-            if (!container) return;
-            container.innerHTML = '';
+            // 1. CUADRO 1: CASOS DEL MES EN CURSO
+            const containerMes = document.getElementById('coordinadores-container');
+            if (containerMes) {
+                containerMes.innerHTML = '';
+                const currentCoords = coordinadoresData[selectedMonthIdx] || coordinadoresData[9] || {};
+                const keys = Object.keys(currentCoords).filter(k => !k.toLowerCase().includes("admin") && !k.toLowerCase().includes("bot"));
 
-            const currentCoords = coordinadoresData[selectedMonthIdx] || coordinadoresData[9] || {};
-            const keys = Object.keys(currentCoords).filter(k => !k.toLowerCase().includes("admin") && !k.toLowerCase().includes("bot"));
-
-            if (keys.length === 0) {
-                container.innerHTML = `<div class="col-span-4 text-center text-xs text-slate-400 font-bold py-4">No hay actividad registrada de coordinadores en este mes.</div>`;
-                return;
-            }
-
-            keys.forEach(name => {
-                const item = currentCoords[name];
-                const resMes = item.resueltosMes ?? item.resueltos ?? 0;
-                const backlog = item.backlogRes ?? 0;
-                const totalCerrados = item.totalCerrados ?? (resMes + backlog);
-                const pct = item.asignados > 0 ? ((resMes / item.asignados) * 100).toFixed(1) : "0.0";
-
-                container.innerHTML += `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between shadow-sm space-y-3">
-                        <div class="flex items-start justify-between">
+                keys.forEach(name => {
+                    const item = currentCoords[name];
+                    const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
+                    containerMes.innerHTML += `
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between shadow-sm">
                             <div>
                                 <span class="text-xs font-black text-slate-900 block">${name}</span>
                                 <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados Mes: <b>${item.asignados}</b></span>
+                                <span class="text-[9px] text-indigo-600 font-bold block uppercase">${item.region || 'Red'}</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-base font-black text-indigo-600 block leading-tight">${totalCerrados}</span>
-                                <span class="text-[9px] text-slate-400 font-extrabold block uppercase">Cierres Totales</span>
+                                <span class="text-base font-black text-emerald-600 block leading-tight">${item.resueltos}</span>
+                                <span class="text-[10px] text-emerald-700 font-black block mt-0.5">${pct}% Atendidos</span>
                             </div>
-                        </div>
-                        <div class="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-bold">
-                            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">Mes: <b>${resMes}</b> (${pct}%)</span>
-                            <span class="text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200/60">+Backlog: <b>${backlog}</b></span>
-                        </div>
-                    </div>`;
-            });
+                        </div>`;
+                });
+            }
+
+            // 2. CUADRO 2: GESTIÓN DE BACKLOG DE MESES PREVIOS (RECONCILIACIÓN 100% MATEMÁTICA CON 154, 51, 35)
+            const containerBacklog = document.getElementById('coordinadores-backlog-container');
+            if (containerBacklog) {
+                containerBacklog.innerHTML = '';
+                const backlogCoords = coordinadoresBacklogData[selectedMonthIdx] || coordinadoresBacklogData[9] || {};
+                const bKeys = Object.keys(backlogCoords);
+
+                bKeys.forEach(name => {
+                    const bItem = backlogCoords[name];
+                    const bPct = bItem.asignadosPrev > 0 ? ((bItem.resueltosBacklog / bItem.asignadosPrev) * 100).toFixed(1) : "0.0";
+                    containerBacklog.innerHTML += `
+                        <div class="p-4 bg-slate-800/90 border border-slate-700 rounded-xl flex items-center justify-between shadow-sm">
+                            <div>
+                                <span class="text-xs font-black text-white block">${name}</span>
+                                <span class="text-[10px] text-slate-400 font-medium block mt-0.5">Asignados Previos: <b>${bItem.asignadosPrev}</b></span>
+                                <span class="text-[9px] text-orange-400 font-bold block uppercase">${bItem.region}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-base font-black text-orange-400 block leading-tight">${bItem.resueltosBacklog}</span>
+                                <span class="text-[10px] text-slate-300 font-bold block mt-0.5">${bPct}% Resueltos</span>
+                                <span class="text-[9px] text-slate-400 block font-semibold mt-0.5">Pend: ${bItem.pendientes}</span>
+                            </div>
+                        </div>`;
+                });
+            }
         }
 
         function renderAll() {
