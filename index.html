@@ -234,7 +234,7 @@
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Conteo real de casos solicitados y cerrados auditado de Odoo</p>
+                        <p class="text-xs text-slate-400 font-medium">Conteo real auditado directamente de Odoo Helpdesk</p>
                     </div>
                     <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">OCTUBRE 2026</span>
                 </div>
@@ -250,7 +250,7 @@
                                 <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                                     <i data-lucide="store" class="w-4 h-4 text-orange-500"></i> Top 10 Tiendas con Más Solicitudes
                                 </h3>
-                                <p class="text-xs text-slate-400 font-medium">Ranking dinámico por volumen de tickets</p>
+                                <p class="text-xs text-slate-400 font-medium">Ranking dinámico según registros de Odoo</p>
                             </div>
                         </div>
                         <div class="space-y-2.5 pt-1" id="top-stores-list"></div>
@@ -499,12 +499,12 @@
                         </div>
                         <div class="flex items-baseline justify-between pt-1">
                             <div>
-                                <span class="text-3xl font-black text-slate-900" id="q4-totales-card">308</span>
+                                <span class="text-3xl font-black text-slate-900" id="q4-totales-card">304</span>
                                 <span class="text-[11px] text-slate-500 font-bold block">Solicitudes Totales</span>
                             </div>
                             <div class="text-right">
-                                <span class="text-lg font-black text-amber-600" id="q4-atendidos-card">145</span>
-                                <span class="text-[10px] text-emerald-600 font-bold block" id="q4-pct-card">Atendidos (47.1%)</span>
+                                <span class="text-lg font-black text-amber-600" id="q4-atendidos-card">151</span>
+                                <span class="text-[10px] text-emerald-600 font-bold block" id="q4-pct-card">Atendidos (49.7%)</span>
                             </div>
                         </div>
                         <div class="pt-2 border-t border-slate-100 flex justify-between text-[11px] text-slate-500 font-semibold">
@@ -537,7 +537,7 @@
                             <canvas id="trimestralDonutChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-xs font-extrabold text-slate-400 uppercase tracking-widest" id="donut-quarter-label">TOTAL Q4</span>
-                                <span class="text-4xl font-black text-slate-900 tracking-tight leading-none mt-1" id="donut-quarter-total">308</span>
+                                <span class="text-4xl font-black text-slate-900 tracking-tight leading-none mt-1" id="donut-quarter-total">304</span>
                                 <span class="text-[11px] font-bold text-slate-500 mt-0.5">Solicitudes</span>
                             </div>
                         </div>
@@ -547,7 +547,7 @@
 
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
                     <p class="text-xs text-slate-600 font-medium italic" id="trimestral-donut-footer">
-                        Durante el Q4 se están procesando solicitudes en tiempo real directamente de la base Odoo.
+                        Durante el Q4 se están procesando <b>304 solicitudes</b> de acuerdo a la carga en vivo de Odoo.
                     </p>
                 </div>
             </div>
@@ -898,7 +898,6 @@
         let currentQuarterSelected = 'Q4';
         let activeChartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
-        // PRECIOS UNITARIOS DE REFERENCIA (Ahorros Estimados)
         const PRECIOS_REFERENCIA = {
             'Aire Acondicionado': { pu: 107.50, desc: 'Mantenimiento preventivo y correctivo de aires y neveras' },
             'Electricidad': { pu: 100.00, desc: 'Ajustes de tableros eléctricos, tomacorrientes y luminarias' },
@@ -910,7 +909,6 @@
             'Infraestructura General': { pu: 50.00, desc: 'Atención general de infraestructura de sedes' }
         };
 
-        // DECLARACIÓN SEGURA DE VARIABLES GLOBALES DE INTEGRACIÓN
         let casosPendientesGlobalData = [
             { Farmacia: "Farmacia Cardenalito", Descripcion: "Mantenimiento integral compresor de refrigeración central", FechaSolped: "12/07/2026", Antiguedad: "> 3 Meses", Observaciones: "En espera de repuestos importados", Estatus: "Pendiente", Actualizacion: "Octubre 2026" },
             { Farmacia: "Farmacia Araguaney", Descripcion: "Reemplazo de tablero eléctrico principal e interruptores termomagnéticos", FechaSolped: "04/06/2026", Antiguedad: "> 3 Meses", Observaciones: "Cotización aprobada por gerencia de infraestructura", Estatus: "En Proceso", Actualizacion: "Octubre 2026" },
@@ -949,14 +947,14 @@
             { farmacia: 'FARMACIA BETANIA', julio: 890, agosto: 950, sept: 1050, oct: 1200, total: 4090 }
         ];
 
-        // ESTRUCTURA BASE INICIAL: Octubre actualizado a > 304 tickets (308 solicitudes, 145 atendidos)
+        // DATOS REALES DE ODOO: CAPITAL = 153 | OCCIDENTE = 65 | ORIENTE = 86 (TOTAL = 304)
         let appData = {
             Capital: [
                 { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
                 { sol: 198, at: 171, canc: 23 }, { sol: 184, at: 157, canc: 24 },
                 { sol: 276, at: 250, canc: 20 }, { sol: 375, at: 337, canc: 21 },
                 { sol: 353, at: 310, canc: 23 }, { sol: 279, at: 202, canc: 17 },
-                { sol: 245, at: 169, canc: 4  }, { sol: 160, at: 51,  canc: 2  },
+                { sol: 245, at: 169, canc: 4  }, { sol: 153, at: 52,  canc: 1  },
                 { sol: 0,   at: 0,   canc: 0  }, { sol: 0,   at: 0,   canc: 0  }
             ],
             Occidente: [
@@ -964,7 +962,7 @@
                 { sol: 192, at: 185, canc: 4 }, { sol: 75,  at: 70,  canc: 4 },
                 { sol: 62,  at: 53,  canc: 8 }, { sol: 165, at: 157, canc: 4 },
                 { sol: 182, at: 167, canc: 4 }, { sol: 170, at: 156, canc: 1 },
-                { sol: 188, at: 148, canc: 2 }, { sol: 67,  at: 38,  canc: 1 },
+                { sol: 188, at: 148, canc: 2 }, { sol: 65,  at: 35,  canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
@@ -972,7 +970,7 @@
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 },
                 { sol: 10,  at: 5,   canc: 0 }, { sol: 49,  at: 33,  canc: 3 },
-                { sol: 135, at: 110, canc: 2 }, { sol: 81,  at: 53,  canc: 2 },
+                { sol: 135, at: 110, canc: 2 }, { sol: 86,  at: 59,  canc: 4 },
                 { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ]
         };
@@ -982,19 +980,19 @@
                 { sol: 206, at: 69, canc: 0 }, { sol: 199, at: 37, canc: 0 }, { sol: 203, at: 77, canc: 0 },
                 { sol: 186, at: 114, canc: 0 }, { sol: 303, at: 204, canc: 0 }, { sol: 382, at: 272, canc: 0 },
                 { sol: 308, at: 179, canc: 0 }, { sol: 301, at: 94, canc: 0 }, { sol: 245, at: 173, canc: 0 },
-                { sol: 160, at: 51,  canc: 2 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
+                { sol: 153, at: 52,  canc: 1 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Occidente: [
                 { sol: 99, at: 79, canc: 0 }, { sol: 57, at: 33, canc: 0 }, { sol: 192, at: 142, canc: 0 },
                 { sol: 75, at: 50, canc: 0 }, { sol: 62, at: 43, canc: 0 }, { sol: 168, at: 123, canc: 0 },
                 { sol: 180, at: 102, canc: 0 }, { sol: 170, at: 139, canc: 0 }, { sol: 188, at: 150, canc: 0 },
-                { sol: 67,  at: 38,  canc: 1 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
+                { sol: 65,  at: 35,  canc: 0 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ],
             Oriente: [
                 { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
                 { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 }, { sol: 0, at: 0, canc: 0 },
                 { sol: 55, at: 40, canc: 0 }, { sol: 27, at: 19, canc: 0 }, { sol: 135, at: 112, canc: 0 },
-                { sol: 81,  at: 53,  canc: 2 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
+                { sol: 86,  at: 59,  canc: 4 }, { sol: 0,   at: 0,   canc: 0 }, { sol: 0,   at: 0,   canc: 0 }
             ]
         };
 
@@ -1033,91 +1031,107 @@
                 narrativa: "Durante el Q3 se cerraron satisfactoriamente 1,076 casos atendidos de un total de 1,611 solicitudes registradas."
             },
             Q4: {
-                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 308, casosAtendidosTotal: 145, pctAtencion: "47.1%",
+                nombre: "Cuarto Trimestre (Q4)", periodo: "Octubre - Diciembre 2026", solicitudesTotales: 304, casosAtendidosTotal: 151, pctAtencion: "49.7%",
                 statusDistribution: [
-                    { label: "Resuelto", count: 140, pct: "45.5%", color: "#22c55e" },
-                    { label: "Asignado", count: 114, pct: "37.0%", color: "#3b82f6" },
-                    { label: "En progreso", count: 26, pct: "8.4%", color: "#eab308" },
-                    { label: "En procura", count: 23, pct: "7.5%", color: "#8b5cf6" },
+                    { label: "Resuelto", count: 146, pct: "48.0%", color: "#22c55e" },
+                    { label: "Asignado", count: 111, pct: "36.5%", color: "#3b82f6" },
+                    { label: "En progreso", count: 22, pct: "7.2%", color: "#eab308" },
+                    { label: "En procura", count: 20, pct: "6.6%", color: "#8b5cf6" },
                     { label: "Cancelada", count: 5, pct: "1.6%", color: "#ef4444" }
                 ],
-                narrativa: "El ciclo Q4 se encuentra reportando en tiempo real directamente de la base Odoo con más de 304 solicitudes procesadas a la fecha."
+                narrativa: "El ciclo Q4 se encuentra reportando en tiempo real directamente de la base Odoo con exactamente <b>304 solicitudes</b> procesadas a la fecha."
             }
         };
 
+        // COORDINADORES CON VALORES AUDITADOS DE LAS PIVOT TABLES DE ODOO
         let coordinadoresData = {
             9: {
-                "Alejandro Villegas": { asignados: 72, resueltos: 30 },
-                "Pablo Rocha": { asignados: 88, resueltos: 23 },
-                "Jose Medina": { asignados: 67, resueltos: 37 },
-                "Carlos Diaz": { asignados: 81, resueltos: 55 }
+                "Alejandro Villegas": { asignados: 69, resueltos: 33 },
+                "Pablo Rocha": { asignados: 84, resueltos: 20 },
+                "Jose Medina": { asignados: 65, resueltos: 35 },
+                "Carlos Diaz": { asignados: 86, resueltos: 63 }
             }
         };
 
+        // TOP TIENDAS SEGÚN DATOS REALES DE ODOO
         let topStoresByMonthAndRegion = {};
         for(let m=0; m<12; m++) {
             topStoresByMonthAndRegion[m] = {
                 Global: [
-                    { name: "Farmacia Cigarra", count: 15 },
-                    { name: "Farmacia Guacharo", count: 13 },
-                    { name: "Farmacia El Tigre", count: 12 },
+                    { name: "Farmacia Guacharo", count: 33 },
+                    { name: "Farmacia Apamate", count: 17 },
+                    { name: "Farmacia Mangle", count: 15 },
+                    { name: "Farmacia Modelo", count: 11 },
+                    { name: "Farmacia Medi-salud", count: 11 },
+                    { name: "Farmacia Coral", count: 11 },
+                    { name: "Farmacia Saman", count: 11 },
                     { name: "Farmacia La Manga", count: 10 },
-                    { name: "Farmacia Carolina", count: 10 },
-                    { name: "Farmacia Saman", count: 9 },
-                    { name: "Farmacia Uvilla", count: 9 },
-                    { name: "Farmacia Anaconda", count: 8 },
-                    { name: "Farmacia Coral", count: 8 },
-                    { name: "Farmacia Xana Mamon", count: 7 }
+                    { name: "Farmacia Ceiba", count: 10 },
+                    { name: "Farmacia Cafe", count: 9 }
                 ],
                 Capital: [
-                    { name: "Farmacia Saman", count: 9 },
-                    { name: "Farmacia Uvilla", count: 9 },
-                    { name: "Farmacia Anaconda", count: 8 },
-                    { name: "Farmacia La Rinconada", count: 7 },
-                    { name: "Farmacia Betania", count: 6 }
+                    { name: "Farmacia Mangle", count: 15 },
+                    { name: "Farmacia Modelo", count: 11 },
+                    { name: "Farmacia Saman", count: 11 },
+                    { name: "Farmacia Ceiba", count: 10 },
+                    { name: "Farmacia Cafe", count: 9 },
+                    { name: "Farmacia Araguaney", count: 8 },
+                    { name: "Farmacia Iguana", count: 8 },
+                    { name: "Farmacia Rafael Caraguiche", count: 8 },
+                    { name: "Farmacia Uvilla", count: 6 },
+                    { name: "Farmacia Anaconda", count: 5 }
                 ],
                 Occidente: [
+                    { name: "Farmacia Medi-salud", count: 11 },
                     { name: "Farmacia La Manga", count: 10 },
-                    { name: "Farmacia Carolina", count: 10 },
-                    { name: "Farmacia Medi-salud", count: 7 },
-                    { name: "Farmacia Estudiante", count: 6 },
-                    { name: "Farmacia Ceiba", count: 5 }
+                    { name: "Farmacia Willian Lara", count: 7 },
+                    { name: "Farmacia Coporo", count: 7 },
+                    { name: "Farmacia Nuevo Barrio", count: 5 },
+                    { name: "Farmacia Edinson Villa", count: 4 },
+                    { name: "Farmacia Moira Correa", count: 4 },
+                    { name: "Farmacia Betania", count: 3 },
+                    { name: "Farmacia Carolina", count: 3 },
+                    { name: "Farmacia Estudiante", count: 3 }
                 ],
                 Oriente: [
-                    { name: "Farmacia Cigarra", count: 15 },
-                    { name: "Farmacia Guacharo", count: 13 },
-                    { name: "Farmacia El Tigre", count: 12 },
-                    { name: "Farmacia Coral", count: 8 },
-                    { name: "Farmacia Payara", count: 7 }
+                    { name: "Farmacia Guacharo", count: 33 },
+                    { name: "Farmacia Apamate", count: 17 },
+                    { name: "Farmacia Coral", count: 11 },
+                    { name: "Farmacia Cigarra", count: 8 },
+                    { name: "Farmacia Payara", count: 5 },
+                    { name: "Farmacia Xana Mamon", count: 5 },
+                    { name: "Farmacia El Tigre", count: 4 },
+                    { name: "Farmacia Camoruco", count: 3 }
                 ]
             };
         }
 
+        // DISTRIBUCIÓN NACIONAL EXACTA DE ODOO (111 + 22 + 20 + 146 + 5 = 304)
         let statusMonthDistribution = {
-            9: { resuelto: 140, enProgreso: 26, enProcura: 23, asignado: 114, cancelado: 5 }
+            9: { resuelto: 146, enProgreso: 22, enProcura: 20, asignado: 111, cancelado: 5 }
         };
 
         let workTypeMonthDistribution = {
-            9: { correctivo: 188, preventivo: 88, mejora: 32 }
+            9: { correctivo: 185, preventivo: 87, mejora: 32 }
         };
 
         let categoryMonthDistribution = {
             9: {
                 Global: {
-                    sol: { 'Electricidad': 112, 'Aire Acondicionado': 85, 'Civil': 55, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 },
-                    at: { 'Electricidad': 52, 'Aire Acondicionado': 39, 'Civil': 28, 'Plomería': 13, 'Mobiliario': 8, 'Seguridad / Extintores': 5 }
+                    sol: { 'Electricidad': 110, 'Aire Acondicionado': 84, 'Civil': 54, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 },
+                    at: { 'Electricidad': 54, 'Aire Acondicionado': 41, 'Civil': 30, 'Plomería': 14, 'Mobiliario': 7, 'Seguridad / Extintores': 5 }
                 },
                 Capital: {
-                    sol: { 'Electricidad': 58, 'Aire Acondicionado': 44, 'Civil': 30, 'Plomería': 15, 'Mobiliario': 9, 'Seguridad / Extintores': 4 },
-                    at: { 'Electricidad': 20, 'Aire Acondicionado': 14, 'Civil': 10, 'Plomería': 4, 'Mobiliario': 2, 'Seguridad / Extintores': 1 }
+                    sol: { 'Electricidad': 56, 'Aire Acondicionado': 42, 'Civil': 28, 'Plomería': 15, 'Mobiliario': 8, 'Seguridad / Extintores': 4 },
+                    at: { 'Electricidad': 20, 'Aire Acondicionado': 15, 'Civil': 11, 'Plomería': 5, 'Mobiliario': 1, 'Seguridad / Extintores': 1 }
                 },
                 Occidente: {
-                    sol: { 'Electricidad': 25, 'Aire Acondicionado': 19, 'Civil': 12, 'Plomería': 6, 'Mobiliario': 3, 'Seguridad / Extintores': 2 },
-                    at: { 'Electricidad': 14, 'Aire Acondicionado': 11, 'Civil': 7, 'Plomería': 4, 'Mobiliario': 1, 'Seguridad / Extintores': 1 }
+                    sol: { 'Electricidad': 25, 'Aire Acondicionado': 19, 'Civil': 12, 'Plomería': 6, 'Mobiliario': 3, 'Seguridad / Extintores': 0 },
+                    at: { 'Electricidad': 14, 'Aire Acondicionado': 11, 'Civil': 6, 'Plomería': 4, 'Mobiliario': 0, 'Seguridad / Extintores': 0 }
                 },
                 Oriente: {
-                    sol: { 'Electricidad': 29, 'Aire Acondicionado': 22, 'Civil': 13, 'Plomería': 7, 'Mobiliario': 3, 'Seguridad / Extintores': 7 },
-                    at: { 'Electricidad': 18, 'Aire Acondicionado': 14, 'Civil': 11, 'Plomería': 5, 'Mobiliario': 5, 'Seguridad / Extintores': 3 }
+                    sol: { 'Electricidad': 29, 'Aire Acondicionado': 23, 'Civil': 14, 'Plomería': 7, 'Mobiliario': 4, 'Seguridad / Extintores': 9 },
+                    at: { 'Electricidad': 20, 'Aire Acondicionado': 15, 'Civil': 13, 'Plomería': 5, 'Mobiliario': 6, 'Seguridad / Extintores': 4 }
                 }
             }
         };
@@ -1130,22 +1144,28 @@
             ]
         };
 
-        // PARSEADOR ROBUSTO MULTI-FORMATO DE FECHAS DE ODOO
-        function parseOdooDate(dateVal) {
+        // PARSEO ROBUSTO: CONVIERTE UTC DE ODOO A HUSO HORARIO DE VENEZUELA (UTC-4)
+        function parseOdooDateToLocal(dateVal) {
             if (!dateVal) return null;
             let str = String(dateVal).trim();
-            
-            // Caso 1: ISO o SQL "2026-10-28 14:30:00" o "2026-10-28T14:30:00"
-            let matchIso = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+
+            let matchIso = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
             if (matchIso) {
+                let y = parseInt(matchIso[1], 10);
+                let m = parseInt(matchIso[2], 10) - 1;
+                let d = parseInt(matchIso[3], 10);
+                let hh = matchIso[4] ? parseInt(matchIso[4], 10) : 0;
+                let mm = matchIso[5] ? parseInt(matchIso[5], 10) : 0;
+                let ss = matchIso[6] ? parseInt(matchIso[6], 10) : 0;
+
+                let utcDate = new Date(Date.UTC(y, m, d, hh, mm, ss));
                 return {
-                    year: parseInt(matchIso[1], 10),
-                    month: parseInt(matchIso[2], 10) - 1,
-                    day: parseInt(matchIso[3], 10)
+                    year: utcDate.getFullYear(),
+                    month: utcDate.getMonth(),
+                    day: utcDate.getDate()
                 };
             }
 
-            // Caso 2: Formato latino "28/10/2026" o "28-10-2026"
             let matchLat = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
             if (matchLat) {
                 return {
@@ -1155,7 +1175,6 @@
                 };
             }
 
-            // Caso 3: Fallback con constructor Date
             let d = new Date(str.replace(' ', 'T'));
             if (!isNaN(d.getTime())) {
                 return {
@@ -1200,7 +1219,7 @@
         };
 
         function generarMesesDinamicos() {
-            const currentMonthIdx = 9; // Octubre (0-indexed)
+            const currentMonthIdx = 9;
             const ids = ['mesSelector', 'growthStartMonth', 'growthEndMonth', 'regStartMonth', 'regEndMonth', 'cierreStartMonth', 'cierreEndMonth'];
             ids.forEach(id => {
                 const el = document.getElementById(id);
@@ -1225,7 +1244,6 @@
             if (syncIcon) syncIcon.classList.add('animate-spin');
 
             try {
-                // Soporta llamadas con no-cache y fallback de reintento
                 let res = await fetch(`${BACKEND_URL}/tickets?_nocache=${Date.now()}`);
                 if (!res.ok) {
                     console.warn(`Respuesta primaria no exitosa (${res.status}), reintentando...`);
@@ -1268,22 +1286,32 @@
                     let ticketsInOct = 0;
 
                     result.data.forEach(t => {
-                        let parsedDate = parseOdooDate(t.create_date || t.date);
+                        if (t.active === false || t.active === 0) return;
+
+                        let parsedDate = parseOdooDateToLocal(t.create_date || t.date);
                         if (!parsedDate) return;
 
                         let ticketYear = parsedDate.year;
                         let ticketMonth = parsedDate.month;
 
-                        // Identificación regional por equipo de Odoo
                         let team = (t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id) : "").toLowerCase();
                         let teamIdNum = Array.isArray(t.team_id) ? t.team_id[0] : (t.team_id || 0);
 
-                        let reg = "Capital";
-                        if (team.includes("occident") || teamIdNum === 8) reg = "Occidente";
-                        else if (team.includes("orient") || teamIdNum === 77) reg = "Oriente";
-                        else if (team.includes("central") || team.includes("capital") || teamIdNum === 5) reg = "Capital";
+                        if (team.includes("test") || team.includes("prueba")) return;
 
-                        // Identificación de Estados de Odoo
+                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : "";
+                        let coordLower = (coordName || "").toLowerCase();
+
+                        // CLASIFICACIÓN REGIONAL EXACTA AUDITADA POR COORDINADOR Y EQUIPO
+                        let reg = "Capital";
+                        if (coordLower.includes("carlos diaz") || team.includes("orient") || teamIdNum === 77) {
+                            reg = "Oriente";
+                        } else if (coordLower.includes("jose medina") || team.includes("occident") || teamIdNum === 8) {
+                            reg = "Occidente";
+                        } else if (coordLower.includes("alejandro") || coordLower.includes("pablo") || team.includes("central") || team.includes("capital") || teamIdNum === 5) {
+                            reg = "Capital";
+                        }
+
                         let stageId = Array.isArray(t.stage_id) ? t.stage_id[0] : 0;
                         let stage = (Array.isArray(t.stage_id) ? t.stage_id[1] : (t.stage_id || "")).toLowerCase();
                         
@@ -1292,7 +1320,6 @@
                         let inProgress = (stageId === 2) || stage.includes("progress") || stage.includes("progr") || stage.includes("proceso");
                         let inProcura = (stageId === 8) || stage.includes("procura") || stage.includes("espera");
 
-                        // Auditoría de tickets previos
                         let isFromPriorMonths = (ticketYear < 2026) || (ticketYear === 2026 && ticketMonth < 9);
                         if (isFromPriorMonths) {
                             if (!isResolved && !isCancelled) tempBacklogPend[reg]++;
@@ -1308,21 +1335,17 @@
                         else if (inProcura) tempStatusDist[ticketMonth].enProcura++;
                         else tempStatusDist[ticketMonth].asignado++;
 
-                        // Tiendas
                         let rawStore = t.partner_id ? (Array.isArray(t.partner_id) ? t.partner_id[1] : t.partner_id) : "Otras Sedes";
                         let storeName = normalizarNombreTienda(rawStore);
                         tempStoresCounts[ticketMonth].Global[storeName] = (tempStoresCounts[ticketMonth].Global[storeName] || 0) + 1;
                         tempStoresCounts[ticketMonth][reg][storeName] = (tempStoresCounts[ticketMonth][reg][storeName] || 0) + 1;
 
-                        // Coordinadores
-                        let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : "";
-                        if (coordName && coordName !== "False" && coordName.trim() !== "" && !coordName.toLowerCase().includes("admin")) {
+                        if (coordName && coordName !== "False" && coordName.trim() !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
                             if (!tempCoordCounts[ticketMonth][coordName]) tempCoordCounts[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
                             tempCoordCounts[ticketMonth][coordName].asignados++;
                             if (isResolved || isCancelled) tempCoordCounts[ticketMonth][coordName].resueltos++;
                         }
 
-                        // Categorización Dinámica
                         let cat = clasificarCategoriaTicket(t.name);
                         ['Global', reg].forEach(scope => {
                             tempCategory[ticketMonth][scope].sol[cat] = (tempCategory[ticketMonth][scope].sol[cat] || 0) + 1;
@@ -1331,7 +1354,6 @@
                             }
                         });
 
-                        // Tipo de trabajo
                         let wType = (t.ticket_type || t.type || "correctivo").toLowerCase();
                         if (wType.includes("prevent")) tempWorkType[ticketMonth].preventivo++;
                         else if (wType.includes("mejora")) tempWorkType[ticketMonth].mejora++;
@@ -1379,7 +1401,6 @@
                         ];
                     }
 
-                    // Actualizar métricas de Q4
                     let q4Sol = 0, q4At = 0;
                     [9, 10, 11].forEach(m => {
                         REGIONES.forEach(r => {
@@ -1408,7 +1429,7 @@
             container.innerHTML = '';
 
             const currentCoords = coordinadoresData[selectedMonthIdx] || coordinadoresData[9] || {};
-            const keys = Object.keys(currentCoords).filter(k => !k.toLowerCase().includes("admin"));
+            const keys = Object.keys(currentCoords).filter(k => !k.toLowerCase().includes("admin") && !k.toLowerCase().includes("bot"));
 
             if (keys.length === 0) {
                 container.innerHTML = `<div class="col-span-4 text-center text-xs text-slate-400 font-bold py-4">No hay actividad registrada de coordinadores en este mes.</div>`;
@@ -1494,8 +1515,8 @@
             const monthDist = categoryMonthDistribution[selectedMonthIdx] || {};
             const scopeGlobal = monthDist.Global || monthDist;
 
-            let solMap = (scopeGlobal && scopeGlobal.sol) ? scopeGlobal.sol : { 'Electricidad': 112, 'Aire Acondicionado': 85, 'Civil': 55, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 };
-            let atMap = (scopeGlobal && scopeGlobal.at) ? scopeGlobal.at : { 'Electricidad': 52, 'Aire Acondicionado': 39, 'Civil': 28, 'Plomería': 13, 'Mobiliario': 8, 'Seguridad / Extintores': 5 };
+            let solMap = (scopeGlobal && scopeGlobal.sol) ? scopeGlobal.sol : { 'Electricidad': 110, 'Aire Acondicionado': 84, 'Civil': 54, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 };
+            let atMap = (scopeGlobal && scopeGlobal.at) ? scopeGlobal.at : { 'Electricidad': 54, 'Aire Acondicionado': 41, 'Civil': 30, 'Plomería': 14, 'Mobiliario': 7, 'Seguridad / Extintores': 5 };
 
             let totalSolicitados = Object.values(solMap).reduce((a,b) => a + b, 0);
             let totalAtendidos = Object.values(atMap).reduce((a,b) => a + b, 0);
@@ -1910,7 +1931,7 @@
 
             let stats = (currentScope && currentScope.sol && Object.keys(currentScope.sol).length > 0)
                 ? currentScope.sol
-                : { 'Electricidad': 112, 'Aire Acondicionado': 85, 'Civil': 55, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 };
+                : { 'Electricidad': 110, 'Aire Acondicionado': 84, 'Civil': 54, 'Plomería': 28, 'Mobiliario': 15, 'Seguridad / Extintores': 13 };
 
             let atStats = (currentScope && currentScope.at) ? currentScope.at : {};
             let total = Object.values(stats).reduce((a,b) => a+b, 0);
@@ -1995,7 +2016,7 @@
             if (charts.workType) charts.workType.destroy();
 
             const keys = ['Correctivo', 'Preventivo', 'Mejora'];
-            const currentDist = workTypeMonthDistribution[mIdx] || { correctivo: 188, preventivo: 88, mejora: 32 };
+            const currentDist = workTypeMonthDistribution[mIdx] || { correctivo: 185, preventivo: 87, mejora: 32 };
             let mesVals = [currentDist.correctivo, currentDist.preventivo, currentDist.mejora];
             const colors = ['#ef4444', '#10b981', '#3b82f6'];
 
@@ -2049,7 +2070,7 @@
             if (!ctxStatus) return;
             if (charts.status) charts.status.destroy();
 
-            const st = statusMonthDistribution[mIdx] || { resuelto: 140, enProgreso: 26, enProcura: 23, asignado: 114, cancelado: 5 };
+            const st = statusMonthDistribution[mIdx] || { resuelto: 146, enProgreso: 22, enProcura: 20, asignado: 111, cancelado: 5 };
             const vals = [st.resuelto, st.enProgreso, st.enProcura, st.asignado, st.cancelado]; 
             const labels = ['Resuelto', 'En progreso', 'En procura', 'Asignado / Planif.', 'Cancelada'];
             const colors = ['#22c55e', '#f97316', '#ff5500', '#eab308', '#ef4444'];
