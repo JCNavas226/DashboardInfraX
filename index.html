@@ -227,14 +227,14 @@
                 <div class="h-[380px] relative"><canvas id="growthLineChart"></canvas></div>
             </div>
 
-            <!-- RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR -->
+            <!-- RENDIMIENTO & TICKETS ATENDIDOS POR COORDINADOR (EN VIVO CON BACKLOG INCLUIDO) -->
             <div class="card-pro bg-white space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                     <div>
                         <h3 class="font-black text-slate-900 text-sm uppercase tracking-wide flex items-center gap-2">
                             <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i> Rendimiento & Tickets Atendidos por Coordinador
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">Conteo real auditado directamente de Odoo Helpdesk</p>
+                        <p class="text-xs text-slate-400 font-medium">Productividad real de Odoo: Cierres del mes corriente + Backlog solventado</p>
                     </div>
                     <span class="text-xs font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full uppercase" id="badge-coord-month">OCTUBRE 2026</span>
                 </div>
@@ -578,7 +578,7 @@
             </div>
         </div>
 
-        <!-- AHORROS ESTIMADOS -->
+        <!-- AHORROS ESTIMADOS (INCLUYE INSTALACIONES Y TRABAJOS MAYORES SOLICITADOS) -->
         <div id="tab-content-ahorros" class="space-y-8 hidden">
             <div class="card-pro bg-white p-6 space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-3">
@@ -909,6 +909,14 @@
             'Infraestructura General': { pu: 50.00, desc: 'Atención general de infraestructura de sedes' }
         };
 
+        // TRABAJOS MAYORES Y ESPECIALES (Ahorros Estimados de Octubre)
+        const TRABAJOS_ESPECIALES_OCTUBRE = [
+            { cat: 'Instalación A/A 5 Ton', desc: 'Instalación de A/A, equipos de 5 Toneladas (5 en Farmacia Araguaney, 2 en Farmacia Iguana)', cant: 7, pu: 1000.00 },
+            { cat: 'Reparación Neveras', desc: 'Reparación de neveras (cambio de motor y carga de refrigerante en Farmacia Jaguar y Sapito)', cant: 2, pu: 300.00 },
+            { cat: 'Instalación Compresor A/A 25 Ton', desc: 'Instalación de 1 compresor A/A de 25 Toneladas (Farmacia Coqui)', cant: 1, pu: 800.00 },
+            { cat: 'Mantenimiento Mayor A/A 25 Ton', desc: 'Revisión, arranque de equipos, ajuste varios y mantenimientos de 3 A/A de 25 Toneladas (Farmacia Coqui)', cant: 3, pu: 600.00 }
+        ];
+
         let casosPendientesGlobalData = [
             { Farmacia: "Farmacia Cardenalito", Descripcion: "Mantenimiento integral compresor de refrigeración central", FechaSolped: "12/07/2026", Antiguedad: "> 3 Meses", Observaciones: "En espera de repuestos importados", Estatus: "Pendiente", Actualizacion: "Octubre 2026" },
             { Farmacia: "Farmacia Araguaney", Descripcion: "Reemplazo de tablero eléctrico principal e interruptores termomagnéticos", FechaSolped: "04/06/2026", Antiguedad: "> 3 Meses", Observaciones: "Cotización aprobada por gerencia de infraestructura", Estatus: "En Proceso", Actualizacion: "Octubre 2026" },
@@ -947,7 +955,7 @@
             { farmacia: 'FARMACIA BETANIA', julio: 890, agosto: 950, sept: 1050, oct: 1200, total: 4090 }
         ];
 
-        // DATOS REALES DE ODOO: CAPITAL = 153 | OCCIDENTE = 65 | ORIENTE = 86 (TOTAL = 304)
+        // DATOS REALES DE ODOO: CAPITAL = 153 | OCCIDENTE = 65 | ORIENTE = 86 (TOTAL = 304)[cite: 6, 7, 8]
         let appData = {
             Capital: [
                 { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
@@ -1043,17 +1051,16 @@
             }
         };
 
-        // COORDINADORES CON VALORES AUDITADOS DE LAS PIVOT TABLES DE ODOO
+        // COORDINADORES: INCLUYE TICKETS DEL MES, BACKLOG RESUELTO Y TOTAL CERRADO
         let coordinadoresData = {
             9: {
-                "Alejandro Villegas": { asignados: 69, resueltos: 33 },
-                "Pablo Rocha": { asignados: 84, resueltos: 20 },
-                "Jose Medina": { asignados: 65, resueltos: 35 },
-                "Carlos Diaz": { asignados: 86, resueltos: 63 }
+                "Alejandro Villegas": { asignados: 69, resueltosMes: 33, backlogRes: 28, totalCerrados: 61 },
+                "Pablo Rocha": { asignados: 84, resueltosMes: 20, backlogRes: 18, totalCerrados: 38 },
+                "Jose Medina": { asignados: 65, resueltosMes: 35, backlogRes: 16, totalCerrados: 51 },
+                "Carlos Diaz": { asignados: 86, resueltosMes: 63, backlogRes: 12, totalCerrados: 75 }
             }
         };
 
-        // TOP TIENDAS SEGÚN DATOS REALES DE ODOO
         let topStoresByMonthAndRegion = {};
         for(let m=0; m<12; m++) {
             topStoresByMonthAndRegion[m] = {
@@ -1106,7 +1113,6 @@
             };
         }
 
-        // DISTRIBUCIÓN NACIONAL EXACTA DE ODOO (111 + 22 + 20 + 146 + 5 = 304)
         let statusMonthDistribution = {
             9: { resuelto: 146, enProgreso: 22, enProcura: 20, asignado: 111, cancelado: 5 }
         };
@@ -1144,7 +1150,6 @@
             ]
         };
 
-        // PARSEO ROBUSTO: CONVIERTE UTC DE ODOO A HUSO HORARIO DE VENEZUELA (UTC-4)
         function parseOdooDateToLocal(dateVal) {
             if (!dateVal) return null;
             let str = String(dateVal).trim();
@@ -1294,15 +1299,20 @@
                         let ticketYear = parsedDate.year;
                         let ticketMonth = parsedDate.month;
 
+                        // Fecha de cierre o última modificación
+                        let closeDateParsed = parseOdooDateToLocal(t.close_date || t.date_last_stage_update || t.write_date);
+                        let closeMonth = closeDateParsed ? closeDateParsed.month : -1;
+                        let closeYear = closeDateParsed ? closeDateParsed.year : -1;
+
                         let team = (t.team_id ? (Array.isArray(t.team_id) ? t.team_id[1] : t.team_id) : "").toLowerCase();
                         let teamIdNum = Array.isArray(t.team_id) ? t.team_id[0] : (t.team_id || 0);
 
                         if (team.includes("test") || team.includes("prueba")) return;
 
                         let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : "";
-                        let coordLower = (coordName || "").toLowerCase();
+                        let coordLower = (coordName || "").toLowerCase().trim();
 
-                        // CLASIFICACIÓN REGIONAL EXACTA AUDITADA POR COORDINADOR Y EQUIPO
+                        // CLASIFICACIÓN REGIONAL
                         let reg = "Capital";
                         if (coordLower.includes("carlos diaz") || team.includes("orient") || teamIdNum === 77) {
                             reg = "Oriente";
@@ -1315,7 +1325,7 @@
                         let stageId = Array.isArray(t.stage_id) ? t.stage_id[0] : 0;
                         let stage = (Array.isArray(t.stage_id) ? t.stage_id[1] : (t.stage_id || "")).toLowerCase();
                         
-                        let isResolved = (stageId === 4) || stage.includes("solved") || stage.includes("resuel") || stage.includes("cerrad");
+                        let isResolved = (stageId === 4) || stage.includes("solved") || stage.includes("resuel") || stage.includes("cerrad") || stage.includes("solvent") || stage.includes("atendid") || stage.includes("finaliz") || stage.includes("complet");
                         let isCancelled = (stageId === 5) || stage.includes("cancel");
                         let inProgress = (stageId === 2) || stage.includes("progress") || stage.includes("progr") || stage.includes("proceso");
                         let inProcura = (stageId === 8) || stage.includes("procura") || stage.includes("espera");
@@ -1324,6 +1334,29 @@
                         if (isFromPriorMonths) {
                             if (!isResolved && !isCancelled) tempBacklogPend[reg]++;
                             else if (isResolved) tempBacklogRes[reg]++;
+                        }
+
+                        // AUDITORÍA DE PRODUCTIVIDAD REAL DE COORDINADORES
+                        if (coordName && coordName !== "False" && coordLower !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
+                            if (!tempCoordCounts[9]) tempCoordCounts[9] = {};
+                            if (!tempCoordCounts[9][coordName]) {
+                                tempCoordCounts[9][coordName] = { asignados: 0, resueltosMes: 0, backlogRes: 0, totalCerrados: 0 };
+                            }
+
+                            // Tickets creados en Octubre
+                            if (ticketYear === 2026 && ticketMonth === 9) {
+                                tempCoordCounts[9][coordName].asignados++;
+                                if (isResolved || isCancelled) {
+                                    tempCoordCounts[9][coordName].resueltosMes++;
+                                    tempCoordCounts[9][coordName].totalCerrados++;
+                                }
+                            } else if (isFromPriorMonths && (isResolved || isCancelled)) {
+                                // Casos de Backlog cerrados durante Octubre
+                                if (closeYear === 2026 && closeMonth === 9) {
+                                    tempCoordCounts[9][coordName].backlogRes++;
+                                    tempCoordCounts[9][coordName].totalCerrados++;
+                                }
+                            }
                         }
 
                         if (ticketYear !== 2026 || ticketMonth < 0 || ticketMonth > 11) return;
@@ -1339,12 +1372,6 @@
                         let storeName = normalizarNombreTienda(rawStore);
                         tempStoresCounts[ticketMonth].Global[storeName] = (tempStoresCounts[ticketMonth].Global[storeName] || 0) + 1;
                         tempStoresCounts[ticketMonth][reg][storeName] = (tempStoresCounts[ticketMonth][reg][storeName] || 0) + 1;
-
-                        if (coordName && coordName !== "False" && coordName.trim() !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
-                            if (!tempCoordCounts[ticketMonth][coordName]) tempCoordCounts[ticketMonth][coordName] = { asignados: 0, resueltos: 0 };
-                            tempCoordCounts[ticketMonth][coordName].asignados++;
-                            if (isResolved || isCancelled) tempCoordCounts[ticketMonth][coordName].resueltos++;
-                        }
 
                         let cat = clasificarCategoriaTicket(t.name);
                         ['Global', reg].forEach(scope => {
@@ -1373,7 +1400,7 @@
                         statusMonthDistribution[9] = tempStatusDist[9];
                         workTypeMonthDistribution[9] = tempWorkType[9];
                         categoryMonthDistribution[9] = tempCategory[9];
-                        if (Object.keys(tempCoordCounts[9]).length > 0) {
+                        if (tempCoordCounts[9] && Object.keys(tempCoordCounts[9]).length > 0) {
                             coordinadoresData[9] = tempCoordCounts[9];
                         }
 
@@ -1423,6 +1450,7 @@
             }
         }
 
+        // RENDERIZA COORDINADORES CON CASOS SOLICITADOS DEL MES, CIERRES DIRECTOS Y BACKLOG
         function renderCoordinadores(selectedMonthIdx) {
             const container = document.getElementById('coordinadores-container');
             if (!container) return;
@@ -1438,16 +1466,26 @@
 
             keys.forEach(name => {
                 const item = currentCoords[name];
-                const pct = item.asignados > 0 ? ((item.resueltos / item.asignados) * 100).toFixed(1) : "0.0";
+                const resMes = item.resueltosMes ?? item.resueltos ?? 0;
+                const backlog = item.backlogRes ?? 0;
+                const totalCerrados = item.totalCerrados ?? (resMes + backlog);
+                const pct = item.asignados > 0 ? ((resMes / item.asignados) * 100).toFixed(1) : "0.0";
+
                 container.innerHTML += `
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between shadow-sm">
-                        <div>
-                            <span class="text-xs font-black text-slate-900 block">${name}</span>
-                            <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados: ${item.asignados}</span>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between shadow-sm space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-black text-slate-900 block">${name}</span>
+                                <span class="text-[10px] text-slate-500 font-bold block mt-0.5">Solicitados Mes: <b>${item.asignados}</b></span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-base font-black text-indigo-600 block leading-tight">${totalCerrados}</span>
+                                <span class="text-[9px] text-slate-400 font-extrabold block uppercase">Cierres Totales</span>
+                            </div>
                         </div>
-                        <div class="text-right">
-                            <span class="text-sm font-black text-indigo-600 block">${item.resueltos}</span>
-                            <span class="text-[9px] text-emerald-600 font-extrabold block">${pct}% Atendidos</span>
+                        <div class="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-bold">
+                            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">Mes: <b>${resMes}</b> (${pct}%)</span>
+                            <span class="text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200/60">+Backlog: <b>${backlog}</b></span>
                         </div>
                     </div>`;
             });
@@ -1502,6 +1540,7 @@
             renderAhorrosTab();
         }
 
+        // PESTAÑA AHORROS ESTIMADOS: CONSOLIDADO REGULAR + TRABAJOS MAYORES SOLICITADOS
         function renderAhorrosTab() {
             const selector = document.getElementById('ahorroMesSelector');
             const key = selector ? selector.value : 'octubre';
@@ -1532,6 +1571,8 @@
 
             if (tbody) {
                 tbody.innerHTML = '';
+
+                // 1. Mantenimientos de Rutina
                 Object.keys(solMap).forEach(cat => {
                     let cantAt = atMap[cat] || 0;
                     let ref = PRECIOS_REFERENCIA[cat] || { pu: 50.00, desc: 'Atención general de servicios' };
@@ -1545,10 +1586,37 @@
                             <td class="py-3 px-4 font-black text-slate-900">${cat}</td>
                             <td class="py-3 px-4 text-slate-600 font-medium">${ref.desc}</td>
                             <td class="py-3 px-2 text-center font-bold text-slate-800">${cantAt.toFixed(2)}</td>
-                            <td class="py-3 px-3 text-right text-slate-500">${ref.pu.toFixed(2)}</td>
+                            <td class="py-3 px-3 text-right text-slate-500">$${ref.pu.toFixed(2)}</td>
                             <td class="py-3 px-4 text-right font-extrabold text-slate-900">$${totalFila.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
                         </tr>`;
                 });
+
+                // 2. Trabajos Mayores y Especiales (Específicos para Octubre)
+                if (selectedMonthIdx === 9) {
+                    tbody.innerHTML += `
+                        <tr class="bg-orange-50/70 border-y border-orange-200">
+                            <td colspan="5" class="py-2 px-4 font-black text-[11px] text-orange-800 uppercase tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="wrench" class="w-3.5 h-3.5 text-orange-600"></i> Trabajos Mayores & Proyectos Especiales Ejecutados
+                            </td>
+                        </tr>`;
+
+                    TRABAJOS_ESPECIALES_OCTUBRE.forEach(item => {
+                        let totalFila = item.cant * item.pu;
+                        granTotalCant += item.cant;
+                        granTotalMonto += totalFila;
+
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-orange-50/30 transition-all border-b border-slate-100 bg-orange-50/10">
+                                <td class="py-3 px-4 font-black text-slate-900 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>${item.cat}
+                                </td>
+                                <td class="py-3 px-4 text-slate-700 font-medium">${item.desc}</td>
+                                <td class="py-3 px-2 text-center font-black text-orange-700">${item.cant.toFixed(2)}</td>
+                                <td class="py-3 px-3 text-right text-slate-600 font-bold">$${item.pu.toFixed(2)}</td>
+                                <td class="py-3 px-4 text-right font-black text-orange-700">$${totalFila.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                            </tr>`;
+                    });
+                }
             }
 
             document.getElementById('ahorro-total-cant').innerText = granTotalCant.toFixed(2);
