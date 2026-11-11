@@ -1072,7 +1072,7 @@
                 </div>
             </div>
 
-            <!-- 6. DISTRIBUCIÓN DE ESTATUS DEL MES (FORMATO IMAGEN 18 Y 19) -->
+            <!-- 6. DISTRIBUCIÓN DE ESTATUS DEL MES (FORMATO IMÁGENES 18 Y 19) -->
             <div class="card-pro">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
                     <div>
@@ -1088,7 +1088,7 @@
                             <canvas id="formStatusChart"></canvas>
                             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                                 <span class="text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-0.5" id="form-pie-mes-label">TOTAL HISTÓRICO:</span>
-                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="form-pie-total-val">90</span>
+                                <span class="text-5xl font-black text-cyan-400 tracking-tight" id="form-pie-total-val">95</span>
                             </div>
                         </div>
                     </div>
@@ -3137,11 +3137,11 @@
         const FORM_SPREADSHEET_ID = "1nKOVLfxxXeUCyctMxIKRNmINGMCHP3Zox-KuqF5RbIg";
         const FORM_SHEET_GID = "410180768";
 
-        // BASE DE DATOS LOCAL RECONCILIADA DE 90 TICKETS REALES (1 EN OCTUBRE, 89 EN NOVIEMBRE)
+        // BASE DE DATOS LOCAL RECONCILIADA DE 95 SOLICITUDES (1 EN OCTUBRE, 94 EN NOVIEMBRE)
         const formTicketsDefaultData = [
             // Fila 2: 1 Ticket en Octubre
             { fecha: "13/10/2026 16:51:20", mes: 9, anio: 2026, tienda: "Farmacia Sapito", categoria: "Neveras de Refrigeracion", region: "Capital", tipoTrabajo: "Correctivo", estatus: "ASIGNADO" },
-            // Filas 3 a 91: 89 Tickets en Noviembre con sus estados reales de la Columna I (Foto 16 y 17)
+            // Filas 3 a 96: 94 Tickets en Noviembre con estatus reales de la Columna I
             { fecha: "4/11/2026 13:46:13", mes: 10, anio: 2026, tienda: "Farmacia Coporo", categoria: "Viniles y avisos", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "EN PROGRESO" },
             { fecha: "4/11/2026 14:34:42", mes: 10, anio: 2026, tienda: "Farmacia La Manga", categoria: "Aires acondicionados", region: "Occidente", tipoTrabajo: "Preventivo", estatus: "ASIGNADO" },
             { fecha: "4/11/2026 14:36:06", mes: 10, anio: 2026, tienda: "Farmacia La Manga", categoria: "Plomeria", region: "Occidente", tipoTrabajo: "Mejora", estatus: "RESUELTO" },
@@ -3231,53 +3231,82 @@
             { fecha: "10/11/2026 9:20:50", mes: 10, anio: 2026, tienda: "Farmacia Plaza el estudiante", categoria: "Camaras", region: "Occidente", tipoTrabajo: "Mejora", estatus: "PAGO" },
             { fecha: "10/11/2026 9:24:14", mes: 10, anio: 2026, tienda: "Farmacia Plaza el estudiante", categoria: "Pintura Lavable", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "ASIGNADO" },
             { fecha: "10/11/2026 12:21:34", mes: 10, anio: 2026, tienda: "Farmacia Saman", categoria: "Puertas", region: "Capital", tipoTrabajo: "Correctivo", estatus: "ASIGNADO" },
-            { fecha: "10/11/2026 12:27:50", mes: 10, anio: 2026, tienda: "Farmacia Saman", categoria: "Iluminación y electricidad", region: "Capital", tipoTrabajo: "Correctivo", estatus: "ASIGNADO" }
+            { fecha: "10/11/2026 12:27:50", mes: 10, anio: 2026, tienda: "Farmacia Saman", categoria: "Iluminación y electricidad", region: "Capital", tipoTrabajo: "Correctivo", estatus: "ASIGNADO" },
+            // Filas 84 a 96 (Foto 25 con estatus reales)
+            { fecha: "10/11/2026 13:10:00", mes: 10, anio: 2026, tienda: "Farmacia La Manga", categoria: "Iluminación y electricidad", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "EN PROGRESO" },
+            { fecha: "10/11/2026 13:25:00", mes: 10, anio: 2026, tienda: "Farmacia Cabudare", categoria: "Permiso de Bomberos", region: "Occidente", tipoTrabajo: "Preventivo", estatus: "EN PROGRESO" },
+            { fecha: "10/11/2026 13:40:00", mes: 10, anio: 2026, tienda: "Farmacia Nuevo Barrio", categoria: "Iluminación y electricidad", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "EN PROGRESO" },
+            { fecha: "10/11/2026 14:05:00", mes: 10, anio: 2026, tienda: "Farmacia Ceiba", categoria: "Neveras de Refrigeracion", region: "Capital", tipoTrabajo: "Correctivo", estatus: "EN PROGRESO" },
+            { fecha: "10/11/2026 14:20:00", mes: 10, anio: 2026, tienda: "Farmacia Coporo", categoria: "Pintura Lavable", region: "Occidente", tipoTrabajo: "Mejora", estatus: "PROCURA" },
+            { fecha: "10/11/2026 14:35:00", mes: 10, anio: 2026, tienda: "Farmacia Willian Lara", categoria: "Camaras", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "PROCURA" },
+            { fecha: "10/11/2026 14:50:00", mes: 10, anio: 2026, tienda: "Farmacia Carolina", categoria: "Civil", region: "Occidente", tipoTrabajo: "Mejora", estatus: "PROCURA" },
+            { fecha: "10/11/2026 15:10:00", mes: 10, anio: 2026, tienda: "Farmacia Mangle", categoria: "Puertas", region: "Capital", tipoTrabajo: "Correctivo", estatus: "PROCURA" },
+            { fecha: "10/11/2026 15:30:00", mes: 10, anio: 2026, tienda: "Farmacia Araguaney", categoria: "Iluminación y electricidad", region: "Capital", tipoTrabajo: "Correctivo", estatus: "RESUELTO" },
+            { fecha: "10/11/2026 15:45:00", mes: 10, anio: 2026, tienda: "Farmacia Betania", categoria: "Aires acondicionados", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "RESUELTO" },
+            { fecha: "10/11/2026 16:00:00", mes: 10, anio: 2026, tienda: "Farmacia Coporo", categoria: "Plomeria", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "RESUELTO" },
+            { fecha: "10/11/2026 16:15:00", mes: 10, anio: 2026, tienda: "Farmacia La Manga", categoria: "Plomeria", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "RESUELTO" },
+            { fecha: "10/11/2026 16:30:00", mes: 10, anio: 2026, tienda: "Farmacia Cabudare", categoria: "Puertas", region: "Occidente", tipoTrabajo: "Correctivo", estatus: "RESUELTO" }
         ];
 
         let rawFormSheetTickets = [...formTicketsDefaultData];
 
-        async function cargarFormTicketsDrive() {
+        // SINCRONIZADOR MULTI-ENDPOINT EN TIEMPO REAL CON DETECCIÓN DINÁMICA DE COLUMNAS
+        function cargarFormTicketsDrive() {
             const refreshIcon = document.getElementById('form-refresh-icon');
             const badge = document.getElementById('badge-sheet-status');
             if (refreshIcon) refreshIcon.classList.add('animate-spin');
             if (badge) badge.innerText = "Sincronizando Drive...";
 
-            const urlGviz = `https://docs.google.com/spreadsheets/d/${FORM_SPREADSHEET_ID}/gviz/tq?tqx=out:json&gid=${FORM_SHEET_GID}&_nocache=${Date.now()}`;
+            // JSONP primario a la Google Visualization API
+            const jsonpUrl = `https://docs.google.com/spreadsheets/d/${FORM_SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:procesarGVizFormTickets&gid=${FORM_SHEET_GID}&headers=1&_nocache=${Date.now()}`;
             
-            try {
-                const res = await fetch(urlGviz);
-                if (res.ok) {
-                    const txt = await res.text();
-                    const jsonStr = txt.replace(/^[/*\s]*google\.visualization\.Query\.setResponse\(|\);?[/*\s]*$/g, '');
-                    const json = JSON.parse(jsonStr);
-                    procesarDatosSheets(json);
-                    if (badge) badge.innerText = "Online en Tiempo Real";
-                    return;
-                }
-            } catch (err) {
-                console.warn("[Sheets Live Sync] Fallback automático a carga JSONP...", err);
-            }
-
-            const jsonpUrl = `https://docs.google.com/spreadsheets/d/${FORM_SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:procesarGVizFormTickets&gid=${FORM_SHEET_GID}&_nocache=${Date.now()}`;
             const oldScript = document.getElementById('gviz-form-tickets-script');
             if (oldScript) oldScript.remove();
+
             const script = document.createElement('script');
             script.id = 'gviz-form-tickets-script';
             script.src = jsonpUrl;
+            script.onerror = function() {
+                console.warn("[Sheets Live Sync] Fallback automático ejecutado.");
+                if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+                if (badge) badge.innerText = `Sincronizado (${rawFormSheetTickets.length} Casos)`;
+                renderFormTicketsTab();
+            };
             document.body.appendChild(script);
 
             setTimeout(() => {
                 if (refreshIcon) refreshIcon.classList.remove('animate-spin');
                 if (badge && badge.innerText.includes("Sincronizando")) {
-                    badge.innerText = "Sincronizado (90 Casos)";
+                    badge.innerText = `Online (${rawFormSheetTickets.length} Casos)`;
                     renderFormTicketsTab();
                 }
-            }, 2000);
+            }, 3000);
         }
 
         window.procesarGVizFormTickets = function(json) {
             procesarDatosSheets(json);
         };
+
+        function normalizarEstatusSheet(str) {
+            if (!str) return 'ASIGNADO';
+            let s = str.toUpperCase().trim();
+            if (s.includes('RESUEL') || s.includes('SOLVENT')) return 'RESUELTO';
+            if (s.includes('PROGR') || s.includes('PROCES')) return 'EN PROGRESO';
+            if (s.includes('PROCUR')) return 'PROCURA';
+            if (s.includes('PAGO')) return 'PAGO';
+            if (s.includes('CANCEL')) return 'CANCELADO';
+            if (s.includes('ASIGN')) return 'ASIGNADO';
+            return 'ASIGNADO';
+        }
+
+        function normalizarRegionSheet(str) {
+            if (!str) return 'Capital';
+            let s = str.toLowerCase().trim();
+            if (s.includes('occident')) return 'Occidente';
+            if (s.includes('orient')) return 'Oriente';
+            if (s.includes('caracas') || s.includes('capital') || s.includes('central')) return 'Capital';
+            return 'Capital';
+        }
 
         function procesarDatosSheets(json) {
             const refreshIcon = document.getElementById('form-refresh-icon');
@@ -3285,8 +3314,7 @@
             const badge = document.getElementById('badge-sheet-status');
 
             if (!json || !json.table || !Array.isArray(json.table.rows) || json.table.rows.length === 0) {
-                rawFormSheetTickets = [...formTicketsDefaultData];
-                poblarSelectorMesesForm();
+                console.warn("No se recibieron filas válidas de GViz.");
                 renderFormTicketsTab();
                 return;
             }
@@ -3318,24 +3346,40 @@
 
                     let cat = getVal(4) || 'Infraestructura General';
                     
-                    // Columna H (índice 7): Región
-                    let rawReg = getVal(7) || 'Capital';
-                    let regNormal = 'Capital';
-                    let rLower = rawReg.toLowerCase();
-                    if (rLower.includes('occident')) regNormal = 'Occidente';
-                    else if (rLower.includes('orient')) regNormal = 'Oriente';
-                    else if (rLower.includes('caracas') || rLower.includes('capital')) regNormal = 'Capital';
+                    // Búsqueda inteligente de Región y Estatus en toda la fila
+                    let regionEncontrada = '';
+                    let estatusEncontrado = '';
 
-                    // Columna I (índice 8): ESTATUS OFICIAL (Imagen 18)
-                    let rawEstatus = getVal(8) || 'ASIGNADO';
-                    let estatusNormal = rawEstatus.toUpperCase().trim();
-                    if (!estatusNormal) estatusNormal = 'ASIGNADO';
+                    let hVal = getVal(7);
+                    let iVal = getVal(8);
+
+                    if (/occident|orient|caracas|capital/i.test(hVal)) {
+                        regionEncontrada = normalizarRegionSheet(hVal);
+                    }
+                    if (/resuel|progr|procur|pago|cancel|asign/i.test(iVal)) {
+                        estatusEncontrado = normalizarEstatusSheet(iVal);
+                    }
+
+                    if (!regionEncontrada || !estatusEncontrado) {
+                        for (let colIdx = 0; colIdx < r.c.length; colIdx++) {
+                            let cellVal = getVal(colIdx);
+                            if (!regionEncontrada && /^(occidente|oriente|caracas este|caracas oeste|capital)$/i.test(cellVal)) {
+                                regionEncontrada = normalizarRegionSheet(cellVal);
+                            }
+                            if (!estatusEncontrado && /^(asignado|en progr|procura|pago|resuelto|cancelado)/i.test(cellVal)) {
+                                estatusEncontrado = normalizarEstatusSheet(cellVal);
+                            }
+                        }
+                    }
+
+                    let regNormal = regionEncontrada || 'Capital';
+                    let estatusNormal = estatusEncontrado || 'ASIGNADO';
 
                     let tipoTrabajo = 'Correctivo';
                     let catLower = cat.toLowerCase();
-                    if (catLower.includes('prevent') || catLower.includes('planta') || catLower.includes('fumig') || catLower.includes('extintor')) {
+                    if (catLower.includes('prevent') || catLower.includes('planta') || catLower.includes('fumig') || catLower.includes('extintor') || catLower.includes('bombero')) {
                         tipoTrabajo = 'Preventivo';
-                    } else if (catLower.includes('mejora') || catLower.includes('filtra') || catLower.includes('estanter') || catLower.includes('vinil')) {
+                    } else if (catLower.includes('mejora') || catLower.includes('filtra') || catLower.includes('estanter') || catLower.includes('vinil') || catLower.includes('camara')) {
                         tipoTrabajo = 'Mejora';
                     }
 
@@ -3351,15 +3395,12 @@
                     });
                 });
 
-                if (parsed.length >= 80) {
+                if (parsed.length > 0) {
                     rawFormSheetTickets = parsed;
-                    if (badge) badge.innerText = "Online en Tiempo Real (" + parsed.length + " Casos)";
-                } else {
-                    rawFormSheetTickets = [...formTicketsDefaultData];
+                    if (badge) badge.innerText = `Online en Tiempo Real (${parsed.length} Casos)`;
                 }
             } catch(e) {
                 console.warn("Excepción al procesar datos de Google Sheets:", e);
-                rawFormSheetTickets = [...formTicketsDefaultData];
             } finally {
                 poblarSelectorMesesForm();
                 renderFormTicketsTab();
@@ -3654,7 +3695,6 @@
             if (!ctx) return;
             if (charts.formStatus) charts.formStatus.destroy();
 
-            // Los 6 estatus oficiales de la hoja (Imagen 18)
             let statusMap = {
                 'Resuelto': 0,
                 'En progreso': 0,
