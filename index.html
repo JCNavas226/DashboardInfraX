@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; margin: 0; padding: 0; overflow-x: hidden; }
         .card-pro { background: #ffffff; border-radius: 1.25rem; border: 1px solid #e2e8f0; padding: 1.25rem; box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04); transition: all 0.25s ease; }
         .card-pro:hover { box-shadow: 0 12px 25px -4px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
         #loader-overlay { display: none; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); }
@@ -25,7 +25,7 @@
         .quarter-pill-active { background-color: #ff5500; color: #ffffff; box-shadow: 0 4px 12px rgba(255, 85, 0, 0.25); }
     </style>
 </head>
-<body class="flex min-h-screen">
+<body class="flex min-h-screen w-full">
 
     <!-- LOADER OVERLAY -->
     <div id="loader-overlay" class="fixed inset-0 z-[100] flex items-center justify-center">
@@ -81,7 +81,6 @@
                 <button id="nav-btn-pendientes" onclick="switchTab('pendientes')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i> Solicitudes de Pedido (SP &gt; 3m)
                 </button>
-
                 <button id="nav-btn-asistente" onclick="switchTab('asistente')" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-slate-400 font-semibold text-xs hover:bg-slate-800 hover:text-white transition-all">
                     <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i> Asistente Inteligente BI
                 </button>
@@ -99,7 +98,7 @@
         </div>
     </aside>
 
-    <main class="ml-72 flex-grow p-8 space-y-8 max-w-[1600px]">
+    <main class="ml-72 flex-1 min-w-0 p-8 space-y-8 max-w-[1600px]">
         
         <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
             <div class="flex items-center gap-4">
@@ -233,7 +232,7 @@
 
             <!-- MÓDULO: RENDIMIENTO DE COORDINADORES CON PANELES SEPARADOS (MES VS BACKLOG) -->
             <div class="space-y-6">
-                <!-- PANEL 1: CASOS DEL MES EN CURSO (OCTUBRE 2026 AUDITADO) -->
+                <!-- PANEL 1: CASOS DEL MES EN CURSO -->
                 <div class="card-pro bg-white space-y-4">
                     <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                         <div>
@@ -247,7 +246,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="coordinadores-container"></div>
                 </div>
 
-                <!-- PANEL 2: GESTIÓN DE BACKLOG PREVIO POR COORDINADOR (RECONCILIACIÓN 100% MATEMÁTICA CON 138, 51, 33) -->
+                <!-- PANEL 2: GESTIÓN DE BACKLOG PREVIO POR COORDINADOR -->
                 <div class="card-pro bg-slate-900 text-white space-y-4">
                     <div class="flex justify-between items-center pb-3 border-b border-slate-800">
                         <div>
@@ -410,7 +409,7 @@
                     </div>
                 </div>
 
-                <!-- AUDITORÍA DE BACKLOG COINCIDENTE: 138 Capital, 51 Occidente, 33 Oriente -->
+                <!-- AUDITORÍA DE BACKLOG COINCIDENTE -->
                 <div class="card-pro bg-slate-900 text-white p-6">
                     <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
                         <h4 class="text-sm font-extrabold uppercase tracking-wider text-orange-400 flex items-center gap-2">
@@ -894,7 +893,7 @@
             </div>
         </div>
 
-                <!-- TICKETS FORMULARIO GOOGLE SHEETS (7 REPORTES SOLICITADOS) -->
+        <!-- TICKETS FORMULARIO GOOGLE SHEETS (7 REPORTES SOLICITADOS) -->
         <div id="tab-content-form-tickets" class="space-y-8">
             <!-- HEADER DE LA PESTAÑA -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
@@ -979,7 +978,7 @@
                 </div>
             </div>
 
-            <!-- 2. DEMANDA DE CRECIMIENTO DINÁMICA (ESTILO IDÉNTICO A DASHBOARD GLOBAL) -->
+            <!-- 2. DEMANDA DE CRECIMIENTO DINÁMICA -->
             <div class="card-pro bg-white p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 gap-2">
                     <div>
@@ -1035,7 +1034,7 @@
                 </div>
             </div>
 
-            <!-- 5. TIPO DE TRABAJO SOLICITADO (FORMATO DASHBOARD GLOBAL) -->
+            <!-- 5. TIPO DE TRABAJO SOLICITADO -->
             <div class="card-pro">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
                     <div>
@@ -1073,7 +1072,7 @@
                 </div>
             </div>
 
-            <!-- 6. DISTRIBUCIÓN DE ESTATUS DEL MES (FORMATO IMÁGENES 18 Y 19) -->
+            <!-- 6. DISTRIBUCIÓN DE ESTATUS DEL MES -->
             <div class="card-pro">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-100">
                     <div>
@@ -1123,7 +1122,7 @@
             </div>
         </div>
 
-<!-- ASISTENTE INTELIGENTE BI -->
+        <!-- ASISTENTE INTELIGENTE BI -->
         <div id="tab-content-asistente" class="space-y-8 hidden">
             <div class="card-pro bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 text-white p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
@@ -1205,7 +1204,7 @@
             { farmacia: 'FARMACIA BETANIA', julio: 890, agosto: 950, sept: 1050, oct: 1200, total: 4090 }
         ];
 
-        // 1. DATOS REALES DE ODOO (OCTUBRE: 173 CAPITAL, 66 OCCIDENTE, 86 ORIENTE = 325 TICKETS)[cite: 14, 16, 17]
+        // 1. DATOS REALES DE ODOO (OCTUBRE: 173 CAPITAL, 66 OCCIDENTE, 86 ORIENTE = 325 TICKETS)
         let appData = {
             Capital: [
                 { sol: 206, at: 193, canc: 13 }, { sol: 195, at: 166, canc: 29 },
@@ -1301,7 +1300,7 @@
             }
         };
 
-        // 2. COORDINADORES MES ACTUAL (OCTUBRE 2026 AUDITADO DIRECTO)[cite: 14, 16, 17]
+        // 2. COORDINADORES MES ACTUAL (OCTUBRE 2026 AUDITADO DIRECTO)
         let coordinadoresData = {
             9: {
                 "Alejandro Villegas": { region: "Capital", asignados: 89, resueltos: 53 },
@@ -1484,7 +1483,6 @@
             cargarDirectorioSedes();
             cargarGastosMensualesDrive();
             cargarGastosDetalladosDrive();
-            cargarFormTicketsDrive();
         };
 
         function generarMesesDinamicos() {
@@ -1505,7 +1503,7 @@
             });
         }
 
-        // MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL CON ODOO (ANTI-CACHÉ ABSOLUTO)
+        // MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL CON ODOO
         async function syncWithOdoo() {
             const loader = document.getElementById('loader-overlay');
             const syncIcon = document.getElementById('sync-icon');
@@ -1524,8 +1522,6 @@
                 const result = await res.json();
 
                 if (result && Array.isArray(result.data) && result.data.length > 0) {
-                    console.log(`[Odoo Live Sync] Total tickets recibidos de Odoo: ${result.data.length}`);
-
                     let tempAppData = {
                         Capital: Array.from({length: 12}, () => ({ sol: 0, at: 0, canc: 0 })),
                         Occidente: Array.from({length: 12}, () => ({ sol: 0, at: 0, canc: 0 })),
@@ -1572,7 +1568,6 @@
                         let coordName = t.user_id ? (Array.isArray(t.user_id) ? t.user_id[1] : t.user_id) : "";
                         let coordLower = (coordName || "").toLowerCase().trim();
 
-                        // CLASIFICACIÓN REGIONAL
                         let reg = "Capital";
                         if (coordLower.includes("carlos diaz") || team.includes("orient") || teamIdNum === 77) {
                             reg = "Oriente";
@@ -1590,14 +1585,12 @@
                         let inProgress = (stageId === 2) || stage.includes("progress") || stage.includes("progr") || stage.includes("proceso");
                         let inProcura = (stageId === 8) || stage.includes("procura") || stage.includes("espera");
 
-                        // PENDIENTES DE MESES ANTERIORES (BACKLOG)
                         let isFromPriorMonths = (ticketYear < 2026) || (ticketYear === 2026 && ticketMonth < 9);
                         if (isFromPriorMonths) {
                             if (!isResolved && !isCancelled) tempBacklogPend[reg]++;
                             else if (isResolved) tempBacklogRes[reg]++;
                         }
 
-                        // CONTEO DEL MES EN CURSO PARA EL PRIMER CUADRO
                         if (ticketYear === 2026 && ticketMonth === 9) {
                             if (coordName && coordName !== "False" && coordLower !== "" && !coordLower.includes("admin") && !coordLower.includes("bot")) {
                                 if (!tempCoordCounts[9]) tempCoordCounts[9] = {};
@@ -1638,8 +1631,6 @@
                         if (isCancelled) tempAppData[reg][ticketMonth].canc++;
                         else if (isResolved) tempAppData[reg][ticketMonth].at++;
                     });
-
-                    console.log(`[Odoo Live Sync] Total procesado para Octubre 2026: ${ticketsInOct} tickets.`);
 
                     if (ticketsInOct > 0) {
                         REGIONES.forEach(r => {
@@ -1698,9 +1689,7 @@
             }
         }
 
-        // RENDERIZA AMBOS CUADROS DE FORMA TOTALMENTE SEPARADA
         function renderCoordinadores(selectedMonthIdx) {
-            // 1. CUADRO 1: CASOS DEL MES EN CURSO (OCTUBRE)
             const containerMes = document.getElementById('coordinadores-container');
             if (containerMes) {
                 containerMes.innerHTML = '';
@@ -1725,7 +1714,6 @@
                 });
             }
 
-            // 2. CUADRO 2: GESTIÓN DE BACKLOG DE MESES PREVIOS (RECONCILIACIÓN 100% MATEMÁTICA CON 138, 51, 33)
             const containerBacklog = document.getElementById('coordinadores-backlog-container');
             if (containerBacklog) {
                 containerBacklog.innerHTML = '';
@@ -1801,7 +1789,6 @@
             renderAhorrosTab();
         }
 
-        // PESTAÑA AHORROS ESTIMADOS: CONSOLIDADO REGULAR + TRABAJOS MAYORES SOLICITADOS
         function renderAhorrosTab() {
             const selector = document.getElementById('ahorroMesSelector');
             const key = selector ? selector.value : 'octubre';
@@ -1833,7 +1820,6 @@
             if (tbody) {
                 tbody.innerHTML = '';
 
-                // 1. Mantenimientos de Rutina
                 Object.keys(solMap).forEach(cat => {
                     let cantAt = atMap[cat] || 0;
                     let ref = PRECIOS_REFERENCIA[cat] || { pu: 50.00, desc: 'Atención general de servicios' };
@@ -1852,7 +1838,6 @@
                         </tr>`;
                 });
 
-                // 2. Trabajos Mayores y Especiales (Octubre)
                 if (selectedMonthIdx === 9) {
                     tbody.innerHTML += `
                         <tr class="bg-orange-50/70 border-y border-orange-200">
@@ -3059,7 +3044,7 @@
                 btnDash.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-orange-600 text-white font-bold text-xs shadow-lg shadow-orange-600/20 transition-all";
                 contentDash.classList.remove('hidden');
                 if(badgeIcon) badgeIcon.innerText = "SLA";
-                if(title) title.innerHTML = `Tickets Google Form <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Live Drive</span>`;
+                if(title) title.innerHTML = `Dashboard Global <span class="bg-orange-100 text-orange-800 text-xs px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Odoo Live</span>`;
             } else if (tab === 'trimestral') {
                 if(btnTrim) btnTrim.className = "w-full flex items-center gap-3.5 px-4 py-3 rounded-xl bg-cyan-600 text-white font-bold text-xs shadow-lg shadow-cyan-600/20 transition-all";
                 if(contentTrim) contentTrim.classList.remove('hidden');
@@ -3138,975 +3123,109 @@
         // ==========================================
         const FORM_SPREADSHEET_ID = "1nKOVLfxxXeUCyctMxIKRNmINGMCHP3Zox-KuqF5RbIg";
         const FORM_SHEET_GID = "410180768";
-        const MES_FILTRO_INICIAL = 10; // Exclusivamente a partir de Noviembre 2026 (0-indexed: 10 = Noviembre)
+        const MES_FILTRO_INICIAL = 10; // Noviembre 2026 (0-indexed: 10 = Noviembre)
 
-        // BASE DE DATOS LOCAL RECONCILIADA DE 96 SOLICITUDES DE NOVIEMBRE 2026 (DE LAS 97 TOTALES)
         const formTicketsDefaultData = [
-            {
-                        "fecha": "4/11/2026 13:46:13",
-                        "tienda": "Farmacia Coporo",
-                        "categoria": "Viniles y avisos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 14:34:42",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Aires acondicionados",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 14:36:06",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Plomeria",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "RESUELTO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 14:43:34",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Neveras de Refrigeracion",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 14:46:40",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Neveras de Refrigeracion",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 14:52:11",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Estanteria",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "RESUELTO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "4/11/2026 15:28:43",
-                        "tienda": "Farmacia Gran Colombia",
-                        "categoria": "Filtraciones",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 7:28:17",
-                        "tienda": "Farmacia Farmatin",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 8:27:16",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Plomeria",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 9:02:49",
-                        "tienda": "Farmacia Erika",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 9:59:30",
-                        "tienda": "Farmacia Nuevo Barrio",
-                        "categoria": "Planta e inversores",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "RESUELTO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:10:08",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Viniles y avisos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:13:04",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Estanteria",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:26:10",
-                        "tienda": "Farmacia Cabudare",
-                        "categoria": "Aires acondicionados",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:29:49",
-                        "tienda": "Farmacia Cabudare",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:31:26",
-                        "tienda": "Farmacia Cabudare",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:39:44",
-                        "tienda": "Farmacia Cabudare",
-                        "categoria": "Extintores y central de Incendios",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:43:19",
-                        "tienda": "Farmacia Payara",
-                        "categoria": "Extintores y central de Incendios",
-                        "region": "Oriente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:54:14",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Camaras",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:55:30",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Pintura Lavable",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:56:28",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:57:24",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:58:20",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Aires acondicionados",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 11:59:48",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Extintores y central de Incendios",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 12:00:46",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Filtraciones",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 12:01:53",
-                        "tienda": "Farmacia Cafe",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 12:27:41",
-                        "tienda": "Farmacia Plaza el estudiante",
-                        "categoria": "Filtraciones",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:20:34",
-                        "tienda": "Farmacia Las Rosas",
-                        "categoria": "Pintura Lavable",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:32:25",
-                        "tienda": "Farmacia Las Rosas",
-                        "categoria": "Pintura Lavable",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:54:02",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:55:59",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:57:29",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Extintores y central de Incendios",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 13:59:06",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:00:05",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Viniles y avisos",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:03:17",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:04:39",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Viniles y avisos",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:04:44",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Fumigación",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:05:39",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Viniles y avisos",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:07:04",
-                        "tienda": "Farmacia Estefania",
-                        "categoria": "Planta e inversores",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:13:42",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:15:37",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Neveras de Refrigeracion",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:23:16",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:25:13",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:26:43",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:28:48",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Pintura Lavable",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:36:07",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Mobiliario",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:38:25",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Camaras",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:39:52",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Mobiliario",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:41:53",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Mobiliario",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:44:52",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:47:03",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Servicios Generales",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:49:27",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 14:53:52",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 15:02:11",
-                        "tienda": "Farmacia Las Rosas",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 15:14:12",
-                        "tienda": "Farmacia Las Rosas",
-                        "categoria": "Aires acondicionados",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 16:48:31",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 16:53:20",
-                        "tienda": "Farmacia Tamarindo",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "5/11/2026 17:00:30",
-                        "tienda": "Farmacia Tamarindo",
-                        "categoria": "Extintores y central de Incendios",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 10:17:03",
-                        "tienda": "Farmacia Tamarindo",
-                        "categoria": "Viniles y avisos",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 10:28:11",
-                        "tienda": "Farmacia Cardenalito",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 10:39:14",
-                        "tienda": "Farmacia Cardenalito",
-                        "categoria": "Fumigación",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 10:59:18",
-                        "tienda": "Farmacia Cardenalito",
-                        "categoria": "Viniles y avisos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:35:27",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Mobiliario",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:40:21",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:43:00",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:52:12",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Filtraciones",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:54:19",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 19:55:20",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Pintura Lavable",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 20:10:08",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Civil",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "6/11/2026 20:15:10",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Santa maria y candados",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "7/11/2026 16:16:01",
-                        "tienda": "Farmacia Turpial",
-                        "categoria": "Planta e inversores",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "8/11/2026 10:03:25",
-                        "tienda": "Farmacia Mangle",
-                        "categoria": "Estanteria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "8/11/2026 11:45:00",
-                        "tienda": "Farmacia Willian Lara",
-                        "categoria": "Permiso de Bomberos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 15:00:40",
-                        "tienda": "Farmacia Iguana",
-                        "categoria": "Aires acondicionados",
-                        "region": "Capital",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 15:08:12",
-                        "tienda": "Farmacia Pajaro",
-                        "categoria": "Plomeria",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 15:25:51",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Santa maria y candados",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 16:57:24",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Santa maria y candados",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 18:04:23",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Viniles y avisos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 18:05:46",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Viniles y avisos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 18:40:37",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "9/11/2026 18:55:01",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 7:24:59",
-                        "tienda": "Farmacia Medi-salud",
-                        "categoria": "Permiso de Bomberos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 7:48:30",
-                        "tienda": "Farmacia Medi-salud",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 7:48:30",
-                        "tienda": "Farmacia Orquidea",
-                        "categoria": "Neveras de Refrigeracion",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 9:08:29",
-                        "tienda": "Farmacia Plaza el estudiante",
-                        "categoria": "Santa maria y candados",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 9:20:50",
-                        "tienda": "Farmacia Plaza el estudiante",
-                        "categoria": "Camaras",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "PAGO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 9:24:14",
-                        "tienda": "Farmacia Plaza el estudiante",
-                        "categoria": "Pintura Lavable",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 12:21:34",
-                        "tienda": "Farmacia Saman",
-                        "categoria": "Puertas",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 12:27:50",
-                        "tienda": "Farmacia Saman",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "ASIGNADO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 13:10:00",
-                        "tienda": "Farmacia La Manga",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 13:25:00",
-                        "tienda": "Farmacia Cabudare",
-                        "categoria": "Permiso de Bomberos",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Preventivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 13:40:00",
-                        "tienda": "Farmacia Nuevo Barrio",
-                        "categoria": "Iluminación y electricidad",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 14:05:00",
-                        "tienda": "Farmacia Ceiba",
-                        "categoria": "Neveras de Refrigeracion",
-                        "region": "Capital",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "EN PROGRESO",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 14:20:00",
-                        "tienda": "Farmacia Coporo",
-                        "categoria": "Pintura Lavable",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 14:35:00",
-                        "tienda": "Farmacia Willian Lara",
-                        "categoria": "Camaras",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Correctivo",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            },
-            {
-                        "fecha": "10/11/2026 14:50:00",
-                        "tienda": "Farmacia Carolina",
-                        "categoria": "Civil",
-                        "region": "Occidente",
-                        "tipoTrabajo": "Mejora",
-                        "estatus": "PROCURA",
-                        "mes": 10,
-                        "anio": 2026
-            }
-];
+            { "fecha": "4/11/2026 13:46:13", "tienda": "Farmacia Coporo", "categoria": "Viniles y avisos", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 14:34:42", "tienda": "Farmacia La Manga", "categoria": "Aires acondicionados", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 14:36:06", "tienda": "Farmacia La Manga", "categoria": "Plomeria", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "RESUELTO", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 14:43:34", "tienda": "Farmacia La Manga", "categoria": "Neveras de Refrigeracion", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "PROCURA", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 14:46:40", "tienda": "Farmacia La Manga", "categoria": "Neveras de Refrigeracion", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "PROCURA", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 14:52:11", "tienda": "Farmacia La Manga", "categoria": "Estanteria", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "RESUELTO", "mes": 10, "anio": 2026 },
+            { "fecha": "4/11/2026 15:28:43", "tienda": "Farmacia Gran Colombia", "categoria": "Filtraciones", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 7:28:17", "tienda": "Farmacia Farmatin", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 8:27:16", "tienda": "Farmacia La Manga", "categoria": "Plomeria", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 9:02:49", "tienda": "Farmacia Erika", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 9:59:30", "tienda": "Farmacia Nuevo Barrio", "categoria": "Planta e inversores", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "RESUELTO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:10:08", "tienda": "Farmacia La Manga", "categoria": "Viniles y avisos", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:13:04", "tienda": "Farmacia La Manga", "categoria": "Estanteria", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:26:10", "tienda": "Farmacia Cabudare", "categoria": "Aires acondicionados", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:29:49", "tienda": "Farmacia Cabudare", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:31:26", "tienda": "Farmacia Cabudare", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:39:44", "tienda": "Farmacia Cabudare", "categoria": "Extintores y central de Incendios", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:43:19", "tienda": "Farmacia Payara", "categoria": "Extintores y central de Incendios", "region": "Oriente", "tipoTrabajo": "Correctivo", "estatus": "PROCURA", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:54:14", "tienda": "Farmacia Cafe", "categoria": "Camaras", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:55:30", "tienda": "Farmacia Cafe", "categoria": "Pintura Lavable", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:56:28", "tienda": "Farmacia Cafe", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:57:24", "tienda": "Farmacia Cafe", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:58:20", "tienda": "Farmacia Cafe", "categoria": "Aires acondicionados", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 11:59:48", "tienda": "Farmacia Cafe", "categoria": "Extintores y central de Incendios", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 12:00:46", "tienda": "Farmacia Cafe", "categoria": "Filtraciones", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 12:01:53", "tienda": "Farmacia Cafe", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 12:27:41", "tienda": "Farmacia Plaza el estudiante", "categoria": "Filtraciones", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:20:34", "tienda": "Farmacia Las Rosas", "categoria": "Pintura Lavable", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:32:25", "tienda": "Farmacia Las Rosas", "categoria": "Pintura Lavable", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:54:02", "tienda": "Farmacia Estefania", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:55:59", "tienda": "Farmacia Estefania", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:57:29", "tienda": "Farmacia Estefania", "categoria": "Extintores y central de Incendios", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 13:59:06", "tienda": "Farmacia Estefania", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:00:05", "tienda": "Farmacia Estefania", "categoria": "Viniles y avisos", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:03:17", "tienda": "Farmacia Estefania", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:04:39", "tienda": "Farmacia Estefania", "categoria": "Viniles y avisos", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:04:44", "tienda": "Farmacia Ceiba", "categoria": "Fumigación", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:05:39", "tienda": "Farmacia Estefania", "categoria": "Viniles y avisos", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:07:04", "tienda": "Farmacia Estefania", "categoria": "Planta e inversores", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:13:42", "tienda": "Farmacia Ceiba", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:15:37", "tienda": "Farmacia Ceiba", "categoria": "Neveras de Refrigeracion", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:23:16", "tienda": "Farmacia Ceiba", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:25:13", "tienda": "Farmacia Ceiba", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:26:43", "tienda": "Farmacia Ceiba", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:28:48", "tienda": "Farmacia Ceiba", "categoria": "Pintura Lavable", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:36:07", "tienda": "Farmacia Ceiba", "categoria": "Mobiliario", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:38:25", "tienda": "Farmacia Ceiba", "categoria": "Camaras", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:39:52", "tienda": "Farmacia Ceiba", "categoria": "Mobiliario", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:41:53", "tienda": "Farmacia Ceiba", "categoria": "Mobiliario", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:44:52", "tienda": "Farmacia Ceiba", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:47:03", "tienda": "Farmacia Ceiba", "categoria": "Servicios Generales", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:49:27", "tienda": "Farmacia Ceiba", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 14:53:52", "tienda": "Farmacia Ceiba", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 15:02:11", "tienda": "Farmacia Las Rosas", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 15:14:12", "tienda": "Farmacia Las Rosas", "categoria": "Aires acondicionados", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 16:48:31", "tienda": "Farmacia Turpial", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 16:53:20", "tienda": "Farmacia Tamarindo", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "5/11/2026 17:00:30", "tienda": "Farmacia Tamarindo", "categoria": "Extintores y central de Incendios", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 10:17:03", "tienda": "Farmacia Tamarindo", "categoria": "Viniles y avisos", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 10:28:11", "tienda": "Farmacia Cardenalito", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 10:39:14", "tienda": "Farmacia Cardenalito", "categoria": "Fumigación", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 10:59:18", "tienda": "Farmacia Cardenalito", "categoria": "Viniles y avisos", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:35:27", "tienda": "Farmacia Turpial", "categoria": "Mobiliario", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:40:21", "tienda": "Farmacia Turpial", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:43:00", "tienda": "Farmacia Turpial", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:52:12", "tienda": "Farmacia Turpial", "categoria": "Filtraciones", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:54:19", "tienda": "Farmacia Turpial", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 19:55:20", "tienda": "Farmacia Turpial", "categoria": "Pintura Lavable", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 20:10:08", "tienda": "Farmacia Turpial", "categoria": "Civil", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "6/11/2026 20:15:10", "tienda": "Farmacia Turpial", "categoria": "Santa maria y candados", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "7/11/2026 16:16:01", "tienda": "Farmacia Turpial", "categoria": "Planta e inversores", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "8/11/2026 10:03:25", "tienda": "Farmacia Mangle", "categoria": "Estanteria", "region": "Capital", "tipoTrabajo": "Mejora", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "8/11/2026 11:45:00", "tienda": "Farmacia Willian Lara", "categoria": "Permiso de Bomberos", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 15:00:40", "tienda": "Farmacia Iguana", "categoria": "Aires acondicionados", "region": "Capital", "tipoTrabajo": "Preventivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 15:08:12", "tienda": "Farmacia Pajaro", "categoria": "Plomeria", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 15:25:51", "tienda": "Farmacia Carolina", "categoria": "Santa maria y candados", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 16:57:24", "tienda": "Farmacia Carolina", "categoria": "Santa maria y candados", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 18:04:23", "tienda": "Farmacia Carolina", "categoria": "Viniles y avisos", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 18:05:46", "tienda": "Farmacia Carolina", "categoria": "Viniles y avisos", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 18:40:37", "tienda": "Farmacia Carolina", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "9/11/2026 18:55:01", "tienda": "Farmacia Carolina", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 7:24:59", "tienda": "Farmacia Medi-salud", "categoria": "Permiso de Bomberos", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 7:48:30", "tienda": "Farmacia Medi-salud", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 7:48:30", "tienda": "Farmacia Orquidea", "categoria": "Neveras de Refrigeracion", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 9:08:29", "tienda": "Farmacia Plaza el estudiante", "categoria": "Santa maria y candados", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 9:20:50", "tienda": "Farmacia Plaza el estudiante", "categoria": "Camaras", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "PAGO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 9:24:14", "tienda": "Farmacia Plaza el estudiante", "categoria": "Pintura Lavable", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 12:21:34", "tienda": "Farmacia Saman", "categoria": "Puertas", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 12:27:50", "tienda": "Farmacia Saman", "categoria": "Iluminación y electricidad", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "ASIGNADO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 13:10:00", "tienda": "Farmacia La Manga", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 13:25:00", "tienda": "Farmacia Cabudare", "categoria": "Permiso de Bomberos", "region": "Occidente", "tipoTrabajo": "Preventivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 13:40:00", "tienda": "Farmacia Nuevo Barrio", "categoria": "Iluminación y electricidad", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 14:05:00", "tienda": "Farmacia Ceiba", "categoria": "Neveras de Refrigeracion", "region": "Capital", "tipoTrabajo": "Correctivo", "estatus": "EN PROGRESO", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 14:20:00", "tienda": "Farmacia Coporo", "categoria": "Pintura Lavable", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "PROCURA", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 14:35:00", "tienda": "Farmacia Willian Lara", "categoria": "Camaras", "region": "Occidente", "tipoTrabajo": "Correctivo", "estatus": "PROCURA", "mes": 10, "anio": 2026 },
+            { "fecha": "10/11/2026 14:50:00", "tienda": "Farmacia Carolina", "categoria": "Civil", "region": "Occidente", "tipoTrabajo": "Mejora", "estatus": "PROCURA", "mes": 10, "anio": 2026 }
+        ];
 
         let rawFormSheetTickets = [...formTicketsDefaultData];
 
-        // MOTOR DE CONEXIÓN EN TIEMPO REAL CON GOOGLE SHEETS (JSONP GVIZ)
         function cargarFormTicketsDrive() {
             const refreshIcon = document.getElementById('form-refresh-icon');
             const badge = document.getElementById('badge-sheet-status');
@@ -4191,11 +3310,9 @@
                         mes = (p2 > 12) ? (p1 - 1) : (p2 - 1);
                     }
 
-                    // REGLA ESTRICTA: Solo a partir de Noviembre 2026 (mes >= 10)
                     if (mes < MES_FILTRO_INICIAL) return;
 
                     let cat = getVal(4) || 'Infraestructura General';
-                    
                     let regionEncontrada = '';
                     let estatusEncontrado = '';
 
@@ -4270,14 +3387,12 @@
 
         function renderFormTicketsTab() {
             const selMes = document.getElementById('formSheetMesSelector')?.value || 'ALL';
-            // Solo considerar a partir de Noviembre
             let filtered = rawFormSheetTickets.filter(t => t.mes >= MES_FILTRO_INICIAL);
             if (selMes !== 'ALL') {
                 filtered = filtered.filter(t => t.mes === parseInt(selMes));
             }
 
             const totalSol = filtered.length;
-            // Casos concluidos consideran RESUELTO y PAGO
             const atCount = filtered.filter(t => {
                 let s = (t.estatus || '').toUpperCase();
                 return s.includes('RESUEL') || s.includes('PAGO');
@@ -4326,7 +3441,6 @@
             lucide.createIcons();
         }
 
-        // 2. DEMANDA DE CRECIMIENTO DINÁMICA (DISEÑO CURVO FLUIDO IDÉNTICO A DASHBOARD GLOBAL)
         function renderFormGrowth() {
             const ctx = document.getElementById('formGrowthChart')?.getContext('2d');
             if (!ctx) return;
@@ -4338,11 +3452,9 @@
             let volData = [];
             let slaData = [];
 
-            // Filtrar tickets de Noviembre en adelante (mes >= 10)
             let novTickets = rawFormSheetTickets.filter(t => t.mes >= MES_FILTRO_INICIAL);
 
             if (rangeMode === 'DIARIO') {
-                // Agrupación día por día de Noviembre (del 4 al 12)
                 let diasMap = {};
                 novTickets.forEach(t => {
                     let dMatch = (t.fecha || '').match(/^(\d{1,2})[\/\-]/);
@@ -4393,7 +3505,6 @@
                 slaData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, slaNov];
             }
 
-            // Gráfica de línea continua suave spline (idéntica a Foto 2)
             charts.formGrowth = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -4472,7 +3583,6 @@
             });
         }
 
-        // 4. CATEGORÍA DE SERVICIO SOLICITADO VS ATENDIDOS
         function renderFormCategories(data) {
             const ctx = document.getElementById('formCategoryChart')?.getContext('2d');
             if (!ctx) return;
@@ -4533,7 +3643,6 @@
             });
         }
 
-        // 5. TIPO DE TRABAJO (FORMATO IDÉNTICO A DASHBOARD GLOBAL)
         function renderFormWorkType(data) {
             const ctx = document.getElementById('formWorkTypeChart')?.getContext('2d');
             if (!ctx) return;
@@ -4600,7 +3709,6 @@
             }
         }
 
-        // 6. DISTRIBUCIÓN DE ESTATUS (FORMATO IDÉNTICO A DASHBOARD GLOBAL)
         function renderFormStatus(data) {
             const ctx = document.getElementById('formStatusChart')?.getContext('2d');
             if (!ctx) return;
