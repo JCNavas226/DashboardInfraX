@@ -3269,19 +3269,24 @@
 
             gvizResponded = false;
 
-            // MÉTODO 1: WebApp de Google Apps Script (si está configurada, lee hojas privadas sin restricciones)
+            // MÉTODO 1: WebApp de Google Apps Script vía JSONP (evita bloqueo CORS de Google)
             if (FORM_APPSCRIPT_WEBAPP_URL) {
-                try {
-                    const res = await fetch(`${FORM_APPSCRIPT_WEBAPP_URL}?_nocache=${Date.now()}`);
-                    if (res.ok) {
-                        const rows = await res.json();
-                        if (Array.isArray(rows) && rows.length > 0) {
-                            gvizResponded = true;
-                            procesarFilasPlanas(rows);
-                            return;
-                        }
+                window.appsScriptFormCallback = function(rows) {
+                    if (Array.isArray(rows) && rows.length > 0) {
+                        gvizResponded = true;
+                        procesarFilasPlanas(rows);
                     }
-                } catch (e) { console.warn("AppsScript fallback:", e); }
+                };
+                const oldAppScript = document.getElementById('appscript-form-tickets-script');
+                if (oldAppScript) oldAppScript.remove();
+                const sep = FORM_APPSCRIPT_WEBAPP_URL.includes('?') ? '&' : '?';
+                const appScriptTag = document.createElement('script');
+                appScriptTag.id = 'appscript-form-tickets-script';
+                appScriptTag.src = `${FORM_APPSCRIPT_WEBAPP_URL}${sep}callback=appsScriptFormCallback&_nocache=${Date.now()}`;
+                appScriptTag.onerror = function() {
+                    console.warn("AppsScript JSONP falló, intentando GViz...");
+                };
+                document.body.appendChild(appScriptTag);
             }
 
             // MÉTODO 2: Google Visualization JSONP (con select * para ignorar filtros visuales activos en la hoja)
