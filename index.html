@@ -3124,10 +3124,12 @@
         }
     
         // ==========================================
-        // TICKETS GOOGLE SHEETS - LÓGICA EN TIEMPO REAL
+        // TICKETS GOOGLE SHEETS - MOTOR DE SINCRONIZACIÓN EN TIEMPO REAL
         // ==========================================
         const FORM_SPREADSHEET_ID = "1nKOVLfxxXeUCyctMxIKRNmINGMCHP3Zox-KuqF5RbIg";
         const FORM_SHEET_GID = "410180768";
+        // Opcional: Si tu hoja es privada de dominio (@xana.com), pega aquí la URL de tu Web App de Google Apps Script:
+        const FORM_APPSCRIPT_WEBAPP_URL = ""; 
         const MES_FILTRO_INICIAL = 10; // Noviembre 2026 (0-indexed: 10 = Noviembre)
 
         const MAPEO_CATEGORIAS_AHORRO = {
@@ -3148,7 +3150,9 @@
             'Permiso de Bomberos': 'Seguridad / Extintores',
             'Camaras': 'Seguridad / Extintores',
             'Fumigación': 'Servicios Generales',
-            'Servicios Generales': 'Servicios Generales'
+            'Servicios Generales': 'Servicios Generales',
+            'Cafetera, MicroOnd': 'Servicios Generales',
+            'Montacargas': 'Infraestructura General'
         };
 
         const formTicketsDefaultData = [
@@ -3252,13 +3256,35 @@
 
         let rawFormSheetTickets = [...formTicketsDefaultData];
         let intervalFormSync = null;
+        let gvizResponded = false;
 
-        function cargarFormTicketsDrive() {
+        async function cargarFormTicketsDrive() {
             const refreshIcon = document.getElementById('form-refresh-icon');
             const badge = document.getElementById('badge-sheet-status');
             if (refreshIcon) refreshIcon.classList.add('animate-spin');
-            if (badge) badge.innerText = "Sincronizando en vivo...";
+            if (badge) {
+                badge.className = "text-[10px] bg-amber-100 text-amber-800 font-black px-2 py-0.5 rounded uppercase";
+                badge.innerText = "Sincronizando en vivo...";
+            }
 
+            gvizResponded = false;
+
+            // MÉTODO 1: WebApp de Google Apps Script (si está configurada, lee hojas privadas sin restricciones)
+            if (FORM_APPSCRIPT_WEBAPP_URL) {
+                try {
+                    const res = await fetch(`${FORM_APPSCRIPT_WEBAPP_URL}?_nocache=${Date.now()}`);
+                    if (res.ok) {
+                        const rows = await res.json();
+                        if (Array.isArray(rows) && rows.length > 0) {
+                            gvizResponded = true;
+                            procesarFilasPlanas(rows);
+                            return;
+                        }
+                    }
+                } catch (e) { console.warn("AppsScript fallback:", e); }
+            }
+
+            // MÉTODO 2: Google Visualization JSONP (con select * para ignorar filtros visuales activos en la hoja)
             const query = encodeURIComponent("select *");
             const jsonpUrl = `https://docs.google.com/spreadsheets/d/${FORM_SPREADSHEET_ID}/gviz/tq?tq=${query}&tqx=responseHandler:procesarGVizFormTickets&gid=${FORM_SHEET_GID}&headers=1&_nocache=${Date.now()}`;
             
@@ -3269,12 +3295,15 @@
             script.id = 'gviz-form-tickets-script';
             script.src = jsonpUrl;
             script.onerror = function() {
-                if (refreshIcon) refreshIcon.classList.remove('animate-spin');
-                if (badge) badge.innerText = `Modo Local (${rawFormSheetTickets.length} Solicitudes)`;
-                sincronizarModulosConSheets();
-                renderFormTicketsTab();
+                intentarFallbackCSV();
             };
             document.body.appendChild(script);
+
+            setTimeout(() => {
+                if (!gvizResponded) {
+                    intentarFallbackCSV();
+                }
+            }, 3500);
 
             if (!intervalFormSync) {
                 intervalFormSync = setInterval(() => {
@@ -3283,7 +3312,58 @@
             }
         }
 
+        // MÉTODO 3: Descarga CSV directa de Google Sheets
+        async function intentarFallbackCSV() {
+            const refreshIcon = document.getElementById('form-refresh-icon');
+            const badge = document.getElementById('badge-sheet-status');
+            try {
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${FORM_SPREADSHEET_ID}/export?format=csv&gid=${FORM_SHEET_GID}&_nocache=${Date.now()}`;
+                const resp = await fetch(csvUrl);
+                if (resp.ok) {
+                    const text = await resp.text();
+                    if (text && !text.trim().startsWith('<!DOCTYPE html')) {
+                        const rows = parseCSVRows(text);
+                        if (rows.length > 1) {
+                            gvizResponded = true;
+                            procesarFilasPlanas(rows.slice(1));
+                            return;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("Acceso externo bloqueado por permisos de Google Drive:", err);
+            }
+
+            if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+            if (badge && !gvizResponded) {
+                badge.className = "text-[10px] bg-red-100 text-red-800 font-black px-2 py-0.5 rounded uppercase";
+                badge.innerText = `Hoja Restringida (Activar "Cualquier persona con el enlace") • Local: ${rawFormSheetTickets.length}`;
+            }
+            sincronizarModulosConSheets();
+            renderFormTicketsTab();
+        }
+
+        function parseCSVRows(csvText) {
+            const rows = [];
+            let row = [], val = '', inQuotes = false;
+            for (let i = 0; i < csvText.length; i++) {
+                const ch = csvText[i], next = csvText[i + 1];
+                if (ch === '"' && inQuotes && next === '"') { val += '"'; i++; }
+                else if (ch === '"') { inQuotes = !inQuotes; }
+                else if (ch === ',' && !inQuotes) { row.push(val.trim()); val = ''; }
+                else if ((ch === '\n' || (ch === '\r' && next === '\n')) && !inQuotes) {
+                    if (ch === '\r') i++;
+                    row.push(val.trim());
+                    rows.push(row);
+                    row = []; val = '';
+                } else { val += ch; }
+            }
+            if (val.length > 0 || row.length > 0) { row.push(val.trim()); rows.push(row); }
+            return rows;
+        }
+
         window.procesarGVizFormTickets = function(json) {
+            gvizResponded = true;
             procesarDatosSheets(json);
         };
 
@@ -3338,13 +3418,66 @@
             return null;
         }
 
+        function procesarFilasPlanas(rowsArray) {
+            const refreshIcon = document.getElementById('form-refresh-icon');
+            if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+            const badge = document.getElementById('badge-sheet-status');
+
+            let parsed = [];
+            rowsArray.forEach(cols => {
+                if (!cols || cols.length < 2) return;
+                const fechaObj = parsearFechaGoogleSheet({ f: cols[0], v: cols[0] });
+                const tienda = (cols[1] || '').trim();
+                if (!fechaObj || !tienda || tienda.toLowerCase().includes('seleccione')) return;
+                if (fechaObj.anio !== 2026 || fechaObj.mes < MES_FILTRO_INICIAL) return;
+
+                let cat = (cols[4] || 'Infraestructura General').trim();
+                let regNormal = normalizarRegionSheet(cols[7] || '');
+                let estatusNormal = normalizarEstatusSheet(cols[8] || '');
+
+                let tipoTrabajo = 'Correctivo';
+                let catLower = cat.toLowerCase();
+                if (catLower.includes('prevent') || catLower.includes('planta') || catLower.includes('fumig') || catLower.includes('extintor') || catLower.includes('bombero')) {
+                    tipoTrabajo = 'Preventivo';
+                } else if (catLower.includes('mejora') || catLower.includes('filtra') || catLower.includes('estanter') || catLower.includes('vinil') || catLower.includes('camara')) {
+                    tipoTrabajo = 'Mejora';
+                }
+
+                parsed.push({
+                    fecha: fechaObj.texto,
+                    dia: fechaObj.dia,
+                    mes: fechaObj.mes,
+                    anio: fechaObj.anio,
+                    tienda: tienda.startsWith('Farmacia') ? tienda : ('Farmacia ' + tienda),
+                    categoria: cat,
+                    region: regNormal,
+                    tipoTrabajo: tipoTrabajo,
+                    estatus: estatusNormal
+                });
+            });
+
+            if (parsed.length > 0) {
+                rawFormSheetTickets = parsed;
+                const horaSync = new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                if (badge) {
+                    badge.className = "text-[10px] bg-emerald-100 text-emerald-800 font-black px-2 py-0.5 rounded uppercase";
+                    badge.innerText = `Online Live (${parsed.length} Solicitudes • ${horaSync})`;
+                }
+            }
+            sincronizarModulosConSheets();
+            poblarSelectorMesesForm();
+            renderFormTicketsTab();
+            renderTrimestralTab();
+            renderAhorrosTab();
+        }
+
         function procesarDatosSheets(json) {
             const refreshIcon = document.getElementById('form-refresh-icon');
             if (refreshIcon) refreshIcon.classList.remove('animate-spin');
             const badge = document.getElementById('badge-sheet-status');
 
-            if (!json || !json.table || !Array.isArray(json.table.rows) || json.table.rows.length === 0) {
-                sincronizarModulosConSheets();
+            if (!json || json.status === 'error' || !json.table || !Array.isArray(json.table.rows) || json.table.rows.length === 0) {
+                intentarFallbackCSV();
                 return;
             }
 
@@ -3403,7 +3536,10 @@
                 if (parsed.length > 0) {
                     rawFormSheetTickets = parsed;
                     const horaSync = new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    if (badge) badge.innerText = `Online Live (${parsed.length} Solicitudes • ${horaSync})`;
+                    if (badge) {
+                        badge.className = "text-[10px] bg-emerald-100 text-emerald-800 font-black px-2 py-0.5 rounded uppercase";
+                        badge.innerText = `Online Live (${parsed.length} Solicitudes • ${horaSync})`;
+                    }
                 }
             } catch(e) {
                 console.warn("Excepción procesando datos de GViz:", e);
